@@ -430,6 +430,15 @@ public class Utils {
      *
      * @param s 集合
      */
+    public static  <T> boolean isNotEmpty(T[] s) {
+        return !isEmpty(s);
+    }
+
+    /**
+     * 检查集合是否非空
+     *
+     * @param s 集合
+     */
     public static boolean isNotEmpty(Map s) {
         return !isEmpty(s);
     }

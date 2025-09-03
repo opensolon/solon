@@ -17,10 +17,12 @@ package org.noear.solon.net.http.impl.jdk;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.util.*;
+import org.noear.solon.net.http.HttpException;
 import org.noear.solon.net.http.HttpResponse;
 import org.noear.solon.net.http.HttpUtils;
 import org.noear.solon.net.http.impl.AbstractHttpUtils;
 import org.noear.solon.net.http.impl.HttpSslSupplierDefault;
+import org.noear.solon.net.http.impl.HttpStream;
 import org.noear.solon.net.http.impl.HttpUploadFile;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -51,26 +53,109 @@ public class JdkHttpUtils extends AbstractHttpUtils implements HttpUtils {
         METHODS_NOBODY.add("OPTIONS");
     }
 
-    private JdkHttpDispatcher dispatcher;
+    protected static final JdkHttpDispatcherLoader dispatcherLoader = new JdkHttpDispatcherLoader(); //这是连接池定义
 
-    public JdkHttpUtils(JdkHttpUtilsFactory factory, String url) {
+    public JdkHttpUtils(String url) {
         super(url);
-        this.dispatcher = factory.getDispatcher();
+    }
+
+    private HttpStream _bodyRaw;
+
+    /**
+     * 设置 BODY txt 及内容类型
+     */
+    @Override
+    public HttpUtils body(String txt, String contentType) {
+        if (txt != null) {
+            body(txt.getBytes(_charset), contentType);
+        }
+
+        return this;
+    }
+
+    @Override
+    public HttpUtils bodyOfBean(Object obj) throws HttpException {
+        Object tmp;
+        try {
+            tmp = serializer().serialize(obj);
+        } catch (Exception e) {
+            throw new IllegalArgumentException(e);
+        }
+
+        if (tmp instanceof String) {
+            body((String) tmp, serializer().mimeType());
+        } else if (tmp instanceof byte[]) {
+            body((byte[]) tmp, serializer().mimeType());
+        } else {
+            throw new IllegalArgumentException("Invalid serializer type!");
+        }
+
+        return this;
+    }
+
+    @Override
+    public HttpUtils body(byte[] bytes, String contentType) {
+        if (bytes != null) {
+            body(new ByteArrayInputStream(bytes), contentType);
+        }
+
+        return this;
+    }
+
+    @Override
+    public HttpUtils body(InputStream raw, String contentType) {
+        if (raw != null) {
+            _bodyRaw = new HttpStream(raw, contentType);
+        }
+
+        return this;
     }
 
     @Override
     protected HttpResponse execDo(String _method, CompletableFuture<HttpResponse> future) throws IOException {
+        String method = _method.toUpperCase();
+        String newUrl = urlRebuild(method, _url, _charset);
+
+        HttpURLConnection _client =  getClient(newUrl);
+
+        if (_headers != null) {
+            for (KeyValues<String> kv : _headers) {
+                for (String val : kv.getValues()) {
+                    _client.addRequestProperty(kv.getKey(), val);
+                }
+            }
+        }
+
+        if (_cookies != null) {
+            _client.setRequestProperty("Cookie", getRequestCookieString(_cookies));
+        }
+
+        _client.setRequestMethod(method);
+        _client.setUseCaches(false);
+        _client.setDoInput(true);
+
+        if (future == null) {
+            return request(_client, method);
+        } else {
+            dispatcherLoader.getDispatcher().submit(() -> {
+                try {
+                    HttpResponse resp = request(_client, method);
+                    future.complete(resp);
+                } catch (IOException | RuntimeException e) {
+                    future.completeExceptionally(e);
+                }
+            });
+
+            return null;
+        }
+    }
+
+    protected HttpURLConnection getClient(String newUrl) throws IOException {
         if (_sslSupplier == null) {
             _sslSupplier = HttpSslSupplierDefault.getInstance();
         }
 
-
-        final String method = _method.toUpperCase();
-        final String newUrl = urlRebuild(method, _url, _charset);
-
         HttpURLConnection _builder = openConnection(newUrl);
-
-        _builder.setUseCaches(false);
 
         if (_builder instanceof HttpsURLConnection) {
             //调整 ssl
@@ -78,6 +163,8 @@ public class JdkHttpUtils extends AbstractHttpUtils implements HttpUtils {
             tmp.setSSLSocketFactory(_sslSupplier.getSocketFactory());
             tmp.setHostnameVerifier(_sslSupplier.getHostnameVerifier());
         }
+
+        _builder.setInstanceFollowRedirects(true);
 
         if (_timeout != null) {
             //调整 timeout
@@ -90,35 +177,7 @@ public class JdkHttpUtils extends AbstractHttpUtils implements HttpUtils {
             }
         }
 
-        if (_headers != null) {
-            for (KeyValues<String> kv : _headers) {
-                for (String val : kv.getValues()) {
-                    _builder.addRequestProperty(kv.getKey(), val);
-                }
-            }
-        }
-
-        if (_cookies != null) {
-            _builder.setRequestProperty("Cookie", getRequestCookieString(_cookies));
-        }
-
-        _builder.setRequestMethod(method);
-        _builder.setDoInput(true);
-
-        if (future == null) {
-            return request(_builder, method);
-        } else {
-            dispatcher.getDispatcher().submit(() -> {
-                try {
-                    HttpResponse resp = request(_builder, method);
-                    future.complete(resp);
-                } catch (IOException | RuntimeException e) {
-                    future.completeExceptionally(e);
-                }
-            });
-
-            return null;
-        }
+        return _builder;
     }
 
     protected HttpURLConnection openConnection(String newUrl) throws IOException {
@@ -175,10 +234,11 @@ public class JdkHttpUtils extends AbstractHttpUtils implements HttpUtils {
                 throw new IOException("Redirect location header unfound, original url: " + _url);
             }
 
-            _url = location;
+            _url = getLocationUrl(_url, location);
 
             return execDo(method, null);
         } else {
+
             return new JdkHttpResponse(this, statusCode, _builder);
         }
     }

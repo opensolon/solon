@@ -109,7 +109,7 @@ public class OkHttpResponse implements HttpResponse {
         if (tmp == null) {
             return null;
         } else {
-            return tmp.type();
+            return tmp.toString();
         }
     }
 

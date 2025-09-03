@@ -33,6 +33,7 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.lang.reflect.Type;
 import java.net.Proxy;
+import java.net.URI;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
@@ -58,7 +59,6 @@ public abstract class AbstractHttpUtils implements HttpUtils {
     protected MultiMap<String> _cookies;
     protected MultiMap<String> _params;
     protected MultiMap<HttpUploadFile> _files;
-    protected HttpStream _bodyRaw;
 
     protected boolean _multipart = false;
     protected HttpTimeout _timeout;
@@ -157,6 +157,10 @@ public abstract class AbstractHttpUtils implements HttpUtils {
     public HttpUtils charset(String charset) {
         _charset = Charset.forName(charset);
         return this;
+    }
+
+    public Charset charset() {
+        return _charset;
     }
 
     /**
@@ -333,55 +337,7 @@ public abstract class AbstractHttpUtils implements HttpUtils {
         return this;
     }
 
-    /**
-     * 设置 BODY txt 及内容类型
-     */
-    @Override
-    public HttpUtils body(String txt, String contentType) {
-        if (txt != null) {
-            body(txt.getBytes(_charset), contentType);
-        }
 
-        return this;
-    }
-
-    @Override
-    public HttpUtils bodyOfBean(Object obj) throws HttpException {
-        Object tmp;
-        try {
-            tmp = serializer().serialize(obj);
-        } catch (Exception e) {
-            throw new IllegalArgumentException(e);
-        }
-
-        if (tmp instanceof String) {
-            body((String) tmp, serializer().mimeType());
-        } else if (tmp instanceof byte[]) {
-            body((byte[]) tmp, serializer().mimeType());
-        } else {
-            throw new IllegalArgumentException("Invalid serializer type!");
-        }
-
-        return this;
-    }
-
-    @Override
-    public HttpUtils body(byte[] bytes, String contentType) {
-        if (bytes == null) {
-            return this;
-        }
-
-        return body(new ByteArrayInputStream(bytes), contentType);
-    }
-
-    @Override
-    public HttpUtils body(InputStream raw, String contentType) {
-        if (raw != null) {
-            _bodyRaw = new HttpStream(raw, contentType);
-        }
-
-        return this;
-    }
 
     @Override
     public String get() throws HttpException {
@@ -630,8 +586,39 @@ public abstract class AbstractHttpUtils implements HttpUtils {
         return responseCode == 301
                 || responseCode == 302
                 || responseCode == 303
-                || responseCode == 307
+                || responseCode == 307 //307和308是RFC 7538中http 1.1定义的规范
                 || responseCode == 308;
 
+    }
+
+    /**
+     * 获取转发的新地址
+     *
+     * @param refererUrl 参考URL
+     * @param location   定位地址
+     */
+    public static String getLocationUrl(final String refererUrl, String location) {
+        final String redirectUrl;
+        if (location.contains("://") == false) {
+            URI refererUri = URI.create(refererUrl);
+
+            if (location.startsWith("/") == false) {
+                // 可能是相对路径
+                String refererPath = refererUri.getPath();
+                if (refererPath.endsWith("/") == false) {
+                    //定位到目录
+                    int tmp = refererPath.lastIndexOf('/');
+                    refererPath = refererPath.substring(0, tmp + 1);
+                }
+
+                location = refererPath + location;
+            }
+
+            redirectUrl = refererUri.getScheme() + "://" + refererUri.getAuthority() + location;
+        } else {
+            redirectUrl = location;
+        }
+
+        return redirectUrl;
     }
 }

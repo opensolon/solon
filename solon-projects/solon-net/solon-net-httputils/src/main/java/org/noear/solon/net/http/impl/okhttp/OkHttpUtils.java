@@ -15,20 +15,28 @@
  */
 package org.noear.solon.net.http.impl.okhttp;
 
+import com.moczul.ok2curl.CurlInterceptor;
 import okhttp3.*;
 import okhttp3.internal.Util;
 import okio.BufferedSink;
 import okio.Okio;
 import okio.Source;
 import org.noear.solon.Utils;
+import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.net.http.*;
 import org.noear.solon.net.http.impl.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Http 工具 OkHttp 实现
@@ -37,28 +45,71 @@ import java.util.concurrent.CompletableFuture;
  * @since 1.5
  * */
 public class OkHttpUtils extends AbstractHttpUtils implements HttpUtils {
-    private final OkHttpUtilsFactory factory;
+    protected static final Logger log = LoggerFactory.getLogger(OkHttpUtils.class);
+    protected static final OkHttpDispatcherLoader dispatcherLoader = new OkHttpDispatcherLoader(); //这是连接池定义
 
-    public OkHttpUtils(OkHttpUtilsFactory factory, String url) {
+    public OkHttpUtils(String url) {
         super(url);
-        this.factory = factory;
+    }
+
+    private RequestBody _bodyRaw;
+
+    /**
+     * 设置 BODY txt 及内容类型
+     */
+    @Override
+    public HttpUtils body(String txt, String contentType) {
+        if (txt != null) {
+            _bodyRaw = RequestBody.create(txt, contentType == null ? null : MediaType.parse(contentType));
+        }
+
+        return this;
+    }
+
+    @Override
+    public HttpUtils bodyOfBean(Object obj) throws HttpException {
+        Object tmp;
+        try {
+            tmp = serializer().serialize(obj);
+        } catch (Exception e) {
+            throw new IllegalArgumentException(e);
+        }
+
+        if (tmp instanceof String) {
+            body((String) tmp, serializer().mimeType());
+        } else if (tmp instanceof byte[]) {
+            body((byte[]) tmp, serializer().mimeType());
+        } else {
+            throw new IllegalArgumentException("Invalid serializer type!");
+        }
+
+        return this;
+    }
+
+    @Override
+    public HttpUtils body(byte[] bytes, String contentType) {
+        if (bytes != null) {
+            _bodyRaw = RequestBody.create(bytes, contentType == null ? null : MediaType.parse(contentType));
+        }
+
+        return this;
+    }
+
+    @Override
+    public HttpUtils body(InputStream raw, String contentType) {
+        if (raw != null) {
+            _bodyRaw = new StreamBody(new HttpStream(raw, contentType));
+        }
+
+        return this;
     }
 
     @Override
     protected HttpResponse execDo(String _method, CompletableFuture<HttpResponse> future) throws IOException {
-        if (_sslSupplier == null) {
-            _sslSupplier = HttpSslSupplierDefault.getInstance();
-        }
-
-
         String method = _method.toUpperCase();
         String newUrl = urlRebuild(method, _url, _charset);
 
         Request.Builder _builder = new Request.Builder().url(newUrl);
-
-        if (_timeout != null) {
-            _builder.tag(HttpTimeout.class, _timeout);
-        }
 
         if (_headers != null) {
             _headers.forEach(kv -> {
@@ -74,7 +125,7 @@ public class OkHttpUtils extends AbstractHttpUtils implements HttpUtils {
         RequestBody _body = null;
 
         if (_bodyRaw != null) {
-            _body = new StreamBody(_bodyRaw);
+            _body = _bodyRaw;
         } else {
             if (_multipart) {
                 MultipartBody.Builder _part_builer = new MultipartBody.Builder().setType(MultipartBody.FORM);
@@ -148,7 +199,7 @@ public class OkHttpUtils extends AbstractHttpUtils implements HttpUtils {
                 throw new IllegalArgumentException("This method is not supported");
         }
 
-        OkHttpClient _client = factory.getClient(_proxy, _sslSupplier);
+        OkHttpClient _client = getClient();
 
         if (future == null) {
             Call call = _client.newCall(_builder.build());
@@ -172,6 +223,49 @@ public class OkHttpUtils extends AbstractHttpUtils implements HttpUtils {
         }
     }
 
+    protected OkHttpClient getClient() {
+        if (_sslSupplier == null) {
+            _sslSupplier = HttpSslSupplierDefault.getInstance();
+        }
+
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+
+        if (_timeout != null) {
+            builder.connectTimeout(_timeout.getConnectTimeout().getSeconds(), TimeUnit.SECONDS)
+                    .writeTimeout(_timeout.getWriteTimeout().getSeconds(), TimeUnit.SECONDS)
+                    .readTimeout(_timeout.getReadTimeout().getSeconds(), TimeUnit.SECONDS);
+        } else {
+            builder.connectTimeout(10, TimeUnit.SECONDS)
+                    .writeTimeout(60, TimeUnit.SECONDS)
+                    .readTimeout(60, TimeUnit.SECONDS);
+        }
+
+        builder.dispatcher(dispatcherLoader.getDispatcher())
+                .sslSocketFactory(_sslSupplier.getSocketFactory(), _sslSupplier.getX509TrustManager())
+                .hostnameVerifier(_sslSupplier.getHostnameVerifier())
+                .connectionSpecs(getConnectionSpecs());
+
+        builder.followRedirects(true).followSslRedirects(true);
+
+
+        if (log.isDebugEnabled() && ClassUtil.hasClass(() -> CurlInterceptor.class)) {
+            builder.addInterceptor(new CurlInterceptor(msg -> {
+                log.debug(msg);
+            }));
+        }
+
+
+        if (_proxy != null) {
+            builder.proxy(_proxy);
+        }
+
+        return builder.build();
+    }
+
+    protected List<ConnectionSpec> getConnectionSpecs() {
+        return Arrays.asList(ConnectionSpec.COMPATIBLE_TLS, ConnectionSpec.CLEARTEXT);
+    }
+
     protected HttpResponse getResponse(Response response, String method) throws IOException {
         int statusCode = response.code();
 
@@ -182,7 +276,7 @@ public class OkHttpUtils extends AbstractHttpUtils implements HttpUtils {
                 throw new IOException("Redirect location header unfound, original url: " + _url);
             }
 
-            _url = location;
+            _url = getLocationUrl(_url, location);
 
             return execDo(method, null);
         } else {
@@ -217,7 +311,7 @@ public class OkHttpUtils extends AbstractHttpUtils implements HttpUtils {
         private MediaType _contentType = null;
         private HttpStream _httpStream = null;
 
-        public StreamBody(HttpStream stream) {
+        public StreamBody(HttpStream stream)  {
             if (stream.getContentType() != null) {
                 _contentType = MediaType.parse(stream.getContentType());
             }

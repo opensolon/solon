@@ -15,12 +15,12 @@
  */
 package org.noear.solon.net.http.impl;
 
-import org.noear.solon.Utils;
 import org.noear.solon.net.http.HttpSslSupplier;
+import org.noear.solon.net.http.ssl.SslAnyHostnameVerifier;
+import org.noear.solon.net.http.ssl.SslAnyTrustManager;
+import org.noear.solon.net.http.ssl.SslContextBuilder;
 
 import javax.net.ssl.*;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 
 /**
  * SSL 客户端
@@ -35,16 +35,41 @@ public class HttpSslSupplierDefault implements HttpSslSupplier {
         return instance;
     }
 
-    private HostnameVerifier hostnameVerifier;
-    private X509TrustManager x509TrustManager;
-
-    @Override
-    public SSLContext getSslContext() {
+    /**
+     * 获取默认ssl上下文
+     *
+     */
+    protected SSLContext getDefSslContext() {
         try {
             return SSLContext.getDefault();
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
+    }
+
+    /**
+     * 获取任意信任ssl上下文
+     */
+    private SSLContext anySslContext;
+
+    protected SSLContext getAnySslContext() {
+        if (anySslContext == null) {
+            try {
+                anySslContext = SslContextBuilder.of()
+                        .protocol(null)
+                        .trustManagers(SslAnyTrustManager.INSTANCE)
+                        .build();
+            } catch (Exception e) {
+                throw new IllegalStateException(e);
+            }
+        }
+
+        return anySslContext;
+    }
+
+    @Override
+    public SSLContext getSslContext() {
+        return getDefSslContext();
     }
 
     @Override
@@ -54,57 +79,11 @@ public class HttpSslSupplierDefault implements HttpSslSupplier {
 
     @Override
     public HostnameVerifier getHostnameVerifier() {
-        if (hostnameVerifier == null) {
-            Utils.locker().lock();
-            try {
-                if (hostnameVerifier == null) {
-                    hostnameVerifier = new DefaultHostnameVerifier();
-                }
-            } finally {
-                Utils.locker().unlock();
-            }
-        }
-
-        return hostnameVerifier;
+        return SslAnyHostnameVerifier.INSTANCE;
     }
 
     @Override
     public X509TrustManager getX509TrustManager() {
-        if (x509TrustManager == null) {
-            Utils.locker().lock();
-            try {
-                if (x509TrustManager == null) {
-                    x509TrustManager = new DefaultX509TrustManager();
-                }
-            } finally {
-                Utils.locker().unlock();
-            }
-        }
-
-        return x509TrustManager;
-    }
-
-    public static class DefaultX509TrustManager implements X509TrustManager {
-        @Override
-        public void checkClientTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
-
-        }
-
-        @Override
-        public void checkServerTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
-
-        }
-
-        @Override
-        public X509Certificate[] getAcceptedIssuers() {
-            return new X509Certificate[0];
-        }
-    }
-
-    public static class DefaultHostnameVerifier implements HostnameVerifier {
-        @Override
-        public boolean verify(String s, SSLSession sslSession) {
-            return true;
-        }
+        return SslAnyTrustManager.INSTANCE;
     }
 }
