@@ -4,9 +4,9 @@
 Solon v3.5.2-SNAPSHOT
 </h1>
 <p align="center">
-	<strong>全シーンに向けたJava企業向けアプリケーション開発フレームワーク:抑制、効率、オープン</strong>
+	<strong>全シーンに向けたJava企業向けアプリケーション開発フレームワーク</strong>
     <br/>
-    <strong>【オープン・アトム・オープンソース財団インキュベーション・プログラムです】</strong>
+    <strong>抑制、効率、オープン</strong>
 </p>
 <p align="center">
 	<a href="https://solon.noear.org/">https://solon.noear.org</a>
