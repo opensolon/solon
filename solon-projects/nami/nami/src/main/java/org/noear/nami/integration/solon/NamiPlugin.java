@@ -38,6 +38,8 @@ public class NamiPlugin implements Plugin {
             NamiConfigurationDefault.proxy = new NamiConfigurationSolon(context);
         }
 
+        context.aot().registerEntityType(NamiConfigurationDefault.class, null);
+
         context.beanInjectorAdd(NamiClient.class, (vh, anno) -> {
             vh.required(true);
 

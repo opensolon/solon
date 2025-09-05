@@ -35,6 +35,7 @@
 * 添加 solon-ai-mcp McpClientProperties:timeout 属性，方便简化超时配置（可省略 httpTimeout, requestTimeout, initializationTimeout）
 * 添加 solon-ai-mcp McpClientProvider:toolsChangeConsumer,resourcesChangeConsumer,resourcesUpdateConsumer,promptsChangeConsumer 配置支持
 * 添加 solon-ai-mcp McpClientProvider 缓存锁和变更刷新控制
+* 优化 nami NamiConfigurationDefault 与 aot 兼容
 * 调整 solon-ai-core FunctionToolDesc:doHandle 改用 ToolHandler 参数类型（之前为 Function），方便传递异常
 * 修复 solon-net-httputils HttpResponseException 在构建日志消息时，会出现'-1'端口的情况
 * 修复 solon-net-httputils 当服务端不结束流时 sse 解析不能结束的问题
