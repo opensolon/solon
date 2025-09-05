@@ -27,7 +27,9 @@ import java.nio.charset.StandardCharsets;
 /**
  * @author noear
  * @since 1.9
+ * @deprecated 3.5 不再需要
  */
+@Deprecated
 public class Fastjson2TypeEncoder implements EncoderTyped {
     public static final Fastjson2TypeEncoder instance = new Fastjson2TypeEncoder();
 

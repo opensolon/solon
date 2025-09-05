@@ -22,6 +22,10 @@ import org.noear.snack.ONode;
 
 import java.nio.charset.StandardCharsets;
 
+/**
+ * @deprecated 3.5 不再需要
+ * */
+@Deprecated
 public class SnackTypeEncoder implements EncoderTyped {
     public static final SnackTypeEncoder instance = new SnackTypeEncoder();
 
