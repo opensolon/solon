@@ -399,7 +399,7 @@ public class HttpTest extends HttpTester {
 
     @Test
     public void test2u() throws IOException {
-        assert path("/demo2/rpc/json").get().indexOf("java.") > 0;
+        assert path("/demo2/rpc/json").get().indexOf("你好") > 0;
     }
 
     @Test
