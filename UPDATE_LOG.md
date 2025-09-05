@@ -31,7 +31,7 @@
 
 ### 3.5.2
 
-
+* 添加 solon Props:toBean 自动 aot 收集处理
 * 添加 solon-ai-mcp McpClientProperties:timeout 属性，方便简化超时配置（可省略 httpTimeout, requestTimeout, initializationTimeout）
 * 添加 solon-ai-mcp McpClientProvider:toolsChangeConsumer,resourcesChangeConsumer,resourcesUpdateConsumer,promptsChangeConsumer 配置支持
 * 添加 solon-ai-mcp McpClientProvider 缓存锁和变更刷新控制
