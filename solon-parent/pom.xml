@@ -36,7 +36,7 @@
         <solon-expression.version>3.5.1</solon-expression.version>
         <solon-cloud.version>3.5.2-SNAPSHOT</solon-cloud.version>
         <solon-admin.version>3.5.1</solon-admin.version>
-        <solon-integration.version>3.5.1</solon-integration.version>
+        <solon-integration.version>3.5.2-SNAPSHOT</solon-integration.version>
         <solon-jakarta.version>3.5.1</solon-jakarta.version>
 
         <solonx.version>1.1.4</solonx.version>
