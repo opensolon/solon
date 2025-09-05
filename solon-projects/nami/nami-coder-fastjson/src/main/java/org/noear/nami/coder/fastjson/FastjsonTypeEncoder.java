@@ -23,7 +23,10 @@ import org.noear.nami.common.ContentTypes;
 
 import java.nio.charset.StandardCharsets;
 
-
+/**
+ * @deprecated 3.5 不再需要
+ * */
+@Deprecated
 public class FastjsonTypeEncoder implements EncoderTyped {
 
     public static final FastjsonTypeEncoder instance = new FastjsonTypeEncoder();

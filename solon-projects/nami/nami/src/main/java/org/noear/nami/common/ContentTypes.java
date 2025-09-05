@@ -30,6 +30,10 @@ public class ContentTypes {
     public static final String PROTOBUF_VALUE = "application/protobuf";
     public static final String ABC_VALUE = "application/abc";
     public static final String JSON_VALUE = "application/json";
+    /**
+     * @deprecated 3.5 不再需要
+     * */
+    @Deprecated
     public static final String JSON_TYPE_VALUE = "application/json-type";
     public static final String FORM_URLENCODED_VALUE = "application/x-www-form-urlencoded";
     public static final String FORM_DATA_VALUE = "multipart/form-data";
@@ -52,6 +56,10 @@ public class ContentTypes {
     public static final String JSON_ACCEPT = "Accept=application/json";
 
 
+    /**
+     * @deprecated 3.5
+     * */
+    @Deprecated
     public static final String AT_TYPE_JSON = "@type_json";
     public static final String AT_JSON = "@json";
     public static final String AT_PROTOBUF = "@protobuf";

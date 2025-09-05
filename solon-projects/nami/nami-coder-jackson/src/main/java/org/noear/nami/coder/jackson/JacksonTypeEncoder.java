@@ -28,7 +28,9 @@ import org.noear.nami.common.ContentTypes;
 /**
  * @author noear
  * @since 1.2
+ * @deprecated 3.5 不再需要
  */
+@Deprecated
 public class JacksonTypeEncoder implements EncoderTyped {
     public static final JacksonTypeEncoder instance = new JacksonTypeEncoder();
 
