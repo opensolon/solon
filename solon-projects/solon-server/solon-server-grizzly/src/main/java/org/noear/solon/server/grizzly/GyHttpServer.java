@@ -1,7 +1,6 @@
 package org.noear.solon.server.grizzly;
 
 import org.glassfish.grizzly.http.server.*;
-import com.icoderoad.GrizzlyServletWebServerFactory;
 import org.noear.solon.server.ServerLifecycle;
 
 /**
@@ -26,8 +25,6 @@ public class GyHttpServer implements ServerLifecycle {
         });
 
         httpServer.start();
-
-        GrizzlyServletWebServerFactory xxx;
     }
 
     @Override
