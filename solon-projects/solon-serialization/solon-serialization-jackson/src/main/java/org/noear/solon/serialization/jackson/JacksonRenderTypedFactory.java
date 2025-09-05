@@ -31,7 +31,9 @@ import org.noear.solon.serialization.StringSerializerRender;
  * @author noear
  * @since 1.5
  * @since 2.8
+ * @deprecated 3.5
  */
+@Deprecated
 public class JacksonRenderTypedFactory extends JacksonRenderFactoryBase {
     public JacksonRenderTypedFactory() {
         serializer.getConfig().enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
