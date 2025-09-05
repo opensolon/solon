@@ -15,6 +15,7 @@
  */
 package org.noear.solon.core;
 
+import org.noear.solon.Solon;
 import org.noear.solon.SolonProps;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.BindProps;
@@ -253,6 +254,10 @@ public class Props extends Properties {
      * @since 2.9
      */
     public <T> T toBean(String keyStarts, Class<T> clz) {
+        if (Solon.app() != null) {
+            Solon.context().aot().registerEntityType(clz, null);
+        }
+
         Properties props = getProp(keyStarts);
         return PropsConverter.global().convert(props, clz);
     }
