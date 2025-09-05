@@ -54,7 +54,7 @@
 
         <java-cron.version>1.0.3</java-cron.version>
 
-        <redisson.version>3.45.0</redisson.version>
+        <redisson.version>3.51.0</redisson.version>
         <lettuce.version>6.5.4.RELEASE</lettuce.version>
 
         <fastjson.version>1.2.83</fastjson.version>

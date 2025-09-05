@@ -40,7 +40,7 @@
 * 修复 solon-net-httputils HttpResponseException 在构建日志消息时，会出现'-1'端口的情况
 * 修复 solon-net-httputils 当服务端不结束流时 sse 解析不能结束的问题
 * snack3 升为 3.2.139
-
+* redisson 升为 3.51.0
 
 ### 3.5.1
 
