@@ -332,11 +332,12 @@ public class RenderManager implements Render {
         }
 
         if (render == null) {
-            if (ctx.remoting()) {
-                render = _mapping.get(Constants.RENDER_TYPE_JSON);
-            } else {
-                render = _mapping.get(Constants.RENDER_JSON);
-            }
+//            if (ctx.remoting()) {
+//                render = _mapping.get(Constants.RENDER_TYPE_JSON);
+//            } else {
+//                render = _mapping.get(Constants.RENDER_JSON);
+//            }
+            render = _mapping.get(Constants.RENDER_JSON);
         }
 
         return render;

@@ -26,7 +26,9 @@ import org.noear.solon.serialization.StringSerializerRender;
  * @author noear
  * @since 1.5
  * @since 2.8
+ * @deprecated 3.5
  */
+@Deprecated
 public class FastjsonRenderTypedFactory extends FastjsonRenderFactoryBase {
     public FastjsonRenderTypedFactory() {
         serializer.cfgSerializerFeatures(false, true,
