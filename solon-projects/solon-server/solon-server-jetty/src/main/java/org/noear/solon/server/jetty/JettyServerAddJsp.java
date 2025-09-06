@@ -19,7 +19,7 @@ import org.eclipse.jetty.jsp.JettyJspServlet;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import org.noear.solon.server.jetty.http.JtJspStarter;
+import org.noear.solon.server.jetty.jsp.JspLifeCycle;
 import org.noear.solon.server.jetty.jsp.JspTldLocator;
 import org.noear.solon.server.prop.impl.HttpServerProps;
 
@@ -59,7 +59,7 @@ public class JettyServerAddJsp extends JettyServer {
         handler.setClassLoader(jspClassLoader);
 
         // Manually call JettyJasperInitializer on context startup
-        handler.addBean(new JtJspStarter(handler));
+        handler.addBean(new JspLifeCycle(handler));
 
         // Create / Register JSP Servlet (must be named "jsp" per spec)
         ServletHolder holderJsp = new ServletHolder("jsp", JettyJspServlet.class);
