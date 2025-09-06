@@ -171,7 +171,7 @@ abstract class JettyServerBase implements ServerLifecycle , HttpServerConfigure 
 
         //添加临时文件（用于jsp编译，或文件上传）
         File tempDir = new File(System.getProperty("java.io.tmpdir"));
-        File scratchDir = new File(tempDir.toString(), "solon.boot.jetty");
+        File scratchDir = new File(tempDir.toString(), "solon.server.jetty");
 
         if (!scratchDir.exists()) {
             if (!scratchDir.mkdirs()) {

@@ -42,7 +42,7 @@ public class UndertowServerAddJsp extends UndertowServer {
     }
 
     @Override
-    protected HttpHandler buildHandler() throws Exception{
+    protected HttpHandler buildHandler() throws Exception {
         DeploymentInfo builder = initDeploymentInfo();
 
         //添加jsp处理
@@ -53,9 +53,8 @@ public class UndertowServerAddJsp extends UndertowServer {
 
 
         //添加taglib支持
-        Map<String, TagLibraryInfo> tagLibraryMap = JspTldLocator.createTldInfos("WEB-INF","templates");
+        Map<String, TagLibraryInfo> tagLibraryMap = JspTldLocator.createTldInfos("WEB-INF", "templates");
         JspServletBuilder.setupDeployment(builder, new HashMap<String, JspPropertyGroup>(), tagLibraryMap, new HackInstanceManager());
-
 
 
         //开始部署

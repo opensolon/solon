@@ -43,13 +43,13 @@ public class JettyServerAddJsp extends JettyServer {
     protected Handler buildHandler() throws IOException {
         ServletContextHandler handler = getServletHandler();
 
-        enableJspSupport(handler);
+        addJspSupport(handler);
         addTdlSupport(handler.getServletContext());
 
         return handler;
     }
 
-    private void enableJspSupport(ServletContextHandler handler) throws IOException {
+    private void addJspSupport(ServletContextHandler handler) throws IOException {
 
         // Set Classloader of Context to be sane (needed for JSTL)
         // JSP requires a non-System classloader, this simply wraps the
@@ -69,7 +69,7 @@ public class JettyServerAddJsp extends JettyServer {
     }
 
     private void addTdlSupport(ServletContext servletContext) throws IOException {
-        Map<String, TaglibDescriptor> tagLibInfos = JspTldLocator.createTldInfos("templates");
+        Map<String, TaglibDescriptor> tagLibInfos = JspTldLocator.createTldInfos("WEB-INF", "templates");
 
         if (tagLibInfos.size() > 0) {
             ServletContextHandler.JspConfig jspConfig = (ServletContextHandler.JspConfig) servletContext.getJspConfigDescriptor();
