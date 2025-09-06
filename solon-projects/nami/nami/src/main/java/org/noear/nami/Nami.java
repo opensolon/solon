@@ -195,6 +195,7 @@ public class Nami {
         } else {
             //断言成功
             _result.assertSuccess();
+
             return _result.bodyAsString();
         }
     }
@@ -223,13 +224,10 @@ public class Nami {
         if (_result == null) {
             return null;
         } else {
-
             _result.assertSuccess();
 
             if (Void.TYPE.equals(returnType)) {
-                if (_result.body() == null || _result.body().length < 20) {
-                    return null;
-                }
+                return null;
             }
 
             Decoder decoder = _config.getDecoder();
