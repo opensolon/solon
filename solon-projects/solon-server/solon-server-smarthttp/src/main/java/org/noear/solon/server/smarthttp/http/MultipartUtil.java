@@ -47,7 +47,7 @@ public class MultipartUtil {
                 long _maxFileSize = (ServerProps.request_maxFileSize > 0 ? ServerProps.request_maxFileSize : 0L);
                 int _fileOutputBuffer = 0;
                 _maxBodySize = Math.max(_maxBodySize, _maxFileSize);
-                String tempdir = Files.createTempDirectory("smarthttp.upload").toFile().getCanonicalPath();
+                String tempdir = Files.createTempDirectory("solon-server").toFile().getAbsolutePath();
 
                 multipartConfig = new MultipartConfig(tempdir, _maxFileSize, _maxBodySize, _fileOutputBuffer);
             } else {

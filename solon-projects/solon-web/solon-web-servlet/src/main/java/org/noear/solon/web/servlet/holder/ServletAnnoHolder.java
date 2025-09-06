@@ -19,11 +19,11 @@ import javax.servlet.Servlet;
 import javax.servlet.annotation.WebServlet;
 import java.util.Objects;
 
-public class ServletHolder {
+public class ServletAnnoHolder {
     public final WebServlet anno;
     public final Servlet servlet;
 
-    public ServletHolder(WebServlet anno, Servlet servlet) {
+    public ServletAnnoHolder(WebServlet anno, Servlet servlet) {
         this.anno = anno;
         this.servlet = servlet;
     }
@@ -32,7 +32,7 @@ public class ServletHolder {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ServletHolder that = (ServletHolder) o;
+        ServletAnnoHolder that = (ServletAnnoHolder) o;
         return Objects.equals(anno, that.anno) &&
                 Objects.equals(servlet, that.servlet);
     }

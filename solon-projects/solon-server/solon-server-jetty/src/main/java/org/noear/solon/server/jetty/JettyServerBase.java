@@ -19,6 +19,7 @@ import org.eclipse.jetty.http.HttpVersion;
 import org.eclipse.jetty.server.*;
 import org.eclipse.jetty.server.session.SessionHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.noear.solon.Utils;
 import org.noear.solon.server.ServerConstants;
@@ -33,6 +34,7 @@ import org.noear.solon.server.handle.SessionProps;
 import org.noear.solon.core.util.ResourceUtil;
 
 import javax.net.ssl.SSLContext;
+import javax.servlet.MultipartConfigElement;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -151,9 +153,30 @@ abstract class JettyServerBase implements ServerLifecycle , HttpServerConfigure 
     }
 
     protected ServletContextHandler getServletHandler() throws IOException {
+        File tempDir = new File(System.getProperty("java.io.tmpdir"));
+        File scratchDir = new File(tempDir, "solon-server");
+        if(scratchDir.exists() == false){
+            scratchDir.mkdirs();
+        }
+
+        String _tempdir = scratchDir.getAbsolutePath();
+        int _fileOutputBuffer = 1 * 1024 * 1024;
+        long _maxBodySize = (org.noear.solon.boot.ServerProps.request_maxBodySize > 0 ? org.noear.solon.boot.ServerProps.request_maxBodySize : -1L);
+        long _maxFileSize = (org.noear.solon.boot.ServerProps.request_maxFileSize > 0 ? org.noear.solon.boot.ServerProps.request_maxFileSize : -1L);
+
+        MultipartConfigElement multipartConfig = new MultipartConfigElement(
+                _tempdir,
+                _maxFileSize,
+                _maxBodySize,
+                _fileOutputBuffer);
+
+        ServletHolder servletHolder = new ServletHolder(new JtHttpContextServletHandler());
+        servletHolder.setAsyncSupported(true);
+        servletHolder.getRegistration().setMultipartConfig(multipartConfig);
+
         ServletContextHandler handler = new ServletContextHandler();
         handler.setContextPath("/");
-        handler.addServlet(JtHttpContextServletHandler.class, "/").setAsyncSupported(true);
+        handler.addServlet(servletHolder, "/");
 
 
         //添加session state 支持
@@ -168,11 +191,7 @@ abstract class JettyServerBase implements ServerLifecycle , HttpServerConfigure 
         //添加容器初始器
         handler.addLifeCycleListener(new JtContainerInitializer(handler.getServletContext()));
 
-
         //添加临时文件（用于jsp编译，或文件上传）
-        File tempDir = new File(System.getProperty("java.io.tmpdir"));
-        File scratchDir = new File(tempDir.toString(), "solon.server.jetty");
-
         if (!scratchDir.exists()) {
             if (!scratchDir.mkdirs()) {
                 throw new IOException("Unable to create scratch directory: " + scratchDir);

@@ -35,6 +35,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLContext;
 import javax.servlet.MultipartConfigElement;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -96,14 +97,31 @@ abstract class UndertowServerBase implements ServerLifecycle, HttpServerConfigur
     }
 
     protected DeploymentInfo initDeploymentInfo() {
-        MultipartConfigElement configElement = new MultipartConfigElement(System.getProperty("java.io.tmpdir"));
+        //MultipartConfigElement configElement = new MultipartConfigElement(System.getProperty("java.io.tmpdir"));
+
+        File tempDir = new File(System.getProperty("java.io.tmpdir"));
+        File scratchDir = new File(tempDir, "solon-server");
+        if(scratchDir.exists() == false){
+            scratchDir.mkdirs();
+        }
+
+        String _tempdir = scratchDir.getAbsolutePath();
+        int _fileOutputBuffer = 1 * 1024 * 1024;
+        long _maxBodySize = (org.noear.solon.boot.ServerProps.request_maxBodySize > 0 ? org.noear.solon.boot.ServerProps.request_maxBodySize : -1L);
+        long _maxFileSize = (org.noear.solon.boot.ServerProps.request_maxFileSize > 0 ? org.noear.solon.boot.ServerProps.request_maxFileSize : -1L);
+
+        MultipartConfigElement multipartConfig = new MultipartConfigElement(
+                _tempdir,
+                _maxFileSize,
+                _maxBodySize,
+                _fileOutputBuffer);
 
         DeploymentInfo builder = new DeploymentInfo()
                 .setClassLoader(UndertowPlugin.class.getClassLoader())
                 .setDeploymentName("solon")
                 .setContextPath("/")
                 .setDefaultEncoding(ServerProps.request_encoding)
-                .setDefaultMultipartConfig(configElement)
+                .setDefaultMultipartConfig(multipartConfig)
                 .setClassIntrospecter(DefaultClassIntrospector.INSTANCE);
 
         //添加容器初始器
