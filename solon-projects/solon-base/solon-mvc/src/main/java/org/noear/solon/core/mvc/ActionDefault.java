@@ -438,8 +438,15 @@ public class ActionDefault extends HandlerAide implements Action {
                     Throwable objE = (Throwable) obj;
                     LogUtil.global().warn("Action remoting handle failed: " + c.pathNew(), objE);
 
-                    if (allowMultiple || c.getRendered() == false) {
-                        c.render(obj);
+                    if (c.getRendered() == false) { //if (allowMultiple || c.getRendered() == false) {
+                        if (objE instanceof StatusException) {
+                            StatusException se = (StatusException) objE;
+                            c.status(se.getCode(), se.getMessage());
+                        } else {
+                            c.status(500, objE.getMessage());
+                        }
+                        c.setRendered(true);
+                        //c.render(obj);
                     }
                 } else {
                     c.setHandled(false); //传递给 filter, 可以统一处理未知异常
