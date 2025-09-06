@@ -17,11 +17,9 @@ package org.noear.nami.coder.fastjson;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.parser.ParserConfig;
-import org.noear.nami.Context;
-import org.noear.nami.Decoder;
-import org.noear.nami.EncoderTyped;
-import org.noear.nami.Result;
+import org.noear.nami.*;
 import org.noear.nami.common.ContentTypes;
+import org.noear.nami.exception.NamiDecodeException;
 import org.noear.solon.Utils;
 
 import java.lang.reflect.Type;
@@ -50,16 +48,20 @@ public class FastjsonDecoder implements Decoder {
             return null;
         }
 
-        if (str.contains("\"stackTrace\":[{")) {
-            return (T) JSON.parseObject(str, Throwable.class);
-        } else {
-            if (String.class == type && Utils.isNotEmpty(str)) {
-                if (str.charAt(0) != '\'' && str.charAt(0) != '"') {
-                    return (T) str;
+        try {
+            if (str.contains("\"stackTrace\":[{")) {
+                return (T) JSON.parseObject(str, Throwable.class);
+            } else {
+                if (String.class == type && Utils.isNotEmpty(str)) {
+                    if (str.charAt(0) != '\'' && str.charAt(0) != '"') {
+                        return (T) str;
+                    }
                 }
-            }
 
-            return (T) JSON.parseObject(str, type);
+                return (T) JSON.parseObject(str, type);
+            }
+        } catch (Throwable ex) {
+            throw new NamiDecodeException("Decoding failure, type: " + type.getTypeName() + ", data: " + str, ex);
         }
     }
 
