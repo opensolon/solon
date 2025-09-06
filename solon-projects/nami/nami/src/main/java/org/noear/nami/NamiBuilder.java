@@ -16,7 +16,10 @@
 package org.noear.nami;
 
 import org.noear.nami.annotation.NamiClient;
+import org.noear.solon.Solon;
+import org.noear.solon.core.runtime.NativeDetector;
 
+import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.function.Supplier;
 
@@ -168,6 +171,16 @@ public class NamiBuilder {
         if (clz.isInterface() == false) {
             throw new NamiException("NamiClient only support interfaces: " + clz.getName());
         }
+
+        if (NativeDetector.isAotRuntime()) {
+            //如果是 aot 则注册函数
+            if (Solon.app() != null) {
+                for (Method m : clz.getMethods()) {
+                    Solon.context().methodGet(m);
+                }
+            }
+        }
+
 
         NamiHandler handler = new NamiHandler(clz, _config, client);
 
