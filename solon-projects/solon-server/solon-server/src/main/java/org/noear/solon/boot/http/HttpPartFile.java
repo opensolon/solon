@@ -16,7 +16,7 @@
 package org.noear.solon.boot.http;
 
 import org.noear.solon.Utils;
-import org.noear.solon.boot.ServerProps;
+import org.noear.solon.server.ServerProps;
 import org.noear.solon.core.util.IoUtil;
 
 import java.io.*;
