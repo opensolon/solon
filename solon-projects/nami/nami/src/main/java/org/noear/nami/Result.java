@@ -15,6 +15,9 @@
  */
 package org.noear.nami;
 
+import org.noear.nami.common.TextUtils;
+import org.noear.nami.exception.NamiResponseException;
+
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.AbstractMap;
@@ -129,10 +132,14 @@ public class Result {
      */
     public String bodyAsString() {
         if (bodyString == null) {
-            if (charset == null) {
-                bodyString = new String(body);
+            if (body != null) {
+                if (charset == null) {
+                    bodyString = new String(body);
+                } else {
+                    bodyString = new String(body, charset);
+                }
             } else {
-                bodyString = new String(body, charset);
+                bodyString = "";
             }
 
             //清掉body
@@ -144,7 +151,11 @@ public class Result {
 
     public void assertSuccess() {
         if (code >= 400) {
-            throw new NamiResponseException(code, bodyString, "Nami call failure, code: " + code + ", message: " + bodyAsString());
+            if (TextUtils.isEmpty(bodyAsString())) {
+                throw new NamiResponseException(code, bodyString, "Nami call failure, code: " + code);
+            } else {
+                throw new NamiResponseException(code, bodyString, "Nami call failure, code: " + code + ", message: " + bodyAsString());
+            }
         }
     }
 }

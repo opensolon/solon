@@ -13,24 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.nami;
+package org.noear.nami.exception;
+
+import org.noear.nami.NamiException;
 
 /**
- * Nami - 异常
+ * Nami - 解码异常
  *
  * @author noear
- * @since 1.0
+ * @since 3.5
  * */
-public class NamiException extends RuntimeException {
-    public NamiException(String message) {
-        super(message);
-    }
-
-    public NamiException(String message, Throwable cause) {
+public class NamiDecodeException extends NamiException {
+    public NamiDecodeException(String message, Throwable cause) {
         super(message, cause);
-    }
-
-    public NamiException(Throwable cause) {
-        super(cause);
     }
 }

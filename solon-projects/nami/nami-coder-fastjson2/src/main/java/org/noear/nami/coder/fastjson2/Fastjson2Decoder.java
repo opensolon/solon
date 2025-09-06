@@ -17,11 +17,9 @@ package org.noear.nami.coder.fastjson2;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONReader;
-import org.noear.nami.Context;
-import org.noear.nami.Decoder;
-import org.noear.nami.EncoderTyped;
-import org.noear.nami.Result;
+import org.noear.nami.*;
 import org.noear.nami.common.ContentTypes;
+import org.noear.nami.exception.NamiDecodeException;
 import org.noear.solon.Utils;
 
 import java.lang.reflect.Type;
@@ -52,16 +50,20 @@ public class Fastjson2Decoder implements Decoder {
             return null;
         }
 
-        if (str.contains("\"stackTrace\":[{")) {
-            return (T) JSON.parseObject(str, Throwable.class, JSONReader.Feature.SupportAutoType);
-        } else {
-            if (String.class == type && Utils.isNotEmpty(str)) {
-                if (str.charAt(0) != '\'' && str.charAt(0) != '"') {
-                    return (T) str;
+        try {
+            if (str.contains("\"stackTrace\":[{")) {
+                return (T) JSON.parseObject(str, Throwable.class, JSONReader.Feature.SupportAutoType);
+            } else {
+                if (String.class == type && Utils.isNotEmpty(str)) {
+                    if (str.charAt(0) != '\'' && str.charAt(0) != '"') {
+                        return (T) str;
+                    }
                 }
-            }
 
-            return (T) JSON.parseObject(str, type, JSONReader.Feature.SupportAutoType);
+                return (T) JSON.parseObject(str, type, JSONReader.Feature.SupportAutoType);
+            }
+        } catch (Throwable ex) {
+            throw new NamiDecodeException("Decoding failure, type: " + type.getTypeName() + ", data: " + str, ex);
         }
     }
 

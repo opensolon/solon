@@ -15,11 +15,9 @@
  */
 package org.noear.nami.coder.snack3;
 
-import org.noear.nami.Context;
-import org.noear.nami.Decoder;
-import org.noear.nami.EncoderTyped;
-import org.noear.nami.Result;
+import org.noear.nami.*;
 import org.noear.nami.common.ContentTypes;
+import org.noear.nami.exception.NamiDecodeException;
 import org.noear.snack.ONode;
 import org.noear.solon.Utils;
 
@@ -44,13 +42,17 @@ public class SnackDecoder implements Decoder {
             return null;
         }
 
-        if (String.class == type && Utils.isNotEmpty(str)) {
-            if (str.charAt(0) != '\'' && str.charAt(0) != '"') {
-                return (T) str;
+        try {
+            if (String.class == type && Utils.isNotEmpty(str)) {
+                if (str.charAt(0) != '\'' && str.charAt(0) != '"') {
+                    return (T) str;
+                }
             }
-        }
 
-        return ONode.deserialize(str, type);
+            return ONode.deserialize(str, type);
+        } catch (Throwable ex) {
+            throw new NamiDecodeException("Decoding failure, type: " + type.getTypeName() + ", data: " + str, ex);
+        }
     }
 
     @Override
