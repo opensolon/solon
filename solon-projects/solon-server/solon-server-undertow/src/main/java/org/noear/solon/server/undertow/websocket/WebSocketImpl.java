@@ -90,6 +90,9 @@ public class WebSocketImpl extends WebSocketBase {
     @Override
     public void close() {
         super.close();
-        RunUtil.runAndTry(real::close);
+
+        if (real.isOpen()) {
+            RunUtil.runAndTry(real::close);
+        }
     }
 }

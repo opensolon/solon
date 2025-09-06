@@ -63,15 +63,18 @@ public abstract class WebSocketTimeoutBase extends WebSocketBase {
         try {
             if (idleTimeout > 0) {
                 if (liveTime + idleTimeout < System.currentTimeMillis()) {
-                    if (this.isValid()) {
+                    if (this.isClosed() == false) {
                         if (log.isDebugEnabled()) {
                             log.debug("WebSocket idle timeout, will close!");
                         }
 
-                        RunUtil.runAndTry(this::close);
-                        WebSocketRouter.getInstance().getListener().onClose(this);
-                        return;
+                        try {
+                            WebSocketRouter.getInstance().getListener().onClose(this);
+                        } finally {
+                            RunUtil.runAndTry(this::close);
+                        }
                     }
+                    return;
                 }
 
                 if (idleTimeoutFuture != null) {
