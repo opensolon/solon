@@ -106,9 +106,9 @@ abstract class UndertowServerBase implements ServerLifecycle, HttpServerConfigur
         }
 
         String _tempdir = scratchDir.getAbsolutePath();
-        int _fileOutputBuffer = 1 * 1024 * 1024;
-        long _maxBodySize = (org.noear.solon.boot.ServerProps.request_maxBodySize > 0 ? org.noear.solon.boot.ServerProps.request_maxBodySize : -1L);
-        long _maxFileSize = (org.noear.solon.boot.ServerProps.request_maxFileSize > 0 ? org.noear.solon.boot.ServerProps.request_maxFileSize : -1L);
+        int _fileOutputBuffer = 0;
+        long _maxBodySize = (ServerProps.request_maxBodySize > 0 ? ServerProps.request_maxBodySize : -1L);
+        long _maxFileSize = (ServerProps.request_maxFileSize > 0 ? ServerProps.request_maxFileSize : -1L);
 
         MultipartConfigElement multipartConfig = new MultipartConfigElement(
                 _tempdir,

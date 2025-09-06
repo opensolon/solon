@@ -64,7 +64,7 @@ public class SolonServletContextListener implements ServletContextListener {
                 registration.addMapping("/*");
 
                 //configElement
-                int _fileOutputBuffer = 1 * 1024 * 1024;
+                int _fileOutputBuffer = 0;
                 long _maxBodySize = (ServerProps.request_maxBodySize > 0 ? ServerProps.request_maxBodySize : -1L);
                 long _maxFileSize = (ServerProps.request_maxFileSize > 0 ? ServerProps.request_maxFileSize : -1L);
 

@@ -17,7 +17,9 @@ package org.noear.solon.server.jetty;
 
 import org.eclipse.jetty.server.*;
 import org.eclipse.jetty.server.session.DefaultSessionIdManager;
+import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
+import org.eclipse.jetty.websocket.api.UpgradeRequest;
 import org.noear.solon.server.ServerLifecycle;
 import org.noear.solon.server.prop.impl.HttpServerProps;
 import org.noear.solon.core.event.EventBus;
@@ -53,9 +55,6 @@ public class JettyServer extends JettyServerBase implements ServerLifecycle {
     }
 
     protected void setup(String host, int port) throws IOException {
-        Class<?> wsClz = ClassUtil.loadClass("org.eclipse.jetty.websocket.server.WebSocketHandler");
-
-
         QueuedThreadPool threadPool = new QueuedThreadPool(
                 props.getMaxThreads(props.isIoBound()),
                 props.getCoreThreads());
@@ -76,7 +75,7 @@ public class JettyServer extends JettyServerBase implements ServerLifecycle {
             real.setSessionIdManager(new DefaultSessionIdManager(real));
         }
 
-        if (enableWebSocket && wsClz != null) {
+        if (enableWebSocket && ClassUtil.hasClass(()-> UpgradeRequest.class)) {
             real.setHandler(new HandlerHub(buildHandler()));
         } else {
             //没有ws包 或 没有开启
@@ -90,7 +89,7 @@ public class JettyServer extends JettyServerBase implements ServerLifecycle {
     /**
      * 获取Server Handler
      */
-    protected Handler buildHandler() throws IOException {
+    protected ServletContextHandler buildHandler() throws IOException {
         return getServletHandler();
     }
 }

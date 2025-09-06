@@ -40,7 +40,7 @@ public class JettyServerAddJsp extends JettyServer {
      * 获取Server Handler
      */
     @Override
-    protected Handler buildHandler() throws IOException {
+    protected ServletContextHandler buildHandler() throws IOException {
         ServletContextHandler handler = getServletHandler();
 
         addJspSupport(handler);
