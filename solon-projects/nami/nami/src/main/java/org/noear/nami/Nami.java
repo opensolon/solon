@@ -227,7 +227,11 @@ public class Nami {
             _result.assertSuccess();
 
             if (Void.TYPE.equals(returnType)) {
-                return null;
+                if (_result.body() == null || _result.body().length == 0) {
+                    return null;
+                } else {
+                    throw new NamiException("Invalid result: " + _result.bodyAsString());
+                }
             }
 
             Decoder decoder = _config.getDecoder();
