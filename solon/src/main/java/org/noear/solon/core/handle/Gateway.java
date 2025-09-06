@@ -19,6 +19,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.core.*;
+import org.noear.solon.core.exception.StatusException;
 import org.noear.solon.core.route.RoutingDefault;
 import org.noear.solon.core.route.RoutingTable;
 import org.noear.solon.core.route.RoutingTableDefault;
@@ -141,7 +142,14 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
                 LogUtil.global().warn("Gateway remoting handle failed!", objE);
 
                 if (c.getRendered() == false) {
-                    c.render(obj);
+                    if (objE instanceof StatusException) {
+                        StatusException se = (StatusException) objE;
+                        c.status(se.getCode(), se.getMessage());
+                    } else {
+                        c.status(500, objE.getMessage());
+                    }
+                    c.setRendered(true);
+                    //c.render(obj);
                 }
             } else {
                 c.setHandled(false); //传递给 filter, 可以统一处理未知异常

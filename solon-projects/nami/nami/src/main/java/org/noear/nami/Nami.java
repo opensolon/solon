@@ -193,6 +193,8 @@ public class Nami {
         if (_result == null) {
             return null;
         } else {
+            //断言成功
+            _result.assertSuccess();
             return _result.bodyAsString();
         }
     }
@@ -220,34 +222,33 @@ public class Nami {
     public <T> T getObjectOrThrow(Type returnType) throws Throwable {
         if (_result == null) {
             return null;
-        }
-
-        if (_result.code() != 200) {
-            throw new NamiException("Nami call failure, code: " + _result.code());
-        }
-
-        if (Void.TYPE.equals(returnType)) {
-            if (_result.body() == null || _result.body().length < 20) {
-                return null;
-            }
-        }
-
-        Decoder decoder = _config.getDecoder();
-
-        if (decoder == null) {
-            decoder = NamiManager.getDecoder(ContentTypes.JSON_VALUE);
-        }
-
-        Object returnVal = decoder.decode(_result, returnType);
-
-        if (returnVal != null && returnVal instanceof Throwable) {
-            if (returnVal instanceof RuntimeException) {
-                throw (RuntimeException) returnVal;
-            } else {
-                throw new RuntimeException((Throwable) returnVal);
-            }
         } else {
-            return (T) returnVal;
+
+            _result.assertSuccess();
+
+            if (Void.TYPE.equals(returnType)) {
+                if (_result.body() == null || _result.body().length < 20) {
+                    return null;
+                }
+            }
+
+            Decoder decoder = _config.getDecoder();
+
+            if (decoder == null) {
+                decoder = NamiManager.getDecoder(ContentTypes.JSON_VALUE);
+            }
+
+            Object returnVal = decoder.decode(_result, returnType);
+
+            if (returnVal != null && returnVal instanceof Throwable) {
+                if (returnVal instanceof RuntimeException) {
+                    throw (RuntimeException) returnVal;
+                } else {
+                    throw new RuntimeException((Throwable) returnVal);
+                }
+            } else {
+                return (T) returnVal;
+            }
         }
     }
 

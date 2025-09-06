@@ -16,6 +16,7 @@
 package org.noear.solon.core.handle;
 
 import org.noear.solon.Solon;
+import org.noear.solon.core.exception.StatusException;
 import org.noear.solon.core.util.DataThrowable;
 import org.noear.solon.core.util.LogUtil;
 
@@ -61,7 +62,14 @@ public class ReturnValueHandlerDefault implements ReturnValueHandler {
                 LogUtil.global().warn("Remoting handle failed: " + c.pathNew(), objE);
 
                 if (c.getRendered() == false) {
-                    c.render(obj);
+                    if (objE instanceof StatusException) {
+                        StatusException se = (StatusException) objE;
+                        c.status(se.getCode(), se.getMessage());
+                    } else {
+                        c.status(500, objE.getMessage());
+                    }
+                    c.setRendered(true);
+                    //c.render(obj);
                 }
             } else {
                 c.setHandled(false); //传递给 filter, 可以统一处理未知异常

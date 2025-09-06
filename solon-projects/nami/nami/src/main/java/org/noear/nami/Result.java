@@ -67,9 +67,9 @@ public class Result {
         this.body = body;
     }
 
-    //////////////////
-    //////////////////
-    //////////////////
+    /// ///////////////
+    /// ///////////////
+    /// ///////////////
 
 
     public void headerAdd(String name, String value) {
@@ -139,10 +139,12 @@ public class Result {
             body = null;
         }
 
+        return bodyString;
+    }
+
+    public void assertSuccess() {
         if (code >= 400) {
-            throw new IllegalStateException(code + " 错误：" + bodyString);
-        } else {
-            return bodyString;
+            throw new NamiResponseException(code, bodyString, "Nami call failure, code: " + code + ", message: " + bodyAsString());
         }
     }
 }
