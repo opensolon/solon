@@ -96,6 +96,9 @@ public class WebSocketImpl extends WebSocketTimeoutBase {
     @Override
     public void close() {
         super.close();
-        RunUtil.runAndTry(real::close);
+
+        if (real.isOpen()) {
+            RunUtil.runAndTry(real::close);
+        }
     }
 }
