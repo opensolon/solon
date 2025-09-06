@@ -37,7 +37,6 @@
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>apache-jstl</artifactId>
             <version>${jetty.version}</version>
-            <type>pom</type>
         </dependency>
 
     </dependencies>

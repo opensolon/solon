@@ -17,8 +17,8 @@ package org.noear.solon.web.servlet;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.web.servlet.holder.FilterHodler;
-import org.noear.solon.web.servlet.holder.ServletHolder;
+import org.noear.solon.web.servlet.holder.FilterAnnoHodler;
+import org.noear.solon.web.servlet.holder.ServletAnnoHolder;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -33,9 +33,9 @@ import java.util.*;
  */
 public class SolonServletInstaller {
     Set<ServletContainerInitializer> initializers = new LinkedHashSet<>();
-    Set<FilterHodler> filters = new LinkedHashSet<>();
+    Set<FilterAnnoHodler> filters = new LinkedHashSet<>();
     Set<EventListener> listeners = new LinkedHashSet<>();
-    Set<ServletHolder> servlets = new LinkedHashSet<>();
+    Set<ServletAnnoHolder> servlets = new LinkedHashSet<>();
 
     public SolonServletInstaller() {
         Solon.context().beanForeach((bw) -> {
@@ -53,14 +53,14 @@ public class SolonServletInstaller {
             if (bw.raw() instanceof Filter) {
                 WebFilter anno = bw.clz().getAnnotation(WebFilter.class);
                 if (anno != null) {
-                    filters.add(new FilterHodler(anno, bw.raw()));
+                    filters.add(new FilterAnnoHodler(anno, bw.raw()));
                 }
             }
 
             if (bw.raw() instanceof Servlet) {
                 WebServlet anno = bw.clz().getAnnotation(WebServlet.class);
                 if (anno != null) {
-                    servlets.add(new ServletHolder(anno, bw.raw()));
+                    servlets.add(new ServletAnnoHolder(anno, bw.raw()));
                 }
             }
         });
@@ -75,7 +75,7 @@ public class SolonServletInstaller {
             sc.addListener(l);
         }
 
-        for (FilterHodler f : filters) {
+        for (FilterAnnoHodler f : filters) {
             String[] urlPatterns = f.anno.value();
             if (urlPatterns.length == 0) {
                 urlPatterns = f.anno.urlPatterns();
@@ -106,7 +106,7 @@ public class SolonServletInstaller {
             }
         }
 
-        for (ServletHolder s : servlets) {
+        for (ServletAnnoHolder s : servlets) {
             String[] urlPatterns = s.anno.value();
             if (urlPatterns.length == 0) {
                 urlPatterns = s.anno.urlPatterns();

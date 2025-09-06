@@ -64,14 +64,15 @@ public class SolonServletContextListener implements ServletContextListener {
                 registration.addMapping("/*");
 
                 //configElement
-                long maxBodySize = (ServerProps.request_maxBodySize > 0 ? ServerProps.request_maxBodySize : -1L);
-                long maxFileSize = (ServerProps.request_maxFileSize > 0 ? ServerProps.request_maxFileSize : -1L);
+                int _fileOutputBuffer = 1 * 1024 * 1024;
+                long _maxBodySize = (ServerProps.request_maxBodySize > 0 ? ServerProps.request_maxBodySize : -1L);
+                long _maxFileSize = (ServerProps.request_maxFileSize > 0 ? ServerProps.request_maxFileSize : -1L);
 
                 MultipartConfigElement configElement = new MultipartConfigElement(
                         System.getProperty("java.io.tmpdir"),
-                        maxFileSize,
-                        maxBodySize,
-                        0);
+                        _maxFileSize,
+                        _maxBodySize,
+                        _fileOutputBuffer);
                 registration.setMultipartConfig(configElement);
             }
 

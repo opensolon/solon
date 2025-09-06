@@ -29,25 +29,25 @@ import java.io.*;
 
 public class JtHttpContextServletHandler extends SolonServletHandler {
     private File _tempdir;
-
-    private int _fileOutputBuffer = 0;
-
-    private long _maxBodySize;
-    private long _maxFileSize;
+//
+//    private int _fileOutputBuffer = 0;
+//
+//    private long _maxBodySize;
+//    private long _maxFileSize;
 
     @Override
     public void init() throws ServletException {
         super.init();
 
         _tempdir = (File) getServletContext().getAttribute("javax.servlet.context.tempdir");
-
-        String fileOutputBuffer = getServletConfig().getInitParameter("fileOutputBuffer");
-        if (fileOutputBuffer != null) {
-            _fileOutputBuffer = Integer.parseInt(fileOutputBuffer);
-        }
-
-        _maxBodySize = (ServerProps.request_maxBodySize > 0 ? ServerProps.request_maxBodySize : -1L);
-        _maxFileSize = (ServerProps.request_maxFileSize > 0 ? ServerProps.request_maxFileSize : -1L);
+//
+//        String fileOutputBuffer = getServletConfig().getInitParameter("fileOutputBuffer");
+//        if (fileOutputBuffer != null) {
+//            _fileOutputBuffer = Integer.parseInt(fileOutputBuffer);
+//        }
+//
+//        _maxBodySize = (ServerProps.request_maxBodySize > 0 ? ServerProps.request_maxBodySize : -1L);
+//        _maxFileSize = (ServerProps.request_maxFileSize > 0 ? ServerProps.request_maxFileSize : -1L);
     }
 
     @Override
@@ -62,13 +62,13 @@ public class JtHttpContextServletHandler extends SolonServletHandler {
         if (request.getContentType() != null && request.getContentType().startsWith("multipart/form-data")) {
             //如果是文件上传
             //
-            MultipartConfigElement config = new MultipartConfigElement(
-                    _tempdir.getCanonicalPath(),
-                    _maxFileSize,
-                    _maxBodySize,
-                    _fileOutputBuffer);
+//            MultipartConfigElement config = new MultipartConfigElement(
+//                    _tempdir.getCanonicalPath(),
+//                    _maxFileSize,
+//                    _maxBodySize,
+//                    _fileOutputBuffer);
 
-            request.setAttribute("org.eclipse.jetty.multipartConfig", config);
+            MultipartConfigElement config = (MultipartConfigElement) request.getAttribute("org.eclipse.jetty.multipartConfig");
 
             if (ServerProps.request_useTempfile) {
                 //如果使用临时文件
