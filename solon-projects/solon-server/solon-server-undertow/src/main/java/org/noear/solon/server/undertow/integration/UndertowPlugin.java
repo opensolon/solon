@@ -15,6 +15,8 @@
  */
 package org.noear.solon.server.undertow.integration;
 
+import io.undertow.jsp.JspServletBuilder; //仅用于检测
+
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.server.ServerConstants;
@@ -78,17 +80,15 @@ public final class UndertowPlugin implements Plugin {
 
         long time_start = System.currentTimeMillis();
 
-        Class<?> jspClz = ClassUtil.loadClass("io.undertow.jsp.JspServletBuilder");
-
         HttpServerProps props = new HttpServerProps();
         final String _host = props.getHost();
         final int _port = props.getPort();
         final String _name = props.getName();
 
-        if (jspClz == null) {
-            _server = new UndertowServer(props);
-        } else {
+        if (ClassUtil.hasClass(() -> JspServletBuilder.class)) {
             _server = new UndertowServerAddJsp(props);
+        } else {
+            _server = new UndertowServer(props);
         }
 
         _server.enableWebSocket(context.app().enableWebSocket());
@@ -122,7 +122,7 @@ public final class UndertowPlugin implements Plugin {
         }
 
         String httpServerUrl = props.buildHttpServerUrl(_server.isSecure());
-        LogUtil.global().info(connectorInfo + "}{"+httpServerUrl+"}");
+        LogUtil.global().info(connectorInfo + "}{" + httpServerUrl + "}");
         LogUtil.global().info("Server:main: undertow: Started (" + solon_server_ver() + ") @" + (time_end - time_start) + "ms");
     }
 
