@@ -15,8 +15,6 @@
  */
 package org.noear.solon.core.util;
 
-import org.noear.solon.Utils;
-
 import java.lang.reflect.*;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -96,7 +94,7 @@ public class GenericUtil {
         if (type instanceof ParameterizedType) {
             result = (ParameterizedType) type;
 
-            if (Utils.isEmpty(genericInfo) == false) {
+            if (Assert.isEmpty(genericInfo) == false) {
                 //如果有泛型信息，做二次分析转换变量符
                 boolean typeArgsChanged = false;
                 Type[] typeArgs = result.getActualTypeArguments();

@@ -17,7 +17,6 @@ package org.noear.solon.core.util;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.core.bean.LifecycleBean;
 
 import java.util.concurrent.*;
 

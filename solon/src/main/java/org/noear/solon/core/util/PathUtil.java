@@ -16,7 +16,6 @@
 package org.noear.solon.core.util;
 
 import org.noear.solon.Solon;
-import org.noear.solon.Utils;
 
 import java.net.URLDecoder;
 import java.util.ArrayList;
@@ -55,7 +54,7 @@ public class PathUtil {
      * 合并两个路径
      */
     public static String mergePath(String path1, String path2) {
-        if (Utils.isEmpty(path1) || "**".equals(path1) || "/**".equals(path1)) {
+        if (Assert.isEmpty(path1) || "**".equals(path1) || "/**".equals(path1)) {
             if (path2.startsWith("/")) {
                 return path2;
             } else {
@@ -67,7 +66,7 @@ public class PathUtil {
             path1 = "/" + path1;
         }
 
-        if (Utils.isEmpty(path2)) {
+        if (Assert.isEmpty(path2)) {
             if (path1.endsWith("*")) {
                 //支持多个*情况
                 int idx = path1.lastIndexOf('/') + 1;
