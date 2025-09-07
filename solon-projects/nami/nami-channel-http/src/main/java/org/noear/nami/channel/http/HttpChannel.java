@@ -140,8 +140,8 @@ public class HttpChannel extends ChannelBase implements Channel {
         }
 
         if (encoder == null) {
-            //有 body 的话，必须要有编译
-            throw new IllegalArgumentException("There is no suitable decoder");
+            //有 body 的话，必须要有编码器
+            throw new IllegalArgumentException("Missing suitable encoder");
         }
 
         byte[] bytes = encoder.encode(ctx.bodyOrArgs());
