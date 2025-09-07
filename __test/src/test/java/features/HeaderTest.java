@@ -15,6 +15,7 @@
  */
 package features;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.noear.snack.ONode;
 import org.noear.solon.server.handle.HeaderNames;
@@ -130,15 +131,15 @@ public class HeaderTest extends HttpTester {
     @Test
     public void testContentType_get() throws Exception {
         String rst = path("/demo2/header/ct?name=solon").get();
-        assert rst.equals("GET::null::solon");
+        Assertions.assertEquals("GET::null::solon", rst);
     }
 
     @Test
     public void testServer_get() throws Exception {
         String rst = path("/demo2/header/server").exec("GET").header("Server");
-        assert rst == null;
+        Assertions.assertNull(rst);
 
         rst = path("/demo2/header/server?out=1").exec("GET").header("Server");
-        assert "solon".equals(rst);
+        Assertions.assertEquals("solon", rst);
     }
 }
