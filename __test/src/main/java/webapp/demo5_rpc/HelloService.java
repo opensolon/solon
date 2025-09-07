@@ -23,4 +23,8 @@ public interface HelloService {
     @Mapping("/test03")
     @Post
     String test03();
+
+    @Mapping("/test04?type={type}")
+    @Post
+    String test04(int type, @Body String body);
 }

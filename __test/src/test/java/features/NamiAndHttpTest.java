@@ -49,4 +49,9 @@ public class NamiAndHttpTest {
     public void test03() throws IOException {
         assert helloService.test03().equals("test03");
     }
+
+    @Test
+    public void test04() throws IOException {
+        assert helloService.test04(1, "test04").equals("1:\"test04\"");
+    }
 }

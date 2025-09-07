@@ -38,4 +38,11 @@ public class HelloServiceImpl implements HelloService {
     public String test03() {
         return "test03";
     }
+
+    @Mapping("/test04")
+    @Post
+    @Override
+    public String test04(int type, @Body String body) {
+        return type + ":" + body;
+    }
 }
