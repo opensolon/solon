@@ -358,7 +358,7 @@ public class Utils {
      * @param s 字符串
      */
     public static boolean isEmpty(String s) {
-        return s == null || s.length() == 0;
+        return Assert.isEmpty(s);
     }
 
     /**
@@ -367,7 +367,7 @@ public class Utils {
      * @param s 集合
      */
     public static boolean isEmpty(Collection s) {
-        return s == null || s.size() == 0;
+        return Assert.isEmpty(s);
     }
 
     /**
@@ -376,7 +376,7 @@ public class Utils {
      * @param s 集合
      */
     public static boolean isEmpty(Map s) {
-        return s == null || s.size() == 0;
+        return Assert.isEmpty(s);
     }
 
     /**
@@ -385,7 +385,7 @@ public class Utils {
      * @param s 集合
      */
     public static boolean isEmpty(MultiMap s) {
-        return s == null || s.size() == 0;
+        return Assert.isEmpty(s);
     }
 
     /**
@@ -394,7 +394,7 @@ public class Utils {
      * @param s 集合
      */
     public static <T> boolean isEmpty(T[] s) {
-        return s == null || s.length == 0;
+        return Assert.isEmpty(s);
     }
 
     /**
@@ -403,7 +403,7 @@ public class Utils {
      * @param s 属性
      */
     public static <T> boolean isEmpty(Properties s) {
-        return s == null || s.size() == 0;
+        return Assert.isEmpty(s);
     }
 
 
@@ -413,7 +413,7 @@ public class Utils {
      * @param s 字符串
      */
     public static boolean isNotEmpty(String s) {
-        return !isEmpty(s);
+        return Assert.isNotEmpty(s);
     }
 
     /**
@@ -422,7 +422,7 @@ public class Utils {
      * @param s 集合
      */
     public static boolean isNotEmpty(Collection s) {
-        return !isEmpty(s);
+        return Assert.isNotEmpty(s);
     }
 
     /**
@@ -431,7 +431,7 @@ public class Utils {
      * @param s 集合
      */
     public static  <T> boolean isNotEmpty(T[] s) {
-        return !isEmpty(s);
+        return Assert.isNotEmpty(s);
     }
 
     /**
@@ -440,7 +440,7 @@ public class Utils {
      * @param s 集合
      */
     public static boolean isNotEmpty(Map s) {
-        return !isEmpty(s);
+        return Assert.isNotEmpty(s);
     }
 
     /**
@@ -449,7 +449,7 @@ public class Utils {
      * @param s 属性
      */
     public static boolean isNotEmpty(Properties s) {
-        return !isEmpty(s);
+        return Assert.isNotEmpty(s);
     }
 
 
@@ -459,17 +459,7 @@ public class Utils {
      * @param s 字符串
      */
     public static boolean isBlank(String s) {
-        if (isEmpty(s)) {
-            return true;
-        } else {
-            for (int i = 0, l = s.length(); i < l; ++i) {
-                if (!isWhitespace(s.codePointAt(i))) {
-                    return false;
-                }
-            }
-
-            return true;
-        }
+        return Assert.isBlank(s);
     }
 
     /**
@@ -478,7 +468,7 @@ public class Utils {
      * @param s 字符串
      */
     public static boolean isNotBlank(String s) {
-        return !isBlank(s);
+        return Assert.isNotBlank(s);
     }
 
     /**
@@ -487,7 +477,7 @@ public class Utils {
      * @param c 字符
      */
     public static boolean isWhitespace(int c) {
-        return c == 32 || c == 9 || c == 10 || c == 12 || c == 13;
+        return Assert.isWhitespace(c);
     }
 
 

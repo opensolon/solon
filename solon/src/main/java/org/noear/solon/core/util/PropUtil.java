@@ -15,8 +15,6 @@
  */
 package org.noear.solon.core.util;
 
-import org.noear.solon.Utils;
-
 import java.util.Properties;
 
 /**
@@ -72,7 +70,7 @@ public class PropUtil {
         String[] nameAndDef = expSplit(expr);
 
         String name = nameAndDef[0];
-        if (Utils.isEmpty(name)) {
+        if (Assert.isEmpty(name)) {
             return nameAndDef[1];
         }
 
@@ -129,7 +127,7 @@ public class PropUtil {
      * @param useDef 是否使用默认值
      */
     public static String getByTml(Properties main, Properties target, String tml, String refKey, boolean useDef) {
-        if (Utils.isEmpty(tml)) {
+        if (Assert.isEmpty(tml)) {
             return tml;
         }
 

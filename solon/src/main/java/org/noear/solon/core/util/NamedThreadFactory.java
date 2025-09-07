@@ -15,8 +15,6 @@
  */
 package org.noear.solon.core.util;
 
-import org.noear.solon.Utils;
-
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -38,7 +36,7 @@ public class NamedThreadFactory implements ThreadFactory {
      * @param namePrefix 名字前缀
      */
     public NamedThreadFactory(String namePrefix) {
-        if (Utils.isEmpty(namePrefix)) {
+        if (Assert.isEmpty(namePrefix)) {
             this.namePrefix = this.getClass().getSimpleName() + "-";
         } else {
             this.namePrefix = namePrefix;

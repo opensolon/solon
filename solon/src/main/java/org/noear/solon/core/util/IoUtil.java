@@ -16,7 +16,6 @@
 package org.noear.solon.core.util;
 
 import org.noear.solon.Solon;
-import org.noear.solon.Utils;
 
 import java.io.*;
 
@@ -58,7 +57,7 @@ public class IoUtil {
 
         ByteArrayOutputStream outs = transferTo(ins, new ByteArrayOutputStream());
 
-        if (Utils.isEmpty(charset)) {
+        if (Assert.isEmpty(charset)) {
             return outs.toString();
         } else {
             return outs.toString(charset);

@@ -15,7 +15,6 @@
  */
 package org.noear.solon.core.util;
 
-import org.noear.solon.Utils;
 import org.noear.solon.annotation.Condition;
 import org.noear.solon.core.AppContext;
 
@@ -38,7 +37,7 @@ public class ConditionUtil {
             return false;
         } else {
             try {
-                return (anno.onMissingBean() != Void.class) || Utils.isNotEmpty(anno.onMissingBeanName());
+                return (anno.onMissingBean() != Void.class) || Assert.isNotEmpty(anno.onMissingBeanName());
             } catch (Throwable e) {
                 //如果 onMissingBean 的类是不存在的，会出错
                 return true;
@@ -56,7 +55,7 @@ public class ConditionUtil {
             return false;
         } else {
             try {
-                return (anno.onBean() != Void.class) || Utils.isNotEmpty(anno.onBeanName());
+                return (anno.onBean() != Void.class) || Assert.isNotEmpty(anno.onBeanName());
             } catch (Throwable e) {
                 //如果 onBean 的类是不存在的，会出错
                 return true;
@@ -68,7 +67,7 @@ public class ConditionUtil {
         if (anno.onBean() != Void.class) {
             //onBean
             context.getBeanAsync(anno.onBean(), bean -> {
-                if (Utils.isNotEmpty(anno.onBeanName())) {
+                if (Assert.isNotEmpty(anno.onBeanName())) {
                     //onBeanName
                     context.getBeanAsync(anno.onBeanName(), bean2 -> {
                         RunUtil.runOrThrow(() -> runnable.run());
@@ -113,14 +112,14 @@ public class ConditionUtil {
             return true;
         }
 
-        if (Utils.isNotEmpty(anno.onClassName())) {
+        if (Assert.isNotEmpty(anno.onClassName())) {
             if (ClassUtil.loadClass(context.getClassLoader(), anno.onClassName()) == null) {
                 //如果null，表示不存在类
                 return true;
             }
         }
 
-        if (Utils.isNotEmpty(anno.onProperty())) {
+        if (Assert.isNotEmpty(anno.onProperty())) {
             String[] exprs = anno.onProperty().split("&&");
             for (String expr : exprs) {
                 if (testPropertyNo(context, expr.trim())) {
@@ -139,7 +138,7 @@ public class ConditionUtil {
             //如果 onMissingBean 的类是不存在的，会异常 //异常跳过，不用管
         }
 
-        if (Utils.isNotEmpty(anno.onMissingBeanName())) {
+        if (Assert.isNotEmpty(anno.onMissingBeanName())) {
             if (context.hasWrap(anno.onMissingBeanName())) {
                 return true;
             }
@@ -154,7 +153,7 @@ public class ConditionUtil {
         if (kIdx < 0) {
             String val = context.cfg().getByExpr(expr);
             //有值就行
-            if (Utils.isNotEmpty(val) == false) {
+            if (Assert.isNotEmpty(val) == false) {
                 return true;
             }
         } else {

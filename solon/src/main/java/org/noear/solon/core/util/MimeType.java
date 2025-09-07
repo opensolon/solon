@@ -15,8 +15,6 @@
  */
 package org.noear.solon.core.util;
 
-import org.noear.solon.Utils;
-
 /**
  * Web 媒体类型
  *
@@ -60,7 +58,7 @@ public final class MimeType {
      * @since 3.1
      */
     public static boolean isStreaming(String mimeType) {
-        if (Utils.isNotEmpty(mimeType)) {
+        if (Assert.isNotEmpty(mimeType)) {
             if (mimeType.startsWith(APPLICATION_X_NDJSON_VALUE)) {
                 return true;
             } else if (mimeType.contains("stream")) {

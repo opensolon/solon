@@ -16,7 +16,6 @@
 package org.noear.solon.core.util;
 
 import org.noear.solon.Solon;
-import org.noear.solon.Utils;
 import org.noear.solon.core.convert.Converter;
 import org.noear.solon.core.exception.ConvertException;
 import org.noear.solon.core.handle.Context;
@@ -52,7 +51,7 @@ public class ConvertUtil {
             return val;
         }
 
-        if (Utils.isEmpty(val)) {
+        if (Assert.isEmpty(val)) {
             //如果是其它类型，且为空。返回 null （空不方便转其它类型）
             return null;
         }
