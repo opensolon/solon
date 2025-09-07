@@ -17,6 +17,8 @@ package org.noear.nami;
 
 import org.noear.nami.annotation.NamiClient;
 import org.noear.nami.common.*;
+import org.noear.solon.Utils;
+import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.util.PathUtil;
 
 import java.lang.reflect.*;
@@ -267,6 +269,15 @@ public class NamiHandler implements InvocationHandler {
                     path = path.replace(kv.getKey(), val);
                     args.remove(kv.getValue());
                 }
+            }
+        }
+
+        //确定 action
+        if (MethodType.ALL.name.equals(action)) {
+            if (body == null && Utils.isEmpty(args)) {
+                action = MethodType.GET.name;
+            } else {
+                action = MethodType.POST.name;
             }
         }
 
