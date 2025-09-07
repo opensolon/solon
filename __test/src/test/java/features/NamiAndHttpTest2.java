@@ -7,6 +7,7 @@ import org.noear.solon.core.util.MimeType;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
 import webapp.demo5_rpc.HelloService;
+import webapp.demo5_rpc.HelloService2;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -17,10 +18,10 @@ import java.util.List;
  * @author noear 2025/5/7 created
  */
 @SolonTest(App.class)
-public class NamiAndHttpTest {
+public class NamiAndHttpTest2 {
     //直接指定服务端地址
     @NamiClient(url = "http://localhost:8080/demo5/hello/")
-    HelloService helloService;
+    HelloService2 helloService;
 
     @Test
     public void hello() {

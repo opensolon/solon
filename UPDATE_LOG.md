@@ -39,6 +39,7 @@
 * 优化 solon websocket 闲置超时处理（确保能触发一次关闭事件，有可能会多次触发
 * 调整 solon rpc 异常传递（改为 http code, 之前为 json-type 异常）
 * 调整 solon-ai-core FunctionToolDesc:doHandle 改用 ToolHandler 参数类型（之前为 Function），方便传递异常
+* 修复 nami 简化模式 action 识别出错的问题
 * 修复 solon-net-httputils HttpResponseException 在构建日志消息时，会出现'-1'端口的情况
 * 修复 solon-net-httputils 当服务端不结束流时 sse 解析不能结束的问题
 * snack3 升为 3.2.139
