@@ -174,16 +174,15 @@ public class Solon {
             return appMain;
         }
 
-        //设置文件编码
+        //初始化系统属性
         if (Utils.isNotEmpty(encoding)) {
             System.setProperty("file.encoding", encoding);
         }
+        System.getProperties().putIfAbsent("java.awt.headless", "true");
+
 
         //确定源码位置
         location = source.getProtectionDomain().getCodeSource().getLocation();
-
-        //设置 headless 默认值
-        System.getProperties().putIfAbsent("java.awt.headless", "true");
 
         //确定PID
         String pid = Utils.pid();
