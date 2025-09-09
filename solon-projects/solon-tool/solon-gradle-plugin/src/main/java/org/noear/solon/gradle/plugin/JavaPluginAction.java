@@ -82,10 +82,10 @@ final class JavaPluginAction implements PluginApplicationAction {
                             return javaApplicationMainClass;
                         }
 
-                        SolonExtension springBootExtension = project.getExtensions()
+                        SolonExtension solonExtension = project.getExtensions()
                                 .findByType(SolonExtension.class);
 
-                        return Objects.requireNonNull(springBootExtension).getMainClass().getOrNull();
+                        return Objects.requireNonNull(solonExtension).getMainClass().getOrNull();
                     }));
                     resolveMainClassName.getOutputFile()
                             .set(project.getLayout().getBuildDirectory().file("resolvedMainClassName"));
