@@ -1112,12 +1112,6 @@
                 <version>${solon.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>solon-springboot-starter</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
             <!-- tool:: begin -->
             <dependency>
                 <groupId>org.noear</groupId>
