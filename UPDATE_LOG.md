@@ -33,18 +33,24 @@
 
 * 新增 solon-server-jetty-jakarta 插件
 * 添加 solon Props:toBean 自动 aot 收集处理
+* 添加 solon-ai-core ToolSchemaUtil 简化方法
 * 添加 solon-ai-mcp McpClientProperties:timeout 属性，方便简化超时配置（可省略 httpTimeout, requestTimeout, initializationTimeout）
 * 添加 solon-ai-mcp McpClientProvider:toolsChangeConsumer,resourcesChangeConsumer,resourcesUpdateConsumer,promptsChangeConsumer 配置支持
 * 添加 solon-ai-mcp McpClientProvider 缓存锁和变更刷新控制
+* 添加 feign-solon-plugin aot 自动注册
+* 添加 dubbo-solon-plugin aot 自动注册
+* 添加 lettuce-solon-plugin aot 配置
 * 优化 nami NamiConfigurationDefault 与 aot 兼容
 * 优化 nami-channel-http 缺少编码器的异常提示
 * 优化 solon websocket 闲置超时处理（确保能触发一次关闭事件，有可能会多次触发
+* 优化 solon-cloud 组件自动注册（之前大多只能手动注册）
 * 调整 solon rpc 异常传递（改为 http code, 之前为 json-type 异常）
 * 调整 solon-ai-core FunctionToolDesc:doHandle 改用 ToolHandler 参数类型（之前为 Function），方便传递异常
 * 修复 nami 简化模式 action 识别出错的问题
 * 修复 solon-net-httputils HttpResponseException 在构建日志消息时，会出现'-1'端口的情况
 * 修复 solon-net-httputils 当服务端不结束流时 sse 解析不能结束的问题
 * snack3 升为 3.2.139
+* water 升为 2.17.0
 * redisson 升为 3.51.0
 
 ### 3.5.1
