@@ -381,6 +381,8 @@
                 <version>${solon.version}</version>
             </dependency>
 
+
+
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-server-undertow</artifactId>
@@ -2324,6 +2326,24 @@
 
 
             <!-- jakarta plugins:: start -->
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-server-jetty-jakarta</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-server-jetty-add-jsp-jakarta</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-server-jetty-add-websocket-jakarta</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
