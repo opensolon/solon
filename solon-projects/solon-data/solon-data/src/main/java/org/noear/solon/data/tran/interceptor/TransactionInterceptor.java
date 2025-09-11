@@ -35,7 +35,7 @@ public class TransactionInterceptor implements Interceptor {
     @Override
     public Object doIntercept(Invocation inv) throws Throwable {
         //支持动态开关事务
-        if (Solon.app().enableTransaction()) {
+        if (inv.context().app().enableTransaction()) {
             Transaction anno = inv.getMethodAnnotation(Transaction.class);
             if (anno == null) {
                 anno = inv.getTargetAnnotation(Transaction.class);

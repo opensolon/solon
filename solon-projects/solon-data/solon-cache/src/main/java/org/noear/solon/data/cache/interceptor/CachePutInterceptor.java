@@ -15,7 +15,6 @@
  */
 package org.noear.solon.data.cache.interceptor;
 
-import org.noear.solon.Solon;
 import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.Invocation;
 import org.noear.solon.data.annotation.CachePut;
@@ -32,7 +31,7 @@ public class CachePutInterceptor implements Interceptor {
     @Override
     public Object doIntercept(Invocation inv) throws Throwable {
         //支持动态开关缓存
-        if (Solon.app().enableCaching()) {
+        if (inv.context().app().enableCaching()) {
             Object tmp = inv.invoke();
 
             CachePut anno = inv.getMethodAnnotation(CachePut.class);
