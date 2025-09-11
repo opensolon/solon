@@ -282,7 +282,7 @@ public class MethodWrap implements Interceptor, MethodHolder {
      * @param args 执行参数
      */
     public Object invokeByAspect(Object obj, Object[] args) throws Throwable {
-        Invocation inv = new Invocation(obj, args, this, interceptors);
+        Invocation inv = new Invocation(context, obj, args, this, interceptors);
         return inv.invoke();
     }
 }
