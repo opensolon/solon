@@ -15,6 +15,7 @@
  */
 package org.noear.solon.core.aspect;
 
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.wrap.MethodHolder;
 import org.noear.solon.core.wrap.ParamWrap;
 
@@ -31,6 +32,7 @@ import java.util.Map;
  * @since 1.3
  */
 public class Invocation {
+    private final AppContext context;
     private final Object target;
     private final Object[] args;
     private Map<String, Object> argsMap;
@@ -38,11 +40,19 @@ public class Invocation {
     private final List<InterceptorEntity> interceptors;
     private int interceptorIndex = 0;
 
-    public Invocation(Object target, Object[] args, MethodHolder method, List<InterceptorEntity> interceptors) {
+    public Invocation(AppContext environment, Object target, Object[] args, MethodHolder method, List<InterceptorEntity> interceptors) {
+        this.context = environment;
         this.target = target;
         this.args = args;
         this.method = method;
         this.interceptors = interceptors;
+    }
+
+    /**
+     * 应用上下文（环境）
+     */
+    public AppContext context() {
+        return context;
     }
 
     /**
@@ -55,14 +65,14 @@ public class Invocation {
     /**
      * 目标对象类
      */
-    public Class<?> getTargetClz(){
+    public Class<?> getTargetClz() {
         return target.getClass();
     }
 
     /**
      * 目标对象类注解
      */
-    public  <T extends Annotation> T getTargetAnnotation(Class<T> annoClz) {
+    public <T extends Annotation> T getTargetAnnotation(Class<T> annoClz) {
         return target.getClass().getAnnotation(annoClz);
     }
 
@@ -104,7 +114,7 @@ public class Invocation {
     /**
      * 函数注解
      */
-    public  <T extends Annotation> T getMethodAnnotation(Class<T> annoClz) {
+    public <T extends Annotation> T getMethodAnnotation(Class<T> annoClz) {
         return method.getAnnotation(annoClz);
     }
 

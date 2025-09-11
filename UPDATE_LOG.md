@@ -33,6 +33,7 @@
 
 * 新增 solon-server-jetty-jakarta 插件
 * 添加 solon Props:toBean 自动 aot 收集处理
+* 添加 solon Invocation:context 方法（传递应用上下文）
 * 添加 solon-ai-core ToolSchemaUtil 简化方法
 * 添加 solon-ai-mcp McpClientProperties:timeout 属性，方便简化超时配置（可省略 httpTimeout, requestTimeout, initializationTimeout）
 * 添加 solon-ai-mcp McpClientProvider:toolsChangeConsumer,resourcesChangeConsumer,resourcesUpdateConsumer,promptsChangeConsumer 配置支持
