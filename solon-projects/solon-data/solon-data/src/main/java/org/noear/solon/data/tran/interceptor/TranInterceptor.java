@@ -37,7 +37,7 @@ public class TranInterceptor implements Interceptor {
     @Override
     public Object doIntercept(Invocation inv) throws Throwable {
         //支持动态开关事务
-        if (Solon.app().enableTransaction()) {
+        if (inv.context().app().enableTransaction()) {
             Tran anno = inv.getMethodAnnotation(Tran.class);
             if (anno == null) {
                 anno = inv.getTargetAnnotation(Tran.class);

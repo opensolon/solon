@@ -15,7 +15,6 @@
  */
 package org.noear.solon.scheduling.retry;
 
-import org.noear.solon.core.AppContext;
 import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.Invocation;
 import org.noear.solon.scheduling.annotation.Retry;
@@ -27,19 +26,13 @@ import org.noear.solon.scheduling.annotation.Retry;
  * @since 2.3
  */
 public class RetryInterceptor implements Interceptor {
-    private AppContext appContext;
-
-    public RetryInterceptor(AppContext aopContext) {
-        this.appContext = aopContext;
-    }
-
     @Override
     public Object doIntercept(Invocation inv) throws Throwable {
         Retry anno = inv.getMethodAnnotation(Retry.class);
 
         if (anno != null) {
             Callee callee = new CalleeImpl(inv);
-            Recover recover = appContext.getBeanOrNew(anno.recover());
+            Recover recover = inv.context().getBeanOrNew(anno.recover());
 
             return RetryableTask.of(callee)
                     .maxRetryCount(anno.maxAttempts())

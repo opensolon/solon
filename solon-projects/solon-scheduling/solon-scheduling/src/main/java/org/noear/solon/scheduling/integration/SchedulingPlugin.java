@@ -20,6 +20,7 @@ import org.noear.solon.core.Plugin;
 import org.noear.solon.core.event.AppLoadEndEvent;
 import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.scheduling.annotation.*;
+import org.noear.solon.scheduling.async.AsyncExecutor;
 import org.noear.solon.scheduling.async.AsyncInterceptor;
 import org.noear.solon.scheduling.command.CommandExecutor;
 import org.noear.solon.scheduling.command.CommandExecutorProxy;
@@ -40,14 +41,16 @@ public class SchedulingPlugin implements Plugin {
         // @since 2.2
         Annotation enableAnno = source.getAnnotation(EnableAsync.class);
         if (enableAnno != null) {
-            context.beanInterceptorAdd(Async.class, new AsyncInterceptor(context));
+            AsyncInterceptor asyncInterceptor = new AsyncInterceptor();
+            context.getBeanAsync(AsyncExecutor.class, asyncInterceptor::setAsyncExecutor);
+            context.beanInterceptorAdd(Async.class, asyncInterceptor);
         }
 
         // @since 2.3
         Annotation enableRetryAnno = source.getAnnotation(EnableRetry.class);
         if (enableRetryAnno != null) {
-            //超大，越里面！
-            context.beanInterceptorAdd(Retry.class, new RetryInterceptor(context), Integer.MAX_VALUE);
+            RetryInterceptor retryInterceptor = new RetryInterceptor();
+            context.beanInterceptorAdd(Retry.class, retryInterceptor, Integer.MAX_VALUE); //超大，越里面！
         }
 
         //允许在外部手动构建，但是可能不会被启用
