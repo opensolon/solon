@@ -17,6 +17,7 @@ package org.noear.solon.test.data;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.Invocation;
 import org.noear.solon.core.util.RunnableEx;
@@ -54,7 +55,7 @@ public class RollbackInterceptor implements Interceptor {
                 return inv.invoke();
             } else {
                 //如果需要强制回滚
-                rollbackDo(() -> {
+                rollbackDo(inv.context(), () -> {
                     valRef.set(inv.invoke());
                 });
 
@@ -65,11 +66,23 @@ public class RollbackInterceptor implements Interceptor {
 
     /**
      * 回滚事务
+     *
+     * @deprecated 3.5 {@link #rollbackDo(AppContext, RunnableEx)}
      */
+    @Deprecated
     public static void rollbackDo(RunnableEx runnable) throws Throwable {
+        rollbackDo(Solon.context(), runnable);
+    }
+
+    /**
+     * 回滚事务
+     *
+     * @since 3.5
+     */
+    public static void rollbackDo(AppContext context, RunnableEx runnable) throws Throwable {
         try {
             //应用 //添加路由拦截器（放到最里层）
-            Solon.app().chainManager().addInterceptorIfAbsent(RollbackRouterInterceptor.getInstance(), Integer.MAX_VALUE);
+            context.app().chainManager().addInterceptorIfAbsent(RollbackRouterInterceptor.getInstance(), Integer.MAX_VALUE);
 
             //当前
             TranUtils.execute(new TranAnno(), () -> {
@@ -85,7 +98,7 @@ public class RollbackInterceptor implements Interceptor {
             }
         } finally {
             //应用 //移除路由拦截器（恢复原状）
-            Solon.app().chainManager().removeInterceptor(RollbackRouterInterceptor.class);
+            context.app().chainManager().removeInterceptor(RollbackRouterInterceptor.class);
         }
     }
 }
