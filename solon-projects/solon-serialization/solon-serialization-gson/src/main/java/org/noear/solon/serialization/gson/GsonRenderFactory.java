@@ -83,13 +83,13 @@ public class GsonRenderFactory extends GsonRenderFactoryBase {
             }
 
             if (jsonProps.nullNumberAsZero) {
-                this.config().registerTypeAdapter(Short.class, new NullNumberSerialize<Short>());
-                this.config().registerTypeAdapter(Integer.class, new NullNumberSerialize<Integer>());
+                this.config().registerTypeAdapter(Short.class, new NullNumberWriteAdapter<Short>());
+                this.config().registerTypeAdapter(Integer.class, new NullNumberWriteAdapter<Integer>());
 
-                this.config().registerTypeAdapter(Long.class, new NullLongAdapter(jsonProps));
+                this.config().registerTypeAdapter(Long.class, new NullLongWriteAdapter(jsonProps));
 
-                this.config().registerTypeAdapter(Float.class, new NullNumberSerialize<Float>());
-                this.config().registerTypeAdapter(Double.class, new NullNumberSerialize<Double>());
+                this.config().registerTypeAdapter(Float.class, new NullNumberWriteAdapter<Float>());
+                this.config().registerTypeAdapter(Double.class, new NullNumberWriteAdapter<Double>());
             }
 
             if (jsonProps.nullArrayAsEmpty) {
@@ -98,15 +98,15 @@ public class GsonRenderFactory extends GsonRenderFactoryBase {
             }
 
             if (jsonProps.nullBoolAsFalse) {
-                this.config().registerTypeAdapter(Boolean.class, new NullBooleanAdapter(jsonProps));
+                this.config().registerTypeAdapter(Boolean.class, new NullBooleanWriteAdapter(jsonProps));
             }
 
             if (jsonProps.nullStringAsEmpty) {
-                this.config().registerTypeAdapter(String.class, new NullStringAdapter());
+                this.config().registerTypeAdapter(String.class, new NullStringWriteAdapter());
             }
 
             if (jsonProps.enumAsName) {
-                this.config().registerTypeAdapter(Enum.class, new EnumSerializer());
+                this.config().registerTypeAdapter(Enum.class, new EnumWriteAdapter());
             }
 
         } else {

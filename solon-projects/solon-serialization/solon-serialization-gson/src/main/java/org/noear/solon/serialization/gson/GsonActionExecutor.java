@@ -21,7 +21,7 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.util.LazyReference;
 import org.noear.solon.core.wrap.MethodWrap;
 import org.noear.solon.core.wrap.ParamWrap;
-import org.noear.solon.serialization.gson.impl.DateDeserializer;
+import org.noear.solon.serialization.gson.impl.DateReadAdapter;
 
 import java.util.Collection;
 import java.util.Date;
@@ -36,7 +36,7 @@ public class GsonActionExecutor extends ActionExecuteHandlerDefault {
 
     public GsonActionExecutor(GsonStringSerializer serializer) {
         this.serializer = serializer;
-        serializer.getDeserializeConfig().registerTypeAdapter(Date.class, new DateDeserializer());
+        serializer.getDeserializeConfig().registerTypeAdapter(Date.class, new DateReadAdapter());
     }
 
     /**

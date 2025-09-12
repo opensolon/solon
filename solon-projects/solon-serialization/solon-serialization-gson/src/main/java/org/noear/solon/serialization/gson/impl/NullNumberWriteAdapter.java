@@ -15,19 +15,24 @@
  */
 package org.noear.solon.serialization.gson.impl;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
+import com.google.gson.*;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 
-import java.lang.reflect.Type;
+import java.io.IOException;
 
-/**
- * @author noear
- * @since 2.2
- */
-public class EnumSerializer implements JsonSerializer<Enum> {
+public class NullNumberWriteAdapter<T extends Number> extends TypeAdapter<T> {
     @Override
-    public JsonElement serialize(Enum anEnum, Type type, JsonSerializationContext context) {
-        return context.serialize(anEnum.name());
+    public void write(JsonWriter out, T number) throws IOException {
+        if (number == null) {
+            out.value(0);
+        } else {
+            out.value(number);
+        }
+    }
+
+    @Override
+    public T read(JsonReader jsonReader) throws IOException {
+        return null;
     }
 }
