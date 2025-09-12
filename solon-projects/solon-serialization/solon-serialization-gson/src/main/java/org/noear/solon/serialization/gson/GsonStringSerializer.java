@@ -37,42 +37,72 @@ import java.lang.reflect.Type;
  */
 public class GsonStringSerializer implements ContextSerializer<String> {
     private static final String label = "/json";
-    private GsonBuilder config;
+    private GsonBuilder serializeConfig;
+    private GsonBuilder deserializeConfig;
+    private Gson serializeGson;
+    private Gson deserializeGson;
 
     /**
-     * 获取配置
+     * 获取序列化配置
      */
-    public GsonBuilder getConfig() {
-        if (config == null) {
-            config = new GsonBuilder();
+    public GsonBuilder getSerializeConfig() {
+        if (serializeConfig == null) {
+            serializeConfig = new GsonBuilder();
         }
 
-        return config;
+        return serializeConfig;
+    }
+
+    /**
+     * 获取反序列化配置
+     */
+    public GsonBuilder getDeserializeConfig() {
+        if (deserializeConfig == null) {
+            deserializeConfig = new GsonBuilder();
+        }
+
+        return deserializeConfig;
     }
 
     /**
      * 刷新
      */
     public void refresh() {
-        _gson = getConfig().create();
+        serializeGson = getSerializeConfig().create();
+        deserializeGson = getDeserializeConfig().create();
     }
 
-    private Gson _gson;
 
-    public Gson getGson() {
-        if (_gson == null) {
+    public Gson getSerializeGson() {
+        if (serializeGson == null) {
             Utils.locker().lock();
 
             try {
-                if (_gson == null) {
-                    _gson = getConfig().create();
+                if (serializeGson == null) {
+                    serializeGson = getSerializeConfig().create();
                 }
             } finally {
                 Utils.locker().unlock();
             }
         }
 
-        return _gson;
+        return serializeGson;
+    }
+
+    public Gson getDeserializeGson() {
+        if (deserializeGson == null) {
+            Utils.locker().lock();
+
+            try {
+                if (deserializeGson == null) {
+                    deserializeGson = getDeserializeConfig().create();
+                }
+            } finally {
+                Utils.locker().unlock();
+            }
+        }
+
+        return deserializeGson;
     }
 
     /**
@@ -85,7 +115,8 @@ public class GsonStringSerializer implements ContextSerializer<String> {
 
     /**
      * 数据类型
-     * */
+     *
+     */
     @Override
     public Class<String> dataType() {
         return String.class;
@@ -121,7 +152,7 @@ public class GsonStringSerializer implements ContextSerializer<String> {
      */
     @Override
     public String serialize(Object obj) throws IOException {
-        return getGson().toJson(obj);
+        return getSerializeGson().toJson(obj);
     }
 
     /**
@@ -144,7 +175,7 @@ public class GsonStringSerializer implements ContextSerializer<String> {
             }
 
             JsonElement jsonElement = JsonParser.parseString(data);
-            return getGson().fromJson(jsonElement, toType);
+            return getDeserializeGson().fromJson(jsonElement, toType);
         }
     }
 

@@ -47,7 +47,7 @@ public abstract class JacksonXmlRenderFactoryBase implements JsonRenderFactory {
      * 序列化配置
      */
     public XmlMapper config() {
-        return getSerializer().getConfig();
+        return getSerializer().getSerializeConfig();
     }
 
     /**

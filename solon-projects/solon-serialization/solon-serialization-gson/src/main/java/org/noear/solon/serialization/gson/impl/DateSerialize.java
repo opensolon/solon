@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.serialization.gson;
+package org.noear.solon.serialization.gson.impl;
 
 import com.google.gson.*;
 
 import java.lang.reflect.Type;
 import java.util.Date;
 
-public class GsonDateSerialize implements JsonSerializer<Date> {
+public class DateSerialize implements JsonSerializer<Date> {
     public JsonElement serialize(Date src, Type typeOfSrc, JsonSerializationContext context) {
         return new JsonPrimitive(src.getTime());
     }

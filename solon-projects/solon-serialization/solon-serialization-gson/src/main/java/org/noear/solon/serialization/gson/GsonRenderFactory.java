@@ -43,7 +43,7 @@ public class GsonRenderFactory extends GsonRenderFactoryBase {
      * 添加编码器
      */
     public <T> void addEncoder(Class<T> clz, JsonSerializer<T> encoder) {
-        serializer.getConfig().registerTypeAdapter(clz, encoder);
+        serializer.getSerializeConfig().registerTypeAdapter(clz, encoder);
     }
 
     /**
@@ -111,7 +111,7 @@ public class GsonRenderFactory extends GsonRenderFactoryBase {
 
         } else {
             //默认为时间截
-            this.config().registerTypeAdapter(Date.class, new GsonDateSerialize());
+            this.config().registerTypeAdapter(Date.class, new DateSerialize());
         }
     }
 }

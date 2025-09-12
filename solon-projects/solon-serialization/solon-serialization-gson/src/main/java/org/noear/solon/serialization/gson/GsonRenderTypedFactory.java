@@ -18,6 +18,7 @@ package org.noear.solon.serialization.gson;
 import org.noear.solon.core.handle.Render;
 import org.noear.solon.serialization.SerializerNames;
 import org.noear.solon.serialization.StringSerializerRender;
+import org.noear.solon.serialization.gson.impl.DateSerialize;
 
 /**
  * Json 类型化渲染器工厂
@@ -30,7 +31,7 @@ import org.noear.solon.serialization.StringSerializerRender;
 public class GsonRenderTypedFactory extends GsonRenderFactoryBase {
     public GsonRenderTypedFactory() {
         super(new GsonStringSerializer());
-        serializer.getConfig().registerTypeAdapter(java.util.Date.class, new GsonDateSerialize());
+        serializer.getSerializeConfig().registerTypeAdapter(java.util.Date.class, new DateSerialize());
     }
 
     /**
