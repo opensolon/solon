@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.cfg.ConfigFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import org.noear.solon.core.util.Assert;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -28,12 +29,12 @@ import java.util.Set;
  * @author noear
  * @since 3.6
  */
-public class JacksonXmlDeclaration <F extends ConfigFeature> {
+public class JacksonXmlDecl<F extends ConfigFeature> {
     private XmlMapper mapper;
     private Set<F> features;
     private SimpleModule customModule;
 
-    public JacksonXmlDeclaration() {
+    public JacksonXmlDecl() {
         this.mapper = new XmlMapper();
         this.features = new HashSet<>();
         this.customModule = new SimpleModule();
@@ -43,8 +44,9 @@ public class JacksonXmlDeclaration <F extends ConfigFeature> {
         return mapper;
     }
 
-    public void setMapper(XmlMapper config) {
-        this.mapper = config;
+    public void setMapper(XmlMapper mapper) {
+        Assert.notNull(mapper, "This mapper is null");
+        this.mapper = mapper;
     }
 
     public Set<F> getFeatures() {

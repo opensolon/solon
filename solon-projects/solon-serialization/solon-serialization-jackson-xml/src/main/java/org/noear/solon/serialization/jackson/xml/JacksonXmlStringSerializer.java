@@ -17,8 +17,6 @@ package org.noear.solon.serialization.jackson.xml;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
@@ -28,8 +26,6 @@ import org.noear.solon.serialization.jackson.xml.impl.TypeReferenceImpl;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -40,8 +36,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class JacksonXmlStringSerializer implements ContextSerializer<String> {
     public static final String label = "/xml";
-    private JacksonXmlDeclaration<SerializationFeature> serializeConfig;
-    private JacksonXmlDeclaration<DeserializationFeature> deserializeConfig;
+    private JacksonXmlDecl<SerializationFeature> serializeConfig;
+    private JacksonXmlDecl<DeserializationFeature> deserializeConfig;
 
     private AtomicBoolean initStatus = new AtomicBoolean(false);
 
@@ -49,9 +45,9 @@ public class JacksonXmlStringSerializer implements ContextSerializer<String> {
     /**
      * 获取序列化配置
      */
-    public JacksonXmlDeclaration<SerializationFeature> getSerializeConfig() {
+    public JacksonXmlDecl<SerializationFeature> getSerializeConfig() {
         if (serializeConfig == null) {
-            serializeConfig = new JacksonXmlDeclaration<>();
+            serializeConfig = new JacksonXmlDecl<>();
         }
 
         return serializeConfig;
@@ -60,9 +56,9 @@ public class JacksonXmlStringSerializer implements ContextSerializer<String> {
     /**
      * 获取反序列化配置
      */
-    public JacksonXmlDeclaration<DeserializationFeature> getDeserializeConfig() {
+    public JacksonXmlDecl<DeserializationFeature> getDeserializeConfig() {
         if (deserializeConfig == null) {
-            deserializeConfig = new JacksonXmlDeclaration<>();
+            deserializeConfig = new JacksonXmlDecl<>();
         }
 
         return deserializeConfig;
