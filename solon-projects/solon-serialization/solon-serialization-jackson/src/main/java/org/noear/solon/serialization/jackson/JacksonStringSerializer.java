@@ -15,6 +15,7 @@
  */
 package org.noear.solon.serialization.jackson;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -41,21 +42,75 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class JacksonStringSerializer implements ContextSerializer<String> {
     private static final String label = "/json";
-    private ObjectMapper config;
-    private Set<SerializationFeature> configFeatures;
+    private ObjectMapper serializeConfig;
+    private ObjectMapper deserializeConfig;
+    private Set<SerializationFeature> serializeFeatures;
+    private Set<DeserializationFeature> deserializeFeatures;
+
     private SimpleModule configModule;
 
     private AtomicBoolean initStatus = new AtomicBoolean(false);
 
     /**
-     * 获取定制特性
+     * 获取序列化定制特性
      */
-    public Set<SerializationFeature> getCustomFeatures() {
-        if (configFeatures == null) {
-            configFeatures = new HashSet<>();
+    public Set<SerializationFeature> getSerializeFeatures() {
+        if (serializeFeatures == null) {
+            serializeFeatures = new HashSet<>();
         }
 
-        return configFeatures;
+        return serializeFeatures;
+    }
+
+    /**
+     * 获取反序列化定制特性
+     */
+    public Set<DeserializationFeature> getDeserializeFeatures() {
+        if (deserializeFeatures == null) {
+            deserializeFeatures = new HashSet<>();
+        }
+
+        return deserializeFeatures;
+    }
+
+    /**
+     * 获取序列化配置
+     */
+    public ObjectMapper getSerializeConfig() {
+        if (serializeConfig == null) {
+            serializeConfig = new ObjectMapper();
+        }
+
+        return serializeConfig;
+    }
+
+    /**
+     * 获取反序列化配置
+     */
+    public ObjectMapper getDeserializeConfig() {
+        if (deserializeConfig == null) {
+            deserializeConfig = new ObjectMapper();
+        }
+
+        return deserializeConfig;
+    }
+
+    /**
+     * 设置序列化配置
+     */
+    public void setSerializeConfig(ObjectMapper config) {
+        if (config != null) {
+            this.serializeConfig = config;
+        }
+    }
+
+    /**
+     * 设置反序列化配置
+     */
+    public void setDeserializeConfig(ObjectMapper config) {
+        if (config != null) {
+            this.deserializeConfig = config;
+        }
     }
 
     /**
@@ -70,38 +125,24 @@ public class JacksonStringSerializer implements ContextSerializer<String> {
     }
 
     /**
-     * 获取配置
-     */
-    public ObjectMapper getConfig() {
-        if (config == null) {
-            config = new ObjectMapper();
-        }
-
-        return config;
-    }
-
-    /**
-     * 设置配置
-     */
-    public void setConfig(ObjectMapper config) {
-        if (config != null) {
-            this.config = config;
-        }
-    }
-
-    /**
      * 初始化
      */
     protected void init() {
         if (initStatus.compareAndSet(false, true)) {
-            if (configFeatures != null) {
-                for (SerializationFeature f1 : configFeatures) {
-                    getConfig().enable(f1);
+            if (serializeFeatures != null) {
+                for (SerializationFeature f1 : serializeFeatures) {
+                    getSerializeConfig().enable(f1);
+                }
+            }
+
+            if (deserializeFeatures != null) {
+                for (DeserializationFeature f1 : deserializeFeatures) {
+                    getDeserializeConfig().enable(f1);
                 }
             }
 
             if (configModule != null) {
-                getConfig().registerModule(configModule);
+                getSerializeConfig().registerModule(configModule);
             }
         }
     }
@@ -153,7 +194,7 @@ public class JacksonStringSerializer implements ContextSerializer<String> {
     @Override
     public String serialize(Object obj) throws IOException {
         init();
-        return getConfig().writeValueAsString(obj);
+        return getSerializeConfig().writeValueAsString(obj);
     }
 
     /**
@@ -167,7 +208,7 @@ public class JacksonStringSerializer implements ContextSerializer<String> {
         init();
 
         if (toType == null) {
-            return getConfig().readTree(data);
+            return getDeserializeConfig().readTree(data);
         } else {
             if (toType instanceof Class) {
                 //处理匿名名类
@@ -178,7 +219,7 @@ public class JacksonStringSerializer implements ContextSerializer<String> {
             }
 
             TypeReferenceImpl typeRef = new TypeReferenceImpl(toType);
-            return getConfig().readValue(data, typeRef);
+            return getDeserializeConfig().readValue(data, typeRef);
         }
     }
 
@@ -216,7 +257,7 @@ public class JacksonStringSerializer implements ContextSerializer<String> {
         String data = ctx.bodyNew();
 
         if (Utils.isNotEmpty(data)) {
-            return getConfig().readTree(data);
+            return getDeserializeConfig().readTree(data);
         } else {
             return null;
         }

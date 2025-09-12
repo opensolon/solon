@@ -36,7 +36,7 @@ public class GsonActionExecutor extends ActionExecuteHandlerDefault {
 
     public GsonActionExecutor(GsonStringSerializer serializer) {
         this.serializer = serializer;
-        serializer.getConfig().registerTypeAdapter(Date.class, new DateDeserializer());
+        serializer.getDeserializeConfig().registerTypeAdapter(Date.class, new DateDeserializer());
     }
 
     /**
@@ -50,7 +50,7 @@ public class GsonActionExecutor extends ActionExecuteHandlerDefault {
      * 反序列化配置
      */
     public GsonBuilder config() {
-        return getSerializer().getConfig();
+        return getSerializer().getDeserializeConfig();
     }
 
     /**
@@ -112,9 +112,9 @@ public class GsonActionExecutor extends ActionExecuteHandlerDefault {
                 if (tmp.has(p.spec().getName())) {
                     //支持泛型的转换
                     if (p.spec().isGenericType()) {
-                        return serializer.getGson().fromJson(tmp.get(p.spec().getName()), p.getGenericType());
+                        return serializer.getDeserializeGson().fromJson(tmp.get(p.spec().getName()), p.getGenericType());
                     } else {
-                        return serializer.getGson().fromJson(tmp.get(p.spec().getName()), pt);
+                        return serializer.getDeserializeGson().fromJson(tmp.get(p.spec().getName()), pt);
                     }
                 }
             }
@@ -133,9 +133,9 @@ public class GsonActionExecutor extends ActionExecuteHandlerDefault {
 
                 //支持泛型的转换 如：Map<T>
                 if (p.spec().isGenericType()) {
-                    return serializer.getGson().fromJson(tmp, p.getGenericType());
+                    return serializer.getDeserializeGson().fromJson(tmp, p.getGenericType());
                 } else {
-                    return serializer.getGson().fromJson(tmp, pt);
+                    return serializer.getDeserializeGson().fromJson(tmp, pt);
                 }
             }
         }
@@ -149,10 +149,10 @@ public class GsonActionExecutor extends ActionExecuteHandlerDefault {
             //集合类型转换
             if (p.spec().isGenericType()) {
                 //转换带泛型的集合
-                return serializer.getGson().fromJson(tmp, p.getGenericType());
+                return serializer.getDeserializeGson().fromJson(tmp, p.getGenericType());
             } else {
                 //不仅可以转换为List 还可以转换成Set
-                return serializer.getGson().fromJson(tmp, pt);
+                return serializer.getDeserializeGson().fromJson(tmp, pt);
             }
         }
 

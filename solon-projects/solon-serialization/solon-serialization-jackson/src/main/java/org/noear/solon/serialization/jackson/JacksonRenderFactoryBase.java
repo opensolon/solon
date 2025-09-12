@@ -48,7 +48,7 @@ public abstract class JacksonRenderFactoryBase implements JsonRenderFactory {
      * 序列化配置
      */
     public ObjectMapper config() {
-        return getSerializer().getConfig();
+        return getSerializer().getSerializeConfig();
     }
 
     /**
