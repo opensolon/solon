@@ -31,7 +31,7 @@ import org.noear.solon.serialization.gson.impl.DateSerialize;
 public class GsonRenderTypedFactory extends GsonRenderFactoryBase {
     public GsonRenderTypedFactory() {
         super(new GsonStringSerializer());
-        serializer.getSerializeConfig().registerTypeAdapter(java.util.Date.class, new DateSerialize());
+        serializer.getSerializeConfig().getBuilder().registerTypeAdapter(java.util.Date.class, new DateSerialize());
     }
 
     /**

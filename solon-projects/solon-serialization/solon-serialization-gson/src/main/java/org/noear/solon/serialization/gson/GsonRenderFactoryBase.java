@@ -41,7 +41,7 @@ public abstract class GsonRenderFactoryBase implements JsonRenderFactory {
      * 序列化配置
      */
     public GsonBuilder config() {
-        return serializer.getSerializeConfig();
+        return serializer.getSerializeConfig().getBuilder();
     }
 
     /**

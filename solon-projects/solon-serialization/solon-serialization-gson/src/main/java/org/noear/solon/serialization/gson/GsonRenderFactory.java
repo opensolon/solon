@@ -43,7 +43,7 @@ public class GsonRenderFactory extends GsonRenderFactoryBase {
      * 添加编码器
      */
     public <T> void addEncoder(Class<T> clz, JsonSerializer<T> encoder) {
-        serializer.getSerializeConfig().registerTypeAdapter(clz, encoder);
+        serializer.getSerializeConfig().getBuilder().registerTypeAdapter(clz, encoder);
     }
 
     /**

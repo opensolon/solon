@@ -38,20 +38,20 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class JacksonStringSerializer implements ContextSerializer<String> {
     private static final String label = "/json";
-    private JacksonDeclaration<SerializationFeature> serializeConfig;
-    private JacksonDeclaration<DeserializationFeature> deserializeConfig;
+    private JacksonDecl<SerializationFeature> serializeConfig;
+    private JacksonDecl<DeserializationFeature> deserializeConfig;
 
-    public JacksonDeclaration<SerializationFeature> getSerializeConfig() {
+    public JacksonDecl<SerializationFeature> getSerializeConfig() {
         if (serializeConfig == null) {
-            serializeConfig = new JacksonDeclaration<>();
+            serializeConfig = new JacksonDecl<>();
         }
 
         return serializeConfig;
     }
 
-    public JacksonDeclaration<DeserializationFeature> getDeserializeConfig() {
+    public JacksonDecl<DeserializationFeature> getDeserializeConfig() {
         if(deserializeConfig == null) {
-            deserializeConfig = new JacksonDeclaration<>();
+            deserializeConfig = new JacksonDecl<>();
         }
 
         return deserializeConfig;
