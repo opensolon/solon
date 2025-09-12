@@ -31,12 +31,16 @@ import java.util.Date;
  * @since 1.5
  */
 public abstract class JacksonRenderFactoryBase implements JsonRenderFactory {
-    protected final JacksonStringSerializer serializer = new JacksonStringSerializer();
+    protected final JacksonStringSerializer serializer;
+
+    public JacksonRenderFactoryBase(JacksonStringSerializer serializer) {
+        this.serializer = serializer;
+    }
 
     /**
      * 获取序列化器
      */
-    public JacksonStringSerializer getSerializer(){
+    public JacksonStringSerializer getSerializer() {
         return serializer;
     }
 

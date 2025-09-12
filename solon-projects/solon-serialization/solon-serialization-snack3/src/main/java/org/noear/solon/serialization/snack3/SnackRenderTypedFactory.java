@@ -32,6 +32,7 @@ import org.noear.solon.serialization.StringSerializerRender;
 @Deprecated
 public class SnackRenderTypedFactory extends SnackRenderFactoryBase {
     public SnackRenderTypedFactory() {
+        super(new SnackStringSerializer());
         serializer.setConfig(Options.serialize());
     }
 

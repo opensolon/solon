@@ -35,6 +35,7 @@ import org.noear.solon.serialization.StringSerializerRender;
 @Deprecated
 public class JacksonXmlRenderTypedFactory extends JacksonXmlRenderFactoryBase {
     public JacksonXmlRenderTypedFactory() {
+        super(new JacksonXmlStringSerializer());
         serializer.getConfig().enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         serializer.getConfig().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         serializer.getConfig().setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);

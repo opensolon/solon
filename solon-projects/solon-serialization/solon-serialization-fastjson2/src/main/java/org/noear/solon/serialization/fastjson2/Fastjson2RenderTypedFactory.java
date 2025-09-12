@@ -32,6 +32,7 @@ import org.noear.solon.serialization.StringSerializerRender;
 public class Fastjson2RenderTypedFactory extends Fastjson2RenderFactoryBase {
 
     public Fastjson2RenderTypedFactory() {
+        super(new Fastjson2StringSerializer());
         serializer.cfgSerializeFeatures(false, true,
                 JSONWriter.Feature.BrowserCompatible,
                 JSONWriter.Feature.WriteClassName,

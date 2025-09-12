@@ -29,6 +29,7 @@ import org.noear.solon.serialization.StringSerializerRender;
 @Deprecated
 public class GsonRenderTypedFactory extends GsonRenderFactoryBase {
     public GsonRenderTypedFactory() {
+        super(new GsonStringSerializer());
         serializer.getConfig().registerTypeAdapter(java.util.Date.class, new GsonDateSerialize());
     }
 

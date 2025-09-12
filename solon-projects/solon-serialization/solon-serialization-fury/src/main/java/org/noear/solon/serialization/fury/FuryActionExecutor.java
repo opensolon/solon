@@ -28,7 +28,11 @@ import java.util.Map;
  * @since 2.5
  * */
 public class FuryActionExecutor extends ActionExecuteHandlerDefault {
-    private final FuryBytesSerializer serializer = new FuryBytesSerializer();
+    private final FuryBytesSerializer serializer;
+
+    public FuryActionExecutor(FuryBytesSerializer serializer) {
+        this.serializer = serializer;
+    }
 
     /**
      * 获取序列化接口

@@ -24,7 +24,11 @@ import org.noear.solon.core.wrap.ParamWrap;
 import java.util.Map;
 
 public class HessianActionExecutor extends ActionExecuteHandlerDefault {
-    private HessianBytesSerializer serializer = new HessianBytesSerializer();
+    private final HessianBytesSerializer serializer;
+
+    public HessianActionExecutor(HessianBytesSerializer serializer) {
+        this.serializer = serializer;
+    }
 
     /**
      * 获取序列化接口
@@ -52,7 +56,7 @@ public class HessianActionExecutor extends ActionExecuteHandlerDefault {
      */
     @Override
     protected Object changeBody(Context ctx, MethodWrap mWrap) throws Exception {
-       return serializer.deserializeFromBody(ctx);
+        return serializer.deserializeFromBody(ctx);
     }
 
     /**
@@ -67,7 +71,7 @@ public class HessianActionExecutor extends ActionExecuteHandlerDefault {
      */
     @Override
     protected Object changeValue(Context ctx, ParamWrap p, int pi, Class<?> pt, LazyReference bodyRef) throws Throwable {
-        if(p.spec().isRequiredPath() || p.spec().isRequiredCookie() || p.spec().isRequiredHeader()){
+        if (p.spec().isRequiredPath() || p.spec().isRequiredCookie() || p.spec().isRequiredHeader()) {
             //如果是 path、cookie, header
             return super.changeValue(ctx, p, pi, pt, bodyRef);
         }
@@ -82,7 +86,7 @@ public class HessianActionExecutor extends ActionExecuteHandlerDefault {
         if (bodyObj == null) {
             return null;
         } else {
-            if(p.spec().isRequiredBody()){
+            if (p.spec().isRequiredBody()) {
                 return bodyObj;
             }
 

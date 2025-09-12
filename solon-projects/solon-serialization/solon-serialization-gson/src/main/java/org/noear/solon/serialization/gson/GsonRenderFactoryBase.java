@@ -24,7 +24,11 @@ import org.noear.solon.serialization.JsonRenderFactory;
  * @since 1.5
  */
 public abstract class GsonRenderFactoryBase implements JsonRenderFactory {
-    protected final GsonStringSerializer serializer = new GsonStringSerializer();
+    protected final GsonStringSerializer serializer;
+
+    public GsonRenderFactoryBase(GsonStringSerializer serializer) {
+        this.serializer = serializer;
+    }
 
     /**
      * 获取序列化器
@@ -55,7 +59,7 @@ public abstract class GsonRenderFactoryBase implements JsonRenderFactory {
      * @param converter 转换器
      */
     @Override
-    public <T> void addConvertor(Class<T> clz, Converter<T,Object> converter) {
+    public <T> void addConvertor(Class<T> clz, Converter<T, Object> converter) {
         addEncoder(clz, (source, type, jsc) -> {
             Object val = converter.convert((T) source);
 

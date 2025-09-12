@@ -15,7 +15,7 @@ public class DemoTest {
 
         ///////////////////////
 
-        ProtostuffBytesSerializer serializer = ProtostuffBytesSerializer.getInstance();
+        ProtostuffBytesSerializer serializer = new ProtostuffBytesSerializer();
         byte[] data = serializer.serialize(book);
         System.out.println(data);
 

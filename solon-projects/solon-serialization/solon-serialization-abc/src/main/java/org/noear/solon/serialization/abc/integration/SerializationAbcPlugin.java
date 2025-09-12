@@ -19,6 +19,7 @@ import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.serialization.SerializerNames;
 import org.noear.solon.serialization.abc.AbcActionExecutor;
+import org.noear.solon.serialization.abc.AbcBytesSerializer;
 import org.noear.solon.serialization.abc.AbcRender;
 
 /**
@@ -28,15 +29,20 @@ import org.noear.solon.serialization.abc.AbcRender;
 public class SerializationAbcPlugin implements Plugin {
     @Override
     public void start(AppContext context) throws Throwable {
+
+        //::serializer
+        AbcBytesSerializer serializer = new AbcBytesSerializer();
+        context.wrapAndPut(AbcBytesSerializer.class, serializer); //用于扩展
+        context.app().serializerManager().register(SerializerNames.AT_ABC, serializer);
+
         //::render
-        AbcRender render = new AbcRender();
+        AbcRender render = new AbcRender(serializer);
         context.wrapAndPut(AbcRender.class, render); //用于扩展
         context.app().renderManager().register(SerializerNames.AT_ABC,render);
-        context.app().serializerManager().register(SerializerNames.AT_ABC, render.getSerializer());
 
         //::actionExecutor
         //支持 sbe 内容类型执行
-        AbcActionExecutor executor = new AbcActionExecutor();
+        AbcActionExecutor executor = new AbcActionExecutor(serializer);
         context.wrapAndPut(AbcActionExecutor.class, executor); //用于扩展
 
         context.app().chainManager().addExecuteHandler(executor);

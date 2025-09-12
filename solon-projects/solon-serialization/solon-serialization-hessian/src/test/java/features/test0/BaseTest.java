@@ -61,7 +61,7 @@ public class BaseTest {
             }
         };
 
-        HessianRender render = new HessianRender();
+        HessianRender render = new HessianRender(new HessianBytesSerializer());
         render.render(userDo, ctx);
 
         HessianBytesSerializer serializer = new HessianBytesSerializer();

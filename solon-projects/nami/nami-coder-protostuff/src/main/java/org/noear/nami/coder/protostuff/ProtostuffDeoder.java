@@ -30,6 +30,8 @@ import java.lang.reflect.Type;
 public class ProtostuffDeoder implements Decoder {
     public static final ProtostuffDeoder instance = new ProtostuffDeoder();
 
+    private final ProtostuffBytesSerializer serializer = new ProtostuffBytesSerializer();
+
 
     @Override
     public String enctype() {
@@ -42,7 +44,7 @@ public class ProtostuffDeoder implements Decoder {
             return null;
         }
 
-        return (T) ProtostuffBytesSerializer.getInstance().deserialize(rst.body(), type);
+        return (T) serializer.deserialize(rst.body(), type);
     }
 
     @Override

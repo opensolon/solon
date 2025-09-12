@@ -19,6 +19,7 @@ import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.serialization.SerializerNames;
 import org.noear.solon.serialization.protostuff.ProtostuffActionExecutor;
+import org.noear.solon.serialization.protostuff.ProtostuffBytesSerializer;
 import org.noear.solon.serialization.protostuff.ProtostuffRender;
 
 /**
@@ -28,13 +29,18 @@ import org.noear.solon.serialization.protostuff.ProtostuffRender;
 public class SerializationProtostuffPlugin implements Plugin {
     @Override
     public void start(AppContext context) {
-        ProtostuffRender render = new ProtostuffRender();
+        //::serializer
+        ProtostuffBytesSerializer serializer = new ProtostuffBytesSerializer();
+        context.wrapAndPut(ProtostuffBytesSerializer.class, serializer); //用于扩展
+        context.app().serializerManager().register(SerializerNames.AT_PROTOBUF, serializer);
+
+        //::render
+        ProtostuffRender render = new ProtostuffRender(serializer);
         context.wrapAndPut(ProtostuffRender.class, render); //用于扩展
         context.app().renderManager().register(SerializerNames.AT_PROTOBUF, render);
-        context.app().serializerManager().register(SerializerNames.AT_PROTOBUF, render.getSerializer());
 
         //支持 protostuff 内容类型执行
-        ProtostuffActionExecutor executor = new ProtostuffActionExecutor();
+        ProtostuffActionExecutor executor = new ProtostuffActionExecutor(serializer);
         context.wrapAndPut(ProtostuffActionExecutor.class, executor); //用于扩展
         context.app().chainManager().addExecuteHandler(executor);
     }

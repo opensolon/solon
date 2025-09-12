@@ -15,39 +15,40 @@
  */
 package org.noear.solon.serialization.gson.impl;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 import com.google.gson.TypeAdapter;
+import com.google.gson.internal.bind.TypeAdapters;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import org.noear.solon.serialization.prop.JsonProps;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 
-public class NullLongAdapter extends TypeAdapter<Long> {
+public class NullLongAdapter implements JsonSerializer<Long> {
     private JsonProps jsonProps;
 
     public NullLongAdapter(JsonProps jsonProps) {
         this.jsonProps = jsonProps;
     }
 
+
     @Override
-    public void write(JsonWriter out, Long number) throws IOException {
+    public JsonElement serialize(Long number, Type type, JsonSerializationContext context) {
         if (jsonProps.longAsString) {
             if (number == null) {
-                out.value("0");
+                return TypeAdapters.STRING.toJsonTree("0");
             } else {
-                out.value(number.toString());
+                return TypeAdapters.STRING.toJsonTree(number.toString());
             }
         } else {
             if (number == null) {
-                out.value(0);
+                return TypeAdapters.LONG.toJsonTree(0);
             } else {
-                out.value(number);
+                return TypeAdapters.LONG.toJsonTree(number);
             }
         }
-    }
-
-    @Override
-    public Long read(JsonReader jsonReader) throws IOException {
-        return null;
     }
 }

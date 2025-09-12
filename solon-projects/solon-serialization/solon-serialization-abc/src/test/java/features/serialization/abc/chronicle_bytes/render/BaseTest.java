@@ -58,7 +58,7 @@ public class BaseTest {
             }
         };
 
-        AbcRender render = new AbcRender();
+        AbcRender render = new AbcRender(new AbcBytesSerializer());
         render.render(userDo, ctx);
 
         AbcBytesSerializer serializer = new AbcBytesSerializer();

@@ -27,7 +27,11 @@ import org.noear.solon.serialization.JsonRenderFactory;
  * @since 1.5
  */
 public abstract class SnackRenderFactoryBase implements JsonRenderFactory {
-    protected final SnackStringSerializer serializer = new SnackStringSerializer();
+    protected final SnackStringSerializer serializer;
+
+    public SnackRenderFactoryBase(SnackStringSerializer serializer) {
+        this.serializer = serializer;
+    }
 
     /**
      * 获取序列化器

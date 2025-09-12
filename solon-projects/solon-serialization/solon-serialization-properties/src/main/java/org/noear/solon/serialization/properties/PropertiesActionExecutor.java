@@ -35,11 +35,12 @@ import java.util.List;
  * @since 2.7
  * */
 public class PropertiesActionExecutor extends ActionExecuteHandlerDefault {
-    private PropertiesStringSerializer serializer = new PropertiesStringSerializer();
+    private final PropertiesStringSerializer serializer;
     private boolean allowGet = true;
     private boolean allowPostForm = false;
 
-    public PropertiesActionExecutor() {
+    public PropertiesActionExecutor(PropertiesStringSerializer serializer) {
+        this.serializer = serializer;
         serializer.getConfig().add(Feature.DisableClassNameRead);
     }
 

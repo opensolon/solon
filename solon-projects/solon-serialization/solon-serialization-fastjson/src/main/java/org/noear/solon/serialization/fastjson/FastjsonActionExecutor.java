@@ -35,7 +35,11 @@ import java.util.List;
  * @since 1.5
  */
 public class FastjsonActionExecutor extends ActionExecuteHandlerDefault {
-    private final FastjsonStringSerializer serializer = new FastjsonStringSerializer();
+    private final FastjsonStringSerializer serializer;
+
+    public FastjsonActionExecutor(FastjsonStringSerializer serializer){
+        this.serializer = serializer;
+    }
 
     /**
      * 获取序列化接口

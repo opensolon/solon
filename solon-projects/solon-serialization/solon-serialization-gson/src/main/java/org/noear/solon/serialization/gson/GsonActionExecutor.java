@@ -21,7 +21,7 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.util.LazyReference;
 import org.noear.solon.core.wrap.MethodWrap;
 import org.noear.solon.core.wrap.ParamWrap;
-import org.noear.solon.serialization.gson.impl.DateReadAdapter;
+import org.noear.solon.serialization.gson.impl.DateDeserializer;
 
 import java.util.Collection;
 import java.util.Date;
@@ -32,10 +32,11 @@ import java.util.List;
  * @since 2.2
  */
 public class GsonActionExecutor extends ActionExecuteHandlerDefault {
-    private final GsonStringSerializer serializer = new GsonStringSerializer();
+    private final GsonStringSerializer serializer;
 
-    public GsonActionExecutor(){
-        serializer.getConfig().registerTypeAdapter(Date.class, new DateReadAdapter());
+    public GsonActionExecutor(GsonStringSerializer serializer) {
+        this.serializer = serializer;
+        serializer.getConfig().registerTypeAdapter(Date.class, new DateDeserializer());
     }
 
     /**
@@ -85,7 +86,7 @@ public class GsonActionExecutor extends ActionExecuteHandlerDefault {
      */
     @Override
     protected Object changeValue(Context ctx, ParamWrap p, int pi, Class<?> pt, LazyReference bodyRef) throws Throwable {
-        if(p.spec().isRequiredPath() || p.spec().isRequiredCookie() || p.spec().isRequiredHeader()){
+        if (p.spec().isRequiredPath() || p.spec().isRequiredCookie() || p.spec().isRequiredHeader()) {
             //如果是 path、cookie, header
             return super.changeValue(ctx, p, pi, pt, bodyRef);
         }

@@ -21,6 +21,7 @@ import org.noear.solon.serialization.SerializerNames;
 import org.noear.solon.serialization.jackson.JacksonActionExecutor;
 import org.noear.solon.serialization.jackson.JacksonRenderFactory;
 import org.noear.solon.serialization.jackson.JacksonRenderTypedFactory;
+import org.noear.solon.serialization.jackson.JacksonStringSerializer;
 import org.noear.solon.serialization.prop.JsonProps;
 
 public class SerializationJacksonPlugin implements Plugin {
@@ -29,23 +30,27 @@ public class SerializationJacksonPlugin implements Plugin {
     public void start(AppContext context) {
         JsonProps jsonProps = JsonProps.create(context);
 
+        //::serializer
+        JacksonStringSerializer serializer = new JacksonStringSerializer();
+        context.wrapAndPut(JacksonStringSerializer.class, serializer); //用于扩展
+        context.app().serializerManager().register(SerializerNames.AT_JSON, serializer);
+
         //::renderFactory
         //绑定属性
-        JacksonRenderFactory renderFactory = new JacksonRenderFactory(jsonProps);
+        JacksonRenderFactory renderFactory = new JacksonRenderFactory(serializer, jsonProps);
         context.wrapAndPut(JacksonRenderFactory.class, renderFactory); //用于扩展
         context.app().renderManager().register(renderFactory);
-        context.app().serializerManager().register(SerializerNames.AT_JSON, renderFactory.getSerializer());
+
+        //支持 json 内容类型执行
+        JacksonActionExecutor actionExecutor = new JacksonActionExecutor(serializer);
+        context.wrapAndPut(JacksonActionExecutor.class, actionExecutor); //用于扩展
+        context.app().chainManager().addExecuteHandler(actionExecutor);
+
 
         //::renderTypedFactory
         JacksonRenderTypedFactory renderTypedFactory = new JacksonRenderTypedFactory();
         context.wrapAndPut(JacksonRenderTypedFactory.class, renderTypedFactory); //用于扩展
         context.app().renderManager().register(renderTypedFactory);
         context.app().serializerManager().register(SerializerNames.AT_JSON_TYPED, renderTypedFactory.getSerializer());
-
-
-        //支持 json 内容类型执行
-        JacksonActionExecutor actionExecutor = new JacksonActionExecutor();
-        context.wrapAndPut(JacksonActionExecutor.class, actionExecutor); //用于扩展
-        context.app().chainManager().addExecuteHandler(actionExecutor);
     }
 }

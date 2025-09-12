@@ -21,6 +21,7 @@ import org.noear.solon.serialization.SerializerNames;
 import org.noear.solon.serialization.fastjson2.Fastjson2ActionExecutor;
 import org.noear.solon.serialization.fastjson2.Fastjson2RenderFactory;
 import org.noear.solon.serialization.fastjson2.Fastjson2RenderTypedFactory;
+import org.noear.solon.serialization.fastjson2.Fastjson2StringSerializer;
 import org.noear.solon.serialization.prop.JsonProps;
 
 public class SerializationFastjson2Plugin implements Plugin {
@@ -29,22 +30,27 @@ public class SerializationFastjson2Plugin implements Plugin {
     public void start(AppContext context) {
         JsonProps jsonProps = JsonProps.create(context);
 
+        //::serializer
+        Fastjson2StringSerializer serializer = new Fastjson2StringSerializer();
+        context.wrapAndPut(Fastjson2StringSerializer.class, serializer); //用于扩展
+        context.app().serializerManager().register(SerializerNames.AT_JSON, serializer);
+
         //::renderFactory
-        Fastjson2RenderFactory renderFactory = new Fastjson2RenderFactory(jsonProps);
+        Fastjson2RenderFactory renderFactory = new Fastjson2RenderFactory(serializer, jsonProps);
         context.wrapAndPut(Fastjson2RenderFactory.class, renderFactory); //用于扩展
         context.app().renderManager().register(renderFactory);
-        context.app().serializerManager().register(SerializerNames.AT_JSON, renderFactory.getSerializer());
+
+        //::actionExecutor
+        //支持 json 内容类型执行
+        Fastjson2ActionExecutor actionExecutor = new Fastjson2ActionExecutor(serializer);
+        context.wrapAndPut(Fastjson2ActionExecutor.class, actionExecutor); //用于扩展
+        context.app().chainManager().addExecuteHandler(actionExecutor);
+
 
         //::renderTypedFactory
         Fastjson2RenderTypedFactory renderTypedFactory = new Fastjson2RenderTypedFactory();
         context.wrapAndPut(Fastjson2RenderTypedFactory.class, renderTypedFactory); //用于扩展
         context.app().renderManager().register(renderTypedFactory);
         context.app().serializerManager().register(SerializerNames.AT_JSON_TYPED, renderTypedFactory.getSerializer());
-
-        //::actionExecutor
-        //支持 json 内容类型执行
-        Fastjson2ActionExecutor actionExecutor = new Fastjson2ActionExecutor();
-        context.wrapAndPut(Fastjson2ActionExecutor.class, actionExecutor); //用于扩展
-        context.app().chainManager().addExecuteHandler(actionExecutor);
     }
 }

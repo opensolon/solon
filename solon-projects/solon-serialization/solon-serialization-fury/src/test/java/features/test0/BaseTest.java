@@ -68,7 +68,7 @@ public class BaseTest {
             }
         };
 
-        FuryRender render = new FuryRender();
+        FuryRender render = new FuryRender(new FuryBytesSerializer());
         render.render(userDo, ctx);
 
         FuryBytesSerializer serializer = new FuryBytesSerializer();

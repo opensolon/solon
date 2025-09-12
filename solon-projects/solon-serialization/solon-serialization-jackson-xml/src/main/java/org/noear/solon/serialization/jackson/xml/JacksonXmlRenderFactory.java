@@ -42,7 +42,8 @@ import static com.fasterxml.jackson.databind.MapperFeature.SORT_PROPERTIES_ALPHA
  */
 public class JacksonXmlRenderFactory extends JacksonXmlRenderFactoryBase {
 
-    public JacksonXmlRenderFactory(JsonProps jsonProps) {
+    public JacksonXmlRenderFactory(JacksonXmlStringSerializer serializer, JsonProps jsonProps) {
+        super(serializer);
         serializer.getCustomFeatures().add(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         serializer.getConfig().registerModule(new JavaTimeModule());
         applyProps(jsonProps);

@@ -19,21 +19,26 @@ import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.serialization.SerializerNames;
 import org.noear.solon.serialization.fury.FuryActionExecutor;
+import org.noear.solon.serialization.fury.FuryBytesSerializer;
 import org.noear.solon.serialization.fury.FuryRender;
 
 public class SerializationFuryPlugin implements Plugin {
 
     @Override
     public void start(AppContext context) {
+        //::serializer
+        FuryBytesSerializer serializer = new FuryBytesSerializer();
+        context.wrapAndPut(FuryBytesSerializer.class, serializer); //用于扩展
+        context.app().serializerManager().register(SerializerNames.AT_FURY, serializer);
+
         //::render
-        FuryRender render = new FuryRender();
+        FuryRender render = new FuryRender(serializer);
         context.wrapAndPut(FuryRender.class, render); //用于扩展
         context.app().renderManager().register(SerializerNames.AT_FURY,render);
-        context.app().serializerManager().register(SerializerNames.AT_FURY, render.getSerializer());
 
         //::actionExecutor
         //支持 fury 内容类型执行
-        FuryActionExecutor executor = new FuryActionExecutor();
+        FuryActionExecutor executor = new FuryActionExecutor(serializer);
         context.wrapAndPut(FuryActionExecutor.class, executor); //用于扩展
 
         context.app().chainManager().addExecuteHandler(executor);

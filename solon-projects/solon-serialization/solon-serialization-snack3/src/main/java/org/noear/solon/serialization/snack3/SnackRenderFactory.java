@@ -31,7 +31,8 @@ import org.noear.solon.serialization.prop.JsonPropsUtil;
  * @since 2.8
  */
 public class SnackRenderFactory extends SnackRenderFactoryBase {
-    public SnackRenderFactory(JsonProps jsonProps) {
+    public SnackRenderFactory(SnackStringSerializer serializer, JsonProps jsonProps) {
+        super(serializer);
         serializer.setConfig(Options.def());
         addFeatures(Feature.EnumUsingName);
         applyProps(jsonProps);

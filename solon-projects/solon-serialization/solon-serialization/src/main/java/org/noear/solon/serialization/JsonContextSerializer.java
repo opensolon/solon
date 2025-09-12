@@ -13,35 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.serialization.abc;
+package org.noear.solon.serialization;
 
-import org.noear.solon.serialization.BytesSerializerRender;
-import org.noear.solon.serialization.ContextSerializer;
+import org.noear.solon.core.convert.Converter;
 
 /**
+ * Json 序列化器
+ *
  * @author noear
- * @since 3.0
- * */
-public class AbcRender extends BytesSerializerRender {
-    private final AbcBytesSerializer serializer;
-
-    public AbcRender(AbcBytesSerializer serializer) {
-        this.serializer = serializer;
-    }
-
+ * @since 3.6
+ */
+public interface JsonContextSerializer extends ContextSerializer<String> {
     /**
-     * 获取序列化器
+     * 添加数据转换器（用于简单场景）
      */
-    @Override
-    public ContextSerializer<byte[]> getSerializer() {
-        return serializer;
-    }
-
-    /**
-     * 获取渲染器名字
-     */
-    @Override
-    public String name() {
-        return this.getClass().getSimpleName();
-    }
+    <T> void addEncoder(Class<T> clz, Converter<T, Object> converter);
 }
