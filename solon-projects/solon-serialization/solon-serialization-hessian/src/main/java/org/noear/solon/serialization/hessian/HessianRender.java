@@ -21,7 +21,11 @@ import org.noear.solon.serialization.ContextSerializer;
 //不要要入参，方便后面多视图混用
 //
 public class HessianRender extends BytesSerializerRender {
-    private HessianBytesSerializer serializer = new HessianBytesSerializer();
+    private final HessianBytesSerializer serializer;
+
+    public HessianRender(HessianBytesSerializer serializer) {
+        this.serializer = serializer;
+    }
 
     /**
      * 获取序列化器

@@ -31,7 +31,10 @@ import java.lang.reflect.Type;
  * @since 1.5
  */
 public abstract class FastjsonRenderFactoryBase implements JsonRenderFactory {
-    protected final FastjsonStringSerializer serializer = new FastjsonStringSerializer();
+    protected final FastjsonStringSerializer serializer;
+    public FastjsonRenderFactoryBase(FastjsonStringSerializer serializer) {
+        this.serializer = serializer;
+    }
 
     /**
      * 获取序列化器

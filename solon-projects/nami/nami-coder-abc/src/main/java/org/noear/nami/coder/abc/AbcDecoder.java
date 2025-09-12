@@ -30,6 +30,8 @@ import java.lang.reflect.Type;
 public class AbcDecoder implements Decoder {
     public static final AbcDecoder instance = new AbcDecoder();
 
+    private final AbcBytesSerializer serializer = new AbcBytesSerializer();
+
     @Override
     public String enctype() {
         return ContentTypes.ABC_VALUE;
@@ -41,7 +43,7 @@ public class AbcDecoder implements Decoder {
             return null;
         }
 
-        return (T) AbcBytesSerializer.getInstance().deserialize(rst.body(), type);
+        return (T) serializer.deserialize(rst.body(), type);
     }
 
     @Override

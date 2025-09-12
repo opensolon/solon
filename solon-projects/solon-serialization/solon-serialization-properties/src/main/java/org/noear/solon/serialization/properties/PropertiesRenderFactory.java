@@ -28,7 +28,11 @@ import org.noear.solon.serialization.StringSerializerRender;
  * @since 2.7
  */
 public class PropertiesRenderFactory  implements RenderFactory {
-    private final PropertiesStringSerializer serializer = new PropertiesStringSerializer();
+    private final PropertiesStringSerializer serializer;
+
+    public PropertiesRenderFactory(PropertiesStringSerializer serializer) {
+        this.serializer = serializer;
+    }
 
     /**
      * 获取序列化器

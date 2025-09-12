@@ -19,6 +19,7 @@ import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.serialization.SerializerNames;
 import org.noear.solon.serialization.kryo.KryoActionExecutor;
+import org.noear.solon.serialization.kryo.KryoBytesSerializer;
 import org.noear.solon.serialization.kryo.KryoRender;
 
 /**
@@ -28,15 +29,20 @@ import org.noear.solon.serialization.kryo.KryoRender;
 public class SerializationKryoPlugin implements Plugin {
     @Override
     public void start(AppContext context) throws Throwable {
+
+        //::serializer
+        KryoBytesSerializer serializer = new KryoBytesSerializer();
+        context.wrapAndPut(KryoBytesSerializer.class, serializer); //用于扩展
+        context.app().serializerManager().register(SerializerNames.AT_KRYO, serializer);
+
         //::render
-        KryoRender render = new KryoRender();
+        KryoRender render = new KryoRender(serializer);
         context.wrapAndPut(KryoRender.class, render); //用于扩展
-        context.app().renderManager().register(SerializerNames.AT_KRYO,render);
-        context.app().serializerManager().register(SerializerNames.AT_KRYO, render.getSerializer());
+        context.app().renderManager().register(SerializerNames.AT_KRYO, render);
 
         //::actionExecutor
         //支持 kryo 内容类型执行
-        KryoActionExecutor executor = new KryoActionExecutor();
+        KryoActionExecutor executor = new KryoActionExecutor(serializer);
         context.wrapAndPut(KryoActionExecutor.class, executor); //用于扩展
 
         context.app().chainManager().addExecuteHandler(executor);

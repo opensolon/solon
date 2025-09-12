@@ -29,6 +29,8 @@ import java.io.IOException;
 public class ProtostuffEncoder implements Encoder {
     public static final ProtostuffEncoder instance = new ProtostuffEncoder();
 
+    private final ProtostuffBytesSerializer serializer = new ProtostuffBytesSerializer();
+
     @Override
     public boolean bodyRequired() {
         return true;
@@ -41,7 +43,7 @@ public class ProtostuffEncoder implements Encoder {
 
     @Override
     public byte[] encode(Object obj) throws IOException {
-        return ProtostuffBytesSerializer.getInstance().serialize(obj);
+        return serializer.serialize(obj);
     }
 
     @Override

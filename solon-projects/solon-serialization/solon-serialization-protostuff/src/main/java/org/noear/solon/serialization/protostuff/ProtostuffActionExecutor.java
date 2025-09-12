@@ -29,11 +29,17 @@ import org.noear.solon.core.wrap.ParamWrap;
  * @since 2.8
  */
 public class ProtostuffActionExecutor extends ActionExecuteHandlerDefault {
+    private final ProtostuffBytesSerializer serializer;
+
+    public ProtostuffActionExecutor(ProtostuffBytesSerializer serializer) {
+        this.serializer = serializer;
+    }
+
     /**
      * 获取序列化接口
      */
     public ProtostuffBytesSerializer getSerializer() {
-        return ProtostuffBytesSerializer.getInstance();
+        return serializer;
     }
 
     /**

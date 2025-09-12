@@ -28,7 +28,11 @@ import java.util.Map;
  * @since 3.0
  * */
 public class KryoActionExecutor extends ActionExecuteHandlerDefault {
-    private final KryoBytesSerializer serializer = new KryoBytesSerializer();
+    private final KryoBytesSerializer serializer;
+
+    public KryoActionExecutor(KryoBytesSerializer serializer) {
+        this.serializer = serializer;
+    }
 
     /**
      * 获取序列化接口

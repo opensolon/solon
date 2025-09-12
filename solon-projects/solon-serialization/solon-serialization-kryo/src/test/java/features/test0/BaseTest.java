@@ -68,7 +68,7 @@ public class BaseTest {
             }
         };
 
-        KryoRender render = new KryoRender();
+        KryoRender render = new KryoRender(new KryoBytesSerializer());
         render.render(userDo, ctx);
 
         KryoBytesSerializer serializer = new KryoBytesSerializer();

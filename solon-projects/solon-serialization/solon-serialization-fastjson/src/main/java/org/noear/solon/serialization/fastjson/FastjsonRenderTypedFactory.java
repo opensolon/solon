@@ -31,6 +31,7 @@ import org.noear.solon.serialization.StringSerializerRender;
 @Deprecated
 public class FastjsonRenderTypedFactory extends FastjsonRenderFactoryBase {
     public FastjsonRenderTypedFactory() {
+        super(new FastjsonStringSerializer());
         serializer.cfgSerializerFeatures(false, true,
                 SerializerFeature.BrowserCompatible,
                 SerializerFeature.WriteClassName,

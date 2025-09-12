@@ -26,11 +26,17 @@ import org.noear.solon.core.wrap.ParamWrap;
  * @since 3.0
  * */
 public class AbcActionExecutor extends ActionExecuteHandlerDefault {
+    private final AbcBytesSerializer serializer;
+
+    public AbcActionExecutor(AbcBytesSerializer serializer) {
+        this.serializer = serializer;
+    }
+
     /**
      * 获取序列化接口
      */
     public AbcBytesSerializer getSerializer() {
-        return AbcBytesSerializer.getInstance();
+        return serializer;
     }
 
     /**

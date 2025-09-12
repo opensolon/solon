@@ -31,7 +31,10 @@ import java.util.Date;
  * @since 2.8
  */
 public abstract class JacksonXmlRenderFactoryBase implements JsonRenderFactory {
-    protected final JacksonXmlStringSerializer serializer = new JacksonXmlStringSerializer();
+    protected final JacksonXmlStringSerializer serializer;
+    public JacksonXmlRenderFactoryBase(JacksonXmlStringSerializer serializer) {
+        this.serializer = serializer;
+    }
 
     /**
      * 获取序列化器

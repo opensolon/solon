@@ -22,7 +22,7 @@ import com.google.gson.stream.JsonWriter;
 
 import java.io.IOException;
 
-public class NullStringSerialize extends TypeAdapter<String> {
+public class NullStringAdapter extends TypeAdapter<String> {
 
     @Override
     public void write(JsonWriter out, String s) throws IOException {

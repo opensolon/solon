@@ -21,6 +21,7 @@ import org.noear.solon.serialization.SerializerNames;
 import org.noear.solon.serialization.gson.GsonActionExecutor;
 import org.noear.solon.serialization.gson.GsonRenderFactory;
 import org.noear.solon.serialization.gson.GsonRenderTypedFactory;
+import org.noear.solon.serialization.gson.GsonStringSerializer;
 import org.noear.solon.serialization.prop.JsonProps;
 
 public class SerializationGsonPlugin implements Plugin {
@@ -29,23 +30,27 @@ public class SerializationGsonPlugin implements Plugin {
     public void start(AppContext context) {
         JsonProps jsonProps = JsonProps.create(context);
 
+        //::serializer
+        GsonStringSerializer serializer = new GsonStringSerializer();
+        context.wrapAndPut(GsonStringSerializer.class, serializer); //用于扩展
+        context.app().serializerManager().register(SerializerNames.AT_JSON, serializer);
+
         //::renderFactory
         //绑定属性
-        GsonRenderFactory renderFactory = new GsonRenderFactory(jsonProps);
+        GsonRenderFactory renderFactory = new GsonRenderFactory(serializer, jsonProps);
         context.wrapAndPut(GsonRenderFactory.class, renderFactory); //用于扩展
         context.app().renderManager().register(renderFactory);
-        context.app().serializerManager().register(SerializerNames.AT_JSON, renderFactory.getSerializer());
+
+        //::actionExecutor
+        //支持 json 内容类型执行
+        GsonActionExecutor actionExecutor = new GsonActionExecutor(serializer);
+        context.wrapAndPut(GsonActionExecutor.class, actionExecutor); //用于扩展
+        context.app().chainManager().addExecuteHandler(actionExecutor);
 
         //::renderTypedFactory
         GsonRenderTypedFactory renderTypedFactory = new GsonRenderTypedFactory();
         context.wrapAndPut(GsonRenderTypedFactory.class, renderTypedFactory); //用于扩展
         context.app().renderManager().register(renderTypedFactory);
         context.app().serializerManager().register(SerializerNames.AT_JSON_TYPED, renderTypedFactory.getSerializer());
-
-        //::actionExecutor
-        //支持 json 内容类型执行
-        GsonActionExecutor actionExecutor = new GsonActionExecutor();
-        context.wrapAndPut(GsonActionExecutor.class, actionExecutor); //用于扩展
-        context.app().chainManager().addExecuteHandler(actionExecutor);
     }
 }

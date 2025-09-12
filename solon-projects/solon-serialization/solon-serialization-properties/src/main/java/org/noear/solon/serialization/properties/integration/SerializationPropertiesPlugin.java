@@ -20,20 +20,25 @@ import org.noear.solon.core.Plugin;
 import org.noear.solon.serialization.SerializerNames;
 import org.noear.solon.serialization.properties.PropertiesActionExecutor;
 import org.noear.solon.serialization.properties.PropertiesRenderFactory;
+import org.noear.solon.serialization.properties.PropertiesStringSerializer;
 
 public class SerializationPropertiesPlugin implements Plugin {
     @Override
     public void start(AppContext context) {
+        //::serializer
+        PropertiesStringSerializer serializer = new PropertiesStringSerializer();
+        context.wrapAndPut(PropertiesStringSerializer.class, serializer); //用于扩展
+        context.app().serializerManager().register(SerializerNames.AT_PROPERTIES, serializer);
+
         //::renderFactory
         //绑定属性
-        PropertiesRenderFactory renderFactory = new PropertiesRenderFactory();
+        PropertiesRenderFactory renderFactory = new PropertiesRenderFactory(serializer);
         context.wrapAndPut(PropertiesRenderFactory.class, renderFactory); //用于扩展
         context.app().renderManager().register(renderFactory);
-        context.app().serializerManager().register(SerializerNames.AT_PROPERTIES, renderFactory.getSerializer());
 
         //::actionExecutor
         //支持 props 内容类型执行
-        PropertiesActionExecutor actionExecutor = new PropertiesActionExecutor();
+        PropertiesActionExecutor actionExecutor = new PropertiesActionExecutor(serializer);
         context.wrapAndPut(PropertiesActionExecutor.class, actionExecutor); //用于扩展
         context.app().chainManager().addExecuteHandler(actionExecutor);
     }

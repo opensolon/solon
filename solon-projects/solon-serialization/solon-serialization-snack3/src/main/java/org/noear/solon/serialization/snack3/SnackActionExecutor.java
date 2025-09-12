@@ -35,10 +35,11 @@ import java.util.List;
  * @since 2.8
  * */
 public class SnackActionExecutor extends ActionExecuteHandlerDefault {
-    private SnackStringSerializer serializer = new SnackStringSerializer();
+    private final SnackStringSerializer serializer;
 
-    public SnackActionExecutor() {
+    public SnackActionExecutor(SnackStringSerializer serializer) {
         super();
+        this.serializer = serializer;
         serializer.getConfig().add(Feature.DisableClassNameRead);
     }
 

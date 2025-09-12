@@ -29,6 +29,8 @@ import java.io.IOException;
 public class AbcEncoder implements Encoder {
     public static final AbcEncoder instance = new AbcEncoder();
 
+    private AbcBytesSerializer serializer = new AbcBytesSerializer();
+
     @Override
     public boolean bodyRequired() {
         return true;
@@ -41,7 +43,7 @@ public class AbcEncoder implements Encoder {
 
     @Override
     public byte[] encode(Object obj) throws IOException {
-        return AbcBytesSerializer.getInstance().serialize(obj);
+        return serializer.serialize(obj);
     }
 
     @Override

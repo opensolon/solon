@@ -38,7 +38,17 @@ import java.util.List;
  * @since 1.2
  * */
 public class JacksonActionExecutor extends ActionExecuteHandlerDefault {
-    private JacksonStringSerializer serializer = new JacksonStringSerializer();
+    private final JacksonStringSerializer serializer;
+
+    public JacksonActionExecutor(JacksonStringSerializer serializer) {
+        this.serializer = serializer;
+        config(newMapper(new JavaTimeModule()));
+
+        addDeserializer(LocalDateTime.class, new TimeDeserializer<>(LocalDateTime.class));
+        addDeserializer(LocalDate.class, new TimeDeserializer<>(LocalDate.class));
+        addDeserializer(LocalTime.class, new TimeDeserializer<>(LocalTime.class));
+        addDeserializer(Date.class, new TimeDeserializer<>(Date.class));
+    }
 
     /**
      * 获取序列化接口
@@ -63,19 +73,12 @@ public class JacksonActionExecutor extends ActionExecuteHandlerDefault {
 
     /**
      * 添加反序列化器
-     * */
+     *
+     */
     public <T> void addDeserializer(Class<T> clz, JsonDeserializer<? extends T> deser) {
         serializer.getCustomModule().addDeserializer(clz, deser);
     }
 
-    public JacksonActionExecutor() {
-        config(newMapper(new JavaTimeModule()));
-
-        addDeserializer(LocalDateTime.class, new TimeDeserializer<>(LocalDateTime.class));
-        addDeserializer(LocalDate.class, new TimeDeserializer<>(LocalDate.class));
-        addDeserializer(LocalTime.class, new TimeDeserializer<>(LocalTime.class));
-        addDeserializer(Date.class, new TimeDeserializer<>(Date.class));
-    }
 
     /**
      * 初始化

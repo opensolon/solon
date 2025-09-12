@@ -23,7 +23,11 @@ import org.noear.solon.serialization.ContextSerializer;
  * @since 3.0
  * */
 public class KryoRender extends BytesSerializerRender {
-    private final KryoBytesSerializer serializer = new KryoBytesSerializer();
+    private final KryoBytesSerializer serializer;
+
+    public KryoRender(KryoBytesSerializer serializer) {
+        this.serializer = serializer;
+    }
 
     /**
      * 获取序列化器

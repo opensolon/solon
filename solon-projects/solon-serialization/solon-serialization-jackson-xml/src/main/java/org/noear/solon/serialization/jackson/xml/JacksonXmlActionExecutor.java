@@ -38,7 +38,29 @@ import java.util.List;
  * @since 2.8
  */
 public class JacksonXmlActionExecutor extends ActionExecuteHandlerDefault {
-    private JacksonXmlStringSerializer serializer = new JacksonXmlStringSerializer();
+    private final JacksonXmlStringSerializer serializer;
+
+    public JacksonXmlActionExecutor(JacksonXmlStringSerializer serializer) {
+        this.serializer = serializer;
+        serializer.getConfig().enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        serializer.getConfig().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        serializer.getConfig().setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+        serializer.getConfig().activateDefaultTypingAsProperty(
+                serializer.getConfig().getPolymorphicTypeValidator(),
+                XmlMapper.DefaultTyping.JAVA_LANG_OBJECT, "@type");
+        // 注册 JavaTimeModule ，以适配 java.time 下的时间类型
+        serializer.getConfig().registerModule(new JavaTimeModule());
+        // 允许使用未带引号的字段名
+        serializer.getConfig().configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+        // 允许使用单引号
+        serializer.getConfig().configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
+
+        //----------------------- jackson xml 专属配置 -----------------------
+        // xml空节点处理
+        serializer.getConfig().configure(FromXmlParser.Feature.EMPTY_ELEMENT_AS_NULL, true);
+        // xml声明处理
+        serializer.getConfig().configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, false);
+    }
 
     /**
      * 获取序列化接口
@@ -61,26 +83,6 @@ public class JacksonXmlActionExecutor extends ActionExecuteHandlerDefault {
         serializer.setConfig(xmlMapper);
     }
 
-    public JacksonXmlActionExecutor() {
-        serializer.getConfig().enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        serializer.getConfig().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        serializer.getConfig().setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-        serializer.getConfig().activateDefaultTypingAsProperty(
-                serializer.getConfig().getPolymorphicTypeValidator(),
-                XmlMapper.DefaultTyping.JAVA_LANG_OBJECT, "@type");
-        // 注册 JavaTimeModule ，以适配 java.time 下的时间类型
-        serializer.getConfig().registerModule(new JavaTimeModule());
-        // 允许使用未带引号的字段名
-        serializer.getConfig().configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
-        // 允许使用单引号
-        serializer.getConfig().configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
-
-        //----------------------- jackson xml 专属配置 -----------------------
-        // xml空节点处理
-        serializer.getConfig().configure(FromXmlParser.Feature.EMPTY_ELEMENT_AS_NULL, true);
-        // xml声明处理
-        serializer.getConfig().configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, false);
-    }
 
     /**
      * 是否匹配

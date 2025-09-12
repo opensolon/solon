@@ -19,21 +19,26 @@ import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.serialization.SerializerNames;
 import org.noear.solon.serialization.hessian.HessianActionExecutor;
+import org.noear.solon.serialization.hessian.HessianBytesSerializer;
 import org.noear.solon.serialization.hessian.HessianRender;
 
 public class SerializationHessianPlugin implements Plugin {
 
     @Override
     public void start(AppContext context) {
+        //::serializer
+        HessianBytesSerializer serializer = new HessianBytesSerializer();
+        context.wrapAndPut(HessianBytesSerializer.class, serializer); //用于扩展
+        context.app().serializerManager().register(SerializerNames.AT_HESSIAN, serializer);
+
         //::render
-        HessianRender render = new HessianRender();
+        HessianRender render = new HessianRender(serializer);
         context.wrapAndPut(HessianRender.class, render); //用于扩展
         context.app().renderManager().register(SerializerNames.AT_HESSIAN, render);
-        context.app().serializerManager().register(SerializerNames.AT_HESSIAN, render.getSerializer());
 
         //::actionExecutor
         //支持 hessian 内容类型执行
-        HessianActionExecutor executor = new HessianActionExecutor();
+        HessianActionExecutor executor = new HessianActionExecutor(serializer);
         context.wrapAndPut(HessianActionExecutor.class, executor); //用于扩展
         context.app().chainManager().addExecuteHandler(executor);
     }

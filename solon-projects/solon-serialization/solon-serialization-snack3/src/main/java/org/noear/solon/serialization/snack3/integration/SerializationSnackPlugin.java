@@ -22,29 +22,35 @@ import org.noear.solon.serialization.prop.JsonProps;
 import org.noear.solon.serialization.snack3.SnackActionExecutor;
 import org.noear.solon.serialization.snack3.SnackRenderFactory;
 import org.noear.solon.serialization.snack3.SnackRenderTypedFactory;
+import org.noear.solon.serialization.snack3.SnackStringSerializer;
 
 public class SerializationSnackPlugin implements Plugin {
     @Override
     public void start(AppContext context) {
         JsonProps jsonProps = JsonProps.create(context);
 
+        //serializer
+        SnackStringSerializer serializer = new SnackStringSerializer();
+        context.wrapAndPut(SnackStringSerializer.class, serializer); //用于扩展
+        context.app().serializerManager().register(SerializerNames.AT_JSON, serializer);
+
         //::renderFactory
         //绑定属性
-        SnackRenderFactory renderFactory = new SnackRenderFactory(jsonProps);
+        SnackRenderFactory renderFactory = new SnackRenderFactory(serializer, jsonProps);
         context.wrapAndPut(SnackRenderFactory.class, renderFactory); //用于扩展
         context.app().renderManager().register(renderFactory);
-        context.app().serializerManager().register(SerializerNames.AT_JSON, renderFactory.getSerializer());
+
+        //::actionExecutor
+        //支持 json 内容类型执行
+        SnackActionExecutor actionExecutor = new SnackActionExecutor(serializer);
+        context.wrapAndPut(SnackActionExecutor.class, actionExecutor); //用于扩展
+        context.app().chainManager().addExecuteHandler(actionExecutor);
+
 
         //::renderTypedFactory
         SnackRenderTypedFactory renderTypedFactory = new SnackRenderTypedFactory();
         context.wrapAndPut(SnackRenderTypedFactory.class, renderTypedFactory); //用于扩展
         context.app().renderManager().register(renderTypedFactory);
         context.app().serializerManager().register(SerializerNames.AT_JSON_TYPED, renderTypedFactory.getSerializer());
-
-        //::actionExecutor
-        //支持 json 内容类型执行
-        SnackActionExecutor actionExecutor = new SnackActionExecutor();
-        context.wrapAndPut(SnackActionExecutor.class, actionExecutor); //用于扩展
-        context.app().chainManager().addExecuteHandler(actionExecutor);
     }
 }

@@ -35,11 +35,6 @@ import java.lang.reflect.Type;
  */
 public class ProtostuffBytesSerializer implements ContextSerializer<byte[]> {
     private static final String label = "application/protobuf";
-    private static final ProtostuffBytesSerializer instance = new ProtostuffBytesSerializer();
-
-    public static ProtostuffBytesSerializer getInstance() {
-        return instance;
-    }
 
     /**
      * 获取内容类型

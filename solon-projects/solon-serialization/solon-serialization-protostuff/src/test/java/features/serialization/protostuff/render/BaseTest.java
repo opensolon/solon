@@ -60,10 +60,10 @@ public class BaseTest {
             }
         };
 
-        ProtostuffRender render = new ProtostuffRender();
+        ProtostuffRender render = new ProtostuffRender(new ProtostuffBytesSerializer());
         render.render(userDo, ctx);
 
-        ProtostuffBytesSerializer serializer = ProtostuffBytesSerializer.getInstance();
+        ProtostuffBytesSerializer serializer = new  ProtostuffBytesSerializer();
         UserDo userDo2 = (UserDo) serializer.deserializeFromBody(ctx, UserDo.class);
 
         System.out.println(userDo2);

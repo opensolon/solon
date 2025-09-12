@@ -21,6 +21,7 @@ import org.noear.solon.serialization.SerializerNames;
 import org.noear.solon.serialization.jackson.xml.JacksonXmlActionExecutor;
 import org.noear.solon.serialization.jackson.xml.JacksonXmlRenderFactory;
 import org.noear.solon.serialization.jackson.xml.JacksonXmlRenderTypedFactory;
+import org.noear.solon.serialization.jackson.xml.JacksonXmlStringSerializer;
 import org.noear.solon.serialization.prop.JsonProps;
 
 /**
@@ -35,23 +36,27 @@ public class SerializationJacksonXmlPlugin implements Plugin {
     public void start(AppContext context) {
         JsonProps jsonProps = JsonProps.create(context);
 
+        //::serializer
+        JacksonXmlStringSerializer serializer = new JacksonXmlStringSerializer();
+        context.wrapAndPut(JacksonXmlStringSerializer.class, serializer); //用于扩展
+        context.app().serializerManager().register(SerializerNames.AT_XML, serializer);
+
         //::renderFactory
         //绑定属性
-        JacksonXmlRenderFactory renderFactory = new JacksonXmlRenderFactory(jsonProps);
+        JacksonXmlRenderFactory renderFactory = new JacksonXmlRenderFactory(serializer, jsonProps);
         context.wrapAndPut(JacksonXmlRenderFactory.class, renderFactory); //用于扩展
         context.app().renderManager().register(renderFactory);
-        context.app().serializerManager().register(SerializerNames.AT_XML, renderFactory.getSerializer());
+
+        //支持 xml 内容类型执行
+        JacksonXmlActionExecutor actionExecutor = new JacksonXmlActionExecutor(serializer);
+        context.wrapAndPut(JacksonXmlActionExecutor.class, actionExecutor); //用于扩展
+        context.app().chainManager().addExecuteHandler(actionExecutor);
+
 
         //::renderTypedFactory
         JacksonXmlRenderTypedFactory renderTypedFactory = new JacksonXmlRenderTypedFactory();
         context.wrapAndPut(JacksonXmlRenderTypedFactory.class, renderTypedFactory); //用于扩展
         context.app().renderManager().register(renderTypedFactory);
         context.app().serializerManager().register(SerializerNames.AT_XML_TYPED, renderTypedFactory.getSerializer());
-
-
-        //支持 xml 内容类型执行
-        JacksonXmlActionExecutor actionExecutor = new JacksonXmlActionExecutor();
-        context.wrapAndPut(JacksonXmlActionExecutor.class, actionExecutor); //用于扩展
-        context.app().chainManager().addExecuteHandler(actionExecutor);
     }
 }

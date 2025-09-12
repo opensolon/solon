@@ -23,7 +23,11 @@ import org.noear.solon.serialization.ContextSerializer;
  * @since 2.5
  * */
 public class FuryRender extends BytesSerializerRender {
-    private final FuryBytesSerializer serializer = new FuryBytesSerializer();
+    private final FuryBytesSerializer serializer;
+
+    public FuryRender(FuryBytesSerializer serializer) {
+        this.serializer = serializer;
+    }
 
     /**
      * 获取序列化器

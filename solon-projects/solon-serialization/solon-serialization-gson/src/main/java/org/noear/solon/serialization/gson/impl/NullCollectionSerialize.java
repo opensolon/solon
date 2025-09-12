@@ -29,11 +29,11 @@ import java.util.Collection;
  */
 public class NullCollectionSerialize implements JsonSerializer<Collection> {
     @Override
-    public JsonElement serialize(Collection collection, Type type, JsonSerializationContext jsonSerializationContext) {
+    public JsonElement serialize(Collection collection, Type type, JsonSerializationContext context) {
         if (collection == null) {
             return new JsonArray();
         }
 
-        return jsonSerializationContext.serialize(collection, type);
+        return context.serialize(collection, type);
     }
 }

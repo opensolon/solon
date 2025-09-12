@@ -30,7 +30,8 @@ import org.noear.solon.serialization.prop.JsonPropsUtil;
  * @since 2.8
  */
 public class FastjsonRenderFactory extends FastjsonRenderFactoryBase {
-    public FastjsonRenderFactory(JsonProps jsonProps) {
+    public FastjsonRenderFactory(FastjsonStringSerializer serializer, JsonProps jsonProps) {
+        super(serializer);
         serializer.cfgSerializerFeatures(false, true, SerializerFeature.BrowserCompatible);
         applyProps(jsonProps);
     }

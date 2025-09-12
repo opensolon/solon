@@ -34,9 +34,10 @@ import java.util.List;
  * @since 1.9
  * */
 public class Fastjson2ActionExecutor extends ActionExecuteHandlerDefault {
-    private final Fastjson2StringSerializer serializer = new Fastjson2StringSerializer();
+    private final Fastjson2StringSerializer serializer;
 
-    public Fastjson2ActionExecutor() {
+    public Fastjson2ActionExecutor(Fastjson2StringSerializer serializer) {
+        this.serializer = serializer;
         serializer.getDeserializeConfig().config();
         serializer.getDeserializeConfig().config(JSONReader.Feature.ErrorOnEnumNotMatch);
     }

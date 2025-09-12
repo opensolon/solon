@@ -34,7 +34,8 @@ import java.util.Date;
  * @since 1.5
  */
 public class GsonRenderFactory extends GsonRenderFactoryBase {
-    public GsonRenderFactory(JsonProps jsonProps) {
+    public GsonRenderFactory(GsonStringSerializer serializer, JsonProps jsonProps) {
+        super(serializer);
         applyProps(jsonProps);
     }
 
@@ -101,11 +102,11 @@ public class GsonRenderFactory extends GsonRenderFactoryBase {
             }
 
             if (jsonProps.nullStringAsEmpty) {
-                this.config().registerTypeAdapter(String.class, new NullStringSerialize());
+                this.config().registerTypeAdapter(String.class, new NullStringAdapter());
             }
 
             if (jsonProps.enumAsName) {
-                this.config().registerTypeAdapter(Enum.class, new EnumAdapter());
+                this.config().registerTypeAdapter(Enum.class, new EnumSerializer());
             }
 
         } else {

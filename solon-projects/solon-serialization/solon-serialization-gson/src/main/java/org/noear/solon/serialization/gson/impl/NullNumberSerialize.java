@@ -16,23 +16,17 @@
 package org.noear.solon.serialization.gson.impl;
 
 import com.google.gson.*;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
+import com.google.gson.internal.bind.TypeAdapters;
 
-import java.io.IOException;
+import java.lang.reflect.Type;
 
-public class NullNumberSerialize<T extends Number> extends TypeAdapter<T> {
+public class NullNumberSerialize<T extends Number> implements JsonSerializer<T> {
     @Override
-    public void write(JsonWriter out, T number) throws IOException {
+    public JsonElement serialize(T number, Type type, JsonSerializationContext context) {
         if (number == null) {
-            out.value(0);
+            return TypeAdapters.LONG.toJsonTree(0);
         } else {
-            out.value(number);
+            return TypeAdapters.LONG.toJsonTree(number);
         }
-    }
-
-    @Override
-    public T read(JsonReader jsonReader) throws IOException {
-        return null;
     }
 }
