@@ -40,46 +40,18 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class JacksonXmlStringSerializer implements ContextSerializer<String> {
     public static final String label = "/xml";
-    private XmlMapper serializeConfig;
-    private XmlMapper deserializeConfig;
-    private Set<SerializationFeature> serializeFeatures;
-    private Set<DeserializationFeature> deserializeFeatures;
-
-    private SimpleModule serializeModule;
-    private SimpleModule deserializeModule;
+    private JacksonXmlDeclaration<SerializationFeature> serializeConfig;
+    private JacksonXmlDeclaration<DeserializationFeature> deserializeConfig;
 
     private AtomicBoolean initStatus = new AtomicBoolean(false);
 
 
-
-    /**
-     * 获取序列化定制特性
-     */
-    public Set<SerializationFeature> getSerializeFeatures() {
-        if (serializeFeatures == null) {
-            serializeFeatures = new HashSet<>();
-        }
-
-        return serializeFeatures;
-    }
-
-    /**
-     * 获取反序列化定制特性
-     */
-    public Set<DeserializationFeature> getDeserializeFeatures() {
-        if (deserializeFeatures == null) {
-            deserializeFeatures = new HashSet<>();
-        }
-
-        return deserializeFeatures;
-    }
-
     /**
      * 获取序列化配置
      */
-    public XmlMapper getSerializeConfig() {
+    public JacksonXmlDeclaration<SerializationFeature> getSerializeConfig() {
         if (serializeConfig == null) {
-            serializeConfig = new XmlMapper();
+            serializeConfig = new JacksonXmlDeclaration<>();
         }
 
         return serializeConfig;
@@ -88,41 +60,12 @@ public class JacksonXmlStringSerializer implements ContextSerializer<String> {
     /**
      * 获取反序列化配置
      */
-    public XmlMapper getDeserializeConfig() {
+    public JacksonXmlDeclaration<DeserializationFeature> getDeserializeConfig() {
         if (deserializeConfig == null) {
-            deserializeConfig = new XmlMapper();
+            deserializeConfig = new JacksonXmlDeclaration<>();
         }
 
         return deserializeConfig;
-    }
-
-    /**
-     * 设置序列化配置
-     */
-    public void setSerializeConfig(XmlMapper config) {
-        if (config != null) {
-            this.serializeConfig = config;
-        }
-    }
-
-    /**
-     * 设置反序列化配置
-     */
-    public void setDeserializeConfig(XmlMapper config) {
-        if (config != null) {
-            this.deserializeConfig = config;
-        }
-    }
-
-    /**
-     * 获取模块特性
-     */
-    public SimpleModule getSerializeCustomModule() {
-        if (serializeModule == null) {
-            serializeModule = new SimpleModule();
-        }
-
-        return serializeModule;
     }
 
 
@@ -131,21 +74,8 @@ public class JacksonXmlStringSerializer implements ContextSerializer<String> {
      */
     protected void init() {
         if (initStatus.compareAndSet(false, true)) {
-            if (serializeFeatures != null) {
-                for (SerializationFeature f1 : serializeFeatures) {
-                    getSerializeConfig().enable(f1);
-                }
-            }
-
-            if (deserializeFeatures != null) {
-                for (DeserializationFeature f1 : deserializeFeatures) {
-                    getDeserializeConfig().enable(f1);
-                }
-            }
-
-            if (serializeModule != null) {
-                getSerializeConfig().registerModule(serializeModule);
-            }
+            getSerializeConfig().refresh();
+            getDeserializeConfig().refresh();
         }
     }
 
@@ -159,7 +89,8 @@ public class JacksonXmlStringSerializer implements ContextSerializer<String> {
 
     /**
      * 数据类型
-     * */
+     *
+     */
     @Override
     public Class<String> dataType() {
         return String.class;
@@ -197,7 +128,7 @@ public class JacksonXmlStringSerializer implements ContextSerializer<String> {
     public String serialize(Object obj) throws IOException {
         init();
 
-        return getSerializeConfig().writeValueAsString(obj);
+        return getSerializeConfig().getMapper().writeValueAsString(obj);
     }
 
     /**
@@ -211,7 +142,7 @@ public class JacksonXmlStringSerializer implements ContextSerializer<String> {
         init();
 
         if (toType == null) {
-            return getDeserializeConfig().readTree(data);
+            return getDeserializeConfig().getMapper().readTree(data);
         } else {
             if (toType instanceof Class) {
                 //处理匿名名类
@@ -222,7 +153,7 @@ public class JacksonXmlStringSerializer implements ContextSerializer<String> {
             }
 
             TypeReferenceImpl typeRef = new TypeReferenceImpl(toType);
-            return getDeserializeConfig().readValue(data, typeRef);
+            return getDeserializeConfig().getMapper().readValue(data, typeRef);
         }
     }
 
@@ -260,7 +191,7 @@ public class JacksonXmlStringSerializer implements ContextSerializer<String> {
         String data = ctx.bodyNew();
 
         if (Utils.isNotEmpty(data)) {
-            return getDeserializeConfig().readTree(data);
+            return getDeserializeConfig().getMapper().readTree(data);
         } else {
             return null;
         }

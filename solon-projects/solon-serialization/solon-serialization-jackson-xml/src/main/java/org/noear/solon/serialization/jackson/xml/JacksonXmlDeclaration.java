@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.serialization.jackson;
+package org.noear.solon.serialization.jackson.xml;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.cfg.ConfigFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -28,22 +28,22 @@ import java.util.Set;
  * @author noear
  * @since 3.6
  */
-public class JacksonDeclaration<F extends ConfigFeature> {
-    private ObjectMapper mapper;
+public class JacksonXmlDeclaration <F extends ConfigFeature> {
+    private XmlMapper mapper;
     private Set<F> features;
     private SimpleModule customModule;
 
-    public JacksonDeclaration() {
-        this.mapper = new ObjectMapper();
+    public JacksonXmlDeclaration() {
+        this.mapper = new XmlMapper();
         this.features = new HashSet<>();
         this.customModule = new SimpleModule();
     }
 
-    public ObjectMapper getMapper() {
+    public XmlMapper getMapper() {
         return mapper;
     }
 
-    public void setMapper(ObjectMapper config) {
+    public void setMapper(XmlMapper config) {
         this.mapper = config;
     }
 
