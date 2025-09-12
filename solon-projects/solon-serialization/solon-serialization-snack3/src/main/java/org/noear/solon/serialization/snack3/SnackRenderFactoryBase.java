@@ -54,7 +54,7 @@ public abstract class SnackRenderFactoryBase implements JsonRenderFactory {
      * @param encoder 编码器
      */
     public <T> void addEncoder(Class<T> clz, NodeEncoder<T> encoder) {
-        config().addEncoder(clz, encoder);
+        serializer.addEncoder(clz, encoder);
     }
 
     /**
@@ -65,18 +65,6 @@ public abstract class SnackRenderFactoryBase implements JsonRenderFactory {
      */
     @Override
     public <T> void addConvertor(Class<T> clz, Converter<T, Object> converter) {
-        addEncoder(clz, (source, target) -> {
-            Object val = converter.convert((T) source);
-
-            if (val == null) {
-                target.asNull();
-            } else if (val instanceof String) {
-                target.val().setString((String) val);
-            } else if (val instanceof Number) {
-                target.val().setNumber((Number) val);
-            } else {
-                throw new IllegalArgumentException("The result type of the converter is not supported: " + val.getClass().getName());
-            }
-        });
+        serializer.addEncoder(clz, converter);
     }
 }
