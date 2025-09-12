@@ -23,11 +23,15 @@
 
 * 支持 solon 非依赖关系的 bean 异步初始化（`@Init(async=true)`）???
 * 优化 solon-flow （有包含结构的）网关的流入流出架构，使不再需要记录栈和计数器???
-* 调整 `solon-serialization-*` 弱化 ActionExecuteHandler, Render 的定制，强化 ContextSerializer???
 * 添加 Plugin postStart 事件???
 * 调整 Plugin 统一交给 AppContext 管理（之前由 SolonApp 或 PluginPackage 管理）？？
 * 使用 solon-expression 替代其它临时的表达式处理
 
+
+### 3.6.0
+
+* 调整 `solon-serialization-*` 弱化 ActionExecuteHandler, Render 的定制，改为 XxxxSerializer 对外定制
+* 引入 `solon-expression` 替代 `solon` 内的表达式
 
 ### 3.5.2
 
