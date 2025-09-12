@@ -32,6 +32,7 @@ import java.util.Date;
  */
 public abstract class JacksonXmlRenderFactoryBase implements JsonRenderFactory {
     protected final JacksonXmlStringSerializer serializer;
+
     public JacksonXmlRenderFactoryBase(JacksonXmlStringSerializer serializer) {
         this.serializer = serializer;
     }
@@ -39,7 +40,7 @@ public abstract class JacksonXmlRenderFactoryBase implements JsonRenderFactory {
     /**
      * 获取序列化器
      */
-    public JacksonXmlStringSerializer getSerializer(){
+    public JacksonXmlStringSerializer getSerializer() {
         return serializer;
     }
 
@@ -47,7 +48,7 @@ public abstract class JacksonXmlRenderFactoryBase implements JsonRenderFactory {
      * 序列化配置
      */
     public XmlMapper config() {
-        return getSerializer().getSerializeConfig();
+        return getSerializer().getSerializeConfig().getMapper();
     }
 
     /**
@@ -57,7 +58,7 @@ public abstract class JacksonXmlRenderFactoryBase implements JsonRenderFactory {
      * @param encoder 编码器
      */
     public <T> void addEncoder(Class<T> clz, JsonSerializer<T> encoder) {
-        serializer.getSerializeCustomModule().addSerializer(clz, encoder);
+        serializer.getSerializeConfig().getCustomModule().addSerializer(clz, encoder);
     }
 
     /**
@@ -67,7 +68,7 @@ public abstract class JacksonXmlRenderFactoryBase implements JsonRenderFactory {
      * @param converter 转换器
      */
     @Override
-    public <T> void addConvertor(Class<T> clz, Converter<T,Object> converter) {
+    public <T> void addConvertor(Class<T> clz, Converter<T, Object> converter) {
         if (clz == Date.class) {
             addEncoder(Date.class, new DateSerializer() {
                 public void serialize(Date date, JsonGenerator out, SerializerProvider sp) throws IOException {

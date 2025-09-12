@@ -42,24 +42,20 @@ public class JacksonXmlActionExecutor extends ActionExecuteHandlerDefault {
 
     public JacksonXmlActionExecutor(JacksonXmlStringSerializer serializer) {
         this.serializer = serializer;
-        serializer.getDeserializeConfig().enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        serializer.getDeserializeConfig().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        serializer.getDeserializeConfig().setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-        serializer.getDeserializeConfig().activateDefaultTypingAsProperty(
-                serializer.getDeserializeConfig().getPolymorphicTypeValidator(),
+        serializer.getDeserializeConfig().getMapper().enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        serializer.getDeserializeConfig().getMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        serializer.getDeserializeConfig().getMapper().setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+        serializer.getDeserializeConfig().getMapper().activateDefaultTypingAsProperty(
+                serializer.getDeserializeConfig().getMapper().getPolymorphicTypeValidator(),
                 XmlMapper.DefaultTyping.JAVA_LANG_OBJECT, "@type");
         // 注册 JavaTimeModule ，以适配 java.time 下的时间类型
-        serializer.getDeserializeConfig().registerModule(new JavaTimeModule());
-        // 允许使用未带引号的字段名
-        serializer.getDeserializeConfig().configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
-        // 允许使用单引号
-        serializer.getDeserializeConfig().configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
+        serializer.getDeserializeConfig().getMapper().registerModule(new JavaTimeModule());
 
         //----------------------- jackson xml 专属配置 -----------------------
         // xml空节点处理
-        serializer.getDeserializeConfig().configure(FromXmlParser.Feature.EMPTY_ELEMENT_AS_NULL, true);
+        serializer.getDeserializeConfig().getMapper().configure(FromXmlParser.Feature.EMPTY_ELEMENT_AS_NULL, true);
         // xml声明处理
-        serializer.getDeserializeConfig().configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, false);
+        serializer.getDeserializeConfig().getMapper().configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, false);
     }
 
     /**
@@ -73,14 +69,14 @@ public class JacksonXmlActionExecutor extends ActionExecuteHandlerDefault {
      * 反序列化配置
      */
     public XmlMapper config() {
-        return serializer.getDeserializeConfig();
+        return serializer.getDeserializeConfig().getMapper();
     }
 
     /**
      * 配置
      */
     public void config(XmlMapper xmlMapper) {
-        serializer.setDeserializeConfig(xmlMapper);
+        serializer.getDeserializeConfig().setMapper(xmlMapper);
     }
 
 
@@ -144,7 +140,7 @@ public class JacksonXmlActionExecutor extends ActionExecuteHandlerDefault {
                 if (tmp.has(p.spec().getName())) {
                     JsonNode m1 = tmp.get(p.spec().getName());
 
-                    return serializer.getDeserializeConfig().readValue(serializer.getDeserializeConfig().treeAsTokens(m1), new TypeReferenceImpl<>(p));
+                    return serializer.getDeserializeConfig().getMapper().readValue(serializer.getDeserializeConfig().getMapper().treeAsTokens(m1), new TypeReferenceImpl<>(p));
                 }
             }
 
@@ -161,7 +157,7 @@ public class JacksonXmlActionExecutor extends ActionExecuteHandlerDefault {
                 }
 
                 //支持泛型的转换 如：Map<T>
-                return serializer.getDeserializeConfig().readValue(serializer.getDeserializeConfig().treeAsTokens(tmp), new TypeReferenceImpl<>(p));
+                return serializer.getDeserializeConfig().getMapper().readValue(serializer.getDeserializeConfig().getMapper().treeAsTokens(tmp), new TypeReferenceImpl<>(p));
             }
         }
 
@@ -171,12 +167,12 @@ public class JacksonXmlActionExecutor extends ActionExecuteHandlerDefault {
                 return null;
             }
 
-            return serializer.getDeserializeConfig().readValue(serializer.getDeserializeConfig().treeAsTokens(tmp), new TypeReferenceImpl<>(p));
+            return serializer.getDeserializeConfig().getMapper().readValue(serializer.getDeserializeConfig().getMapper().treeAsTokens(tmp), new TypeReferenceImpl<>(p));
         }
 
         //return tmp.val().getRaw();
         if (tmp.isValueNode()) {
-            return serializer.getDeserializeConfig().readValue(serializer.getDeserializeConfig().treeAsTokens(tmp), new TypeReferenceImpl<>(p));
+            return serializer.getDeserializeConfig().getMapper().readValue(serializer.getDeserializeConfig().getMapper().treeAsTokens(tmp), new TypeReferenceImpl<>(p));
         } else {
             return null;
         }

@@ -44,8 +44,8 @@ public class JacksonXmlRenderFactory extends JacksonXmlRenderFactoryBase {
 
     public JacksonXmlRenderFactory(JacksonXmlStringSerializer serializer, JsonProps jsonProps) {
         super(serializer);
-        serializer.getSerializeFeatures().add(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        serializer.getSerializeConfig().registerModule(new JavaTimeModule());
+        serializer.getSerializeConfig().getFeatures().add(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        serializer.getSerializeConfig().getMapper().registerModule(new JavaTimeModule());
         applyProps(jsonProps);
     }
 
@@ -70,22 +70,22 @@ public class JacksonXmlRenderFactory extends JacksonXmlRenderFactoryBase {
      * 重新设置特性
      */
     public void setFeatures(SerializationFeature... features) {
-        serializer.getSerializeFeatures().clear();
-        serializer.getSerializeFeatures().addAll(Arrays.asList(features));
+        serializer.getSerializeConfig().getFeatures().clear();
+        serializer.getSerializeConfig().getFeatures().addAll(Arrays.asList(features));
     }
 
     /**
      * 添加特性
      */
     public void addFeatures(SerializationFeature... features) {
-        serializer.getSerializeFeatures().addAll(Arrays.asList(features));
+        serializer.getSerializeConfig().getFeatures().addAll(Arrays.asList(features));
     }
 
     /**
      * 移除特性
      */
     public void removeFeatures(SerializationFeature... features) {
-        serializer.getSerializeFeatures().removeAll(Arrays.asList(features));
+        serializer.getSerializeConfig().getFeatures().removeAll(Arrays.asList(features));
     }
 
     protected void applyProps(JsonProps jsonProps) {
