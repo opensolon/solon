@@ -15,40 +15,41 @@
  */
 package org.noear.solon.serialization.gson.impl;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
-import com.google.gson.TypeAdapter;
+import com.google.gson.*;
 import com.google.gson.internal.bind.TypeAdapters;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import org.noear.solon.serialization.prop.JsonProps;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 
-public class NullLongAdapter implements JsonSerializer<Long> {
+public class NullBooleanWriteAdapter extends TypeAdapter<Boolean> {
     private JsonProps jsonProps;
 
-    public NullLongAdapter(JsonProps jsonProps) {
+    public NullBooleanWriteAdapter(JsonProps jsonProps) {
         this.jsonProps = jsonProps;
     }
 
-
     @Override
-    public JsonElement serialize(Long number, Type type, JsonSerializationContext context) {
-        if (jsonProps.longAsString) {
-            if (number == null) {
-                return TypeAdapters.STRING.toJsonTree("0");
+    public void write(JsonWriter out, Boolean aBoolean) throws IOException {
+        if (jsonProps.boolAsInt) {
+            if (aBoolean == null) {
+                out.value(0);
             } else {
-                return TypeAdapters.STRING.toJsonTree(number.toString());
+                out.value(aBoolean ? 1 : 0);
             }
         } else {
-            if (number == null) {
-                return TypeAdapters.LONG.toJsonTree(0);
+            if (aBoolean == null) {
+                out.value(false);
             } else {
-                return TypeAdapters.LONG.toJsonTree(number);
+                out.value(aBoolean);
             }
         }
+
+    }
+
+    @Override
+    public Boolean read(JsonReader jsonReader) throws IOException {
+        return TypeAdapters.BOOLEAN.read(jsonReader);
     }
 }
