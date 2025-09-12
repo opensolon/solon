@@ -61,14 +61,14 @@ public class JacksonActionExecutor extends ActionExecuteHandlerDefault {
      * 反序列化配置
      */
     public ObjectMapper config() {
-        return serializer.getDeserializeConfig();
+        return serializer.getDeserializeConfig().getMapper();
     }
 
     /**
      * 配置
      */
     public void config(ObjectMapper objectMapper) {
-        serializer.setDeserializeConfig(objectMapper);
+        serializer.getDeserializeConfig().setMapper(objectMapper);
     }
 
     /**
@@ -76,7 +76,7 @@ public class JacksonActionExecutor extends ActionExecuteHandlerDefault {
      *
      */
     public <T> void addDeserializer(Class<T> clz, JsonDeserializer<? extends T> deser) {
-        serializer.getCustomModule().addDeserializer(clz, deser);
+        serializer.getDeserializeConfig().getCustomModule().addDeserializer(clz, deser);
     }
 
 
@@ -163,7 +163,7 @@ public class JacksonActionExecutor extends ActionExecuteHandlerDefault {
                 if (tmp.has(p.spec().getName())) {
                     JsonNode m1 = tmp.get(p.spec().getName());
 
-                    return serializer.getSerializeConfig().readValue(serializer.getSerializeConfig().treeAsTokens(m1), new TypeReferenceImpl<>(p));
+                    return serializer.getDeserializeConfig().getMapper().readValue(serializer.getDeserializeConfig().getMapper().treeAsTokens(m1), new TypeReferenceImpl<>(p));
                 }
             }
 
@@ -180,7 +180,7 @@ public class JacksonActionExecutor extends ActionExecuteHandlerDefault {
                 }
 
                 //支持泛型的转换 如：Map<T>
-                return serializer.getSerializeConfig().readValue(serializer.getSerializeConfig().treeAsTokens(tmp), new TypeReferenceImpl<>(p));
+                return serializer.getDeserializeConfig().getMapper().readValue(serializer.getDeserializeConfig().getMapper().treeAsTokens(tmp), new TypeReferenceImpl<>(p));
             }
         }
 
@@ -190,12 +190,12 @@ public class JacksonActionExecutor extends ActionExecuteHandlerDefault {
                 return null;
             }
 
-            return serializer.getSerializeConfig().readValue(serializer.getSerializeConfig().treeAsTokens(tmp), new TypeReferenceImpl<>(p));
+            return serializer.getDeserializeConfig().getMapper().readValue(serializer.getDeserializeConfig().getMapper().treeAsTokens(tmp), new TypeReferenceImpl<>(p));
         }
 
         //return tmp.val().getRaw();
         if (tmp.isValueNode()) {
-            return serializer.getSerializeConfig().readValue(serializer.getSerializeConfig().treeAsTokens(tmp), new TypeReferenceImpl<>(p));
+            return serializer.getDeserializeConfig().getMapper().readValue(serializer.getDeserializeConfig().getMapper().treeAsTokens(tmp), new TypeReferenceImpl<>(p));
         } else {
             return null;
         }

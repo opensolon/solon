@@ -57,7 +57,7 @@ public abstract class JacksonXmlRenderFactoryBase implements JsonRenderFactory {
      * @param encoder 编码器
      */
     public <T> void addEncoder(Class<T> clz, JsonSerializer<T> encoder) {
-        serializer.getCustomModule().addSerializer(clz, encoder);
+        serializer.getSerializeCustomModule().addSerializer(clz, encoder);
     }
 
     /**
