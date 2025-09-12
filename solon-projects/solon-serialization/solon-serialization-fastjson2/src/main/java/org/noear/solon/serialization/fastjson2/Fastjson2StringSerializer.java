@@ -20,13 +20,15 @@ import com.alibaba.fastjson2.JSONFactory;
 import com.alibaba.fastjson2.JSONReader;
 import com.alibaba.fastjson2.JSONWriter;
 import com.alibaba.fastjson2.reader.ObjectReaderProvider;
+import com.alibaba.fastjson2.writer.ObjectWriter;
 import com.alibaba.fastjson2.writer.ObjectWriterProvider;
 import org.noear.solon.Utils;
+import org.noear.solon.core.convert.Converter;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.util.MimeType;
 import org.noear.solon.lang.Nullable;
-import org.noear.solon.serialization.ContextSerializer;
+import org.noear.solon.serialization.JsonContextSerializer;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -39,7 +41,7 @@ import java.lang.reflect.Type;
  * @since 1.10
  * @since 2.8
  */
-public class Fastjson2StringSerializer implements ContextSerializer<String> {
+public class Fastjson2StringSerializer implements JsonContextSerializer {
     private static final String label = "/json";
 
     private JSONWriter.Context serializeConfig;
@@ -198,5 +200,45 @@ public class Fastjson2StringSerializer implements ContextSerializer<String> {
         } else {
             return null;
         }
+    }
+
+    /**
+     * 添加编码器
+     *
+     * @param clz     类型
+     * @param encoder 编码器
+     */
+    public <T> void addEncoder(Class<T> clz, ObjectWriter encoder) {
+        getSerializeConfig().getProvider().register(clz, encoder);
+    }
+
+    /**
+     * 添加转换器（编码器的简化版）
+     *
+     * @param clz       类型
+     * @param converter 转换器
+     */
+    @Override
+    public <T> void addEncoder(Class<T> clz, Converter<T, Object> converter) {
+        addEncoder(clz, (out, obj, fieldName, fieldType, features) -> {
+            Object val = converter.convert((T) obj);
+            if (val == null) {
+                out.writeNull();
+            } else if (val instanceof String) {
+                out.writeString((String) val);
+            } else if (val instanceof Number) {
+                if (val instanceof Long) {
+                    out.writeInt64(((Number) val).longValue());
+                } else if (val instanceof Integer) {
+                    out.writeInt32(((Number) val).intValue());
+                } else if (val instanceof Float) {
+                    out.writeDouble(((Number) val).floatValue());
+                } else {
+                    out.writeDouble(((Number) val).doubleValue());
+                }
+            } else {
+                throw new IllegalArgumentException("The result type of the converter is not supported: " + val.getClass().getName());
+            }
+        });
     }
 }

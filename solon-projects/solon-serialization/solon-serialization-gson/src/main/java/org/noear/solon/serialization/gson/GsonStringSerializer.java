@@ -17,11 +17,12 @@ package org.noear.solon.serialization.gson;
 
 import com.google.gson.*;
 import org.noear.solon.Utils;
+import org.noear.solon.core.convert.Converter;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.util.MimeType;
 import org.noear.solon.lang.Nullable;
-import org.noear.solon.serialization.ContextSerializer;
+import org.noear.solon.serialization.JsonContextSerializer;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -32,7 +33,7 @@ import java.lang.reflect.Type;
  * @author noear
  * @since 2.8
  */
-public class GsonStringSerializer implements ContextSerializer<String> {
+public class GsonStringSerializer implements JsonContextSerializer {
     private static final String label = "/json";
     private GsonDecl serializeConfig;
     private GsonDecl deserializeConfig;
@@ -189,5 +190,36 @@ public class GsonStringSerializer implements ContextSerializer<String> {
      */
     public <T> T deserialize(JsonElement json, Type typeOfT) throws JsonSyntaxException {
         return getDeserializeConfig().getGson().fromJson(json, typeOfT);
+    }
+
+    /**
+     * 添加编码器
+     */
+    public <T> void addEncoder(Class<T> clz, JsonSerializer<T> encoder) {
+        getSerializeConfig().getBuilder().registerTypeAdapter(clz, encoder);
+    }
+
+
+    /**
+     * 添加转换器（编码器的简化版）
+     *
+     * @param clz       类型
+     * @param converter 转换器
+     */
+    @Override
+    public <T> void addEncoder(Class<T> clz, Converter<T, Object> converter) {
+        addEncoder(clz, (source, type, jsc) -> {
+            Object val = converter.convert((T) source);
+
+            if (val == null) {
+                return JsonNull.INSTANCE;
+            } else if (val instanceof String) {
+                return new JsonPrimitive((String) val);
+            } else if (val instanceof Number) {
+                return new JsonPrimitive((Number) val);
+            } else {
+                throw new IllegalArgumentException("The result type of the converter is not supported: " + val.getClass().getName());
+            }
+        });
     }
 }

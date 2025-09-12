@@ -18,15 +18,14 @@ package org.noear.solon.serialization.fastjson;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.parser.Feature;
 import com.alibaba.fastjson.parser.ParserConfig;
-import com.alibaba.fastjson.serializer.SerializeConfig;
-import com.alibaba.fastjson.serializer.SerializeFilter;
-import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.alibaba.fastjson.serializer.*;
 import org.noear.solon.Utils;
+import org.noear.solon.core.convert.Converter;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.util.MimeType;
 import org.noear.solon.lang.Nullable;
-import org.noear.solon.serialization.ContextSerializer;
+import org.noear.solon.serialization.JsonContextSerializer;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -38,7 +37,7 @@ import java.lang.reflect.Type;
  * @since 1.5
  * @since 2.8
  */
-public class FastjsonStringSerializer implements ContextSerializer<String> {
+public class FastjsonStringSerializer implements JsonContextSerializer {
     private static final String label = "/json";
 
     private SerializeConfig serializeConfig;
@@ -233,5 +232,50 @@ public class FastjsonStringSerializer implements ContextSerializer<String> {
         } else {
             return null;
         }
+    }
+
+    /**
+     * 添加编码器
+     *
+     * @param clz     类型
+     * @param encoder 编码器
+     */
+    public void addEncoder(Type clz, ObjectSerializer encoder) {
+        getSerializeConfig().put(clz, encoder);
+
+        if (clz == Long.class) {
+            getSerializeConfig().put(Long.TYPE, encoder);
+        } else if (clz == Integer.class) {
+            getSerializeConfig().put(Integer.TYPE, encoder);
+        }
+    }
+
+    /**
+     * 添加转换器（编码器的简化版）
+     *
+     * @param clz       类型
+     * @param converter 转换器
+     */
+    @Override
+    public <T> void addEncoder(Class<T> clz, Converter<T, Object> converter) {
+        addEncoder(clz, (ser, obj, fieldName, fieldType, features) -> {
+            Object val = converter.convert((T) obj);
+
+            SerializeWriter out = ser.getWriter();
+
+            if (val == null) {
+                out.writeNull();
+            } else if (val instanceof String) {
+                out.writeString((String) val);
+            } else if (val instanceof Number) {
+                if (val instanceof Integer || val instanceof Long) {
+                    out.writeLong(((Number) val).longValue());
+                } else {
+                    out.writeDouble(((Number) val).doubleValue(), false);
+                }
+            } else {
+                throw new IllegalArgumentException("The result type of the converter is not supported: " + val.getClass().getName());
+            }
+        });
     }
 }

@@ -58,7 +58,7 @@ public abstract class Fastjson2RenderFactoryBase implements JsonRenderFactory {
      * @param encoder 编码器
      */
     public <T> void addEncoder(Class<T> clz, ObjectWriter encoder) {
-        config().register(clz, encoder);
+        serializer.addEncoder(clz, encoder);
     }
 
     /**
@@ -69,25 +69,6 @@ public abstract class Fastjson2RenderFactoryBase implements JsonRenderFactory {
      */
     @Override
     public <T> void addConvertor(Class<T> clz, Converter<T, Object> converter) {
-        addEncoder(clz, (out, obj, fieldName, fieldType, features) -> {
-            Object val = converter.convert((T) obj);
-            if (val == null) {
-                out.writeNull();
-            } else if (val instanceof String) {
-                out.writeString((String) val);
-            } else if (val instanceof Number) {
-                if (val instanceof Long) {
-                    out.writeInt64(((Number) val).longValue());
-                } else if (val instanceof Integer) {
-                    out.writeInt32(((Number) val).intValue());
-                } else if (val instanceof Float) {
-                    out.writeDouble(((Number) val).floatValue());
-                } else {
-                    out.writeDouble(((Number) val).doubleValue());
-                }
-            } else {
-                throw new IllegalArgumentException("The result type of the converter is not supported: " + val.getClass().getName());
-            }
-        });
+        serializer.addEncoder(clz, converter);
     }
 }

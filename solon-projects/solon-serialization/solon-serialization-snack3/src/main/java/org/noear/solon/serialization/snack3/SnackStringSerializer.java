@@ -16,13 +16,15 @@
 package org.noear.solon.serialization.snack3;
 
 import org.noear.snack.ONode;
+import org.noear.snack.core.NodeEncoder;
 import org.noear.snack.core.Options;
 import org.noear.solon.Utils;
+import org.noear.solon.core.convert.Converter;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.util.MimeType;
 import org.noear.solon.lang.Nullable;
-import org.noear.solon.serialization.ContextSerializer;
+import org.noear.solon.serialization.JsonContextSerializer;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -34,7 +36,7 @@ import java.lang.reflect.Type;
  * @since 1.5
  * @since 2.8
  */
-public class SnackStringSerializer implements ContextSerializer<String> {
+public class SnackStringSerializer implements JsonContextSerializer {
     private static final String label = "/json";
 
     private Options config;
@@ -157,5 +159,38 @@ public class SnackStringSerializer implements ContextSerializer<String> {
         } else {
             return null;
         }
+    }
+
+    /**
+     * 添加编码器
+     *
+     * @param clz     类型
+     * @param encoder 编码器
+     */
+    public <T> void addEncoder(Class<T> clz, NodeEncoder<T> encoder) {
+        getConfig().addEncoder(clz, encoder);
+    }
+
+    /**
+     * 添加转换器（编码器的简化版）
+     *
+     * @param clz       类型
+     * @param converter 转换器
+     */
+    @Override
+    public <T> void addEncoder(Class<T> clz, Converter<T, Object> converter) {
+        addEncoder(clz, (source, target) -> {
+            Object val = converter.convert((T) source);
+
+            if (val == null) {
+                target.asNull();
+            } else if (val instanceof String) {
+                target.val().setString((String) val);
+            } else if (val instanceof Number) {
+                target.val().setNumber((Number) val);
+            } else {
+                throw new IllegalArgumentException("The result type of the converter is not supported: " + val.getClass().getName());
+            }
+        });
     }
 }
