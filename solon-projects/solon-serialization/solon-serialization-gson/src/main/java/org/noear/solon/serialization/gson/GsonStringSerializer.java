@@ -15,10 +15,7 @@
  */
 package org.noear.solon.serialization.gson;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
@@ -73,7 +70,7 @@ public class GsonStringSerializer implements ContextSerializer<String> {
     }
 
 
-    public Gson getSerializeGson() {
+    private Gson getSerializeGson() {
         if (serializeGson == null) {
             Utils.locker().lock();
 
@@ -89,7 +86,7 @@ public class GsonStringSerializer implements ContextSerializer<String> {
         return serializeGson;
     }
 
-    public Gson getDeserializeGson() {
+    private Gson getDeserializeGson() {
         if (deserializeGson == null) {
             Utils.locker().lock();
 
@@ -213,5 +210,13 @@ public class GsonStringSerializer implements ContextSerializer<String> {
         } else {
             return null;
         }
+    }
+
+
+    /**
+     * 反序列化
+     */
+    public <T> T deserialize(JsonElement json, Type typeOfT) throws JsonSyntaxException {
+        return getDeserializeGson().fromJson(json, typeOfT);
     }
 }

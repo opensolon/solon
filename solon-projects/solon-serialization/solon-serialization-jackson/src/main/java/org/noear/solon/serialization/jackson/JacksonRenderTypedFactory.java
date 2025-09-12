@@ -37,13 +37,13 @@ import org.noear.solon.serialization.StringSerializerRender;
 public class JacksonRenderTypedFactory extends JacksonRenderFactoryBase {
     public JacksonRenderTypedFactory() {
         super(new JacksonStringSerializer());
-        serializer.getSerializeConfig().enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        serializer.getSerializeConfig().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        serializer.getSerializeConfig().setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-        serializer.getSerializeConfig().activateDefaultTypingAsProperty(
-                serializer.getSerializeConfig().getPolymorphicTypeValidator(),
+        serializer.getSerializeConfig().getMapper().enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        serializer.getSerializeConfig().getMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        serializer.getSerializeConfig().getMapper().setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+        serializer.getSerializeConfig().getMapper().activateDefaultTypingAsProperty(
+                serializer.getSerializeConfig().getMapper().getPolymorphicTypeValidator(),
                 ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT, "@type");
-        serializer.getSerializeConfig().registerModule(new JavaTimeModule());
+        serializer.getSerializeConfig().getMapper().registerModule(new JavaTimeModule());
     }
 
     /**

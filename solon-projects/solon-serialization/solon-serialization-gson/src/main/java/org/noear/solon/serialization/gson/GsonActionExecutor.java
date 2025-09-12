@@ -112,9 +112,9 @@ public class GsonActionExecutor extends ActionExecuteHandlerDefault {
                 if (tmp.has(p.spec().getName())) {
                     //支持泛型的转换
                     if (p.spec().isGenericType()) {
-                        return serializer.getDeserializeGson().fromJson(tmp.get(p.spec().getName()), p.getGenericType());
+                        return serializer.deserialize(tmp.get(p.spec().getName()), p.getGenericType());
                     } else {
-                        return serializer.getDeserializeGson().fromJson(tmp.get(p.spec().getName()), pt);
+                        return serializer.deserialize(tmp.get(p.spec().getName()), pt);
                     }
                 }
             }
@@ -133,9 +133,9 @@ public class GsonActionExecutor extends ActionExecuteHandlerDefault {
 
                 //支持泛型的转换 如：Map<T>
                 if (p.spec().isGenericType()) {
-                    return serializer.getDeserializeGson().fromJson(tmp, p.getGenericType());
+                    return serializer.deserialize(tmp, p.getGenericType());
                 } else {
-                    return serializer.getDeserializeGson().fromJson(tmp, pt);
+                    return serializer.deserialize(tmp, pt);
                 }
             }
         }
@@ -149,10 +149,10 @@ public class GsonActionExecutor extends ActionExecuteHandlerDefault {
             //集合类型转换
             if (p.spec().isGenericType()) {
                 //转换带泛型的集合
-                return serializer.getDeserializeGson().fromJson(tmp, p.getGenericType());
+                return serializer.deserialize(tmp, p.getGenericType());
             } else {
                 //不仅可以转换为List 还可以转换成Set
-                return serializer.getDeserializeGson().fromJson(tmp, pt);
+                return serializer.deserialize(tmp, pt);
             }
         }
 

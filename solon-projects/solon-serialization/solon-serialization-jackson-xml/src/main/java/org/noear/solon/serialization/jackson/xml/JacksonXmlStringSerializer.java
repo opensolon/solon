@@ -16,7 +16,6 @@
 package org.noear.solon.serialization.jackson.xml;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
@@ -46,7 +45,8 @@ public class JacksonXmlStringSerializer implements ContextSerializer<String> {
     private Set<SerializationFeature> serializeFeatures;
     private Set<DeserializationFeature> deserializeFeatures;
 
-    private SimpleModule configModule;
+    private SimpleModule serializeModule;
+    private SimpleModule deserializeModule;
 
     private AtomicBoolean initStatus = new AtomicBoolean(false);
 
@@ -117,12 +117,12 @@ public class JacksonXmlStringSerializer implements ContextSerializer<String> {
     /**
      * 获取模块特性
      */
-    public SimpleModule getCustomModule() {
-        if (configModule == null) {
-            configModule = new SimpleModule();
+    public SimpleModule getSerializeCustomModule() {
+        if (serializeModule == null) {
+            serializeModule = new SimpleModule();
         }
 
-        return configModule;
+        return serializeModule;
     }
 
 
@@ -143,8 +143,8 @@ public class JacksonXmlStringSerializer implements ContextSerializer<String> {
                 }
             }
 
-            if (configModule != null) {
-                getSerializeConfig().registerModule(configModule);
+            if (serializeModule != null) {
+                getSerializeConfig().registerModule(serializeModule);
             }
         }
     }

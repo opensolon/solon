@@ -48,7 +48,7 @@ public abstract class JacksonRenderFactoryBase implements JsonRenderFactory {
      * 序列化配置
      */
     public ObjectMapper config() {
-        return getSerializer().getSerializeConfig();
+        return getSerializer().getSerializeConfig().getMapper();
     }
 
     /**
@@ -58,7 +58,7 @@ public abstract class JacksonRenderFactoryBase implements JsonRenderFactory {
      * @param encoder 编码器
      */
     public <T> void addEncoder(Class<T> clz, JsonSerializer<T> encoder) {
-        getSerializer().getCustomModule().addSerializer(clz, encoder);
+        getSerializer().getSerializeConfig().getCustomModule().addSerializer(clz, encoder);
     }
 
     /**
