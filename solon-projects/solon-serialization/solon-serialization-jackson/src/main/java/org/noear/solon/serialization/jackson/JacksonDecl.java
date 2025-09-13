@@ -94,6 +94,8 @@ public class JacksonDecl<F extends ConfigFeature> {
             }
         }
 
-        mapper.registerModule(customModule);
+        if (customModule != null) {
+            mapper.registerModule(customModule);
+        }
     }
 }
