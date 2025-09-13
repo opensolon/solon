@@ -21,8 +21,6 @@ import org.noear.solon.core.handle.Render;
 import org.noear.solon.serialization.SerializerNames;
 import org.noear.solon.serialization.StringSerializerRender;
 
-import java.util.Arrays;
-
 /**
  * Json 渲染器工厂
  *
@@ -33,7 +31,7 @@ import java.util.Arrays;
 public class JacksonRenderFactory extends JacksonRenderFactoryBase {
     public JacksonRenderFactory(JacksonStringSerializer serializer) {
         super(serializer);
-        serializer.getSerializeConfig().getFeatures().add(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        serializer.getSerializeConfig().addFeatures(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         serializer.getSerializeConfig().getMapper().registerModule(new JavaTimeModule());
     }
 
@@ -57,21 +55,20 @@ public class JacksonRenderFactory extends JacksonRenderFactoryBase {
      * 重新设置特性
      */
     public void setFeatures(SerializationFeature... features) {
-        serializer.getSerializeConfig().getFeatures().clear();
-        serializer.getSerializeConfig().getFeatures().addAll(Arrays.asList(features));
+        serializer.getSerializeConfig().setFeatures(features);
     }
 
     /**
      * 添加特性
      */
     public void addFeatures(SerializationFeature... features) {
-        serializer.getSerializeConfig().getFeatures().addAll(Arrays.asList(features));
+        serializer.getSerializeConfig().addFeatures(features);
     }
 
     /**
      * 移除特性
      */
     public void removeFeatures(SerializationFeature... features) {
-        serializer.getSerializeConfig().getFeatures().removeAll(Arrays.asList(features));
+        serializer.getSerializeConfig().removeFeatures(features);
     }
 }

@@ -18,7 +18,6 @@ package org.noear.solon.serialization.snack3;
 import org.noear.snack.ONode;
 import org.noear.snack.core.Feature;
 import org.noear.snack.core.NodeEncoder;
-import org.noear.snack.core.Options;
 import org.noear.solon.Utils;
 import org.noear.solon.core.convert.Converter;
 import org.noear.solon.core.handle.Context;
@@ -42,7 +41,8 @@ import java.lang.reflect.Type;
 public class SnackStringSerializer implements JsonContextSerializer {
     private static final String label = "/json";
 
-    private Options config;
+    private SnackDecl serializeConfig;
+    private SnackDecl deserializeConfig;
 
     public SnackStringSerializer(JsonProps jsonProps) {
         loadJsonProps(jsonProps);
@@ -53,40 +53,25 @@ public class SnackStringSerializer implements JsonContextSerializer {
     }
 
     /**
-     * 获取配置
+     * 获取序列化配置
      */
-    public Options getConfig() {
-        if (config == null) {
-            config = Options.def();
+    public SnackDecl getSerializeConfig() {
+        if (serializeConfig == null) {
+            serializeConfig = new SnackDecl();
         }
 
-        return config;
+        return serializeConfig;
     }
 
     /**
-     * 设置配置
+     * 获取反序列化配置
      */
-    public void setConfig(Options config) {
-        if (config != null) {
-            this.config = config;
+    public SnackDecl getDeserializeConfig() {
+        if (deserializeConfig == null) {
+            deserializeConfig = new SnackDecl();
         }
-    }
 
-
-    /**
-     * 配置特性
-     *
-     */
-    public void cfgFeatures(boolean isReset, boolean isAdd, Feature... features) {
-        if (isReset) {
-            getConfig().setFeatures(features);
-        } else {
-            if (isAdd) {
-                getConfig().add(features);
-            } else {
-                getConfig().remove(features);
-            }
-        }
+        return deserializeConfig;
     }
 
     /**
@@ -135,7 +120,7 @@ public class SnackStringSerializer implements JsonContextSerializer {
      */
     @Override
     public String serialize(Object obj) throws IOException {
-        return ONode.loadObj(obj, getConfig()).toJson();
+        return ONode.loadObj(obj, getSerializeConfig().getOptions()).toJson();
     }
 
     /**
@@ -147,9 +132,9 @@ public class SnackStringSerializer implements JsonContextSerializer {
     @Override
     public Object deserialize(String data, Type toType) throws IOException {
         if (toType == null) {
-            return ONode.loadStr(data, getConfig());
+            return ONode.loadStr(data, getDeserializeConfig().getOptions());
         } else {
-            return ONode.loadStr(data, getConfig()).toObject(toType);
+            return ONode.loadStr(data, getDeserializeConfig().getOptions()).toObject(toType);
         }
     }
 
@@ -183,7 +168,7 @@ public class SnackStringSerializer implements JsonContextSerializer {
         String data = ctx.bodyNew();
 
         if (Utils.isNotEmpty(data)) {
-            return ONode.loadStr(data, getConfig());
+            return ONode.loadStr(data, getDeserializeConfig().getOptions());
         } else {
             return null;
         }
@@ -196,7 +181,7 @@ public class SnackStringSerializer implements JsonContextSerializer {
      * @param encoder 编码器
      */
     public <T> void addEncoder(Class<T> clz, NodeEncoder<T> encoder) {
-        getConfig().addEncoder(clz, encoder);
+        getSerializeConfig().getOptions().addEncoder(clz, encoder);
     }
 
     /**
@@ -231,27 +216,27 @@ public class SnackStringSerializer implements JsonContextSerializer {
             JsonPropsUtil2.longAsString(this, jsonProps);
 
             if (jsonProps.nullStringAsEmpty) {
-                cfgFeatures(false, true, Feature.StringNullAsEmpty);
+                getSerializeConfig().addFeatures(Feature.StringNullAsEmpty);
             }
 
             if (jsonProps.nullBoolAsFalse) {
-                cfgFeatures(false, true, Feature.BooleanNullAsFalse);
+                getSerializeConfig().addFeatures(Feature.BooleanNullAsFalse);
             }
 
             if (jsonProps.nullNumberAsZero) {
-                cfgFeatures(false, true, Feature.NumberNullAsZero);
+                getSerializeConfig().addFeatures(Feature.NumberNullAsZero);
             }
 
             if (jsonProps.nullArrayAsEmpty) {
-                cfgFeatures(false, true, Feature.ArrayNullAsEmpty);
+                getSerializeConfig().addFeatures(Feature.ArrayNullAsEmpty);
             }
 
             if (jsonProps.nullAsWriteable) {
-                cfgFeatures(false, true, Feature.SerializeNulls);
+                getSerializeConfig().addFeatures(Feature.SerializeNulls);
             }
 
             if (jsonProps.enumAsName) {
-                cfgFeatures(false, true, Feature.EnumUsingName);
+                getSerializeConfig().addFeatures(Feature.EnumUsingName);
             }
         }
     }
