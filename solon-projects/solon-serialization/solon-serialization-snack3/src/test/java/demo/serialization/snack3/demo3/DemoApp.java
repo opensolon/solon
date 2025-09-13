@@ -24,7 +24,7 @@ import org.noear.solon.serialization.snack3.SnackActionExecutor;
 public class DemoApp {
     public static void main(String[] args) {
         Solon.start(demo.serialization.snack3.demo2.DemoApp.class, args, app -> {
-            app.onEvent(SnackActionExecutor.class, executor -> {
+            app.context().getBeanAsync(SnackActionExecutor.class, executor -> {
                 executor.config().addDecoder(String.class, (node, type) -> {
                     return node.getString();
                 });
