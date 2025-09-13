@@ -51,6 +51,13 @@ import com.fasterxml.jackson.databind.MapperFeature;
  */
 public class JacksonStringSerializer implements JsonContextSerializer {
     private static final String label = "/json";
+    private static final JacksonStringSerializer _default = new JacksonStringSerializer();
+
+    public static JacksonStringSerializer getDefault() {
+        return _default;
+    }
+
+
     private JacksonDecl<SerializationFeature> serializeConfig;
     private JacksonDecl<DeserializationFeature> deserializeConfig;
 

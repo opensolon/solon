@@ -31,7 +31,7 @@ public class SerializationAbcPlugin implements Plugin {
     public void start(AppContext context) throws Throwable {
 
         //::serializer
-        AbcBytesSerializer serializer = new AbcBytesSerializer();
+        AbcBytesSerializer serializer = AbcBytesSerializer.getDefault();
         context.wrapAndPut(AbcBytesSerializer.class, serializer); //用于扩展
         context.app().serializerManager().register(SerializerNames.AT_ABC, serializer);
 

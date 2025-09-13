@@ -44,6 +44,11 @@ import java.lang.reflect.Type;
  */
 public class Fastjson2StringSerializer implements JsonContextSerializer {
     private static final String label = "/json";
+    private static final Fastjson2StringSerializer _default = new Fastjson2StringSerializer();
+
+    public static Fastjson2StringSerializer getDefault() {
+        return _default;
+    }
 
     private Fastjson2Decl<JSONWriter.Context, JSONWriter.Feature> serializeConfig;
     private Fastjson2Decl<JSONReader.Context, JSONReader.Feature> deserializeConfig;

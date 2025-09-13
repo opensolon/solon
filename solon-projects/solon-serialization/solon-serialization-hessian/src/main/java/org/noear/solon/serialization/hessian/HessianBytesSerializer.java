@@ -33,6 +33,19 @@ import java.lang.reflect.Type;
  */
 public class HessianBytesSerializer implements ContextSerializer<byte[]> {
     private static final String label = "application/hessian";
+    private static final HessianBytesSerializer _default = new HessianBytesSerializer();
+
+    public static HessianBytesSerializer getDefault() {
+        return _default;
+    }
+
+    /**
+     * @deprecated 3.6 {@link #getDefault()}
+     * */
+    @Deprecated
+    public static HessianBytesSerializer getInstance() {
+        return _default;
+    }
 
     /**
      * 内容类型

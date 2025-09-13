@@ -36,6 +36,21 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 public class KryoBytesSerializer implements ContextSerializer<byte[]> {
     private static final String label = "application/kryo";
+    private static final KryoBytesSerializer _default = new KryoBytesSerializer();
+
+    public static KryoBytesSerializer getDefault() {
+        return _default;
+    }
+
+    /**
+     * @deprecated 3.6 {@link #getDefault()}
+     * */
+    @Deprecated
+    public static KryoBytesSerializer getInstance() {
+        return _default;
+    }
+
+
     private final Queue<Kryo> objects = new ConcurrentLinkedQueue<>();
 
     protected Kryo obtain() {

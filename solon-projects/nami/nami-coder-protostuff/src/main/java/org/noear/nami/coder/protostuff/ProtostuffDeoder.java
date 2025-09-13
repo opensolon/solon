@@ -30,7 +30,7 @@ import java.lang.reflect.Type;
 public class ProtostuffDeoder implements Decoder {
     public static final ProtostuffDeoder instance = new ProtostuffDeoder();
 
-    private final ProtostuffBytesSerializer serializer = new ProtostuffBytesSerializer();
+    private final ProtostuffBytesSerializer serializer = ProtostuffBytesSerializer.getDefault();
 
 
     @Override

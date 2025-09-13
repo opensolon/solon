@@ -27,7 +27,7 @@ public class SerializationHessianPlugin implements Plugin {
     @Override
     public void start(AppContext context) {
         //::serializer
-        HessianBytesSerializer serializer = new HessianBytesSerializer();
+        HessianBytesSerializer serializer = HessianBytesSerializer.getDefault();
         context.wrapAndPut(HessianBytesSerializer.class, serializer); //用于扩展
         context.app().serializerManager().register(SerializerNames.AT_HESSIAN, serializer);
 

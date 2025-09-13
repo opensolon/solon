@@ -31,6 +31,20 @@ import java.lang.reflect.Type;
  */
 public class AbcBytesSerializer implements ContextSerializer<byte[]> {
     private static final String label = "application/abc";
+    private static final AbcBytesSerializer _default = new AbcBytesSerializer();
+
+    public static AbcBytesSerializer getDefault() {
+        return _default;
+    }
+
+    /**
+     * @deprecated 3.6 {@link #getDefault()}
+     * */
+    @Deprecated
+    public static AbcBytesSerializer getInstance() {
+        return _default;
+    }
+
 
     @Override
     public String mimeType() {

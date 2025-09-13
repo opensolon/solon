@@ -27,7 +27,7 @@ public class SerializationFuryPlugin implements Plugin {
     @Override
     public void start(AppContext context) {
         //::serializer
-        FuryBytesSerializer serializer = new FuryBytesSerializer();
+        FuryBytesSerializer serializer = FuryBytesSerializer.getDefault();
         context.wrapAndPut(FuryBytesSerializer.class, serializer); //用于扩展
         context.app().serializerManager().register(SerializerNames.AT_FURY, serializer);
 

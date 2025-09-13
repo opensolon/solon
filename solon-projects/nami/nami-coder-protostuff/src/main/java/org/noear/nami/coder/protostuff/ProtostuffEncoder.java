@@ -29,7 +29,7 @@ import java.io.IOException;
 public class ProtostuffEncoder implements Encoder {
     public static final ProtostuffEncoder instance = new ProtostuffEncoder();
 
-    private final ProtostuffBytesSerializer serializer = new ProtostuffBytesSerializer();
+    private final ProtostuffBytesSerializer serializer = ProtostuffBytesSerializer.getDefault();
 
     @Override
     public boolean bodyRequired() {

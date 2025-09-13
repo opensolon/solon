@@ -38,7 +38,6 @@ import org.noear.solon.serialization.prop.JsonPropsUtil2;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -52,6 +51,13 @@ import com.fasterxml.jackson.databind.MapperFeature;
  */
 public class JacksonXmlStringSerializer implements JsonContextSerializer {
     public static final String label = "/xml";
+    private static final JacksonXmlStringSerializer _default = new JacksonXmlStringSerializer();
+
+    public static JacksonXmlStringSerializer getDefault() {
+        return _default;
+    }
+
+
     private JacksonXmlDecl<SerializationFeature> serializeConfig;
     private JacksonXmlDecl<DeserializationFeature> deserializeConfig;
 
