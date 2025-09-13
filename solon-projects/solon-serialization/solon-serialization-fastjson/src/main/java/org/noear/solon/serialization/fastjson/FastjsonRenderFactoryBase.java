@@ -46,7 +46,7 @@ public abstract class FastjsonRenderFactoryBase implements JsonRenderFactory {
      * 序列化配置
      */
     public SerializeConfig config() {
-        return serializer.getSerializeConfig();
+        return serializer.getSerializeConfig().getConfig();
     }
 
     /**

@@ -1,6 +1,7 @@
 package demo.serialization.snack3;
 
 import org.noear.snack.core.Feature;
+import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.serialization.snack3.SnackStringSerializer;
 
@@ -16,6 +17,7 @@ import java.util.Date;
  */
 @Configuration
 public class Demo4Config {
+    @Bean
     public void config(SnackStringSerializer serializer) {
         //示例1：通过转换器，做简单类型的定制
         serializer.addEncoder(Date.class, s -> s.getTime());
@@ -37,6 +39,6 @@ public class Demo4Config {
         serializer.getSerializeConfig().setFeatures(Feature.BrowserCompatible); //重设特性
 
 
-        //serializer.getDeserializeConfig();
+        serializer.getDeserializeConfig().addFeatures(Feature.EnumUsingName);
     }
 }
