@@ -38,8 +38,7 @@ public class Fastjson2ActionExecutor extends ActionExecuteHandlerDefault {
 
     public Fastjson2ActionExecutor(Fastjson2StringSerializer serializer) {
         this.serializer = serializer;
-        serializer.getDeserializeConfig().config();
-        serializer.getDeserializeConfig().config(JSONReader.Feature.ErrorOnEnumNotMatch);
+        serializer.getDeserializeConfig().addFeatures(JSONReader.Feature.ErrorOnEnumNotMatch);
     }
 
     /**
@@ -53,7 +52,7 @@ public class Fastjson2ActionExecutor extends ActionExecuteHandlerDefault {
      * 反序列化配置
      */
     public JSONReader.Context config() {
-        return getSerializer().getDeserializeConfig();
+        return getSerializer().getDeserializeConfig().getContext();
     }
 
     /**

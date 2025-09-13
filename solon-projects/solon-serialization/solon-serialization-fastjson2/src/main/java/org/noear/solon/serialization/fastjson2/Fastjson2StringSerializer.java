@@ -16,7 +16,6 @@
 package org.noear.solon.serialization.fastjson2;
 
 import com.alibaba.fastjson2.JSON;
-import com.alibaba.fastjson2.JSONFactory;
 import com.alibaba.fastjson2.JSONReader;
 import com.alibaba.fastjson2.JSONWriter;
 import com.alibaba.fastjson2.reader.ObjectReaderProvider;
@@ -46,8 +45,8 @@ import java.lang.reflect.Type;
 public class Fastjson2StringSerializer implements JsonContextSerializer {
     private static final String label = "/json";
 
-    private JSONWriter.Context serializeConfig;
-    private JSONReader.Context deserializeConfig;
+    private Fastjson2Decl<JSONWriter.Context, JSONWriter.Feature> serializeConfig;
+    private Fastjson2Decl<JSONReader.Context, JSONReader.Feature> deserializeConfig;
 
     public Fastjson2StringSerializer(JsonProps jsonProps) {
         loadJsonProps(jsonProps);
@@ -60,9 +59,9 @@ public class Fastjson2StringSerializer implements JsonContextSerializer {
     /**
      * 获取序列化配置
      */
-    public JSONWriter.Context getSerializeConfig() {
+    public Fastjson2Decl<JSONWriter.Context, JSONWriter.Feature> getSerializeConfig() {
         if (serializeConfig == null) {
-            serializeConfig = new JSONWriter.Context(new ObjectWriterProvider());
+            serializeConfig = new Fastjson2Decl<>(new JSONWriter.Context(new ObjectWriterProvider()));
         }
 
         return serializeConfig;
@@ -71,45 +70,11 @@ public class Fastjson2StringSerializer implements JsonContextSerializer {
     /**
      * 获取反序列化配置
      */
-    public JSONReader.Context getDeserializeConfig() {
+    public Fastjson2Decl<JSONReader.Context, JSONReader.Feature> getDeserializeConfig() {
         if (deserializeConfig == null) {
-            deserializeConfig = new JSONReader.Context(new ObjectReaderProvider());
+            deserializeConfig = new Fastjson2Decl<>(new JSONReader.Context(new ObjectReaderProvider()));
         }
         return deserializeConfig;
-    }
-
-    /**
-     * 配置序列化特性
-     *
-     * @param isReset  是否重置
-     * @param isAdd    是否添加
-     * @param features 特性
-     */
-    public void cfgSerializeFeatures(boolean isReset, boolean isAdd, JSONWriter.Feature... features) {
-        if (isReset) {
-            getSerializeConfig().setFeatures(JSONFactory.getDefaultWriterFeatures());
-        }
-
-        for (JSONWriter.Feature feature : features) {
-            getSerializeConfig().config(feature, isAdd);
-        }
-    }
-
-    /**
-     * 配置反序列化特性
-     *
-     * @param isReset  是否重置
-     * @param isAdd    是否添加
-     * @param features 特性
-     */
-    public void cfgDeserializeFeatures(boolean isReset, boolean isAdd, JSONReader.Feature... features) {
-        if (isReset) {
-            getDeserializeConfig().setFeatures(JSONFactory.getDefaultReaderFeatures());
-        }
-
-        for (JSONReader.Feature feature : features) {
-            getDeserializeConfig().config(feature, isAdd);
-        }
     }
 
     /**
@@ -159,7 +124,7 @@ public class Fastjson2StringSerializer implements JsonContextSerializer {
      */
     @Override
     public String serialize(Object obj) throws IOException {
-        return JSON.toJSONString(obj, getSerializeConfig());
+        return JSON.toJSONString(obj, getSerializeConfig().getContext());
     }
 
     /**
@@ -171,9 +136,9 @@ public class Fastjson2StringSerializer implements JsonContextSerializer {
     @Override
     public Object deserialize(String data, Type toType) throws IOException {
         if (toType == null) {
-            return JSON.parse(data, getDeserializeConfig());
+            return JSON.parse(data, getDeserializeConfig().getContext());
         } else {
-            return JSON.parseObject(data, toType, getDeserializeConfig());
+            return JSON.parseObject(data, toType, getDeserializeConfig().getContext());
         }
     }
 
@@ -207,7 +172,7 @@ public class Fastjson2StringSerializer implements JsonContextSerializer {
         String data = ctx.bodyNew();
 
         if (Utils.isNotEmpty(data)) {
-            return JSON.parse(data, getDeserializeConfig());
+            return JSON.parse(data, getDeserializeConfig().getContext());
         } else {
             return null;
         }
@@ -220,7 +185,7 @@ public class Fastjson2StringSerializer implements JsonContextSerializer {
      * @param encoder 编码器
      */
     public <T> void addEncoder(Class<T> clz, ObjectWriter encoder) {
-        getSerializeConfig().getProvider().register(clz, encoder);
+        getSerializeConfig().getContext().getProvider().register(clz, encoder);
     }
 
     /**
@@ -258,12 +223,12 @@ public class Fastjson2StringSerializer implements JsonContextSerializer {
         if (jsonProps != null) {
             if (jsonProps.dateAsTicks) {
                 jsonProps.dateAsTicks = false;
-                getSerializeConfig().setDateFormat("millis");
+                getSerializeConfig().getContext().setDateFormat("millis");
             }
 
             if (Utils.isNotEmpty(jsonProps.dateAsFormat)) {
                 //这个方案，可以支持全局配置，且个性注解不会失效；//用编码器会让个性注解失效
-                getSerializeConfig().setDateFormat(jsonProps.dateAsFormat);
+                getSerializeConfig().getContext().setDateFormat(jsonProps.dateAsFormat);
             }
 
             //JsonPropsUtil.dateAsFormat(this, jsonProps);
@@ -277,35 +242,35 @@ public class Fastjson2StringSerializer implements JsonContextSerializer {
                     jsonProps.nullStringAsEmpty;
 
             if (jsonProps.nullStringAsEmpty) {
-                cfgSerializeFeatures(false, true, JSONWriter.Feature.WriteNullStringAsEmpty);
+                getSerializeConfig().addFeatures(JSONWriter.Feature.WriteNullStringAsEmpty);
             }
 
             if (jsonProps.nullBoolAsFalse) {
-                cfgSerializeFeatures(false, true, JSONWriter.Feature.WriteNullBooleanAsFalse);
+                getSerializeConfig().addFeatures(JSONWriter.Feature.WriteNullBooleanAsFalse);
             }
 
             if (jsonProps.nullNumberAsZero) {
-                cfgSerializeFeatures(false, true, JSONWriter.Feature.WriteNullNumberAsZero);
+                getSerializeConfig().addFeatures(JSONWriter.Feature.WriteNullNumberAsZero);
             }
 
             if (jsonProps.boolAsInt) {
-                cfgSerializeFeatures(false, true, JSONWriter.Feature.WriteBooleanAsNumber);
+                getSerializeConfig().addFeatures(JSONWriter.Feature.WriteBooleanAsNumber);
             }
 
             if (jsonProps.longAsString) {
-                cfgSerializeFeatures(false, true, JSONWriter.Feature.WriteLongAsString);
+                getSerializeConfig().addFeatures(JSONWriter.Feature.WriteLongAsString);
             }
 
             if (jsonProps.nullArrayAsEmpty) {
-                cfgSerializeFeatures(false, true, JSONWriter.Feature.WriteNullListAsEmpty);
+                getSerializeConfig().addFeatures(JSONWriter.Feature.WriteNullListAsEmpty);
             }
 
             if (jsonProps.enumAsName) {
-                cfgSerializeFeatures(false, true, JSONWriter.Feature.WriteEnumsUsingName);
+                getSerializeConfig().addFeatures(JSONWriter.Feature.WriteEnumsUsingName);
             }
 
             if (writeNulls) {
-                cfgSerializeFeatures(false, true, JSONWriter.Feature.WriteNulls);
+                getSerializeConfig().addFeatures(JSONWriter.Feature.WriteNulls);
             }
         }
     }

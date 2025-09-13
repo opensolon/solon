@@ -12,7 +12,7 @@ import org.noear.solon.core.util.Assert;
  * @since 3.5
  */
 public class FastjsonDecl<C,F> {
-    private final boolean isSerialize;
+    private final boolean forSerialize;
     private C config;
     private int featuresCode;
 
@@ -20,10 +20,10 @@ public class FastjsonDecl<C,F> {
         this.config = config;
 
         if (config instanceof SerializeConfig) {
-            isSerialize = true;
+            forSerialize = true;
             featuresCode = JSON.DEFAULT_GENERATE_FEATURE;
         } else {
-            isSerialize = false;
+            forSerialize = false;
             featuresCode = JSON.DEFAULT_PARSER_FEATURE;
         }
     }
@@ -54,7 +54,7 @@ public class FastjsonDecl<C,F> {
      * 设置特性
      */
     public void setFeatures(F... features) {
-        if (isSerialize) {
+        if (forSerialize) {
             //序列化
             featuresCode = JSON.DEFAULT_GENERATE_FEATURE;
             addFeatures(features);
@@ -68,7 +68,7 @@ public class FastjsonDecl<C,F> {
      * 添加特性
      */
     public void addFeatures(F... features) {
-        if (isSerialize) {
+        if (forSerialize) {
             //序列化
             for (F f1 : features) {
                 SerializerFeature feature = (SerializerFeature) f1;
@@ -86,7 +86,7 @@ public class FastjsonDecl<C,F> {
      * 移除特性
      */
     public void removeFeatures(F... features) {
-        if (isSerialize) {
+        if (forSerialize) {
             //序列化
             for (F f1 : features) {
                 SerializerFeature feature = (SerializerFeature) f1;
