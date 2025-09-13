@@ -69,6 +69,16 @@ public class Fastjson2StringSerializer implements JsonContextSerializer {
     }
 
     /**
+     * 获取反序列化配置
+     */
+    public JSONReader.Context getDeserializeConfig() {
+        if (deserializeConfig == null) {
+            deserializeConfig = new JSONReader.Context(new ObjectReaderProvider());
+        }
+        return deserializeConfig;
+    }
+
+    /**
      * 配置序列化特性
      *
      * @param isReset  是否重置
@@ -83,16 +93,6 @@ public class Fastjson2StringSerializer implements JsonContextSerializer {
         for (JSONWriter.Feature feature : features) {
             getSerializeConfig().config(feature, isAdd);
         }
-    }
-
-    /**
-     * 获取反序列化配置
-     */
-    public JSONReader.Context getDeserializeConfig() {
-        if (deserializeConfig == null) {
-            deserializeConfig = new JSONReader.Context(new ObjectReaderProvider());
-        }
-        return deserializeConfig;
     }
 
     /**
@@ -254,27 +254,6 @@ public class Fastjson2StringSerializer implements JsonContextSerializer {
     }
 
 
-    /**
-     * 重新设置特性
-     */
-    public void setFeatures(JSONWriter.Feature... features) {
-        cfgSerializeFeatures(true, true, features);
-    }
-
-    /**
-     * 添加特性
-     */
-    public void addFeatures(JSONWriter.Feature... features) {
-        cfgSerializeFeatures(false, true, features);
-    }
-
-    /**
-     * 移除特性
-     */
-    public void removeFeatures(JSONWriter.Feature... features) {
-        cfgSerializeFeatures(false, false, features);
-    }
-
     protected void loadJsonProps(JsonProps jsonProps) {
         if (jsonProps != null) {
             if (jsonProps.dateAsTicks) {
@@ -298,35 +277,35 @@ public class Fastjson2StringSerializer implements JsonContextSerializer {
                     jsonProps.nullStringAsEmpty;
 
             if (jsonProps.nullStringAsEmpty) {
-                this.addFeatures(JSONWriter.Feature.WriteNullStringAsEmpty);
+                cfgSerializeFeatures(false, true, JSONWriter.Feature.WriteNullStringAsEmpty);
             }
 
             if (jsonProps.nullBoolAsFalse) {
-                this.addFeatures(JSONWriter.Feature.WriteNullBooleanAsFalse);
+                cfgSerializeFeatures(false, true, JSONWriter.Feature.WriteNullBooleanAsFalse);
             }
 
             if (jsonProps.nullNumberAsZero) {
-                this.addFeatures(JSONWriter.Feature.WriteNullNumberAsZero);
+                cfgSerializeFeatures(false, true, JSONWriter.Feature.WriteNullNumberAsZero);
             }
 
             if (jsonProps.boolAsInt) {
-                this.addFeatures(JSONWriter.Feature.WriteBooleanAsNumber);
+                cfgSerializeFeatures(false, true, JSONWriter.Feature.WriteBooleanAsNumber);
             }
 
             if (jsonProps.longAsString) {
-                this.addFeatures(JSONWriter.Feature.WriteLongAsString);
+                cfgSerializeFeatures(false, true, JSONWriter.Feature.WriteLongAsString);
             }
 
             if (jsonProps.nullArrayAsEmpty) {
-                this.addFeatures(JSONWriter.Feature.WriteNullListAsEmpty);
+                cfgSerializeFeatures(false, true, JSONWriter.Feature.WriteNullListAsEmpty);
             }
 
             if (jsonProps.enumAsName) {
-                this.addFeatures(JSONWriter.Feature.WriteEnumsUsingName);
+                cfgSerializeFeatures(false, true, JSONWriter.Feature.WriteEnumsUsingName);
             }
 
             if (writeNulls) {
-                this.addFeatures(JSONWriter.Feature.WriteNulls);
+                cfgSerializeFeatures(false, true, JSONWriter.Feature.WriteNulls);
             }
         }
     }

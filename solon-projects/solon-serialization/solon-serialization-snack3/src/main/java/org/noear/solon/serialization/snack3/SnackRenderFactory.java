@@ -30,7 +30,7 @@ import org.noear.solon.serialization.StringSerializerRender;
 public class SnackRenderFactory extends SnackRenderFactoryBase {
     public SnackRenderFactory(SnackStringSerializer serializer) {
         super(serializer);
-        serializer.addFeatures(Feature.EnumUsingName);
+        serializer.cfgFeatures(false, true, Feature.EnumUsingName);
     }
 
     /**

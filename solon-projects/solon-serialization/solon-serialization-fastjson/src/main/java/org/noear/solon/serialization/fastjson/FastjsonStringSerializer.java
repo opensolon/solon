@@ -47,7 +47,7 @@ public class FastjsonStringSerializer implements JsonContextSerializer {
     private ParserConfig deserializeConfig;
     private int deserializeFeatures = JSON.DEFAULT_PARSER_FEATURE;
 
-    public FastjsonStringSerializer(JsonProps  jsonProps) {
+    public FastjsonStringSerializer(JsonProps jsonProps) {
         loadJsonProps(jsonProps);
     }
 
@@ -67,13 +67,24 @@ public class FastjsonStringSerializer implements JsonContextSerializer {
     }
 
     /**
+     * 获取反序列化配置
+     */
+    public ParserConfig getDeserializeConfig() {
+        if (deserializeConfig == null) {
+            deserializeConfig = new ParserConfig();
+        }
+
+        return deserializeConfig;
+    }
+
+    /**
      * 配置序列化特性
      *
      * @param isReset  是否重置
      * @param isAdd    是否添加
      * @param features 特性
      */
-    public void cfgSerializerFeatures(boolean isReset, boolean isAdd, SerializerFeature... features) {
+    public void cfgSerializeFeatures(boolean isReset, boolean isAdd, SerializerFeature... features) {
         if (isReset) {
             serializerFeatures = JSON.DEFAULT_GENERATE_FEATURE;
         }
@@ -85,17 +96,6 @@ public class FastjsonStringSerializer implements JsonContextSerializer {
                 serializerFeatures &= ~feature.getMask();
             }
         }
-    }
-
-    /**
-     * 获取反序列化配置
-     */
-    public ParserConfig getDeserializeConfig() {
-        if (deserializeConfig == null) {
-            deserializeConfig = new ParserConfig();
-        }
-
-        return deserializeConfig;
     }
 
     /**
@@ -289,27 +289,6 @@ public class FastjsonStringSerializer implements JsonContextSerializer {
         });
     }
 
-    /**
-     * 重新设置特性
-     */
-    public void setFeatures(SerializerFeature... features) {
-        cfgSerializerFeatures(true, true, features);
-    }
-
-    /**
-     * 添加特性
-     */
-    public void addFeatures(SerializerFeature... features) {
-       cfgSerializerFeatures(false, true, features);
-    }
-
-    /**
-     * 移除特性
-     */
-    public void removeFeatures(SerializerFeature... features) {
-       cfgSerializerFeatures(false, false, features);
-    }
-
     protected void loadJsonProps(JsonProps jsonProps) {
         if (jsonProps != null) {
             JsonPropsUtil2.dateAsFormat(this, jsonProps);
@@ -318,27 +297,27 @@ public class FastjsonStringSerializer implements JsonContextSerializer {
             JsonPropsUtil2.longAsString(this, jsonProps);
 
             if (jsonProps.nullStringAsEmpty) {
-                this.addFeatures(SerializerFeature.WriteNullStringAsEmpty);
+                cfgSerializeFeatures(false, true, SerializerFeature.WriteNullStringAsEmpty);
             }
 
             if (jsonProps.nullBoolAsFalse) {
-                this.addFeatures(SerializerFeature.WriteNullBooleanAsFalse);
+                cfgSerializeFeatures(false, true, SerializerFeature.WriteNullBooleanAsFalse);
             }
 
             if (jsonProps.nullNumberAsZero) {
-                this.addFeatures(SerializerFeature.WriteNullNumberAsZero);
+                cfgSerializeFeatures(false, true, SerializerFeature.WriteNullNumberAsZero);
             }
 
             if (jsonProps.nullArrayAsEmpty) {
-                this.addFeatures(SerializerFeature.WriteNullListAsEmpty);
+                cfgSerializeFeatures(false, true, SerializerFeature.WriteNullListAsEmpty);
             }
 
             if (jsonProps.nullAsWriteable) {
-                this.addFeatures(SerializerFeature.WriteMapNullValue);
+                cfgSerializeFeatures(false, true, SerializerFeature.WriteMapNullValue);
             }
 
             if (jsonProps.enumAsName) {
-                this.addFeatures(SerializerFeature.WriteEnumUsingName);
+                cfgSerializeFeatures(false, true, SerializerFeature.WriteEnumUsingName);
             }
         }
     }

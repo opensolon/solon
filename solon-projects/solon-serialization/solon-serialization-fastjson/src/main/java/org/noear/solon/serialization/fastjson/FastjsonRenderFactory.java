@@ -30,7 +30,7 @@ import org.noear.solon.serialization.StringSerializerRender;
 public class FastjsonRenderFactory extends FastjsonRenderFactoryBase {
     public FastjsonRenderFactory(FastjsonStringSerializer serializer) {
         super(serializer);
-        serializer.cfgSerializerFeatures(false, true, SerializerFeature.BrowserCompatible);
+        serializer.cfgSerializeFeatures(false, true, SerializerFeature.BrowserCompatible);
     }
 
     /**
@@ -53,20 +53,20 @@ public class FastjsonRenderFactory extends FastjsonRenderFactoryBase {
      * 重新设置特性
      */
     public void setFeatures(SerializerFeature... features) {
-        serializer.cfgSerializerFeatures(true, true, features);
+        serializer.cfgSerializeFeatures(true, true, features);
     }
 
     /**
      * 添加特性
      */
     public void addFeatures(SerializerFeature... features) {
-        serializer.cfgSerializerFeatures(false, true, features);
+        serializer.cfgSerializeFeatures(false, true, features);
     }
 
     /**
      * 移除特性
      */
     public void removeFeatures(SerializerFeature... features) {
-        serializer.cfgSerializerFeatures(false, false, features);
+        serializer.cfgSerializeFeatures(false, false, features);
     }
 }
