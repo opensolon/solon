@@ -15,11 +15,15 @@
  */
 package org.noear.solon.serialization.jackson.xml;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.ser.BeanSerializerFactory;
+import com.fasterxml.jackson.databind.ser.SerializerFactory;
 import com.fasterxml.jackson.databind.ser.std.DateSerializer;
 import org.noear.solon.Utils;
 import org.noear.solon.core.convert.Converter;
@@ -27,12 +31,18 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.lang.Nullable;
 import org.noear.solon.serialization.JsonContextSerializer;
+import org.noear.solon.serialization.jackson.xml.impl.NullBeanSerializerModifierImpl;
 import org.noear.solon.serialization.jackson.xml.impl.TypeReferenceImpl;
+import org.noear.solon.serialization.prop.JsonProps;
+import org.noear.solon.serialization.prop.JsonPropsUtil2;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import com.fasterxml.jackson.databind.MapperFeature;
 
 /**
  * Jackson xml 序列化
@@ -47,6 +57,13 @@ public class JacksonXmlStringSerializer implements JsonContextSerializer {
 
     private AtomicBoolean initStatus = new AtomicBoolean(false);
 
+    public JacksonXmlStringSerializer(JsonProps jsonProps) {
+        loadJsonProps(jsonProps);
+    }
+
+    public JacksonXmlStringSerializer() {
+
+    }
 
     /**
      * 获取序列化配置
@@ -254,5 +271,78 @@ public class JacksonXmlStringSerializer implements JsonContextSerializer {
         } else {
             throw new IllegalArgumentException("The result type of the converter is not supported: " + val.getClass().getName());
         }
+    }
+
+
+    /**
+     * 重新设置特性
+     */
+    public void setFeatures(SerializationFeature... features) {
+        getSerializeConfig().getFeatures().clear();
+        getSerializeConfig().getFeatures().addAll(Arrays.asList(features));
+    }
+
+    /**
+     * 添加特性
+     */
+    public void addFeatures(SerializationFeature... features) {
+        getSerializeConfig().getFeatures().addAll(Arrays.asList(features));
+    }
+
+    /**
+     * 移除特性
+     */
+    public void removeFeatures(SerializationFeature... features) {
+        getSerializeConfig().getFeatures().removeAll(Arrays.asList(features));
+    }
+
+    protected void loadJsonProps(JsonProps jsonProps) {
+        boolean writeNulls = false;
+
+        if (jsonProps != null) {
+            JsonPropsUtil2.dateAsFormat(this, jsonProps);
+            JsonPropsUtil2.dateAsTicks(this, jsonProps);
+            JsonPropsUtil2.boolAsInt(this, jsonProps);
+            JsonPropsUtil2.longAsString(this, jsonProps);
+
+            writeNulls = jsonProps.nullAsWriteable ||
+                    jsonProps.nullNumberAsZero ||
+                    jsonProps.nullArrayAsEmpty ||
+                    jsonProps.nullBoolAsFalse ||
+                    jsonProps.nullStringAsEmpty;
+
+            if (writeNulls) {
+                // Xml配置处理,基本都是各类型空值写入
+                SerializerFactory serializerFactory = BeanSerializerFactory.instance.withSerializerModifier(new NullBeanSerializerModifierImpl(jsonProps));
+                getSerializeConfig().getMapper().setSerializerFactory(serializerFactory);
+            }
+
+            if (jsonProps.enumAsName) {
+                getSerializeConfig().getMapper().configure(SerializationFeature.WRITE_ENUMS_USING_TO_STRING, true);
+            }
+        }
+
+        if (writeNulls == false) {
+            getSerializeConfig().getMapper().setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        }
+
+        //启用 transient 关键字
+        getSerializeConfig().getMapper().configure(MapperFeature.PROPAGATE_TRANSIENT_MARKER, true);
+        //启用排序（即使用 LinkedHashMap）
+        getSerializeConfig().getMapper().configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true);
+        //是否识别不带引号的key
+        getSerializeConfig().getMapper().configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+        //是否识别单引号的key
+        getSerializeConfig().getMapper().configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
+        //浮点数默认类型（dubbod 转 BigDecimal）
+        getSerializeConfig().getMapper().configure(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS, true);
+
+
+        //反序列化时候遇到不匹配的属性并不抛出异常
+        getSerializeConfig().getMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        //序列化时候遇到空对象不抛出异常
+        getSerializeConfig().getMapper().configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        //反序列化的时候如果是无效子类型,不抛出异常
+        getSerializeConfig().getMapper().configure(DeserializationFeature.FAIL_ON_INVALID_SUBTYPE, false);
     }
 }

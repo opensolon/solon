@@ -19,8 +19,6 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.noear.solon.core.handle.Render;
 import org.noear.solon.serialization.SerializerNames;
 import org.noear.solon.serialization.StringSerializerRender;
-import org.noear.solon.serialization.prop.JsonProps;
-import org.noear.solon.serialization.prop.JsonPropsUtil;
 
 /**
  * Json 渲染器工厂
@@ -30,10 +28,9 @@ import org.noear.solon.serialization.prop.JsonPropsUtil;
  * @since 2.8
  */
 public class FastjsonRenderFactory extends FastjsonRenderFactoryBase {
-    public FastjsonRenderFactory(FastjsonStringSerializer serializer, JsonProps jsonProps) {
+    public FastjsonRenderFactory(FastjsonStringSerializer serializer) {
         super(serializer);
         serializer.cfgSerializerFeatures(false, true, SerializerFeature.BrowserCompatible);
-        applyProps(jsonProps);
     }
 
     /**
@@ -71,38 +68,5 @@ public class FastjsonRenderFactory extends FastjsonRenderFactoryBase {
      */
     public void removeFeatures(SerializerFeature... features) {
         serializer.cfgSerializerFeatures(false, false, features);
-    }
-
-    protected void applyProps(JsonProps jsonProps) {
-        if (jsonProps != null) {
-            JsonPropsUtil.dateAsFormat(this, jsonProps);
-            JsonPropsUtil.dateAsTicks(this, jsonProps);
-            JsonPropsUtil.boolAsInt(this, jsonProps);
-            JsonPropsUtil.longAsString(this, jsonProps);
-
-            if (jsonProps.nullStringAsEmpty) {
-                this.addFeatures(SerializerFeature.WriteNullStringAsEmpty);
-            }
-
-            if (jsonProps.nullBoolAsFalse) {
-                this.addFeatures(SerializerFeature.WriteNullBooleanAsFalse);
-            }
-
-            if (jsonProps.nullNumberAsZero) {
-                this.addFeatures(SerializerFeature.WriteNullNumberAsZero);
-            }
-
-            if (jsonProps.nullArrayAsEmpty) {
-                this.addFeatures(SerializerFeature.WriteNullListAsEmpty);
-            }
-
-            if (jsonProps.nullAsWriteable) {
-                this.addFeatures(SerializerFeature.WriteMapNullValue);
-            }
-
-            if (jsonProps.enumAsName) {
-                this.addFeatures(SerializerFeature.WriteEnumUsingName);
-            }
-        }
     }
 }

@@ -31,12 +31,12 @@ public class SerializationFastjson2Plugin implements Plugin {
         JsonProps jsonProps = JsonProps.create(context);
 
         //::serializer
-        Fastjson2StringSerializer serializer = new Fastjson2StringSerializer();
+        Fastjson2StringSerializer serializer = new Fastjson2StringSerializer(jsonProps);
         context.wrapAndPut(Fastjson2StringSerializer.class, serializer); //用于扩展
         context.app().serializerManager().register(SerializerNames.AT_JSON, serializer);
 
         //::renderFactory
-        Fastjson2RenderFactory renderFactory = new Fastjson2RenderFactory(serializer, jsonProps);
+        Fastjson2RenderFactory renderFactory = new Fastjson2RenderFactory(serializer);
         context.wrapAndPut(Fastjson2RenderFactory.class, renderFactory); //用于扩展
         context.app().renderManager().register(renderFactory);
 

@@ -34,7 +34,7 @@ public abstract class Fastjson2RenderFactoryBase implements JsonRenderFactory {
     public Fastjson2RenderFactoryBase(Fastjson2StringSerializer serializer){
         this.serializer = serializer;
         //默认时间处理为时间戳
-        serializer.getSerializeConfig().setDateFormat("millis");
+        //serializer.getSerializeConfig().setDateFormat("millis");
     }
 
     /**

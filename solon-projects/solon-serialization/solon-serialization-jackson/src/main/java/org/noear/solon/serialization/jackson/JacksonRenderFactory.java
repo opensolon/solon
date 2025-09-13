@@ -15,22 +15,13 @@
  */
 package org.noear.solon.serialization.jackson;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.noear.solon.core.handle.Render;
 import org.noear.solon.serialization.SerializerNames;
 import org.noear.solon.serialization.StringSerializerRender;
-import org.noear.solon.serialization.jackson.impl.NullValueSerializerImpl;
-import org.noear.solon.serialization.prop.JsonProps;
-import org.noear.solon.serialization.prop.JsonPropsUtil;
 
 import java.util.Arrays;
-
-import static com.fasterxml.jackson.databind.MapperFeature.PROPAGATE_TRANSIENT_MARKER;
-import static com.fasterxml.jackson.databind.MapperFeature.SORT_PROPERTIES_ALPHABETICALLY;
 
 /**
  * Json 渲染器工厂
@@ -40,11 +31,10 @@ import static com.fasterxml.jackson.databind.MapperFeature.SORT_PROPERTIES_ALPHA
  * @since 2.8
  */
 public class JacksonRenderFactory extends JacksonRenderFactoryBase {
-    public JacksonRenderFactory(JacksonStringSerializer serializer, JsonProps jsonProps) {
+    public JacksonRenderFactory(JacksonStringSerializer serializer) {
         super(serializer);
         serializer.getSerializeConfig().getFeatures().add(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         serializer.getSerializeConfig().getMapper().registerModule(new JavaTimeModule());
-        applyProps(jsonProps);
     }
 
     /**
@@ -83,55 +73,5 @@ public class JacksonRenderFactory extends JacksonRenderFactoryBase {
      */
     public void removeFeatures(SerializationFeature... features) {
         serializer.getSerializeConfig().getFeatures().removeAll(Arrays.asList(features));
-    }
-
-    protected void applyProps(JsonProps jsonProps) {
-        boolean writeNulls = false;
-
-        if (jsonProps != null) {
-            JsonPropsUtil.dateAsFormat(this, jsonProps);
-            JsonPropsUtil.dateAsTicks(this, jsonProps);
-            JsonPropsUtil.boolAsInt(this, jsonProps);
-            JsonPropsUtil.longAsString(this, jsonProps);
-
-            writeNulls = jsonProps.nullAsWriteable ||
-                    jsonProps.nullNumberAsZero ||
-                    jsonProps.nullArrayAsEmpty ||
-                    jsonProps.nullBoolAsFalse ||
-                    jsonProps.nullStringAsEmpty;
-
-            if (writeNulls) {
-                this.config()
-                        .getSerializerProvider()
-                        .setNullValueSerializer(new NullValueSerializerImpl(jsonProps));
-            }
-
-            if (jsonProps.enumAsName) {
-                this.config().configure(SerializationFeature.WRITE_ENUMS_USING_TO_STRING, true);
-            }
-        }
-
-        if (writeNulls == false) {
-            this.config().setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        }
-
-        //启用 transient 关键字
-        this.config().configure(PROPAGATE_TRANSIENT_MARKER, true);
-        //启用排序（即使用 LinkedHashMap）
-        this.config().configure(SORT_PROPERTIES_ALPHABETICALLY, true);
-        //是否识别不带引号的key
-        this.config().configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
-        //是否识别单引号的key
-        this.config().configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
-        //浮点数默认类型（dubbod 转 BigDecimal）
-        this.config().configure(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS, true);
-
-
-        //反序列化时候遇到不匹配的属性并不抛出异常
-        this.config().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        //序列化时候遇到空对象不抛出异常
-        this.config().configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-        //反序列化的时候如果是无效子类型,不抛出异常
-        this.config().configure(DeserializationFeature.FAIL_ON_INVALID_SUBTYPE, false);
     }
 }

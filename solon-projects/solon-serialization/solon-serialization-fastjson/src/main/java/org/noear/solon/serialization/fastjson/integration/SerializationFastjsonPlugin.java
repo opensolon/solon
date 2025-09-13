@@ -31,13 +31,13 @@ public class SerializationFastjsonPlugin implements Plugin {
         JsonProps jsonProps = JsonProps.create(context);
 
         //::serializer
-        FastjsonStringSerializer serializer = new FastjsonStringSerializer();
+        FastjsonStringSerializer serializer = new FastjsonStringSerializer(jsonProps);
         context.wrapAndPut(FastjsonStringSerializer.class, serializer); //用于扩展
         context.app().serializerManager().register(SerializerNames.AT_JSON, serializer);
 
         //::renderFactory
         //绑定属性
-        FastjsonRenderFactory renderFactory = new FastjsonRenderFactory(serializer, jsonProps);
+        FastjsonRenderFactory renderFactory = new FastjsonRenderFactory(serializer);
         context.wrapAndPut(FastjsonRenderFactory.class, renderFactory); //用于扩展
         context.app().renderManager().register(renderFactory);
 
