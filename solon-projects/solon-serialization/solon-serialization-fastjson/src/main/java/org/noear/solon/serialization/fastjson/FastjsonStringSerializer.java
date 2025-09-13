@@ -42,10 +42,8 @@ import java.lang.reflect.Type;
 public class FastjsonStringSerializer implements JsonContextSerializer {
     private static final String label = "/json";
 
-    private SerializeConfig serializeConfig;
-    private int serializerFeatures = JSON.DEFAULT_GENERATE_FEATURE;
-    private ParserConfig deserializeConfig;
-    private int deserializeFeatures = JSON.DEFAULT_PARSER_FEATURE;
+    private FastjsonDecl<SerializeConfig, SerializerFeature> serializeConfig;
+    private FastjsonDecl<ParserConfig, Feature> deserializeConfig;
 
     public FastjsonStringSerializer(JsonProps jsonProps) {
         loadJsonProps(jsonProps);
@@ -58,9 +56,9 @@ public class FastjsonStringSerializer implements JsonContextSerializer {
     /**
      * 获取序列化配置
      */
-    public SerializeConfig getSerializeConfig() {
+    public FastjsonDecl<SerializeConfig, SerializerFeature> getSerializeConfig() {
         if (serializeConfig == null) {
-            serializeConfig = new SerializeConfig();
+            serializeConfig = new FastjsonDecl<>(new SerializeConfig());
         }
 
         return serializeConfig;
@@ -69,55 +67,12 @@ public class FastjsonStringSerializer implements JsonContextSerializer {
     /**
      * 获取反序列化配置
      */
-    public ParserConfig getDeserializeConfig() {
+    public FastjsonDecl<ParserConfig, Feature> getDeserializeConfig() {
         if (deserializeConfig == null) {
-            deserializeConfig = new ParserConfig();
+            deserializeConfig = new FastjsonDecl<>(new ParserConfig());
         }
 
         return deserializeConfig;
-    }
-
-    /**
-     * 配置序列化特性
-     *
-     * @param isReset  是否重置
-     * @param isAdd    是否添加
-     * @param features 特性
-     */
-    public void cfgSerializeFeatures(boolean isReset, boolean isAdd, SerializerFeature... features) {
-        if (isReset) {
-            serializerFeatures = JSON.DEFAULT_GENERATE_FEATURE;
-        }
-
-        for (SerializerFeature feature : features) {
-            if (isAdd) {
-                serializerFeatures |= feature.getMask();
-            } else {
-                serializerFeatures &= ~feature.getMask();
-            }
-        }
-    }
-
-    /**
-     * 配置反序列化特性
-     *
-     * @param isReset  是否重置
-     * @param isAdd    是否添加
-     * @param features 特性
-     */
-    public void cfgDeserializeFeatures(boolean isReset, boolean isAdd, Feature... features) {
-        if (isReset) {
-            deserializeFeatures = JSON.DEFAULT_GENERATE_FEATURE;
-        }
-
-        for (Feature feature : features) {
-            if (isAdd) {
-                deserializeFeatures |= feature.getMask();
-            } else {
-                deserializeFeatures &= ~feature.getMask();
-            }
-        }
-
     }
 
     /**
@@ -166,11 +121,16 @@ public class FastjsonStringSerializer implements JsonContextSerializer {
      */
     @Override
     public String serialize(Object obj) throws IOException {
-        if (serializeConfig == null) {
-            return JSON.toJSONString(obj, serializerFeatures);
-        } else {
-            return JSON.toJSONString(obj, serializeConfig, new SerializeFilter[0], null, serializerFeatures);
-        }
+        return JSON.toJSONString(obj,
+                getSerializeConfig().getConfig(),
+                new SerializeFilter[0], null,
+                getSerializeConfig().getFeatures());
+
+//        if (serializeConfig == null) {
+//            return JSON.toJSONString(obj, serializerFeatures);
+//        } else {
+//            return JSON.toJSONString(obj, serializeConfig, new SerializeFilter[0], null, serializerFeatures);
+//        }
     }
 
     /**
@@ -182,11 +142,16 @@ public class FastjsonStringSerializer implements JsonContextSerializer {
     @Override
     public Object deserialize(String data, Type toType) throws IOException {
         if (toType == null) {
-            if (deserializeConfig == null) {
-                return JSON.parse(data, deserializeFeatures);
-            } else {
-                return JSON.parse(data, deserializeConfig, deserializeFeatures);
-            }
+            return JSON.parse(data,
+                    getDeserializeConfig().getConfig(),
+                    getDeserializeConfig().getFeatures());
+
+//            if (deserializeConfig == null) {
+//                return JSON.parse(data, deserializeFeatures);
+//            } else {
+//                return JSON.parse(data, deserializeConfig, deserializeFeatures);
+//            }
+
         } else {
             if (toType instanceof Class) {
                 //处理匿名名类
@@ -196,11 +161,15 @@ public class FastjsonStringSerializer implements JsonContextSerializer {
                 }
             }
 
-            if (deserializeConfig == null) {
-                return JSON.parseObject(data, toType, deserializeFeatures);
-            } else {
-                return JSON.parseObject(data, toType, deserializeConfig, deserializeFeatures);
-            }
+            return JSON.parseObject(data, toType,
+                    getDeserializeConfig().getConfig(),
+                    getDeserializeConfig().getFeatures());
+
+//            if (deserializeConfig == null) {
+//                return JSON.parseObject(data, toType, deserializeFeatures);
+//            } else {
+//                return JSON.parseObject(data, toType, deserializeConfig, deserializeFeatures);
+//            }
         }
     }
 
@@ -234,11 +203,9 @@ public class FastjsonStringSerializer implements JsonContextSerializer {
         String data = ctx.bodyNew();
 
         if (Utils.isNotEmpty(data)) {
-            if (deserializeConfig == null) {
-                return JSON.parse(data, deserializeFeatures);
-            } else {
-                return JSON.parse(data, deserializeConfig, deserializeFeatures);
-            }
+            return JSON.parse(data,
+                    getDeserializeConfig().getConfig(),
+                    getDeserializeConfig().getFeatures());
         } else {
             return null;
         }
@@ -251,12 +218,12 @@ public class FastjsonStringSerializer implements JsonContextSerializer {
      * @param encoder 编码器
      */
     public void addEncoder(Type clz, ObjectSerializer encoder) {
-        getSerializeConfig().put(clz, encoder);
+        getSerializeConfig().getConfig().put(clz, encoder);
 
         if (clz == Long.class) {
-            getSerializeConfig().put(Long.TYPE, encoder);
+            getSerializeConfig().getConfig().put(Long.TYPE, encoder);
         } else if (clz == Integer.class) {
-            getSerializeConfig().put(Integer.TYPE, encoder);
+            getSerializeConfig().getConfig().put(Integer.TYPE, encoder);
         }
     }
 
@@ -297,27 +264,27 @@ public class FastjsonStringSerializer implements JsonContextSerializer {
             JsonPropsUtil2.longAsString(this, jsonProps);
 
             if (jsonProps.nullStringAsEmpty) {
-                cfgSerializeFeatures(false, true, SerializerFeature.WriteNullStringAsEmpty);
+                getSerializeConfig().addFeatures(SerializerFeature.WriteNullStringAsEmpty);
             }
 
             if (jsonProps.nullBoolAsFalse) {
-                cfgSerializeFeatures(false, true, SerializerFeature.WriteNullBooleanAsFalse);
+                getSerializeConfig().addFeatures(SerializerFeature.WriteNullBooleanAsFalse);
             }
 
             if (jsonProps.nullNumberAsZero) {
-                cfgSerializeFeatures(false, true, SerializerFeature.WriteNullNumberAsZero);
+                getSerializeConfig().addFeatures(SerializerFeature.WriteNullNumberAsZero);
             }
 
             if (jsonProps.nullArrayAsEmpty) {
-                cfgSerializeFeatures(false, true, SerializerFeature.WriteNullListAsEmpty);
+                getSerializeConfig().addFeatures(SerializerFeature.WriteNullListAsEmpty);
             }
 
             if (jsonProps.nullAsWriteable) {
-                cfgSerializeFeatures(false, true, SerializerFeature.WriteMapNullValue);
+                getSerializeConfig().addFeatures(SerializerFeature.WriteMapNullValue);
             }
 
             if (jsonProps.enumAsName) {
-                cfgSerializeFeatures(false, true, SerializerFeature.WriteEnumUsingName);
+                getSerializeConfig().addFeatures(SerializerFeature.WriteEnumUsingName);
             }
         }
     }

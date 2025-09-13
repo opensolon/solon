@@ -35,7 +35,7 @@ public class DemoApp {
             });
 
             app.onEvent(FastjsonActionExecutor.class, executor -> {
-                executor.getSerializer().getDeserializeConfig().putDeserializer(String.class, new ObjectDeserializer() {
+                executor.getSerializer().getDeserializeConfig().getConfig().putDeserializer(String.class, new ObjectDeserializer() {
                     @Override
                     public <T> T deserialze(DefaultJSONParser defaultJSONParser, Type type, Object o) {
                         return null;

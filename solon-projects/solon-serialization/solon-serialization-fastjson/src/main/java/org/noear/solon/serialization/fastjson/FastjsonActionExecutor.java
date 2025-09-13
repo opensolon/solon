@@ -52,7 +52,7 @@ public class FastjsonActionExecutor extends ActionExecuteHandlerDefault {
      * 反序列化配置
      */
     public ParserConfig config() {
-        return getSerializer().getDeserializeConfig();
+        return getSerializer().getDeserializeConfig().getConfig();
     }
 
     /**
