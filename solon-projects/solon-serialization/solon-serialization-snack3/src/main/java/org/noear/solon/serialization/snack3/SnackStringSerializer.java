@@ -72,6 +72,23 @@ public class SnackStringSerializer implements JsonContextSerializer {
         }
     }
 
+
+    /**
+     * 配置特性
+     *
+     */
+    public void cfgFeatures(boolean isReset, boolean isAdd, Feature... features) {
+        if (isReset) {
+            getConfig().setFeatures(features);
+        } else {
+            if (isAdd) {
+                getConfig().add(features);
+            } else {
+                getConfig().remove(features);
+            }
+        }
+    }
+
     /**
      * 内容类型
      */
@@ -206,27 +223,6 @@ public class SnackStringSerializer implements JsonContextSerializer {
     }
 
 
-    /**
-     * 重新设置特性
-     */
-    public void setFeatures(Feature... features) {
-        getConfig().setFeatures(features);
-    }
-
-    /**
-     * 添加特性
-     */
-    public void addFeatures(Feature... features) {
-        getConfig().add(features);
-    }
-
-    /**
-     * 移除特性
-     */
-    public void removeFeatures(Feature... features) {
-        getConfig().remove(features);
-    }
-
     protected void loadJsonProps(JsonProps jsonProps) {
         if (jsonProps != null) {
             JsonPropsUtil2.dateAsFormat(this, jsonProps);
@@ -235,27 +231,27 @@ public class SnackStringSerializer implements JsonContextSerializer {
             JsonPropsUtil2.longAsString(this, jsonProps);
 
             if (jsonProps.nullStringAsEmpty) {
-                this.addFeatures(Feature.StringNullAsEmpty);
+                cfgFeatures(false, true, Feature.StringNullAsEmpty);
             }
 
             if (jsonProps.nullBoolAsFalse) {
-                this.addFeatures(Feature.BooleanNullAsFalse);
+                cfgFeatures(false, true, Feature.BooleanNullAsFalse);
             }
 
             if (jsonProps.nullNumberAsZero) {
-                this.addFeatures(Feature.NumberNullAsZero);
+                cfgFeatures(false, true, Feature.NumberNullAsZero);
             }
 
             if (jsonProps.nullArrayAsEmpty) {
-                this.addFeatures(Feature.ArrayNullAsEmpty);
+                cfgFeatures(false, true, Feature.ArrayNullAsEmpty);
             }
 
             if (jsonProps.nullAsWriteable) {
-                this.addFeatures(Feature.SerializeNulls);
+                cfgFeatures(false, true, Feature.SerializeNulls);
             }
 
             if (jsonProps.enumAsName) {
-                this.addFeatures(Feature.EnumUsingName);
+                cfgFeatures(false, true, Feature.EnumUsingName);
             }
         }
     }
