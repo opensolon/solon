@@ -16,6 +16,7 @@
 package org.noear.solon.serialization.snack3;
 
 import org.noear.snack.ONode;
+import org.noear.snack.core.Feature;
 import org.noear.snack.core.NodeEncoder;
 import org.noear.snack.core.Options;
 import org.noear.solon.Utils;
@@ -25,6 +26,8 @@ import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.util.MimeType;
 import org.noear.solon.lang.Nullable;
 import org.noear.solon.serialization.JsonContextSerializer;
+import org.noear.solon.serialization.prop.JsonProps;
+import org.noear.solon.serialization.prop.JsonPropsUtil2;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -40,6 +43,14 @@ public class SnackStringSerializer implements JsonContextSerializer {
     private static final String label = "/json";
 
     private Options config;
+
+    public SnackStringSerializer(JsonProps jsonProps) {
+        loadJsonProps(jsonProps);
+    }
+
+    public SnackStringSerializer() {
+
+    }
 
     /**
      * 获取配置
@@ -192,5 +203,60 @@ public class SnackStringSerializer implements JsonContextSerializer {
                 throw new IllegalArgumentException("The result type of the converter is not supported: " + val.getClass().getName());
             }
         });
+    }
+
+
+    /**
+     * 重新设置特性
+     */
+    public void setFeatures(Feature... features) {
+        getConfig().setFeatures(features);
+    }
+
+    /**
+     * 添加特性
+     */
+    public void addFeatures(Feature... features) {
+        getConfig().add(features);
+    }
+
+    /**
+     * 移除特性
+     */
+    public void removeFeatures(Feature... features) {
+        getConfig().remove(features);
+    }
+
+    protected void loadJsonProps(JsonProps jsonProps) {
+        if (jsonProps != null) {
+            JsonPropsUtil2.dateAsFormat(this, jsonProps);
+            JsonPropsUtil2.dateAsTicks(this, jsonProps);
+            JsonPropsUtil2.boolAsInt(this, jsonProps);
+            JsonPropsUtil2.longAsString(this, jsonProps);
+
+            if (jsonProps.nullStringAsEmpty) {
+                this.addFeatures(Feature.StringNullAsEmpty);
+            }
+
+            if (jsonProps.nullBoolAsFalse) {
+                this.addFeatures(Feature.BooleanNullAsFalse);
+            }
+
+            if (jsonProps.nullNumberAsZero) {
+                this.addFeatures(Feature.NumberNullAsZero);
+            }
+
+            if (jsonProps.nullArrayAsEmpty) {
+                this.addFeatures(Feature.ArrayNullAsEmpty);
+            }
+
+            if (jsonProps.nullAsWriteable) {
+                this.addFeatures(Feature.SerializeNulls);
+            }
+
+            if (jsonProps.enumAsName) {
+                this.addFeatures(Feature.EnumUsingName);
+            }
+        }
     }
 }

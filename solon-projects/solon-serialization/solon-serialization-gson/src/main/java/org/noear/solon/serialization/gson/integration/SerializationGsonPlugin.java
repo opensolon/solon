@@ -31,13 +31,13 @@ public class SerializationGsonPlugin implements Plugin {
         JsonProps jsonProps = JsonProps.create(context);
 
         //::serializer
-        GsonStringSerializer serializer = new GsonStringSerializer();
+        GsonStringSerializer serializer = new GsonStringSerializer(jsonProps);
         context.wrapAndPut(GsonStringSerializer.class, serializer); //用于扩展
         context.app().serializerManager().register(SerializerNames.AT_JSON, serializer);
 
         //::renderFactory
         //绑定属性
-        GsonRenderFactory renderFactory = new GsonRenderFactory(serializer, jsonProps);
+        GsonRenderFactory renderFactory = new GsonRenderFactory(serializer);
         context.wrapAndPut(GsonRenderFactory.class, renderFactory); //用于扩展
         context.app().renderManager().register(renderFactory);
 

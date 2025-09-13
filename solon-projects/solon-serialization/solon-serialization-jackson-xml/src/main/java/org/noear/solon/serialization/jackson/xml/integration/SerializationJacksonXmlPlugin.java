@@ -37,13 +37,13 @@ public class SerializationJacksonXmlPlugin implements Plugin {
         JsonProps jsonProps = JsonProps.create(context);
 
         //::serializer
-        JacksonXmlStringSerializer serializer = new JacksonXmlStringSerializer();
+        JacksonXmlStringSerializer serializer = new JacksonXmlStringSerializer(jsonProps);
         context.wrapAndPut(JacksonXmlStringSerializer.class, serializer); //用于扩展
         context.app().serializerManager().register(SerializerNames.AT_XML, serializer);
 
         //::renderFactory
         //绑定属性
-        JacksonXmlRenderFactory renderFactory = new JacksonXmlRenderFactory(serializer, jsonProps);
+        JacksonXmlRenderFactory renderFactory = new JacksonXmlRenderFactory(serializer);
         context.wrapAndPut(JacksonXmlRenderFactory.class, renderFactory); //用于扩展
         context.app().renderManager().register(renderFactory);
 

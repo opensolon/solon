@@ -16,12 +16,9 @@
 package org.noear.solon.serialization.snack3;
 
 import org.noear.snack.core.Feature;
-import org.noear.snack.core.Options;
 import org.noear.solon.core.handle.Render;
 import org.noear.solon.serialization.SerializerNames;
 import org.noear.solon.serialization.StringSerializerRender;
-import org.noear.solon.serialization.prop.JsonProps;
-import org.noear.solon.serialization.prop.JsonPropsUtil;
 
 /**
  * Json 渲染器工厂
@@ -31,11 +28,9 @@ import org.noear.solon.serialization.prop.JsonPropsUtil;
  * @since 2.8
  */
 public class SnackRenderFactory extends SnackRenderFactoryBase {
-    public SnackRenderFactory(SnackStringSerializer serializer, JsonProps jsonProps) {
+    public SnackRenderFactory(SnackStringSerializer serializer) {
         super(serializer);
-        serializer.setConfig(Options.def());
-        addFeatures(Feature.EnumUsingName);
-        applyProps(jsonProps);
+        serializer.addFeatures(Feature.EnumUsingName);
     }
 
     /**
@@ -73,38 +68,5 @@ public class SnackRenderFactory extends SnackRenderFactoryBase {
      */
     public void removeFeatures(Feature... features) {
         config().remove(features);
-    }
-
-    protected void applyProps(JsonProps jsonProps) {
-        if (jsonProps != null) {
-            JsonPropsUtil.dateAsFormat(this, jsonProps);
-            JsonPropsUtil.dateAsTicks(this, jsonProps);
-            JsonPropsUtil.boolAsInt(this, jsonProps);
-            JsonPropsUtil.longAsString(this, jsonProps);
-
-            if (jsonProps.nullStringAsEmpty) {
-                this.addFeatures(Feature.StringNullAsEmpty);
-            }
-
-            if (jsonProps.nullBoolAsFalse) {
-                this.addFeatures(Feature.BooleanNullAsFalse);
-            }
-
-            if (jsonProps.nullNumberAsZero) {
-                this.addFeatures(Feature.NumberNullAsZero);
-            }
-
-            if (jsonProps.nullArrayAsEmpty) {
-                this.addFeatures(Feature.ArrayNullAsEmpty);
-            }
-
-            if (jsonProps.nullAsWriteable) {
-                this.addFeatures(Feature.SerializeNulls);
-            }
-
-            if (jsonProps.enumAsName) {
-                this.addFeatures(Feature.EnumUsingName);
-            }
-        }
     }
 }

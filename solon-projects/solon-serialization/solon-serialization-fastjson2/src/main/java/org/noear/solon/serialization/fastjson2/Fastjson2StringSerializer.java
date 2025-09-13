@@ -29,6 +29,8 @@ import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.util.MimeType;
 import org.noear.solon.lang.Nullable;
 import org.noear.solon.serialization.JsonContextSerializer;
+import org.noear.solon.serialization.prop.JsonProps;
+import org.noear.solon.serialization.prop.JsonPropsUtil2;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -46,6 +48,14 @@ public class Fastjson2StringSerializer implements JsonContextSerializer {
 
     private JSONWriter.Context serializeConfig;
     private JSONReader.Context deserializeConfig;
+
+    public Fastjson2StringSerializer(JsonProps jsonProps) {
+        loadJsonProps(jsonProps);
+    }
+
+    public Fastjson2StringSerializer() {
+
+    }
 
     /**
      * 获取序列化配置
@@ -112,7 +122,8 @@ public class Fastjson2StringSerializer implements JsonContextSerializer {
 
     /**
      * 数据类型
-     * */
+     *
+     */
     @Override
     public Class<String> dataType() {
         return String.class;
@@ -240,5 +251,83 @@ public class Fastjson2StringSerializer implements JsonContextSerializer {
                 throw new IllegalArgumentException("The result type of the converter is not supported: " + val.getClass().getName());
             }
         });
+    }
+
+
+    /**
+     * 重新设置特性
+     */
+    public void setFeatures(JSONWriter.Feature... features) {
+        cfgSerializeFeatures(true, true, features);
+    }
+
+    /**
+     * 添加特性
+     */
+    public void addFeatures(JSONWriter.Feature... features) {
+        cfgSerializeFeatures(false, true, features);
+    }
+
+    /**
+     * 移除特性
+     */
+    public void removeFeatures(JSONWriter.Feature... features) {
+        cfgSerializeFeatures(false, false, features);
+    }
+
+    protected void loadJsonProps(JsonProps jsonProps) {
+        if (jsonProps != null) {
+            if (jsonProps.dateAsTicks) {
+                jsonProps.dateAsTicks = false;
+                getSerializeConfig().setDateFormat("millis");
+            }
+
+            if (Utils.isNotEmpty(jsonProps.dateAsFormat)) {
+                //这个方案，可以支持全局配置，且个性注解不会失效；//用编码器会让个性注解失效
+                getSerializeConfig().setDateFormat(jsonProps.dateAsFormat);
+            }
+
+            //JsonPropsUtil.dateAsFormat(this, jsonProps);
+            JsonPropsUtil2.dateAsTicks(this, jsonProps);
+            JsonPropsUtil2.boolAsInt(this, jsonProps);
+
+            boolean writeNulls = jsonProps.nullAsWriteable ||
+                    jsonProps.nullNumberAsZero ||
+                    jsonProps.nullArrayAsEmpty ||
+                    jsonProps.nullBoolAsFalse ||
+                    jsonProps.nullStringAsEmpty;
+
+            if (jsonProps.nullStringAsEmpty) {
+                this.addFeatures(JSONWriter.Feature.WriteNullStringAsEmpty);
+            }
+
+            if (jsonProps.nullBoolAsFalse) {
+                this.addFeatures(JSONWriter.Feature.WriteNullBooleanAsFalse);
+            }
+
+            if (jsonProps.nullNumberAsZero) {
+                this.addFeatures(JSONWriter.Feature.WriteNullNumberAsZero);
+            }
+
+            if (jsonProps.boolAsInt) {
+                this.addFeatures(JSONWriter.Feature.WriteBooleanAsNumber);
+            }
+
+            if (jsonProps.longAsString) {
+                this.addFeatures(JSONWriter.Feature.WriteLongAsString);
+            }
+
+            if (jsonProps.nullArrayAsEmpty) {
+                this.addFeatures(JSONWriter.Feature.WriteNullListAsEmpty);
+            }
+
+            if (jsonProps.enumAsName) {
+                this.addFeatures(JSONWriter.Feature.WriteEnumsUsingName);
+            }
+
+            if (writeNulls) {
+                this.addFeatures(JSONWriter.Feature.WriteNulls);
+            }
+        }
     }
 }

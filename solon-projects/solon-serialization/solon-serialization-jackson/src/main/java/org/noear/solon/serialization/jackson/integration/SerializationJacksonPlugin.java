@@ -31,13 +31,13 @@ public class SerializationJacksonPlugin implements Plugin {
         JsonProps jsonProps = JsonProps.create(context);
 
         //::serializer
-        JacksonStringSerializer serializer = new JacksonStringSerializer();
+        JacksonStringSerializer serializer = new JacksonStringSerializer(jsonProps);
         context.wrapAndPut(JacksonStringSerializer.class, serializer); //用于扩展
         context.app().serializerManager().register(SerializerNames.AT_JSON, serializer);
 
         //::renderFactory
         //绑定属性
-        JacksonRenderFactory renderFactory = new JacksonRenderFactory(serializer, jsonProps);
+        JacksonRenderFactory renderFactory = new JacksonRenderFactory(serializer);
         context.wrapAndPut(JacksonRenderFactory.class, renderFactory); //用于扩展
         context.app().renderManager().register(renderFactory);
 

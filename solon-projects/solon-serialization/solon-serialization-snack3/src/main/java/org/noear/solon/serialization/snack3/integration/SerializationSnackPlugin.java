@@ -30,13 +30,13 @@ public class SerializationSnackPlugin implements Plugin {
         JsonProps jsonProps = JsonProps.create(context);
 
         //serializer
-        SnackStringSerializer serializer = new SnackStringSerializer();
+        SnackStringSerializer serializer = new SnackStringSerializer(jsonProps);
         context.wrapAndPut(SnackStringSerializer.class, serializer); //用于扩展
         context.app().serializerManager().register(SerializerNames.AT_JSON, serializer);
 
         //::renderFactory
         //绑定属性
-        SnackRenderFactory renderFactory = new SnackRenderFactory(serializer, jsonProps);
+        SnackRenderFactory renderFactory = new SnackRenderFactory(serializer);
         context.wrapAndPut(SnackRenderFactory.class, renderFactory); //用于扩展
         context.app().renderManager().register(renderFactory);
 

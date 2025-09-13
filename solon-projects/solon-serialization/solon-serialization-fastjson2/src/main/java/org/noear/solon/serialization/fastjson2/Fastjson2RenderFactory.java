@@ -20,8 +20,6 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Render;
 import org.noear.solon.serialization.SerializerNames;
 import org.noear.solon.serialization.StringSerializerRender;
-import org.noear.solon.serialization.prop.JsonProps;
-import org.noear.solon.serialization.prop.JsonPropsUtil;
 
 /**
  * Json 渲染器工厂
@@ -31,11 +29,10 @@ import org.noear.solon.serialization.prop.JsonPropsUtil;
  * @since 1.10
  */
 public class Fastjson2RenderFactory extends Fastjson2RenderFactoryBase {
-    public Fastjson2RenderFactory(Fastjson2StringSerializer serializer, JsonProps jsonProps) {
+    public Fastjson2RenderFactory(Fastjson2StringSerializer serializer) {
         super(serializer);
         serializer.cfgSerializeFeatures(false, true,
                 JSONWriter.Feature.BrowserCompatible);
-        applyProps(jsonProps);
     }
 
     /**
@@ -73,62 +70,5 @@ public class Fastjson2RenderFactory extends Fastjson2RenderFactoryBase {
      */
     public void removeFeatures(JSONWriter.Feature... features) {
         serializer.cfgSerializeFeatures(false, false, features);
-    }
-
-    protected void applyProps(JsonProps jsonProps) {
-        if (jsonProps != null && jsonProps.dateAsTicks) {
-            jsonProps.dateAsTicks = false;
-            this.getSerializer().getSerializeConfig()
-                    .setDateFormat("millis");
-        }
-
-        if (jsonProps != null) {
-            if (Utils.isNotEmpty(jsonProps.dateAsFormat)) {
-                //这个方案，可以支持全局配置，且个性注解不会失效；//用编码器会让个性注解失效
-                serializer.getSerializeConfig().setDateFormat(jsonProps.dateAsFormat);
-            }
-
-            //JsonPropsUtil.dateAsFormat(this, jsonProps);
-            JsonPropsUtil.dateAsTicks(this, jsonProps);
-            JsonPropsUtil.boolAsInt(this, jsonProps);
-
-            boolean writeNulls = jsonProps.nullAsWriteable ||
-                    jsonProps.nullNumberAsZero ||
-                    jsonProps.nullArrayAsEmpty ||
-                    jsonProps.nullBoolAsFalse ||
-                    jsonProps.nullStringAsEmpty;
-
-            if (jsonProps.nullStringAsEmpty) {
-                this.addFeatures(JSONWriter.Feature.WriteNullStringAsEmpty);
-            }
-
-            if (jsonProps.nullBoolAsFalse) {
-                this.addFeatures(JSONWriter.Feature.WriteNullBooleanAsFalse);
-            }
-
-            if (jsonProps.nullNumberAsZero) {
-                this.addFeatures(JSONWriter.Feature.WriteNullNumberAsZero);
-            }
-
-            if (jsonProps.boolAsInt) {
-                this.addFeatures(JSONWriter.Feature.WriteBooleanAsNumber);
-            }
-
-            if (jsonProps.longAsString) {
-                this.addFeatures(JSONWriter.Feature.WriteLongAsString);
-            }
-
-            if (jsonProps.nullArrayAsEmpty) {
-                this.addFeatures(JSONWriter.Feature.WriteNullListAsEmpty);
-            }
-
-            if (jsonProps.enumAsName) {
-                this.addFeatures(JSONWriter.Feature.WriteEnumsUsingName);
-            }
-
-            if (writeNulls) {
-                this.addFeatures(JSONWriter.Feature.WriteNulls);
-            }
-        }
     }
 }

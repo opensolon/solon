@@ -28,7 +28,9 @@ import java.util.TimeZone;
 /**
  * @author noear
  * @since 1.12
+ * @deprecated 3.6 {@link JsonPropsUtil2}
  */
+@Deprecated
 public class JsonPropsUtil {
     /**
      * 尝试应用 Json 全局配置
