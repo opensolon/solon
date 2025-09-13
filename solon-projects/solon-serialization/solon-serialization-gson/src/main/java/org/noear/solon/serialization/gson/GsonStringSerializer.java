@@ -41,6 +41,13 @@ import java.util.Date;
  */
 public class GsonStringSerializer implements JsonContextSerializer {
     private static final String label = "/json";
+    private static final GsonStringSerializer _default = new GsonStringSerializer();
+
+    public static GsonStringSerializer getDefault() {
+        return _default;
+    }
+
+
     private GsonDecl serializeConfig;
     private GsonDecl deserializeConfig;
 

@@ -40,6 +40,11 @@ import java.lang.reflect.Type;
  */
 public class SnackStringSerializer implements JsonContextSerializer {
     private static final String label = "/json";
+    private static final SnackStringSerializer _default = new SnackStringSerializer();
+
+    public static SnackStringSerializer getDefault() {
+        return _default;
+    }
 
     private SnackDecl serializeConfig;
     private SnackDecl deserializeConfig;

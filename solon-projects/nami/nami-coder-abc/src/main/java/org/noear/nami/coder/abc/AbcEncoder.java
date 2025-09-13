@@ -29,7 +29,7 @@ import java.io.IOException;
 public class AbcEncoder implements Encoder {
     public static final AbcEncoder instance = new AbcEncoder();
 
-    private AbcBytesSerializer serializer = new AbcBytesSerializer();
+    private AbcBytesSerializer serializer = AbcBytesSerializer.getDefault();
 
     @Override
     public boolean bodyRequired() {

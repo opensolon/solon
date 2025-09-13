@@ -38,6 +38,21 @@ import java.util.Collection;
  */
 public class FuryBytesSerializer implements ContextSerializer<byte[]> {
     private static final String label = "application/fury";
+    private static final FuryBytesSerializer _default = new FuryBytesSerializer();
+
+    public static FuryBytesSerializer getDefault() {
+        return _default;
+    }
+
+    /**
+     * @deprecated 3.6 {@link #getDefault()}
+     * */
+    @Deprecated
+    public static FuryBytesSerializer getInstance() {
+        return _default;
+    }
+
+
     private final Collection<String> blackList;
     private final AllowListChecker blackListChecker;
     private final ThreadSafeFury fury;

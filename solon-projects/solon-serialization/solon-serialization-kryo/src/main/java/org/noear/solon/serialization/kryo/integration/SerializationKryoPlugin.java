@@ -31,7 +31,7 @@ public class SerializationKryoPlugin implements Plugin {
     public void start(AppContext context) throws Throwable {
 
         //::serializer
-        KryoBytesSerializer serializer = new KryoBytesSerializer();
+        KryoBytesSerializer serializer = KryoBytesSerializer.getDefault();
         context.wrapAndPut(KryoBytesSerializer.class, serializer); //用于扩展
         context.app().serializerManager().register(SerializerNames.AT_KRYO, serializer);
 

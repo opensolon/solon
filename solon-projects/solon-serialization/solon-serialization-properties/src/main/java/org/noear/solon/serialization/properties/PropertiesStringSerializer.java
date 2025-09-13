@@ -37,6 +37,13 @@ import java.util.Properties;
  * @since 2.8
  */
 public class PropertiesStringSerializer implements ContextSerializer<String> {
+    private static final PropertiesStringSerializer _default = new PropertiesStringSerializer();
+
+    public static PropertiesStringSerializer getDefault() {
+        return _default;
+    }
+
+
     private Options config;
 
     /**
