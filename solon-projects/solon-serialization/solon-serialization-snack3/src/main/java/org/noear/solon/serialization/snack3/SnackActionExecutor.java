@@ -40,7 +40,7 @@ public class SnackActionExecutor extends ActionExecuteHandlerDefault {
     public SnackActionExecutor(SnackStringSerializer serializer) {
         super();
         this.serializer = serializer;
-        serializer.getConfig().add(Feature.DisableClassNameRead);
+        serializer.getDeserializeConfig().addFeatures(Feature.DisableClassNameRead);
     }
 
     /**
@@ -54,7 +54,7 @@ public class SnackActionExecutor extends ActionExecuteHandlerDefault {
      * 反序列化配置
      */
     public Options config() {
-        return serializer.getConfig();
+        return serializer.getDeserializeConfig().getOptions();
     }
 
     /**

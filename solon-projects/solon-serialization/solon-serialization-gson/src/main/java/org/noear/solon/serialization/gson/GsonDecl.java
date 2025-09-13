@@ -35,7 +35,7 @@ public class GsonDecl {
     }
 
     public void setBuilder(GsonBuilder builder) {
-        Assert.notNull(builder, "This builder is null");
+        Assert.notNull(builder, "builder can't be null");
         this.builder = builder;
     }
 
@@ -43,7 +43,7 @@ public class GsonDecl {
         builder = new GsonBuilder();
     }
 
-    public Gson getGson() {
+    protected Gson getGson() {
         if (gson == null) {
             Utils.locker().lock();
             try {

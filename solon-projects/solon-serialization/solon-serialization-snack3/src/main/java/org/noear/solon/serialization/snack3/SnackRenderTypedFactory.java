@@ -33,7 +33,7 @@ import org.noear.solon.serialization.StringSerializerRender;
 public class SnackRenderTypedFactory extends SnackRenderFactoryBase {
     public SnackRenderTypedFactory() {
         super(new SnackStringSerializer());
-        serializer.setConfig(Options.serialize());
+        serializer.getDeserializeConfig().setOptions(Options.serialize());
     }
 
     /**

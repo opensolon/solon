@@ -16,57 +16,55 @@
 package org.noear.solon.serialization.snack3;
 
 import org.noear.snack.core.Feature;
-import org.noear.solon.core.handle.Render;
-import org.noear.solon.serialization.SerializerNames;
-import org.noear.solon.serialization.StringSerializerRender;
+import org.noear.snack.core.Options;
+import org.noear.solon.core.util.Assert;
 
 /**
- * Json 渲染器工厂
+ * Json 声明
  *
  * @author noear
- * @since 1.5
- * @since 2.8
+ * @since 3.5
  */
-public class SnackRenderFactory extends SnackRenderFactoryBase {
-    public SnackRenderFactory(SnackStringSerializer serializer) {
-        super(serializer);
-        serializer.getSerializeConfig().addFeatures(Feature.EnumUsingName);
+public class SnackDecl {
+    private Options options;
+
+    public SnackDecl() {
+        this.options = Options.def();
     }
 
     /**
-     * 后缀或名字映射
+     * 获取选项
      */
-    @Override
-    public String[] mappings() {
-        return new String[]{SerializerNames.AT_JSON};
+    public Options getOptions() {
+        return options;
     }
 
     /**
-     * 创建
+     * 设置选项
      */
-    @Override
-    public Render create() {
-        return new StringSerializerRender(false, serializer);
+    public void setOptions(Options options) {
+        Assert.notNull(options, "options can't be null");
+        this.options = options;
     }
 
     /**
-     * 重新设置特性
+     * 设置特性（即重置特性）
      */
     public void setFeatures(Feature... features) {
-        config().setFeatures(features);
+        getOptions().setFeatures(features);
     }
 
     /**
      * 添加特性
      */
     public void addFeatures(Feature... features) {
-        config().add(features);
+        getOptions().add(features);
     }
 
     /**
      * 移除特性
      */
     public void removeFeatures(Feature... features) {
-        config().remove(features);
+        getOptions().remove(features);
     }
 }

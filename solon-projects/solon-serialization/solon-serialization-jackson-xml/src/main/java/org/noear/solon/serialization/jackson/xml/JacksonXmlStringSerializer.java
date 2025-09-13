@@ -88,46 +88,6 @@ public class JacksonXmlStringSerializer implements JsonContextSerializer {
     }
 
     /**
-     * 配置序列化特性
-     *
-     * @param isReset  是否重置
-     * @param isAdd    是否添加
-     * @param features 特性
-     */
-    public void cfgSerializeFeatures(boolean isReset, boolean isAdd, SerializationFeature... features) {
-        if (isReset) {
-            getSerializeConfig().getFeatures().clear();
-        }
-
-        if (isAdd) {
-            getSerializeConfig().getFeatures().addAll(Arrays.asList(features));
-        } else {
-            getSerializeConfig().getFeatures().removeAll(Arrays.asList(features));
-        }
-    }
-
-
-    /**
-     * 配置反序列化特性
-     *
-     * @param isReset  是否重置
-     * @param isAdd    是否添加
-     * @param features 特性
-     */
-    public void cfgDeserializeFeatures(boolean isReset, boolean isAdd, DeserializationFeature... features){
-        if (isReset) {
-            getDeserializeConfig().getFeatures().clear();
-        }
-
-        if (isAdd) {
-            getDeserializeConfig().getFeatures().addAll(Arrays.asList(features));
-        } else {
-            getDeserializeConfig().getFeatures().removeAll(Arrays.asList(features));
-        }
-    }
-
-
-    /**
      * 初始化
      */
     protected void init() {

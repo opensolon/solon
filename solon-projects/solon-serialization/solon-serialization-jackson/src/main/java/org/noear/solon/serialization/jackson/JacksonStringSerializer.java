@@ -37,7 +37,6 @@ import org.noear.solon.serialization.prop.JsonPropsUtil2;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -63,6 +62,10 @@ public class JacksonStringSerializer implements JsonContextSerializer {
 
     }
 
+    /**
+     * 获取序列化配置
+     *
+     */
     public JacksonDecl<SerializationFeature> getSerializeConfig() {
         if (serializeConfig == null) {
             serializeConfig = new JacksonDecl<>();
@@ -71,6 +74,10 @@ public class JacksonStringSerializer implements JsonContextSerializer {
         return serializeConfig;
     }
 
+    /**
+     * 获取反序列化配置
+     *
+     */
     public JacksonDecl<DeserializationFeature> getDeserializeConfig() {
         if (deserializeConfig == null) {
             deserializeConfig = new JacksonDecl<>();
@@ -79,49 +86,7 @@ public class JacksonStringSerializer implements JsonContextSerializer {
         return deserializeConfig;
     }
 
-
-    /**
-     * 配置序列化特性
-     *
-     * @param isReset  是否重置
-     * @param isAdd    是否添加
-     * @param features 特性
-     */
-    public void cfgSerializeFeatures(boolean isReset, boolean isAdd, SerializationFeature... features) {
-        if (isReset) {
-            getSerializeConfig().getFeatures().clear();
-        }
-
-        if (isAdd) {
-            getSerializeConfig().getFeatures().addAll(Arrays.asList(features));
-        } else {
-            getSerializeConfig().getFeatures().removeAll(Arrays.asList(features));
-        }
-    }
-
-
-    /**
-     * 配置反序列化特性
-     *
-     * @param isReset  是否重置
-     * @param isAdd    是否添加
-     * @param features 特性
-     */
-    public void cfgDeserializeFeatures(boolean isReset, boolean isAdd, DeserializationFeature... features){
-        if (isReset) {
-            getDeserializeConfig().getFeatures().clear();
-        }
-
-        if (isAdd) {
-            getDeserializeConfig().getFeatures().addAll(Arrays.asList(features));
-        } else {
-            getDeserializeConfig().getFeatures().removeAll(Arrays.asList(features));
-        }
-    }
-
-
     private AtomicBoolean initStatus = new AtomicBoolean(false);
-
 
     /**
      * 刷新

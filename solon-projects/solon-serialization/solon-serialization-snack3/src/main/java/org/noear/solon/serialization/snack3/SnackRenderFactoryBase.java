@@ -44,7 +44,7 @@ public abstract class SnackRenderFactoryBase implements JsonRenderFactory {
      * 序列化配置
      */
     public Options config() {
-        return serializer.getConfig();
+        return serializer.getSerializeConfig().getOptions();
     }
 
     /**
