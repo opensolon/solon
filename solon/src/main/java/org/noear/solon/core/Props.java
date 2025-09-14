@@ -20,10 +20,8 @@ import org.noear.solon.SolonProps;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.BindProps;
 import org.noear.solon.annotation.Import;
-import org.noear.solon.core.util.ClassUtil;
-import org.noear.solon.core.util.KeyValues;
-import org.noear.solon.core.util.PropUtil;
-import org.noear.solon.core.util.ResourceUtil;
+import org.noear.solon.core.util.*;
+import org.noear.solon.expression.snel.SnEL;
 
 import java.net.URL;
 import java.util.*;
@@ -143,6 +141,9 @@ public class Props extends Properties {
      * @param expr 兼容 ${key} or key or ${key:def} or key:def
      */
     protected String getByExpr(String expr, Properties props, String refKey) {
+        //PropsExpressionContext context = new PropsExpressionContext(this, props, refKey, true);
+        //return SnEL.evalTmpl(expr, context);
+
         return PropUtil.getByExp(this, props, expr, refKey);
     }
 
@@ -157,15 +158,25 @@ public class Props extends Properties {
      * @param tmpl 模板： ${key} 或 aaa${key}bbb 或 ${key:def}/ccc
      */
     protected String getByTmpl(String tmpl, Properties props, String refKey) {
-        return PropUtil.getByTml(this, props, tmpl, refKey);
+        //PropsExpressionContext context = new PropsExpressionContext(this, props, refKey, true);
+        //return SnEL.evalTmpl(tmpl, context);
+
+        return getByTmpl(tmpl, props, refKey, true);
     }
 
     /**
-     * @param tml    模板： ${key} 或 aaa${key}bbb 或 ${key:def}/ccc
+     * @param tmpl   模板： ${key} 或 aaa${key}bbb 或 ${key:def}/ccc
      * @param useDef 是否使用默认值
      */
-    protected String getByTmpl(String tml, Properties props, String refKey, boolean useDef) {
-        return PropUtil.getByTml(this, props, tml, refKey, useDef);
+    protected String getByTmpl(String tmpl, Properties props, String refKey, boolean useDef) {
+        if (Assert.isEmpty(tmpl)) {
+            return tmpl;
+        }
+
+        //PropsExpressionContext context = new PropsExpressionContext(this, props, refKey, useDef);
+        //return SnEL.evalTmpl(tmpl, context);
+
+        return PropUtil.getByTml(this, props, tmpl, refKey, useDef);
     }
 
     /**
