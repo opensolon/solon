@@ -32,6 +32,7 @@
 
 * 调整 `solon-serialization-*` 弱化 ActionExecuteHandler, Render 的定制，改为 XxxxSerializer 对外定制
 * 引入 `solon-expression` 替代 `solon` 内的表达式
+* 添加 `solon` Condition:onExpression（采用 SnEL 表达式）用于替代 onProperty（标为弃用）
 
 ### 3.5.2
 
