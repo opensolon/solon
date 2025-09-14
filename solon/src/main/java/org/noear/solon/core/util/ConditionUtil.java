@@ -17,6 +17,7 @@ package org.noear.solon.core.util;
 
 import org.noear.solon.annotation.Condition;
 import org.noear.solon.core.AppContext;
+import org.noear.solon.expression.snel.SnEL;
 
 import java.lang.reflect.AnnotatedElement;
 
@@ -119,12 +120,19 @@ public class ConditionUtil {
             }
         }
 
+        //@deprecated 3.6
         if (Assert.isNotEmpty(anno.onProperty())) {
             String[] exprs = anno.onProperty().split("&&");
             for (String expr : exprs) {
                 if (testPropertyNo(context, expr.trim())) {
                     return true;
                 }
+            }
+        }
+
+        if (Assert.isNotEmpty(anno.onExpression())) {
+            if (testExpressionNo(context, anno.onExpression().trim())) {
+                return true;
             }
         }
 
@@ -147,6 +155,26 @@ public class ConditionUtil {
         return false;
     }
 
+    private static boolean testExpressionNo(AppContext context, String expr) {
+        Object val = SnEL.eval(expr, context.cfg());
+
+        if (val instanceof Boolean) {
+            return (Boolean) val;
+        }
+
+        if (val instanceof String) {
+            //如果是字符串，有值就行
+            return Assert.isNotEmpty((String) val);
+        }
+
+        //其它，非 null 就行
+        return val != null;
+    }
+
+    /**
+     * @deprecated 3.6
+     * */
+    @Deprecated
     private static boolean testPropertyNo(AppContext context, String expr) {
         int kIdx = expr.indexOf('=');
 

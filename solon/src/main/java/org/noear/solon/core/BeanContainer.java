@@ -25,6 +25,7 @@ import org.noear.solon.core.aspect.InterceptorEntity;
 import org.noear.solon.core.exception.InjectionException;
 import org.noear.solon.core.runtime.AotCollector;
 import org.noear.solon.core.util.*;
+import org.noear.solon.expression.snel.SnEL;
 
 import java.io.Closeable;
 import java.lang.annotation.Annotation;
@@ -1065,56 +1066,80 @@ public abstract class BeanContainer {
                     vh.setValue(bw.get());
                 });
             }
-        } else if (name.startsWith("${classpath:")) {
-            //
-            // @Inject("${classpath:user.yml}") //注入配置文件
-            //
-            String url = name.substring(12, name.length() - 1);
-            Properties val = Utils.loadProperties(ResourceUtil.getResource(getClassLoader(), url));
-
-            if (val == null) {
-                if (required) {
-                    throw new IllegalStateException(name + "  failed to load!");
-                }
-            } else {
-                if (Properties.class == vh.getType()) {
-                    vh.setValue(val);
-                } else if (Map.class == vh.getType()) {
-                    Map<String, String> val2 = new HashMap<>();
-                    val.forEach((k, v) -> {
-                        if (k instanceof String && v instanceof String) {
-                            val2.put((String) k, (String) v);
-                        }
-                    });
-                    vh.setValue(val2);
-                } else {
-                    Object val2 = PropsConverter.global().convert(val, null, vh.getType(), vh.getGenericType());
-                    vh.setValue(val2);
-                    aot().registerEntityType(vh.getType(), vh.getGenericType());
-                }
-            }
-        } else if (name.startsWith("${")) {
-            //
-            // @Inject("${xxx}") //注入配置 ${xxx} or ${xxx:def},只适合单值
-            //
-            String name2 = findConfigKey(name);
-
-            beanInjectConfig(vh, name2, required);
-
-            if (autoRefreshed && vh.isField()) {
-                int defIdx = name2.indexOf(":");
-                if (defIdx > 0) {
-                    name2 = name2.substring(0, defIdx).trim();
-                }
-                String name3 = name2;
-
-                cfg().onChange((key, val) -> {
-                    if (key.startsWith(name3)) {
-                        beanInjectConfig(vh, name3, required);
-                    }
-                });
-            }
+            return;
         } else {
+            if (name.length() > 2) {
+                char c0 = name.charAt(0);
+
+                if (c0 == '$') {
+                    if (name.startsWith("${classpath:")) {
+                        //
+                        // @Inject("${classpath:user.yml}") //注入配置文件
+                        //
+                        String url = name.substring(12, name.length() - 1);
+                        Properties val = Utils.loadProperties(ResourceUtil.getResource(getClassLoader(), url));
+
+                        if (val == null) {
+                            if (required) {
+                                throw new IllegalStateException(name + "  failed to load!");
+                            }
+                        } else {
+                            if (Properties.class == vh.getType()) {
+                                vh.setValue(val);
+                            } else if (Map.class == vh.getType()) {
+                                Map<String, String> val2 = new HashMap<>();
+                                val.forEach((k, v) -> {
+                                    if (k instanceof String && v instanceof String) {
+                                        val2.put((String) k, (String) v);
+                                    }
+                                });
+                                vh.setValue(val2);
+                            } else {
+                                Object val2 = PropsConverter.global().convert(val, null, vh.getType(), vh.getGenericType());
+                                vh.setValue(val2);
+                                aot().registerEntityType(vh.getType(), vh.getGenericType());
+                            }
+                        }
+
+                        return;
+                    }
+
+                    if (name.startsWith("${")) {
+                        //
+                        // @Inject("${xxx}") //注入配置 ${xxx} or ${xxx:def},只适合单值
+                        //
+                        String name2 = findConfigKey(name);
+
+                        beanInjectConfig(vh, name2, required);
+
+                        if (autoRefreshed && vh.isField()) {
+                            int defIdx = name2.indexOf(":");
+                            if (defIdx > 0) {
+                                name2 = name2.substring(0, defIdx).trim();
+                            }
+                            String name3 = name2;
+
+                            cfg().onChange((key, val) -> {
+                                if (key.startsWith(name3)) {
+                                    beanInjectConfig(vh, name3, required);
+                                }
+                            });
+                        }
+                        return;
+                    }
+                }
+
+                if (c0 == '#') {
+                    //新增求值模型求表式
+                    if (name.startsWith("#{")) {
+                        String val = SnEL.evalTmpl(name, cfg());
+                        Object val2 = ConvertUtil.to(vh.getType(), vh.getGenericType(), val);
+                        vh.setValue(val2);
+                        return;
+                    }
+                }
+            }
+
             //
             // @Inject("xxx") //使用 name, 注入BEAN
             //
@@ -1132,35 +1157,37 @@ public abstract class BeanContainer {
         if (typeInj != null && Utils.isNotEmpty(typeInj.value())) {
             String name = typeInj.value();
 
-            if (name.startsWith("${classpath:")) {
-                //
-                // @Inject("${classpath:user.yml}") //注入配置文件
-                //
-                String url = name.substring(12, name.length() - 1);
-                Properties val = Utils.loadProperties(ResourceUtil.getResource(getClassLoader(), url));
+            if (name.length() > 2 && name.charAt(0) == '$') {
+                if (name.startsWith("${classpath:")) {
+                    //
+                    // @Inject("${classpath:user.yml}") //注入配置文件
+                    //
+                    String url = name.substring(12, name.length() - 1);
+                    Properties val = Utils.loadProperties(ResourceUtil.getResource(getClassLoader(), url));
 
-                if (val == null) {
-                    if (typeInj.required()) {
-                        throw new IllegalStateException(name + "  failed to load!");
-                    }
-                } else {
-                    Utils.injectProperties(obj, val);
-                }
-            } else if (typeInj.value().startsWith("${")) {
-                //
-                // @Inject("${xxx}") //注入配置 ${xxx} or ${xxx:def},只适合单值
-                //
-                String name2 = findConfigKey(name);
-
-                beanFillPropertiesDo(name, obj, cfg().getProp(name2), typeInj.required());
-
-                //支持自动刷新
-                if (typeInj.autoRefreshed()) {
-                    cfg().onChange((key, val) -> {
-                        if (key.startsWith(name2)) {
-                            beanFillPropertiesDo(name, obj, cfg().getProp(name2), typeInj.required());
+                    if (val == null) {
+                        if (typeInj.required()) {
+                            throw new IllegalStateException(name + "  failed to load!");
                         }
-                    });
+                    } else {
+                        Utils.injectProperties(obj, val);
+                    }
+                } else if (typeInj.value().startsWith("${")) {
+                    //
+                    // @Inject("${xxx}") //注入配置 ${xxx} or ${xxx:def},只适合单值
+                    //
+                    String name2 = findConfigKey(name);
+
+                    beanFillPropertiesDo(name, obj, cfg().getProp(name2), typeInj.required());
+
+                    //支持自动刷新
+                    if (typeInj.autoRefreshed()) {
+                        cfg().onChange((key, val) -> {
+                            if (key.startsWith(name2)) {
+                                beanFillPropertiesDo(name, obj, cfg().getProp(name2), typeInj.required());
+                            }
+                        });
+                    }
                 }
             }
         }
