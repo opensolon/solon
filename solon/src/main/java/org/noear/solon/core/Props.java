@@ -141,8 +141,13 @@ public class Props extends Properties {
      * @param expr 兼容 ${key} or key or ${key:def} or key:def
      */
     protected String getByExpr(String expr, Properties props, String refKey) {
-        //PropsExpressionContext context = new PropsExpressionContext(this, props, refKey, true);
-        //return SnEL.evalTmpl(expr, context);
+//        PropsExpressionContext context = new PropsExpressionContext( props)
+//                .forMain(this)
+//                .forReferenceKey(refKey)
+//                .forAllowPropertyDefault(true)
+//                .forAllowPropertyNesting(true);
+//
+//        return SnEL.evalTmpl(expr, context);
 
         return PropUtil.getByExp(this, props, expr, refKey);
     }
@@ -173,10 +178,15 @@ public class Props extends Properties {
             return tmpl;
         }
 
-        //PropsExpressionContext context = new PropsExpressionContext(this, props, refKey, useDef);
-        //return SnEL.evalTmpl(tmpl, context);
+        PropsExpressionContext context = new PropsExpressionContext( props)
+                .forMain(this)
+                .forReferenceKey(refKey)
+                .forAllowPropertyDefault(useDef)
+                .forAllowPropertyNesting(true);
 
-        return PropUtil.getByTml(this, props, tmpl, refKey, useDef);
+        return SnEL.evalTmpl(tmpl, context);
+
+//        return PropUtil.getByTml(this, props, tmpl, refKey, useDef);
     }
 
     /**

@@ -28,25 +28,44 @@ import java.util.function.Function;
  * @since 3.6
  */
 public class PropsExpressionContext implements Function<String,Object>, ReturnGuidance, PropertiesGuidance {
-    private final Properties main;
     private final Properties target;
-    private final String refKey;
-    private final boolean useDef;
 
-    public PropsExpressionContext(Properties main, Properties target, String refKey, boolean useDef) {
-        this.main = main;
+    private Properties main;
+    private String referenceKey;
+    private boolean allowPropertyDefault = true;
+    private boolean allowPropertyNesting = true;
+
+    public PropsExpressionContext(Properties target) {
         this.target = target;
-        this.refKey = refKey;
-        this.useDef = useDef;
+    }
+
+    public PropsExpressionContext forMain(Properties main) {
+        this.main = main;
+        return this;
+    }
+
+    public PropsExpressionContext forReferenceKey(String referenceKey) {
+        this.referenceKey = referenceKey;
+        return this;
+    }
+
+    public PropsExpressionContext forAllowPropertyDefault(boolean allowPropertyDefault) {
+        this.allowPropertyDefault = allowPropertyDefault;
+        return this;
+    }
+
+    public PropsExpressionContext forAllowPropertyNesting(boolean allowPropertyNesting) {
+        this.allowPropertyNesting = allowPropertyNesting;
+        return this;
     }
 
     @Override
     public Object apply(String name) {
-        if (name.indexOf('.') == 0 && refKey != null) {
+        if (name.indexOf('.') == 0 && referenceKey != null) {
             //本级引用
-            int refIdx = refKey.lastIndexOf('.');
+            int refIdx = referenceKey.lastIndexOf('.');
             if (refIdx > 0) {
-                name = refKey.substring(0, refIdx) + name;
+                name = referenceKey.substring(0, refIdx) + name;
             }
         }
 
@@ -59,7 +78,9 @@ public class PropsExpressionContext implements Function<String,Object>, ReturnGu
 
         if (val == null) {
             //从"主属性"获取
-            val = main.getProperty(name);
+            if (main != null) {
+                val = main.getProperty(name);
+            }
 
             if (val == null) {
                 //从"环镜变量"获取
@@ -82,6 +103,11 @@ public class PropsExpressionContext implements Function<String,Object>, ReturnGu
 
     @Override
     public boolean allowPropertyDefault() {
-        return useDef;
+        return allowPropertyDefault;
+    }
+
+    @Override
+    public boolean allowPropertyNesting() {
+        return allowPropertyNesting;
     }
 }
