@@ -17,7 +17,7 @@ package org.noear.solon.data.dynamicds;
 
 import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.Invocation;
-import org.noear.solon.core.util.TmplUtil;
+import org.noear.solon.core.util.SnelUtil;
 
 /**
  * 动态数据源切换
@@ -41,7 +41,7 @@ public class DynamicDsInterceptor implements Interceptor {
             String backup = DynamicDsKey.current();
 
             try {
-                String dsName = TmplUtil.parse(anno.value(), inv);
+                String dsName = SnelUtil.evalTmpl(anno.value(), inv);
 
                 DynamicDsKey.use(dsName);
                 return inv.invoke();

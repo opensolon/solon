@@ -17,8 +17,8 @@ package org.noear.solon.data.cache;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.aspect.Invocation;
+import org.noear.solon.core.util.SnelUtil;
 import org.noear.solon.core.util.SupplierEx;
-import org.noear.solon.core.util.TmplUtil;
 import org.noear.solon.data.annotation.Cache;
 import org.noear.solon.data.annotation.CachePut;
 import org.noear.solon.data.annotation.CacheRemove;
@@ -56,7 +56,7 @@ public class CacheExecutorImp {
             key = InvKeys.buildByInv(inv);
         } else {
             //格式化key
-            key = TmplUtil.parse(key, inv);
+            key = SnelUtil.evalTmpl(key, inv);
         }
 
 
@@ -86,7 +86,7 @@ public class CacheExecutorImp {
                     cs.store(key, result, anno.seconds());
 
                     if (Utils.isNotEmpty(anno.tags())) {
-                        String tags = TmplUtil.parse(anno.tags(), inv, result);
+                        String tags = SnelUtil.evalTmpl(anno.tags(), inv);
                         CacheTags ct = new CacheTags(cs);
 
                         //4.添加缓存标签
@@ -119,7 +119,7 @@ public class CacheExecutorImp {
 
         //按 key 清除缓存
         if (Utils.isNotEmpty(anno.keys())) {
-            String keys = TmplUtil.parse(anno.keys(), inv, rstValue);
+            String keys = SnelUtil.evalTmpl(anno.keys(), inv);
 
             for (String key : keys.split(",")) {
                 cs.remove(key);
@@ -128,7 +128,7 @@ public class CacheExecutorImp {
 
         //按 tags 清除缓存
         if (Utils.isNotEmpty(anno.tags())) {
-            String tags = TmplUtil.parse(anno.tags(), inv, rstValue);
+            String tags = SnelUtil.evalTmpl(anno.tags(), inv);
             CacheTags ct = new CacheTags(cs);
 
             for (String tag : tags.split(",")) {
@@ -153,13 +153,13 @@ public class CacheExecutorImp {
 
         //按 key 更新缓存
         if (Utils.isNotEmpty(anno.key())) {
-            String key = TmplUtil.parse(anno.key(), inv, rstValue);
+            String key = SnelUtil.evalTmpl(anno.key(), inv);
             cs.store(key, rstValue, anno.seconds());
         }
 
         //按 tags 更新缓存
         if (Utils.isNotEmpty(anno.tags())) {
-            String tags = TmplUtil.parse(anno.tags(), inv, rstValue);
+            String tags = SnelUtil.evalTmpl(anno.tags(), inv);
             CacheTags ct = new CacheTags(cs);
 
             for (String tag : tags.split(",")) {

@@ -1132,7 +1132,7 @@ public abstract class BeanContainer {
                 if (c0 == '#') {
                     //新增求值模型求表式
                     if (name.startsWith("#{")) {
-                        String val = SnEL.evalTmpl(name, cfg());
+                        String val = SnelUtil.evalTmpl(name, cfg());
                         Object val2 = ConvertUtil.to(vh.getType(), vh.getGenericType(), val);
                         vh.setValue(val2);
                         return;

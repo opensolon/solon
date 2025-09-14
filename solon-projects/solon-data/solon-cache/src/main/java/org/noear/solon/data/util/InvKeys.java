@@ -17,7 +17,7 @@ package org.noear.solon.data.util;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.aspect.Invocation;
-import org.noear.solon.core.util.TmplUtil;
+import org.noear.solon.core.util.SnelUtil;
 
 import java.lang.reflect.Method;
 
@@ -55,9 +55,11 @@ public class InvKeys {
      *
      * @param tml 模板
      * @param inv 拦截动作
+     * @deprecated 3.6 {#{@link SnelUtil#evalTmpl(String, Invocation)}}
      */
+    @Deprecated
     public static String buildByTmlAndInv(String tml, Invocation inv) {
-        return TmplUtil.parse(tml, inv, null);
+        return SnelUtil.evalTmpl(tml, inv);
     }
 
     /**
@@ -66,8 +68,10 @@ public class InvKeys {
      * @param tml 模板
      * @param inv 拦截动作
      * @param rst 返回值
+     * @deprecated 3.6 {#{@link SnelUtil#evalTmpl(String, Invocation)}}
      */
+    @Deprecated
     public static String buildByTmlAndInv(String tml, Invocation inv, Object rst) {
-        return TmplUtil.parse(tml, inv, rst);
+        return SnelUtil.evalTmpl(tml, inv);
     }
 }

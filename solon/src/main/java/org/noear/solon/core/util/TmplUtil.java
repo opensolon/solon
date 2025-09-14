@@ -31,7 +31,9 @@ import java.util.regex.Pattern;
  *
  * @author noear
  * @since 2.8
+ * @deprecated 3.6 {@link SnelUtil}
  */
+@Deprecated
 public class TmplUtil {
     /**
      * 解析模板
@@ -48,7 +50,15 @@ public class TmplUtil {
             return tmpl;
         }
 
-        return parse(tmpl, inv.argsAsMap());
+        if (inv.result() == null) {
+            return parse(tmpl, inv.argsAsMap());
+        } else {
+            //兼容 #parse(tmpl, inv,rst)
+            Map<String, Object> model = new HashMap<>(inv.argsAsMap());
+            model.put("", inv.result());
+
+            return parse(tmpl, model);
+        }
     }
 
     /**
@@ -61,7 +71,9 @@ public class TmplUtil {
      * @param tmpl 模板
      * @param inv  调用
      * @param rst  结果 （宏示例： ${.name}）
+     * @deprecated 3.6 {@link #parse(String, Invocation)}
      */
+    @Deprecated
     public static String parse(String tmpl, Invocation inv, Object rst) {
         if (tmpl.indexOf('$') < 0) {
             return tmpl;
