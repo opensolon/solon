@@ -17,6 +17,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-expression</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
             <version>${junit5.version}</version>

@@ -42,8 +42,21 @@ public @interface Condition {
      * @Condition(onProperty="${prop1} == 1")
      * @Condition(onProperty="${prop1} == 1 && ${prop2} == 2")
      * }</pre>
+     *
+     * @deprecated 3.6 {@link #onExpression()}
      */
+    @Deprecated
     String onProperty() default "";
+
+    /**
+     * 有表达式（SnEL 表达式）
+     * <pre>{@code
+     * @Condition(onExpression="${prop1}")
+     * @Condition(onExpression="${prop1} == 1")
+     * @Condition(onExpression="${prop1} == 1 && ${prop2} == 2")
+     * }</pre>
+     */
+    String onExpression() default "";
 
     /**
      * 缺少 bean type
