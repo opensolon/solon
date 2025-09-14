@@ -91,13 +91,13 @@ public class ConditionConfig {
         username3 = u1;
     }
 
-    @Condition(onExpression = "username != noear") //语法错误
+    @Condition(onExpression = "${username} != 'noear'") //要模拟语法错误
     @Managed
     public void setUsername4(@Inject("${username}") String u1){
         username4 = u1;
     }
 
-    @Condition(onProperty = "username = noear")
+    @Condition(onExpression = "${username} == 'noear'")
     @Managed
     public void setUsername5(@Inject("${username}") String u1){
         username5 = u1;
