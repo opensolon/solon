@@ -1,7 +1,7 @@
 package features;
 
 import org.junit.jupiter.api.Test;
-import org.noear.solon.core.util.TmplUtil;
+import org.noear.solon.core.util.SnelUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,7 +15,7 @@ public class TmlTest {
         Map<String, Object> model = new HashMap<>();
         model.put("datasourceCode", null);
 
-        String temp = TmplUtil.parse("${datasourceCode}", model);
+        String temp = SnelUtil.evalTmpl("${datasourceCode}", model);
         System.out.println(temp);
 
         assert temp != null;
@@ -27,7 +27,7 @@ public class TmlTest {
         Map<String, Object> model = new HashMap<>();
         model.put("datasourceCode", "a");
 
-        String temp = TmplUtil.parse("${datasourceCode}", model);
+        String temp = SnelUtil.evalTmpl("${datasourceCode}", model);
         System.out.println(temp);
 
         assert temp != null;

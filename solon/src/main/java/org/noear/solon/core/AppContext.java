@@ -311,7 +311,7 @@ public class AppContext extends BeanContainer {
                     //支持模板处理
                     List<String> list = new ArrayList<>(anno.value().length);
                     for (String val : anno.value()) {
-                        list.add(TmplUtil.parse(val, inv, rst));
+                        list.add(SnelUtil.evalTmpl(val, inv));
                     }
                     ctx.attrSet(Constants.ATTR_TO, list);
                 }

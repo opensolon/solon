@@ -156,7 +156,7 @@ public class ConditionUtil {
     }
 
     private static boolean testExpression(AppContext context, String expr) {
-        Object val = SnEL.eval(expr, context.cfg());
+        Object val = SnelUtil.eval(expr, context.cfg());
 
         if (val instanceof Boolean) {
             return (Boolean) val;

@@ -18,6 +18,7 @@ package org.noear.solon.core.aspect;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.wrap.MethodHolder;
 import org.noear.solon.core.wrap.ParamWrap;
+import org.noear.solon.lang.Nullable;
 
 import java.lang.annotation.Annotation;
 import java.util.Collections;
@@ -36,6 +37,7 @@ public class Invocation {
     private final Object target;
     private final Object[] args;
     private Map<String, Object> argsMap;
+    private Object result;
     private final MethodHolder method;
     private final List<InterceptorEntity> interceptors;
     private int interceptorIndex = 0;
@@ -105,6 +107,13 @@ public class Invocation {
     }
 
     /**
+     * 获取执行结果（执行后才会有）
+     */
+    public @Nullable Object result() {
+        return result;
+    }
+
+    /**
      * 函数
      */
     public MethodHolder method() {
@@ -122,6 +131,7 @@ public class Invocation {
      * 调用
      */
     public Object invoke() throws Throwable {
-        return interceptors.get(interceptorIndex++).doIntercept(this);
+        result = interceptors.get(interceptorIndex++).doIntercept(this);
+        return result;
     }
 }

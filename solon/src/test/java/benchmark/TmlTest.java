@@ -15,7 +15,7 @@
  */
 package benchmark;
 
-import org.noear.solon.core.util.TmplUtil;
+import org.noear.solon.core.util.SnelUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,20 +25,48 @@ import java.util.Map;
  */
 public class TmlTest {
     public static void main(String[] args) {
+        System.out.println("------------ case1:");
+        case1();
+
+        System.out.println("------------ case2:");
+        case2();
+    }
+
+    private static void case1() {
         String view = "user=${user}";
         Map<String, Object> model = new HashMap<>();
         model.put("user", "noear");
         model.put("label", 1);
-        model.put("",model);
+        model.put("", model);
 
-        System.out.println(TmplUtil.parse(view, model));
+        System.out.println(SnelUtil.evalTmpl(view, model));
 
 
         long timeStart = System.currentTimeMillis();
 
 
         for (int i = 0; i < 100_000; i++) {
-            TmplUtil.parse(view, model);
+            SnelUtil.evalTmpl(view, model);
+        }
+
+        System.out.println(System.currentTimeMillis() - timeStart);
+    }
+
+    private static void case2() {
+        String view = "user=#{user}";
+        Map<String, Object> model = new HashMap<>();
+        model.put("user", "noear");
+        model.put("label", 1);
+        model.put("", model);
+
+        System.out.println(SnelUtil.evalTmpl(view, model));
+
+
+        long timeStart = System.currentTimeMillis();
+
+
+        for (int i = 0; i < 100_000; i++) {
+            SnelUtil.evalTmpl(view, model);
         }
 
         System.out.println(System.currentTimeMillis() - timeStart);
