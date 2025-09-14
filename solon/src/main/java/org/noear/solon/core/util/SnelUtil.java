@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 /**
- * SnelUtil 表达式工具
+ * SnelUtil 表达式工具（为了保持与 TmplUtil 的兼容）
  *
  * @author noear
  * @since 3.6
