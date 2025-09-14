@@ -22,7 +22,9 @@ import java.util.Properties;
  *
  * @author noear
  * @since 2.5
+ * @deprecated 3.6 {@link PropsExpressionContext}
  */
+@Deprecated
 public class PropUtil {
     /**
      * 表达式拆分（拆成 name, def）
