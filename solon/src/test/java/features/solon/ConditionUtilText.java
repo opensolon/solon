@@ -79,6 +79,11 @@ public class ConditionUtilText {
         }
 
         @Override
+        public String onExpression() {
+            return "";
+        }
+
+        @Override
         public Class<?> onMissingBean() {
             return null;
         }

@@ -131,7 +131,7 @@ public class ConditionUtil {
         }
 
         if (Assert.isNotEmpty(anno.onExpression())) {
-            if (testExpressionNo(context, anno.onExpression().trim())) {
+            if (testExpression(context, anno.onExpression().trim()) == false) {
                 return true;
             }
         }
@@ -155,7 +155,7 @@ public class ConditionUtil {
         return false;
     }
 
-    private static boolean testExpressionNo(AppContext context, String expr) {
+    private static boolean testExpression(AppContext context, String expr) {
         Object val = SnEL.eval(expr, context.cfg());
 
         if (val instanceof Boolean) {

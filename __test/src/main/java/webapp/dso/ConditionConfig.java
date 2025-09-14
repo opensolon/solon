@@ -73,25 +73,25 @@ public class ConditionConfig {
         return username22;
     }
 
-    @Condition(onProperty = "${username}")
+    @Condition(onExpression = "${username}")
     @Managed
     public void setUsername(@Inject("${username}") String u1){
         username = u1;
     }
 
-    @Condition(onProperty = "${username2}")
+    @Condition(onExpression = "${username2}")
     @Managed
     public void setUsername2(@Inject("${username2}") String u2){
         username2 = u2;
     }
 
-    @Condition(onProperty = "${username} == noear")
+    @Condition(onExpression = "${username} == 'noear'")
     @Managed
     public void setUsername3(@Inject("${username}") String u1){
         username3 = u1;
     }
 
-    @Condition(onProperty = "username != noear") //语法错误
+    @Condition(onExpression = "username != noear") //语法错误
     @Managed
     public void setUsername4(@Inject("${username}") String u1){
         username4 = u1;
