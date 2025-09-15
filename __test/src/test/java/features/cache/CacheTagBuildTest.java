@@ -19,7 +19,7 @@ import org.junit.jupiter.api.Test;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
-import webapp.dso.cache.OathServer;
+import webapp.dso.cache.OathService;
 import webapp.dso.cache.Oauth;
 
 /**
@@ -28,7 +28,7 @@ import webapp.dso.cache.Oauth;
 @SolonTest(App.class)
 public class CacheTagBuildTest {
     @Inject
-    OathServer oathServer;
+    OathService oathServer;
 
     @Test
     public void test_by_rst() throws InterruptedException{
