@@ -141,4 +141,13 @@ public class HttpUploadTest extends HttpTester {
                 .data("file", "装修-水电-视频.mp4", inputStream, "video/mp4")
                 .post().equals("1");
     }
+
+    @Test
+    public void upload_param_f4() throws IOException {
+        InputStream inputStream = new ByteArrayInputStream("test".getBytes(StandardCharsets.UTF_8));
+
+        assert path("/demo3/upload/f4")
+                .data("file", "装修-水电-视频.mp4", inputStream, "video/mp4")
+                .post().equals("1");
+    }
 }

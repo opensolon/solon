@@ -27,8 +27,8 @@ import org.noear.solon.core.wrap.MethodWrap;
 import org.noear.solon.core.wrap.ParamWrap;
 
 import java.io.InputStream;
-import java.util.Locale;
-import java.util.Map;
+import java.lang.reflect.Type;
+import java.util.*;
 
 /**
  * ActionExecutor 默认实现
@@ -224,7 +224,6 @@ public class ActionExecuteHandlerDefault implements ActionExecuteHandler {
     protected Object changeValue(Context ctx, ParamWrap p, int pi, Class<?> pt, LazyReference bodyRef) throws Throwable {
         String pn = p.spec().getName();        //参数名
         String pv = p.spec().getValue(ctx);    //参数值
-        Object tv = null;               //目标值
 
         if (pv == null) {
             pv = p.spec().getDefaultValue();
@@ -236,31 +235,36 @@ public class ActionExecuteHandlerDefault implements ActionExecuteHandler {
             //
             if (UploadedFile.class == pt) {
                 //1.如果是 UploadedFile 类型
-                tv = ctx.file(pn);
+                return ctx.file(pn);
             } else if (UploadedFile[].class == pt) {
                 //2.如果是 UploadedFile[] 类型
-                tv = ctx.fileValues(pn);
+                return ctx.fileValues(pn);
             } else {
+                if (p.getGenericType() != null && List.class.isAssignableFrom(pt)) {
+                    Type pta0 = p.getGenericType().getActualTypeArguments()[0];
+                    if (UploadedFile.class.equals(pta0)) {
+                        return Arrays.asList(ctx.fileValues(pn));
+                    }
+                }
+
                 //$name 的变量，从attr里找
                 if (pn.startsWith("$")) {
-                    tv = ctx.attr(pn);
+                    return ctx.attr(pn);
                 } else {
                     if (pt.getName().startsWith("java.") || pt.isArray() || pt.isPrimitive() || pt.isEnum()) {
                         //如果是java基础类型，则为null（后面统一地 isPrimitive 做处理）
                         //
-                        tv = null;
+                        return null;
                     } else {
                         //尝试转为实体
-                        tv = changeEntityDo(ctx, p, pn, pt);
+                        return changeEntityDo(ctx, p, pn, pt);
                     }
                 }
             }
         } else {
             //如果拿到了具体的参数值，则开始转换
-            tv = changeValueDo(ctx, p, pn, pt, pv);
+            return changeValueDo(ctx, p, pn, pt, pv);
         }
-
-        return tv;
     }
 
     /**
