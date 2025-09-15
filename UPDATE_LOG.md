@@ -34,6 +34,7 @@
 * 引入 `solon-expression` 替代 `solon` 内的模板表达式工具（仍可使用）
 * 添加 `solon` Condition:onExpression（采用 SnEL 表达式）用于替代 onProperty（标为弃用）
 * 添加 `solon` SnelUtil（基于 SnEL 且兼容旧的 TmplUtil） 替代 TmplUtil（标为弃用）//如果有 # 则为新表达式
+* 添加 `solon-mvc` `List<UploadedFile>` 注入支持（用 `UploadedFile[]` 性能更好）
 * snakeyaml 升为 2.5
 
 
