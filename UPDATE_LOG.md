@@ -31,10 +31,64 @@
 ### 3.6.0
 
 * 调整 `solon-serialization-*` 弱化 ActionExecuteHandler, Render 的定制，改为 XxxxSerializer 对外定制
-* 引入 `solon-expression` 替代 `solon` 内的表达式
+* 引入 `solon-expression` 替代 `solon` 内的模板表达式工具（仍可使用）
 * 添加 `solon` Condition:onExpression（采用 SnEL 表达式）用于替代 onProperty（标为弃用）
-* 添加 `solon` SnelUtil（基于 SnEL 且兼容旧的 TmplUtil） 替代 TmplUtil（标为弃用）
+* 添加 `solon` SnelUtil（基于 SnEL 且兼容旧的 TmplUtil） 替代 TmplUtil（标为弃用）//如果有 # 则为新表达式
 * snakeyaml 升为 2.5
+
+
+```java
+@Managed
+public class SerializerDemo {
+    //ps: 这前需要使用 Fastjson2RenderFactory， Fastjson2ActionExecutor 两个对象，且表意不清晰 //（仍可使用）
+    @Managed
+    public void config(Fastjson2StringSerializer serializer) {
+        //序列化（输出用）
+        serializer.addEncoder(Date.class, s -> s.getTime());
+        
+        serializer.addEncoder(Date.class, (out, obj, o1, type, i) -> {
+            out.writeInt64(((Date) obj).getTime());
+        });
+
+        serializer.getSerializeConfig().addFeatures(JSONWriter.Feature.WriteMapNullValue); //添加特性
+        serializer.getSerializeConfig().removeFeatures(JSONWriter.Feature.BrowserCompatible); //移除特性
+        serializer.getSerializeConfig().setFeatures(JSONWriter.Feature.BrowserCompatible); //重设特性
+
+        //反序列化（收接用）
+        serializer.getDeserializeConfig().addFeatures(JSONReader.Feature.Base64StringAsByteArray);
+    }
+}
+@Managed
+public class ConditionDemo(){
+    //ps: 之前是用 onProperty（功能有限，不够体系化） //（仍可使用）
+    @Condition(onExpression = "${demo.level:1} == '1'") //SnEL 求值表达式
+    @Managed
+    public void ifDemoLevel1ThenRun(){
+        System.out.println("hi!");
+    }
+}
+
+
+@Managed
+public class SnelDemo {
+    //ps: 之前基于 TmplUtil 实现（功能有限，不够体系化） //（仍可使用）
+    @Cache(key = "oath_#{code}", seconds = 10) //SnEL 模板表达式
+    public Oauth queryInfoByCode(String code) {
+        return new Oauth(code, LocalDateTime.now());
+    }
+    
+    @CachePut(keys = "oath_#{result.code}") //(result 为返回结果)
+    public Oauth updateInfo(Oauth oauth) {
+        return oauth;
+    }
+
+    @CacheRemove(keys = "oath_#{oauth.code}")
+    public void removeInfo(Oauth oauth) {
+
+    }
+}
+```
+
 
 ### 3.5.2
 

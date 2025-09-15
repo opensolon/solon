@@ -49,11 +49,12 @@ public @interface Condition {
     String onProperty() default "";
 
     /**
-     * 有表达式（SnEL 表达式）
+     * 有表达式（SnEL 表达式，使用更规范）
+     *
      * <pre>{@code
      * @Condition(onExpression="${prop1}")
-     * @Condition(onExpression="${prop1} == 1")
-     * @Condition(onExpression="${prop1} == 1 && ${prop2} == 2")
+     * @Condition(onExpression="${prop1} == '1'")
+     * @Condition(onExpression="${prop1} == '1' && ${prop2} == '2'")
      * }</pre>
      */
     String onExpression() default "";
