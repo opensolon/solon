@@ -15,10 +15,9 @@
  */
 package org.noear.solon.data.tran.interceptor;
 
-import org.noear.solon.Solon;
 import org.noear.solon.core.aspect.Invocation;
+import org.noear.solon.core.aspect.MethodInterceptor;
 import org.noear.solon.data.annotation.Tran;
-import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.data.tran.TranUtils;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -31,7 +30,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * @deprecated 3.1 {@link TransactionInterceptor}
  * */
 @Deprecated
-public class TranInterceptor implements Interceptor {
+public class TranInterceptor implements MethodInterceptor {
     public static final TranInterceptor instance = new TranInterceptor();
 
     @Override

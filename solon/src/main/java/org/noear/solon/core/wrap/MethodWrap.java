@@ -21,6 +21,7 @@ import org.noear.solon.core.AppContext;
 import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.InterceptorEntity;
 import org.noear.solon.core.aspect.Invocation;
+import org.noear.solon.core.aspect.MethodInterceptor;
 import org.noear.solon.lang.Nullable;
 
 import java.lang.annotation.Annotation;
@@ -36,7 +37,7 @@ import java.util.*;
  * @since 1.0
  * @since 3.0
  * */
-public class MethodWrap implements Interceptor, MethodHolder {
+public class MethodWrap implements MethodInterceptor, MethodHolder {
     private final AppContext context;
 
     //所有者类

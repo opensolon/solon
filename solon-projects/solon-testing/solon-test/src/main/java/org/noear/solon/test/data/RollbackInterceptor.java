@@ -18,8 +18,8 @@ package org.noear.solon.test.data;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.AppContext;
-import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.Invocation;
+import org.noear.solon.core.aspect.MethodInterceptor;
 import org.noear.solon.core.util.RunnableEx;
 import org.noear.solon.data.annotation.TranAnno;
 import org.noear.solon.data.tran.TranUtils;
@@ -33,7 +33,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * @author noear
  * @since 1.10
  */
-public class RollbackInterceptor implements Interceptor {
+public class RollbackInterceptor implements MethodInterceptor {
     @Override
     public Object doIntercept(Invocation inv) throws Throwable {
         if (Solon.app() == null) {

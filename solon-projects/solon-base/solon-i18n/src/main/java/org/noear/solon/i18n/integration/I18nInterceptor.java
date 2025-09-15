@@ -16,8 +16,8 @@
 package org.noear.solon.i18n.integration;
 
 import org.noear.solon.Utils;
-import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.Invocation;
+import org.noear.solon.core.aspect.MethodInterceptor;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.i18n.I18nBundle;
@@ -30,7 +30,7 @@ import org.noear.solon.i18n.annotation.I18n;
  * @author noear
  * @since 1.5
  */
-public final class I18nInterceptor implements Interceptor {
+public final class I18nInterceptor implements MethodInterceptor {
     public static final I18nInterceptor instance = new I18nInterceptor();
 
     @Override

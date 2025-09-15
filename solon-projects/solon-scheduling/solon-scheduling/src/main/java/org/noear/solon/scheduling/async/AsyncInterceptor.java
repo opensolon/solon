@@ -15,8 +15,8 @@
  */
 package org.noear.solon.scheduling.async;
 
-import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.Invocation;
+import org.noear.solon.core.aspect.MethodInterceptor;
 import org.noear.solon.scheduling.annotation.Async;
 
 import java.util.concurrent.Future;
@@ -27,7 +27,7 @@ import java.util.concurrent.Future;
  * @author noear
  * @since 1.11
  */
-public class AsyncInterceptor implements Interceptor {
+public class AsyncInterceptor implements MethodInterceptor {
     private AsyncExecutor asyncExecutor = new AsyncExecutorDefault();
 
     public void setAsyncExecutor(AsyncExecutor asyncExecutor) {

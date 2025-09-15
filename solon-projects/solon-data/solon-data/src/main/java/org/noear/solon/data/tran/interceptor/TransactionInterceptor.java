@@ -15,9 +15,8 @@
  */
 package org.noear.solon.data.tran.interceptor;
 
-import org.noear.solon.Solon;
-import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.Invocation;
+import org.noear.solon.core.aspect.MethodInterceptor;
 import org.noear.solon.data.annotation.Transaction;
 import org.noear.solon.data.tran.TranUtils;
 
@@ -29,7 +28,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * @author noear
  * @since 1.0
  * */
-public class TransactionInterceptor implements Interceptor {
+public class TransactionInterceptor implements MethodInterceptor {
     public static final TransactionInterceptor instance = new TransactionInterceptor();
 
     @Override
