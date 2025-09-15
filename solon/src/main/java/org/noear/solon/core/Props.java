@@ -145,10 +145,13 @@ public class Props extends Properties {
 //                .forMain(this)
 //                .forReferenceKey(refKey)
 //                .forAllowPropertyDefault(true)
-//                .forAllowPropertyNesting(true);
-//
-//        return SnEL.evalTmpl(expr, context);
+//                .forAllowPropertyNesting(false)
+//                .forAllowTextAsProperty(true);
 
+        //ps: evalTmpl 会过滤无模板符号的并直接返回
+//        return SnEL.parseTmpl(expr).eval(context);
+
+        //性能更好
         return PropUtil.getByExp(this, props, expr, refKey);
     }
 
@@ -174,19 +177,20 @@ public class Props extends Properties {
      * @param useDef 是否使用默认值
      */
     protected String getByTmpl(String tmpl, Properties props, String refKey, boolean useDef) {
-        if (Assert.isEmpty(tmpl)) {
-            return tmpl;
-        }
+//        if (Assert.isEmpty(tmpl)) {
+//            return tmpl;
+//        }
+//
+//        PropsExpressionContext context = new PropsExpressionContext( props)
+//                .forMain(this)
+//                .forReferenceKey(refKey)
+//                .forAllowPropertyDefault(useDef)
+//                .forAllowPropertyNesting(true);
+//
+//        return SnEL.evalTmpl(tmpl, context);
 
-        PropsExpressionContext context = new PropsExpressionContext( props)
-                .forMain(this)
-                .forReferenceKey(refKey)
-                .forAllowPropertyDefault(useDef)
-                .forAllowPropertyNesting(true);
-
-        return SnEL.evalTmpl(tmpl, context);
-
-//        return PropUtil.getByTml(this, props, tmpl, refKey, useDef);
+        //性能更好
+        return PropUtil.getByTml(this, props, tmpl, refKey, useDef);
     }
 
     /**

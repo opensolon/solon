@@ -22,9 +22,7 @@ import java.util.Properties;
  *
  * @author noear
  * @since 2.5
- * @deprecated 3.6 {@link PropsExpressionContext}
  */
-@Deprecated
 public class PropUtil {
     /**
      * 表达式拆分（拆成 name, def）
@@ -93,7 +91,9 @@ public class PropUtil {
 
         if (val == null) {
             //从"主属性"获取
-            val = main.getProperty(name);
+            if (main != null) {
+                val = main.getProperty(name);
+            }
 
             if (val == null) {
                 //从"环镜变量"获取
