@@ -25,7 +25,7 @@ import java.time.LocalDateTime;
  * @author noear 2022/1/15 created
  */
 @Managed
-public class OathService {
+public class OathServer {
     @Cache(key = "oath_test_#{code}", seconds = 2592000)
     public Oauth queryInfoByCode(String code) {
         Oauth oauth = new Oauth();
