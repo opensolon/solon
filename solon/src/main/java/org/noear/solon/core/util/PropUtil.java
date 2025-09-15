@@ -32,7 +32,7 @@ public class PropUtil {
      */
     public static String[] expSplit(String expr) {
         //如果有表达式，去掉符号
-        if (expr.startsWith("${") && expr.endsWith("}")) {
+        if (expr.length() > 2 && expr.charAt(0) == '$' && expr.charAt(1) == '{' && expr.charAt(expr.length() - 1) == '}') {
             expr = expr.substring(2, expr.length() - 1);
         }
 
