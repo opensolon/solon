@@ -22,6 +22,8 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.handle.UploadedFile;
 
+import java.util.List;
+
 @Mapping("/demo3/upload")
 @Controller
 public class UploadController {
@@ -41,7 +43,7 @@ public class UploadController {
             hint = "失败：" + ctx.path();
         }
 
-        if(file != null){
+        if (file != null) {
             file.delete();
         }
 
@@ -59,7 +61,7 @@ public class UploadController {
     }
 
     @Post
-    @Mapping(path="f11_2", multipart = true)
+    @Mapping(path = "f11_2", multipart = true)
     public String test_f11_2(String userName) throws Exception {
         if (userName == null) {
             return "我没接数据：）";
@@ -149,5 +151,11 @@ public class UploadController {
     @Mapping("f3")
     public int test_f3(UploadedFile[] file) throws Exception {
         return file.length;
+    }
+
+    @Post
+    @Mapping("f4")
+    public int test_f4(List<UploadedFile> file) throws Exception {
+        return file.size();
     }
 }
