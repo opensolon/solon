@@ -18,8 +18,8 @@ package org.noear.solon.auth.interceptor;
 import org.noear.solon.auth.AuthException;
 import org.noear.solon.auth.AuthStatus;
 import org.noear.solon.auth.AuthUtil;
-import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.Invocation;
+import org.noear.solon.core.aspect.MethodInterceptor;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
 import org.noear.solon.core.util.DataThrowable;
@@ -30,7 +30,7 @@ import java.lang.annotation.Annotation;
  * @author noear
  * @since 1.3
  */
-public abstract class AbstractInterceptor<T extends Annotation> implements Interceptor {
+public abstract class AbstractInterceptor<T extends Annotation> implements MethodInterceptor {
 
     @Override
     public Object doIntercept(Invocation inv) throws Throwable {

@@ -15,8 +15,8 @@
  */
 package org.noear.solon.data.dynamicds;
 
-import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.Invocation;
+import org.noear.solon.core.aspect.MethodInterceptor;
 import org.noear.solon.core.util.SnelUtil;
 
 /**
@@ -25,7 +25,7 @@ import org.noear.solon.core.util.SnelUtil;
  * @author noear
  * @since 1.11
  */
-public class DynamicDsInterceptor implements Interceptor {
+public class DynamicDsInterceptor implements MethodInterceptor {
     @Override
     public Object doIntercept(Invocation inv) throws Throwable {
         DynamicDs anno = inv.getMethodAnnotation(DynamicDs.class);
