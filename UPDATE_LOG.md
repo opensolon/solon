@@ -37,6 +37,7 @@
 * 添加 `solon-mvc` `List<UploadedFile>` 注入支持（用 `UploadedFile[]` 性能更好）
 * snakeyaml 升为 2.5
 
+示例：
 
 ```java
 @Managed
@@ -59,6 +60,7 @@ public class SerializerDemo {
         serializer.getDeserializeConfig().addFeatures(JSONReader.Feature.Base64StringAsByteArray);
     }
 }
+
 @Managed
 public class ConditionDemo(){
     //ps: 之前是用 onProperty（功能有限，不够体系化） //（仍可使用）
@@ -69,11 +71,10 @@ public class ConditionDemo(){
     }
 }
 
-
 @Managed
 public class SnelDemo {
     //ps: 之前基于 TmplUtil 实现（功能有限，不够体系化） //（仍可使用）
-    @Cache(key = "oath_#{code}", seconds = 10) //SnEL 模板表达式
+    @Cache(key = "oath_#{code}", seconds = 10) //SnEL 模板表达式（通过 SnelUtil 实现兼容）
     public Oauth queryInfoByCode(String code) {
         return new Oauth(code, LocalDateTime.now());
     }
