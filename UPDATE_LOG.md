@@ -34,6 +34,7 @@
 * 引入 `solon-expression` 替代 `solon` 内的表达式
 * 添加 `solon` Condition:onExpression（采用 SnEL 表达式）用于替代 onProperty（标为弃用）
 * 添加 `solon` SnelUtil（基于 SnEL 且兼容旧的 TmplUtil） 替代 TmplUtil（标为弃用）
+* snakeyaml 升为 2.5
 
 ### 3.5.2
 
