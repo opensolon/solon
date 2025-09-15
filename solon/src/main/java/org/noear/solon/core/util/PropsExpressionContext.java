@@ -15,11 +15,9 @@
  */
 package org.noear.solon.core.util;
 
-import org.noear.solon.expression.guidance.PropertiesGuidance;
-import org.noear.solon.expression.guidance.ReturnGuidance;
+import org.noear.solon.expression.context.EnhanceContext;
 
 import java.util.Properties;
-import java.util.function.Function;
 
 /**
  * 属性表达式上下文
@@ -27,16 +25,16 @@ import java.util.function.Function;
  * @author noear
  * @since 3.6
  */
-public class PropsExpressionContext implements Function<String,Object>, ReturnGuidance, PropertiesGuidance {
-    private final Properties target;
-
+public class PropsExpressionContext extends EnhanceContext<Properties, PropsExpressionContext> {
     private Properties main;
     private String referenceKey;
-    private boolean allowPropertyDefault = true;
-    private boolean allowPropertyNesting = true;
 
     public PropsExpressionContext(Properties target) {
-        this.target = target;
+        super(target);
+        forAllowReturnNull(true);
+        forAllowPropertyNesting(true);
+        forAllowTextAsProperty(false);
+        forTypeGuidance(null); //禁用 T(className) 表达式
     }
 
     public PropsExpressionContext forMain(Properties main) {
@@ -46,16 +44,6 @@ public class PropsExpressionContext implements Function<String,Object>, ReturnGu
 
     public PropsExpressionContext forReferenceKey(String referenceKey) {
         this.referenceKey = referenceKey;
-        return this;
-    }
-
-    public PropsExpressionContext forAllowPropertyDefault(boolean allowPropertyDefault) {
-        this.allowPropertyDefault = allowPropertyDefault;
-        return this;
-    }
-
-    public PropsExpressionContext forAllowPropertyNesting(boolean allowPropertyNesting) {
-        this.allowPropertyNesting = allowPropertyNesting;
         return this;
     }
 
@@ -89,25 +77,5 @@ public class PropsExpressionContext implements Function<String,Object>, ReturnGu
         }
 
         return val;
-    }
-
-    @Override
-    public boolean isReturnNull() {
-        return true;
-    }
-
-    @Override
-    public Properties getProperties() {
-        return null;
-    }
-
-    @Override
-    public boolean allowPropertyDefault() {
-        return allowPropertyDefault;
-    }
-
-    @Override
-    public boolean allowPropertyNesting() {
-        return allowPropertyNesting;
     }
 }
