@@ -84,7 +84,7 @@ public class SimpleSubscriber<T> implements Subscriber<T> {
         if (doOnSubscribe != null) {
             doOnSubscribe.accept(subscription);
         } else {
-            subscription.request(Long.MAX_VALUE);
+            subscription.request(1L);
         }
     }
 
@@ -97,6 +97,8 @@ public class SimpleSubscriber<T> implements Subscriber<T> {
         } else if (doOnNextCons != null) {
             doOnNextCons.accept(item);
         }
+
+        subscription.request(1L);
     }
 
     @Override
