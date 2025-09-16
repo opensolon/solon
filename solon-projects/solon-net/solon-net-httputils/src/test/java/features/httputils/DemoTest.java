@@ -19,7 +19,7 @@ public class DemoTest {
                 .subscribe(new SimpleSubscriber<String>()
                         .doOnSubscribe(subscription -> {
                             System.out.println("开始");
-                            subscription.request(Long.MAX_VALUE);
+                            subscription.request(1L);
                         })
                         .doOnNext(item -> {
                             System.out.println(item);
