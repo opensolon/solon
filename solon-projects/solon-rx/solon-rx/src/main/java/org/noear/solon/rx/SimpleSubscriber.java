@@ -19,6 +19,7 @@ package org.noear.solon.rx;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -34,6 +35,8 @@ public class SimpleSubscriber<T> implements Subscriber<T> {
     private Consumer<T> doOnNextCons;
     private Consumer<Throwable> doOnError;
     private Runnable doOnComplete;
+
+    private final AtomicBoolean isCompleted = new AtomicBoolean(false);
 
     public SimpleSubscriber<T> doOnSubscribe(Consumer<Subscription> doOnSubscribe) {
         this.doOnSubscribe = doOnSubscribe;
@@ -110,8 +113,11 @@ public class SimpleSubscriber<T> implements Subscriber<T> {
 
     @Override
     public void onComplete() {
-        if (doOnComplete != null) {
-            doOnComplete.run();
+        if (isCompleted.compareAndSet(false, true)) {
+            //确保只运行一次
+            if (doOnComplete != null) {
+                doOnComplete.run();
+            }
         }
     }
 }
