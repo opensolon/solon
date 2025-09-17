@@ -42,6 +42,7 @@
 * 优化 solon-net-httputils 确保 TextStreamUtil:onSseStreamRequestDo 只会有一次触发 onComplete
 * 优化 solon-web-rx RxSubscriberImpl 改为流控模式（只请求1，之前请求 max）//所有相关的都要测试
 * 优化 solon-net-httputils sse 与背压处理的兼容性
+* 修复 solon-rx SimpleSubscriber 非法调用 onNext（直接调用） 会异常的问题？
 * snakeyaml 升为 2.5
 
 示例：
