@@ -21,6 +21,8 @@ import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.ResourceUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
@@ -29,7 +31,9 @@ import java.io.IOException;
  * @since 1.11
  * */
 public class BannerPlugin implements Plugin {
-	private String BANNER_DEF_FILE = "META-INF/solon_def/banner-def.txt";
+    static final Logger log = LoggerFactory.getLogger(BannerPlugin.class);
+
+    private String BANNER_DEF_FILE = "META-INF/solon_def/banner-def.txt";
 
 	public BannerPlugin() throws IOException {
 		boolean enable = Solon.cfg().getBool("solon.banner.enable", true);
@@ -52,10 +56,10 @@ public class BannerPlugin implements Plugin {
 
 			switch (mode) {
 				case "log":
-					LogUtil.global().info(bannerTxt);
+					log.info(bannerTxt);
 					break;
 				case "both":
-					LogUtil.global().info(bannerTxt);
+					log.info(bannerTxt);
 				case "console":
 				default:
 					System.out.println(bannerTxt);

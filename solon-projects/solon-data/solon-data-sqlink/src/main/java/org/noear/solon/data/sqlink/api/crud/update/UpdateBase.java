@@ -36,7 +36,7 @@ import java.util.List;
  * @since 3.0
  */
 public class UpdateBase extends CRUD {
-    public final static Logger log = LoggerFactory.getLogger(UpdateBase.class);
+    public final static final Logger log = LoggerFactory.getLogger(UpdateBase.class);
 
     private final UpdateSqlBuilder sqlBuilder;
 

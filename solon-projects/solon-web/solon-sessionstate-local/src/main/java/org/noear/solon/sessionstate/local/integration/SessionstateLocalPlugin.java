@@ -20,7 +20,12 @@ import org.noear.solon.core.Plugin;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.sessionstate.local.LocalSessionStateFactory;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class SessionstateLocalPlugin implements Plugin {
+    static final Logger log = LoggerFactory.getLogger(SessionstateLocalPlugin.class);
+
     @Override
     public void start(AppContext context) {
         if (context.app().enableSessionState() == false) {
@@ -34,6 +39,8 @@ public class SessionstateLocalPlugin implements Plugin {
 
         context.app().chainManager().setSessionStateFactory(LocalSessionStateFactory.getInstance());
 
-        LogUtil.global().info("Session: Local session state plugin is loaded");
+        if (log.isDebugEnabled()) {
+            log.debug("Session: Local session state plugin is loaded");
+        }
     }
 }

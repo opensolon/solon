@@ -24,13 +24,17 @@ import org.noear.solon.server.ServerProps;
 import org.noear.solon.server.prop.impl.HttpServerProps;
 import org.noear.solon.core.*;
 import org.noear.solon.core.util.ClassUtil;
-import org.noear.solon.core.util.LogUtil;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.annotation.WebListener;
 import javax.servlet.annotation.WebServlet;
 
 public final class XPluginImp implements Plugin {
+    static final Logger log = LoggerFactory.getLogger(XPluginImp.class);
+
     private static Signal _signal;
 
     public static Signal signal() {
@@ -93,12 +97,12 @@ public final class XPluginImp implements Plugin {
         String connectorInfo = "solon.connector:main: tomcat: Started ServerConnector@{HTTP/1.1,[http/1.1]";
         if (app.enableWebSocket()) {
             String wsServerUrl = props.buildWsServerUrl(false);
-            LogUtil.global().info(connectorInfo + "[WebSocket]}{" + wsServerUrl + "}");
+            log.info(connectorInfo + "[WebSocket]}{" + wsServerUrl + "}");
         }
 
         String httpServerUrl = props.buildHttpServerUrl(false);
-        LogUtil.global().info(connectorInfo + "}{" + httpServerUrl + "}");
-        LogUtil.global().info("Server:main: tomcat: Started (" + solon_server_ver() + ") @" + (time_end - time_start) + "ms");
+        log.info(connectorInfo + "}{" + httpServerUrl + "}");
+        log.info("Server:main: tomcat: Started (" + solon_server_ver() + ") @" + (time_end - time_start) + "ms");
     }
 
     @Override
@@ -107,7 +111,7 @@ public final class XPluginImp implements Plugin {
             _server.stop();
             _server = null;
 
-            LogUtil.global().info("Server:main: tomcat: Has Stopped (" + solon_server_ver() + ")");
+            log.info("Server:main: tomcat: Has Stopped (" + solon_server_ver() + ")");
         }
     }
 }

@@ -35,6 +35,8 @@ import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 应用
@@ -52,6 +54,8 @@ import java.util.function.Consumer;
  * @since 1.0
  */
 public class SolonApp extends RouterWrapper {
+    static final Logger log = LoggerFactory.getLogger(SolonApp.class);
+
     private final SolonProps _cfg; //属性配置
     private final AppClassLoader _classLoader;
     private final AppContext _context;//容器上下文
@@ -155,7 +159,7 @@ public class SolonApp extends RouterWrapper {
         //1.0.打印构造时的告警
         if (_cfg.warns.size() > 0) {
             for (String warn : _cfg.warns) {
-                LogUtil.global().warn(warn);
+                log.warn(warn);
             }
         }
 
@@ -205,11 +209,11 @@ public class SolonApp extends RouterWrapper {
             try {
                 while (true) {
                     if (Utils.ping(addr)) {
-                        LogUtil.global().info("App: Start ping succeed: " + addr);
+                        log.info("App: Start ping succeed: " + addr);
                         Thread.sleep(1000); //成功也再等1s
                         break;
                     } else {
-                        LogUtil.global().warn("App: Start ping failure: " + addr);
+                        log.warn("App: Start ping failure: " + addr);
                         Thread.sleep(2000);
                     }
                 }
@@ -266,7 +270,7 @@ public class SolonApp extends RouterWrapper {
         //1.0.尝式初始化插件 //一般插件不需要
         for (int i = 0, len = plugs.size(); i < len; i++) {
             if (this.cfg().isDebugMode()) {
-                LogUtil.global().info("App: plugin init: " + plugs.get(i).getClassName());
+                log.info("App: plugin init: " + plugs.get(i).getClassName());
             }
             plugs.get(i).init(context());
         }
@@ -274,7 +278,7 @@ public class SolonApp extends RouterWrapper {
         //event::1.0.x推送Plugin init end事件
         EventBus.publish(new AppPluginInitEndEvent(this));
 
-        LogUtil.global().info("App: Plugin starting");
+        log.info("App: Plugin starting");
 
         //1.1.尝试启动插件（顺序不能乱） //不能用forEach，以免当中有插进来
         for (int i = 0, len = plugs.size(); i < len; i++) {
@@ -289,7 +293,7 @@ public class SolonApp extends RouterWrapper {
 
 
         if (enableScanning()) {
-            LogUtil.global().info("App: Bean scanning");
+            log.info("App: Bean scanning");
         }
 
         //2.1.通过注解导入bean（一般是些配置器）
@@ -553,11 +557,11 @@ public class SolonApp extends RouterWrapper {
                 x.status(se.getCode());
 
                 if (se.getCode() != 404 && se.getCode() != 405) {
-                    LogUtil.global().warn("SolonApp tryHandle failed, code=" + se.getCode(), ex);
+                    log.warn("SolonApp tryHandle failed, code=" + se.getCode(), ex);
                 }
             } else {
                 //推送异常事件 //todo: Action -> Gateway? -> RouterHandler -> Filter -> SolonApp!
-                LogUtil.global().warn("SolonApp tryHandle failed!", ex);
+                log.warn("SolonApp tryHandle failed!", ex);
 
                 x.status(500);
             }

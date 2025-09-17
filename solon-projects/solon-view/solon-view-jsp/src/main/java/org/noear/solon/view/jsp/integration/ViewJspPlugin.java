@@ -23,12 +23,16 @@ import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.view.jsp.JspRender;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class ViewJspPlugin implements Plugin {
+    static final Logger log = LoggerFactory.getLogger(ViewJspPlugin.class);
 
     @Override
     public void start(AppContext context) {
         if (ClassUtil.hasClass(() -> ServletResponse.class) == false) {
-            LogUtil.global().warn("View: javax.servlet.ServletResponse not exists! JspRender failed to load.");
+            log.warn("View: javax.servlet.ServletResponse not exists! JspRender failed to load.");
             return;
         }
 

@@ -18,8 +18,9 @@ package org.noear.solon.core.event;
 import org.noear.solon.Utils;
 import org.noear.solon.core.exception.EventException;
 import org.noear.solon.core.util.GenericUtil;
-import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.RunUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -66,7 +67,7 @@ public final class EventBus {
                 publish0(event);
             } catch (Throwable e) {
                 //不再转发异常，免得死循环
-                LogUtil.global().warn("EventBus publishTry failed!", e);
+                LoggerFactory.getLogger(EventBus.class).warn("EventBus publishTry failed!", e);
             }
         }
     }

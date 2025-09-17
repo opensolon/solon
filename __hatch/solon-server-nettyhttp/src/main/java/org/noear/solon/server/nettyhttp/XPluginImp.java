@@ -27,9 +27,12 @@ import org.noear.solon.core.Signal;
 import org.noear.solon.core.SignalSim;
 import org.noear.solon.core.SignalType;
 import org.noear.solon.core.event.EventBus;
-import org.noear.solon.core.util.LogUtil;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public final class XPluginImp implements Plugin {
+    static final Logger log = LoggerFactory.getLogger(XPluginImp.class);
 
     private static Signal _signal;
 
@@ -83,10 +86,10 @@ public final class XPluginImp implements Plugin {
 
         String httpServerUrl = props.buildHttpServerUrl(_server.isSecure());
 
-        LogUtil.global()
+        log
                 .info("Connector:main: nettyhttp: Started ServerConnector@{HTTP/1.1,[http/1.1]}{"
                         + httpServerUrl + "}");
-        LogUtil.global()
+        log
                 .info("Server:main: nettyhttp: Started (" + solon_server_ver() + ") @" + (time_end
                         - time_start) + "ms");
     }
@@ -100,6 +103,6 @@ public final class XPluginImp implements Plugin {
 
         _server.stop();
         _server = null;
-        LogUtil.global().info("Server:main: nettyhttp: Has Stopped (" + solon_server_ver() + ")");
+        log.info("Server:main: nettyhttp: Has Stopped (" + solon_server_ver() + ")");
     }
 }

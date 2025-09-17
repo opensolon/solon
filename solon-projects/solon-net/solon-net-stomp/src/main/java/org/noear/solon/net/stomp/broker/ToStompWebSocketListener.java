@@ -45,7 +45,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @since 2.7
  */
 public class ToStompWebSocketListener implements WebSocketListener, SubProtocolCapable {
-    static Logger log = LoggerFactory.getLogger(ToStompWebSocketListener.class);
+    static final Logger log = LoggerFactory.getLogger(ToStompWebSocketListener.class);
 
     //服务端操作缓存
     private final StompBrokerMedia brokerMedia;

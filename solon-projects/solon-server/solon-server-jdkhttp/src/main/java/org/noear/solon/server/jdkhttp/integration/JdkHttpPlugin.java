@@ -25,8 +25,12 @@ import org.noear.solon.core.bean.LifecycleBean;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.LogUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public final class JdkHttpPlugin implements Plugin {
+    static final Logger log = LoggerFactory.getLogger(JdkHttpPlugin.class);
+
     private static Signal _signal;
 
     public static Signal signal() {
@@ -106,8 +110,8 @@ public final class JdkHttpPlugin implements Plugin {
         long time_end = System.currentTimeMillis();
 
         String httpServerUrl = props.buildHttpServerUrl(_server.isSecure());
-        LogUtil.global().info("Connector:main: jdkhttp: Started ServerConnector@{HTTP/1.1,[http/1.1]}{" + httpServerUrl + "}");
-        LogUtil.global().info("Server:main: jdkhttp: Started (" + solon_server_ver() + ") @" + (time_end - time_start) + "ms");
+        log.info("Connector:main: jdkhttp: Started ServerConnector@{HTTP/1.1,[http/1.1]}{" + httpServerUrl + "}");
+        log.info("Server:main: jdkhttp: Started (" + solon_server_ver() + ") @" + (time_end - time_start) + "ms");
     }
 
 
@@ -119,6 +123,6 @@ public final class JdkHttpPlugin implements Plugin {
 
         _server.stop();
         _server = null;
-        LogUtil.global().info("Server:main: jdkhttp: Has Stopped (" + solon_server_ver() + ")");
+        log.info("Server:main: jdkhttp: Has Stopped (" + solon_server_ver() + ")");
     }
 }

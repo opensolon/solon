@@ -38,7 +38,7 @@ import java.util.Map;
  */
 public class JtExecutorAdapter implements IJtExecutorAdapter, IJtConfigAdapter {
 
-    static Logger log = LoggerFactory.getLogger(JtExecutorAdapter.class);
+    static final Logger log = LoggerFactory.getLogger(JtExecutorAdapter.class);
 
     private String _defaultExecutor;
     private String _defLogTag;

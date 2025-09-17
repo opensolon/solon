@@ -25,6 +25,8 @@ import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.ConsumerEx;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.ProxyBinder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -41,6 +43,8 @@ import java.util.Set;
  * @since 3.0
  * */
 public class ActionLoaderDefault extends HandlerAide implements ActionLoader {
+    static final Logger log = LoggerFactory.getLogger(ActionLoaderDefault.class);
+
     protected final BeanWrap bw;
     protected final Render bRender;
     protected final Mapping bMapping;
@@ -193,7 +197,7 @@ public class ActionLoaderDefault extends HandlerAide implements ActionLoader {
         } else {
             //如果有注解，不是 public 时，则告警提醒（以后改为异常）//v2.5
             if (Modifier.isPublic(method.getModifiers()) == false) {
-                LogUtil.global().warn("This @Mapping method is not public: " + method.getDeclaringClass().getName() + ":" + method.getName());
+                log.warn("This @Mapping method is not public: " + method.getDeclaringClass().getName() + ":" + method.getName());
             }
         }
 

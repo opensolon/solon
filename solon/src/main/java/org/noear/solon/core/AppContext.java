@@ -31,6 +31,8 @@ import org.noear.solon.core.serialize.Serializer;
 import org.noear.solon.core.util.*;
 import org.noear.solon.core.wrap.*;
 import org.noear.solon.lang.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
@@ -52,6 +54,7 @@ import java.util.stream.Collectors;
  * @since 2.6
  * */
 public class AppContext extends BeanContainer {
+    static final Logger log = LoggerFactory.getLogger(AppContext.class);
 
     public AppContext() {
         this(new Props());
@@ -211,7 +214,7 @@ public class AppContext extends BeanContainer {
 
             //如果有注解，不是 public 时，则告警提醒（以后改为异常）//v3.0
             if (Modifier.isPublic(m.getModifiers()) == false) {
-                LogUtil.global().warn("This @" + anno.annotationType().getSimpleName() + " method is not public: " + m.getDeclaringClass().getName() + ":" + m.getName());
+                log.warn("This @" + anno.annotationType().getSimpleName() + " method is not public: " + m.getDeclaringClass().getName() + ":" + m.getName());
             }
         });
 
@@ -224,7 +227,7 @@ public class AppContext extends BeanContainer {
 
             //如果有注解，不是 public 时，则告警提醒（以后改为异常）//v3.0
             if (Modifier.isPublic(m.getModifiers()) == false) {
-                LogUtil.global().warn("This @" + anno.annotationType().getSimpleName() + " method is not public: " + m.getDeclaringClass().getName() + ":" + m.getName());
+                log.warn("This @" + anno.annotationType().getSimpleName() + " method is not public: " + m.getDeclaringClass().getName() + ":" + m.getName());
             }
         });
 
@@ -536,7 +539,7 @@ public class AppContext extends BeanContainer {
 
 
         if (bw.singleton() == false && singletonHint != null) {
-            LogUtil.global().warn(singletonHint + " does not support @Singleton(false), class=" + bw.clz().getName());
+            log.warn(singletonHint + " does not support @Singleton(false), class=" + bw.clz().getName());
         }
     }
 
@@ -1282,7 +1285,7 @@ public class AppContext extends BeanContainer {
                 }
             }
         } catch (Throwable ignored) {
-            LogUtil.global().warn("AppContext prestop error", ignored);
+            log.warn("AppContext prestop error", ignored);
         }
     }
 
@@ -1308,7 +1311,7 @@ public class AppContext extends BeanContainer {
             //执行 Closeable 接口的 bean
             beanStop0();
         } catch (Throwable ignored) {
-            LogUtil.global().warn("AppContext stop error", ignored);
+            log.warn("AppContext stop error", ignored);
         }
     }
 }

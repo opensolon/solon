@@ -50,7 +50,7 @@ import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.getFirst;
  * @since 3.0
  */
 public abstract class QueryBase extends CRUD {
-    public final static Logger log = LoggerFactory.getLogger(QueryBase.class);
+    public final static final Logger log = LoggerFactory.getLogger(QueryBase.class);
     protected final List<String> ignoreFilterIds = new ArrayList<>();
     protected boolean ignoreFilterAll = false;
 

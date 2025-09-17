@@ -45,7 +45,6 @@ import java.util.List;
  * @since 2.4
  */
 public class LogIncubatorImpl implements LogIncubator {
-
     @Override
     public void incubate() throws Throwable {
         if (JavaUtil.IS_WINDOWS && Solon.cfg().isFilesMode() == false) {
@@ -156,10 +155,10 @@ public class LogIncubatorImpl implements LogIncubator {
             if (logConfigUrl != null) {
                 return logConfigUrl;
             } else {
-                //改成异步，不然 LogUtil.global() 初始化未完成
-                RunUtil.async(() -> {
-                    LogUtil.global().warn("Props: No log config file: " + logConfig);
-                });
+                //改成异步，不然 log 初始化未完成
+//                RunUtil.async(() -> {
+                System.err.println("Props: No log config file: " + logConfig);
+//                });
             }
         }
 

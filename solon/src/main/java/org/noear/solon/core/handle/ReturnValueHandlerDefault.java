@@ -18,7 +18,9 @@ package org.noear.solon.core.handle;
 import org.noear.solon.Solon;
 import org.noear.solon.core.exception.StatusException;
 import org.noear.solon.core.util.DataThrowable;
-import org.noear.solon.core.util.LogUtil;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 返回值处理器默认处理
@@ -27,6 +29,8 @@ import org.noear.solon.core.util.LogUtil;
  * @since 3.1
  */
 public class ReturnValueHandlerDefault implements ReturnValueHandler {
+    static final Logger log = LoggerFactory.getLogger(ReturnValueHandlerDefault.class);
+
     public static final ReturnValueHandler INSTANCE = new ReturnValueHandlerDefault();
 
     @Override
@@ -59,7 +63,7 @@ public class ReturnValueHandlerDefault implements ReturnValueHandler {
             if (c.remoting()) {
                 //尝试推送异常，不然没机会记录；也可对后继做控制
                 Throwable objE = (Throwable) obj;
-                LogUtil.global().warn("Remoting handle failed: " + c.pathNew(), objE);
+                log.warn("Remoting handle failed: " + c.pathNew(), objE);
 
                 if (c.getRendered() == false) {
                     if (objE instanceof StatusException) {

@@ -17,8 +17,10 @@ package org.noear.solon.core;
 
 import org.noear.solon.SolonProps;
 import org.noear.solon.core.util.ClassUtil;
-import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.lang.Nullable;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Properties;
@@ -31,6 +33,8 @@ import java.util.Properties;
  * @since 1.0
  * */
 public class PluginEntity implements Comparable<PluginEntity> {
+    static final Logger log = LoggerFactory.getLogger(PluginEntity.class);
+
     /**
      * 类名（全路径）
      */
@@ -155,7 +159,7 @@ public class PluginEntity implements Comparable<PluginEntity> {
                 plugin = ClassUtil.tryInstance(classLoader, className);
 
                 if (plugin == null) {
-                    LogUtil.global().warn("The configured plugin cannot load: " + className);
+                    log.warn("The configured plugin cannot load: " + className);
                 }
             }
         }

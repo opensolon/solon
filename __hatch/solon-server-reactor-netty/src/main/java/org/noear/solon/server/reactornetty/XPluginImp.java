@@ -19,15 +19,19 @@ import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
-import org.noear.solon.core.util.LogUtil;
 import reactor.netty.DisposableServer;
 import reactor.netty.http.HttpProtocol;
 import reactor.netty.http.server.HttpServer;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * https://projectreactor.io/docs/netty/release/reference/index.html#http-server
  * */
 public class XPluginImp implements Plugin {
+    static final Logger log = LoggerFactory.getLogger(XPluginImp.class);
+
     DisposableServer _server = null;
 
     public static String solon_server_ver() {
@@ -67,8 +71,8 @@ public class XPluginImp implements Plugin {
 
             long time_end = System.currentTimeMillis();
 
-            LogUtil.global().info("Connector:main: reactor-netty-http: Started ServerConnector@{HTTP/1.1,[http/1.1]}{http://localhost:" + app.cfg().serverPort() + "}");
-            LogUtil.global().info("Server:main: reactor-netty-http: Started (" + solon_server_ver() + ") @" + (time_end - time_start) + "ms");
+            log.info("Connector:main: reactor-netty-http: Started ServerConnector@{HTTP/1.1,[http/1.1]}{http://localhost:" + app.cfg().serverPort() + "}");
+            log.info("Server:main: reactor-netty-http: Started (" + solon_server_ver() + ") @" + (time_end - time_start) + "ms");
         } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }
@@ -80,7 +84,7 @@ public class XPluginImp implements Plugin {
             _server.dispose();
             _server = null;
 
-            LogUtil.global().info("Server:main: reactor-netty-http: Has Stopped (" + solon_server_ver() + ")");
+            log.info("Server:main: reactor-netty-http: Has Stopped (" + solon_server_ver() + ")");
         }
     }
 }

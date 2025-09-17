@@ -18,7 +18,8 @@ package org.noear.solon.core;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.util.ClassUtil;
-import org.noear.solon.core.util.LogUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -38,6 +39,8 @@ import java.util.Properties;
  * @since 1.0
  * */
 public class PropsLoader {
+    static final Logger log = LoggerFactory.getLogger(PropsLoader.class);
+
     private static PropsLoader global;
     public static PropsLoader global() {
         return global;
@@ -86,7 +89,7 @@ public class PropsLoader {
 
         if (fileName.endsWith(".properties")) {
             if (Solon.appIf(app -> app.cfg().isDebugMode())) {
-                LogUtil.global().trace(fileName);
+                log.trace(fileName);
             }
 
             Properties tmp = new Properties();

@@ -25,11 +25,15 @@ import org.noear.solon.core.*;
 import org.noear.solon.core.bean.LifecycleBean;
 import org.noear.solon.core.util.LogUtil;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @author noear
  * @since 2.3
  */
 public class NettyWsPlugin implements Plugin {
+    static final Logger log = LoggerFactory.getLogger(NettyWsPlugin.class);
 
     private static Signal _signal;
 
@@ -90,8 +94,8 @@ public class NettyWsPlugin implements Plugin {
         long time_end = System.currentTimeMillis();
 
         String wsServerUrl = props.buildWsServerUrl(false);
-        LogUtil.global().info("Connector:main: netty-websocket: Started ServerConnector@{HTTP/1.1,[WebSocket]}{" + wsServerUrl + "}");
-        LogUtil.global().info("Server:main: netty-websocket: Started (" + solon_server_ver() + ") @" + (time_end - time_start) + "ms");
+        log.info("Connector:main: netty-websocket: Started ServerConnector@{HTTP/1.1,[WebSocket]}{" + wsServerUrl + "}");
+        log.info("Server:main: netty-websocket: Started (" + solon_server_ver() + ") @" + (time_end - time_start) + "ms");
     }
 
     @Override
@@ -103,6 +107,6 @@ public class NettyWsPlugin implements Plugin {
         _server.stop();
         _server = null;
 
-        LogUtil.global().info("Server:main: netty-webscoket: Has Stopped (" + solon_server_ver() + ")");
+        log.info("Server:main: netty-webscoket: Has Stopped (" + solon_server_ver() + ")");
     }
 }

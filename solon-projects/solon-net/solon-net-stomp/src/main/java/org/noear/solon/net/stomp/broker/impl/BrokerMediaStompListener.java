@@ -33,7 +33,7 @@ import java.util.function.Function;
  * @since 3.0
  */
 public class BrokerMediaStompListener implements StompListener {
-    static Logger log = LoggerFactory.getLogger(BrokerMediaStompListener.class);
+    static final Logger log = LoggerFactory.getLogger(BrokerMediaStompListener.class);
 
     private final StompBrokerMedia brokerMedia;
 

@@ -26,12 +26,15 @@ import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.docs.integration.properties.DocDocketProperties;
 import org.noear.solon.docs.integration.properties.DocsProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author noear
  * @since 2.2
  */
 public class DocsPlugin implements Plugin {
+    static final Logger log = LoggerFactory.getLogger(DocsPlugin.class);
     public static final String SOLON_DOCS = "solon.docs";
 
     @Override
@@ -72,7 +75,7 @@ public class DocsPlugin implements Plugin {
                 //加入生命周期
                 context.lifecycle(discoverLocator);
             } else {
-                LogUtil.global().warn("Solon docs discover: missing solon cloud discovery");
+                log.warn("Solon docs discover: missing solon cloud discovery");
             }
         }
     }

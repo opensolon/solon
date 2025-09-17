@@ -28,6 +28,9 @@ import org.noear.solon.logging.LogIncubator;
 import org.noear.solon.logging.LogOptions;
 import org.noear.solon.logging.model.LoggerLevelEntity;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -39,6 +42,8 @@ import java.net.URL;
  * @since 2.4
  */
 public class LogIncubatorImpl implements LogIncubator {
+    static final Logger log = LoggerFactory.getLogger(LogIncubatorImpl.class);
+
     @Override
     public void incubate() throws Throwable {
         if (JavaUtil.IS_WINDOWS && Solon.cfg().isFilesMode() == false) {
@@ -134,9 +139,9 @@ public class LogIncubatorImpl implements LogIncubator {
             if (logConfigUrl != null) {
                 return logConfigUrl;
             } else {
-                //改成异步，不然 LogUtil.global() 初始化未完成
+                //改成异步，不然 log 初始化未完成
                 RunUtil.async(() -> {
-                    LogUtil.global().warn("Props: No log config file: " + logConfig);
+                    log.warn("Props: No log config file: " + logConfig);
                 });
             }
         }

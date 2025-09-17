@@ -27,6 +27,8 @@ import org.noear.solon.core.handle.*;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.*;
 import org.noear.solon.core.wrap.MethodWrap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -41,6 +43,8 @@ import java.util.regex.Matcher;
  * @since 3.0
  * */
 public class ActionDefault extends HandlerAide implements Action {
+    static final Logger log = LoggerFactory.getLogger(ActionDefault.class);
+
     //bean 包装器
     private final BeanWrap bWrap;
     //bean 相关aide
@@ -436,7 +440,7 @@ public class ActionDefault extends HandlerAide implements Action {
                 if (c.remoting()) {
                     //尝试推送异常，不然没机会记录；也可对后继做控制
                     Throwable objE = (Throwable) obj;
-                    LogUtil.global().warn("Action remoting handle failed: " + c.pathNew(), objE);
+                    log.warn("Action remoting handle failed: " + c.pathNew(), objE);
 
                     if (c.getRendered() == false) { //if (allowMultiple || c.getRendered() == false) {
                         if (objE instanceof StatusException) {
