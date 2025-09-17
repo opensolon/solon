@@ -245,18 +245,11 @@ public class Solon {
      * 日志孵化（加载配置到日志器）
      *
      */
-    private static void logIncubate() {
-        /**
-         * 孵化日志实现（加载配置，转换格式）
-         */
-        try {
-            ServiceLoader<LogIncubator> internetServices = ServiceLoader.load(LogIncubator.class);
-            for (LogIncubator logIncubator : internetServices) {
-                logIncubator.incubate();
-            }
-        } catch (Throwable ignore) {
-            //不要用日志器打印
-            ignore.printStackTrace();
+    private static void logIncubate() throws Throwable {
+        //孵化日志实现（加载配置，转换格式）
+        ServiceLoader<LogIncubator> internetServices = ServiceLoader.load(LogIncubator.class);
+        for (LogIncubator logIncubator : internetServices) {
+            logIncubator.incubate();
         }
     }
 
