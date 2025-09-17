@@ -39,7 +39,7 @@
 * 优化 solon-rx SimpleSubscriber 改为流控模式（只请求1，之前请求 max）//所有相关的都要测试
 * 优化 solon-net-httputils 确保 TextStreamUtil:onSseStreamRequestDo 只会有一次触发 onComplete
 * 优化 solon-web-rx RxSubscriberImpl 改为流控模式（只请求1，之前请求 max）//所有相关的都要测试
-* 修复 solon-net-httputils sse 与流控的兼容性
+* 优化 solon-net-httputils sse 与背压处理的兼容性
 * snakeyaml 升为 2.5
 
 示例：
