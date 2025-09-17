@@ -20,6 +20,7 @@ import io.swagger.annotations.ApiOperation;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Mapping;
+import org.noear.solon.core.handle.FileBase;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.docs.ApiEnum;
 import org.noear.solon.docs.DocDocket;
@@ -48,6 +49,10 @@ public class BuilderHelper {
         }
 
         if(Map.class.isAssignableFrom(clz) || Collection.class.isAssignableFrom(clz)){
+            return false;
+        }
+        //排除文件模型，将其作为普通文件属性处理
+        if(FileBase.class.isAssignableFrom(clz)){
             return false;
         }
 
