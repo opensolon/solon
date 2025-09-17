@@ -28,6 +28,9 @@
       },
       {
         "name": "location"
+      },
+      {
+        "name": "log"
       }
     ],
     "allPublicFields": true,
