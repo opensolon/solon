@@ -21,11 +21,16 @@ import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.sessionstate.jwt.JwtSessionStateFactory;
 import org.noear.solon.sessionstate.jwt.JwtSessionProps;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @author noear
  * @since 1.3
  */
 public class SessionstateJwtPlugin implements Plugin {
+    static final Logger log = LoggerFactory.getLogger(SessionstateJwtPlugin.class);
+
     @Override
     public void start(AppContext context) {
         if (context.app().enableSessionState() == false) {
@@ -41,6 +46,8 @@ public class SessionstateJwtPlugin implements Plugin {
 
         context.app().chainManager().setSessionStateFactory(JwtSessionStateFactory.getInstance());
 
-        LogUtil.global().info("Session: Jwt session state plugin is loaded");
+        if (log.isDebugEnabled()) {
+            log.debug("Session: Jwt session state plugin is loaded");
+        }
     }
 }

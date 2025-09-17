@@ -21,8 +21,9 @@ import org.noear.solon.annotation.Init;
 import org.noear.solon.core.bean.LifecycleBean;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.IndexUtil;
-import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.wrap.ClassWrap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -34,6 +35,8 @@ import java.lang.reflect.Method;
  * @since 2.8
  */
 class BeanWrapLifecycle implements LifecycleBean {
+    static final Logger log = LoggerFactory.getLogger(BeanWrapLifecycle.class);
+
     private BeanWrap bw;
     private Method initMethod;
     private String initMethodName;
@@ -129,7 +132,7 @@ class BeanWrapLifecycle implements LifecycleBean {
 
         if (isOk) {
             if (bw.raw() instanceof LifecycleBean) {
-                LogUtil.global().warn("LifecycleBean not support @Init & @Destroy, class=" + bw.rawClz().getName());
+                log.warn("LifecycleBean not support @Init & @Destroy, class=" + bw.rawClz().getName());
                 return false;
             }
         }

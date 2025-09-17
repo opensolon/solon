@@ -24,10 +24,14 @@ import org.noear.solon.server.websocket.JavaWsServer;
 import org.noear.solon.core.*;
 import org.noear.solon.core.bean.LifecycleBean;
 import org.noear.solon.core.util.LogUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.Inet4Address;
 
 public class JavaWsPlugin implements Plugin {
+    static final Logger log = LoggerFactory.getLogger(JavaWsPlugin.class);
+
     private static Signal _signal;
 
     public static Signal signal() {
@@ -86,8 +90,8 @@ public class JavaWsPlugin implements Plugin {
         long time_end = System.currentTimeMillis();
 
         String wsServerUrl = props.buildWsServerUrl(false);
-        LogUtil.global().info("Connector:main: websocket: Started ServerConnector@{HTTP/1.1,[WebSocket]}{" + wsServerUrl + "}");
-        LogUtil.global().info("Server:main: websocket: Started (" + solon_server_ver() + ") @" + (time_end - time_start) + "ms");
+        log.info("Connector:main: websocket: Started ServerConnector@{HTTP/1.1,[WebSocket]}{" + wsServerUrl + "}");
+        log.info("Server:main: websocket: Started (" + solon_server_ver() + ") @" + (time_end - time_start) + "ms");
     }
 
     @Override
@@ -96,7 +100,7 @@ public class JavaWsPlugin implements Plugin {
             _server.stop();
             _server = null;
 
-            LogUtil.global().info("Server:main: websocket: Has Stopped (" + solon_server_ver() + ")");
+            log.info("Server:main: websocket: Has Stopped (" + solon_server_ver() + ")");
         }
     }
 }

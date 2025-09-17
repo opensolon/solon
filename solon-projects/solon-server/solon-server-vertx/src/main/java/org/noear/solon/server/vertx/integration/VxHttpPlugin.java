@@ -29,11 +29,16 @@ import org.noear.solon.core.bean.LifecycleBean;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.LogUtil;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @author noear
  * @since 2.9
  */
 public class VxHttpPlugin implements Plugin {
+    static final Logger log = LoggerFactory.getLogger(VxHttpPlugin.class);
+
     private static Signal _signal;
 
     public static Signal signal() {
@@ -111,12 +116,12 @@ public class VxHttpPlugin implements Plugin {
             }
 
             String wsServerUrl = props.buildWsServerUrl(_server.isSecure());
-            LogUtil.global().info(connectorInfo + "[WebSocket]}{" + wsServerUrl + "}");
+            log.info(connectorInfo + "[WebSocket]}{" + wsServerUrl + "}");
         }
 
         String httpServerUrl = props.buildHttpServerUrl(_server.isSecure());
-        LogUtil.global().info(connectorInfo + "}{" + httpServerUrl + "}");
-        LogUtil.global().info("Server:main: vertx-http: Started (" + solon_server_ver() + ") @" + (time_end - time_start) + "ms");
+        log.info(connectorInfo + "}{" + httpServerUrl + "}");
+        log.info("Server:main: vertx-http: Started (" + solon_server_ver() + ") @" + (time_end - time_start) + "ms");
     }
 
     @Override

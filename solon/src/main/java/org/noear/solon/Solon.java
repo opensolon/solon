@@ -20,8 +20,9 @@ import org.noear.solon.core.AppClassLoader;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.util.ConsumerEx;
-import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.lang.Preview;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URL;
 import java.util.function.Function;
@@ -50,6 +51,17 @@ public class Solon {
     private static String encoding = "utf-8";
     //应用源码位置
     private static URL location;
+
+    static Logger _log;
+    static Logger log() {
+        if (_log == null) {
+            //懒加载（避免提前实始化）
+            _log = LoggerFactory.getLogger(Solon.class);
+        }
+
+        return _log;
+    }
+
 
     /**
      * 框架版本号
@@ -194,7 +206,7 @@ public class Solon {
             //1.创建全局应用及配置
             app = appMain = new SolonApp(source, argx);
 
-            LogUtil.global().info("App: Start loading");//调整了打印时机
+            log().info("App: Start loading");//调整了打印时机
 
             //2.开始
             app.startDo(initialize);
@@ -202,7 +214,7 @@ public class Solon {
         } catch (Throwable e) {
             //显示异常信息
             e = Utils.throwableUnwrap(e);
-            LogUtil.global().error("Solon start failed: " + e.getMessage(), e);
+            log().error("Solon start failed: " + e.getMessage(), e);
 
             //3.停止服务并退出（主要是停止插件）
             if (NativeDetector.isNotAotRuntime()) {
@@ -228,7 +240,7 @@ public class Solon {
 
         //5.启动完成
 
-        LogUtil.global().info("App: End loading elapsed=" + app.elapsedTimes() + "ms pid=" + pid + " v=" + Solon.version());
+        log().info("App: End loading elapsed=" + app.elapsedTimes() + "ms pid=" + pid + " v=" + Solon.version());
 
         return app;
     }
@@ -296,14 +308,14 @@ public class Solon {
 
 
         if (delay > 0) {
-            LogUtil.global().info("App: Security to stop: begin...(1.prestop 2.delay 3.stop)");
+            log().info("App: Security to stop: begin...(1.prestop 2.delay 3.stop)");
 
             //1.预停止
             Solon.app().prestopDo();
-            LogUtil.global().info("App: Security to stop: 1/3 completed");
+            log().info("App: Security to stop: 1/3 completed");
 
             //2.延时标停
-            LogUtil.global().info("App: Security to stop: delay " + delay + "s...");
+            log().info("App: Security to stop: delay " + delay + "s...");
             int delay1 = (int) (delay * 0.3);
             int delay2 = delay - delay1;
 
@@ -319,11 +331,11 @@ public class Solon {
                 sleep0(delay2); //消化已有请求
             }
 
-            LogUtil.global().info("App: Security to stop: 2/3 completed");
+            log().info("App: Security to stop: 2/3 completed");
 
             //3.停止
             Solon.app().stopDo();
-            LogUtil.global().info("App: Security to stop: 3/3 completed");
+            log().info("App: Security to stop: 3/3 completed");
         } else {
             //1.预停止
             Solon.app().prestopDo();
@@ -333,7 +345,7 @@ public class Solon {
             Solon.app().stopDo();
         }
 
-        LogUtil.global().info("App: Stopped");
+        log().info("App: Stopped");
 
         app = null;
         appMain = null;

@@ -19,9 +19,10 @@ import org.noear.solon.core.AppContext;
 import org.noear.solon.core.InjectGather;
 import org.noear.solon.core.VarHolder;
 import org.noear.solon.core.util.ClassUtil;
-import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.NameUtil;
 import org.noear.solon.lang.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
@@ -35,6 +36,8 @@ import java.lang.reflect.*;
  * @since 1.0
  * */
 public class FieldWrap {
+    static final Logger log = LoggerFactory.getLogger(FieldWrap.class);
+
     //所有者类
     private final Class<?> ownerClz;
     //字段
@@ -244,7 +247,7 @@ public class FieldWrap {
         } catch (NoSuchMethodException e) {
 
         } catch (SecurityException e) {
-            LogUtil.global().warn("FieldWrap doFindGetter failed!", e);
+            log.warn("FieldWrap doFindGetter failed!", e);
         }
 
         return null;
@@ -265,7 +268,7 @@ public class FieldWrap {
         } catch (NoSuchMethodException e) {
             //正常情况，不用管
         } catch (SecurityException e) {
-            LogUtil.global().warn("FieldWrap doFindSetter failed!", e);
+            log.warn("FieldWrap doFindSetter failed!", e);
         }
 
         return null;

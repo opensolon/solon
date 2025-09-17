@@ -18,9 +18,11 @@ package org.noear.solon.core.handle;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Constants;
 import org.noear.solon.core.util.KeyValues;
-import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.DataThrowable;
 import org.noear.solon.core.util.MimeType;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.InputStream;
@@ -35,6 +37,8 @@ import java.util.Objects;
  * @since 1.0
  * */
 public class RenderManager implements Render {
+    static final Logger log = LoggerFactory.getLogger(RenderManager.class);
+
     private final Map<String, Render> _mapping = new HashMap<>();
     private final Map<String, Render> _lib = new HashMap<>();
 
@@ -88,13 +92,13 @@ public class RenderManager implements Render {
             _lib.put(render.getClass().getSimpleName(), render);
             _lib.put(render.getClass().getName(), render);
 
-            LogUtil.global().info("View: load: " + render.getClass().getSimpleName());
-            LogUtil.global().info("View: load: " + render.getClass().getName());
+            log.debug("View: load: " + render.getClass().getSimpleName());
+            log.debug("View: load: " + render.getClass().getName());
         } else {
             //mapping=.ftl | @json
             _mapping.put(mapping, render);
 
-            LogUtil.global().info("Render mapping: " + mapping + "=" + render.name());
+            log.debug("Render mapping: " + mapping + "=" + render.name());
         }
     }
 
@@ -111,14 +115,14 @@ public class RenderManager implements Render {
 
         Render render = _lib.get(clzName);
         if (render == null) {
-            LogUtil.global().warn("Render: " + clzName + " not exists!");
+            log.warn("Render: " + clzName + " not exists!");
             return;
             //throw new IllegalStateException(classSimpleName + " not exists!");
         }
 
         _mapping.put(mapping, render);
 
-        LogUtil.global().info("Render mapping: " + mapping + "=" + clzName);
+        log.debug("Render mapping: " + mapping + "=" + clzName);
     }
 
     /**

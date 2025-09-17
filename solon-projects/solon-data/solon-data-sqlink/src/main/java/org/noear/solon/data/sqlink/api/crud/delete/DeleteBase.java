@@ -36,7 +36,7 @@ import java.util.List;
  * @since 3.0
  */
 public abstract class DeleteBase extends CRUD {
-    public final static Logger log = LoggerFactory.getLogger(DeleteBase.class);
+    public final static final Logger log = LoggerFactory.getLogger(DeleteBase.class);
 
     private final DeleteSqlBuilder sqlBuilder;
 

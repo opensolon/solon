@@ -17,7 +17,8 @@ package org.noear.nami.common;
 
 import org.noear.nami.annotation.NamiClient;
 import org.noear.solon.Utils;
-import org.noear.solon.core.util.LogUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 打印信息
@@ -26,6 +27,8 @@ import org.noear.solon.core.util.LogUtil;
  * @since 1.2
  * */
 public class InfoUtils {
+    static final Logger log = LoggerFactory.getLogger(InfoUtils.class);
+
     public static void print(Class<?> type, NamiClient anno) {
         StringBuilder buf = new StringBuilder();
         buf.append("Bind the service ")
@@ -48,6 +51,6 @@ public class InfoUtils {
             buf.append(")");
         }
 
-        LogUtil.global().info("Nami: " + buf);
+        log.info("Nami: " + buf);
     }
 }

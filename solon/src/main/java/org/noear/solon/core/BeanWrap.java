@@ -25,7 +25,8 @@ import org.noear.solon.annotation.Singleton;
 import org.noear.solon.core.exception.ConstructionException;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.GenericUtil;
-import org.noear.solon.core.util.LogUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Bean 包装
@@ -37,6 +38,8 @@ import org.noear.solon.core.util.LogUtil;
  * */
 @SuppressWarnings("unchecked")
 public class BeanWrap {
+    static final Logger log = LoggerFactory.getLogger(BeanWrap.class);
+
     // bean clz
     private Class<?> clz;
     // bean lifecycle
@@ -454,7 +457,7 @@ public class BeanWrap {
                 context.lifecycle(lifecycle.index() + 1, lifecycle);
 
                 if (singleton() == false) {
-                    LogUtil.global().warn("Using lifecycle for non-singleton class is risky: " + rawClz().getName());
+                    log.warn("Using lifecycle for non-singleton class is risky: " + rawClz().getName());
                 }
             }
         }

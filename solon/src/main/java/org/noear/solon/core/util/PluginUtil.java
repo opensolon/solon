@@ -18,6 +18,9 @@ package org.noear.solon.core.util;
 import org.noear.solon.Utils;
 import org.noear.solon.core.PluginEntity;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.net.URL;
 import java.util.Collection;
 import java.util.Properties;
@@ -30,6 +33,8 @@ import java.util.function.Consumer;
  * @since 1.7
  */
 public class PluginUtil {
+    static final Logger log = LoggerFactory.getLogger(PluginUtil.class);
+
     /**
      * 扫描插件
      *
@@ -45,7 +50,7 @@ public class PluginUtil {
 
             if (res == null) {
                 // native 时，扫描出来的resource可能是不存在的（这种情况就是bug），需要给于用户提示，反馈给社区
-                LogUtil.global().warn("Solon plugin: name=" + name + ", resource is null");
+                log.warn("Solon plugin: name=" + name + ", resource is null");
             } else {
                 Properties props = Utils.loadProperties(res);
                 findPlugins(classLoader, props, excludeList, consumer);

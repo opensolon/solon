@@ -21,8 +21,9 @@ import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.ConvertUtil;
-import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.ReflectUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.*;
 import java.util.*;
@@ -37,6 +38,8 @@ import java.util.function.Function;
  * @since 3.0
  * */
 public class ClassWrap {
+    static final Logger log = LoggerFactory.getLogger(ClassWrap.class);
+
     private static Map<Class<?>, ClassWrap> cached = new ConcurrentHashMap<>();
 
     /**
@@ -378,7 +381,7 @@ public class ClassWrap {
      */
     private void doFill(Object bean, Function<String, String> data, Context ctx) throws Exception {
         if (allFieldWrapMap.isEmpty() && NativeDetector.inNativeImage()) {
-            LogUtil.global().warn(String.format("Class: %s don't have any field, can't fill data. you should use: nativeMetadata.registerField(field) at aot runtime.", _clz.getName()));
+            log.warn(String.format("Class: %s don't have any field, can't fill data. you should use: nativeMetadata.registerField(field) at aot runtime.", _clz.getName()));
         }
         for (Map.Entry<String, FieldWrap> kv : allFieldWrapMap.entrySet()) {
             String key = kv.getKey();

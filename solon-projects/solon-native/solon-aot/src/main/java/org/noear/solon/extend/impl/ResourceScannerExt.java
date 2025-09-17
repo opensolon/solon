@@ -21,6 +21,9 @@ import org.noear.solon.aot.graalvm.GraalvmUtil;
 import org.noear.solon.core.ResourceScanner;
 import org.noear.solon.core.util.LogUtil;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Set;
 import java.util.function.Predicate;
 
@@ -31,6 +34,7 @@ import java.util.function.Predicate;
  * @since 2.2
  */
 public class ResourceScannerExt extends ResourceScanner {
+    static final Logger log = LoggerFactory.getLogger(ResourceScannerExt.class);
 
     @Override
     public Set<String> scan(ClassLoader classLoader, String path, boolean fileMode, Predicate<String> filter) {
@@ -41,7 +45,7 @@ public class ResourceScannerExt extends ResourceScanner {
             if (NativeDetector.inNativeImage()) {
                 GraalvmUtil.scanResource(path, filter, urls);
                 if (Solon.cfg().isDebugMode()) {
-                    LogUtil.global().info("Native: Resource scan: " + urls.size() + ", path: " + path);
+                    log.info("Native: Resource scan: " + urls.size() + ", path: " + path);
                 }
 
                 return urls;

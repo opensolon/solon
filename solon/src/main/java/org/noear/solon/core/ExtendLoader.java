@@ -17,7 +17,8 @@ package org.noear.solon.core;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.core.util.LogUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -31,6 +32,8 @@ import java.util.function.Predicate;
  * @since 1.0
  * */
 public class ExtendLoader {
+    static final Logger log = LoggerFactory.getLogger(ExtendLoader.class);
+
     private static final ExtendLoader instance = new ExtendLoader();
     private static File folder;
     private static String folderPath;
@@ -93,7 +96,7 @@ public class ExtendLoader {
                 folderPath = folder.toURI().getPath();
 
                 //打印
-                LogUtil.global().info("Extend root: " + folderPath);
+                log.info("Extend root: " + folderPath);
 
                 //加载扩展内容
                 instance.loadFile(loaders, folder, filter);
@@ -118,7 +121,7 @@ public class ExtendLoader {
 
             return true;
         } catch (Throwable e) {
-            LogUtil.global().warn("ExtendLoader loadJar failed!", e);
+            log.warn("ExtendLoader loadJar failed!", e);
             return false;
         }
     }
@@ -128,7 +131,7 @@ public class ExtendLoader {
             AppClassLoader.global().addJar(file);
             return true;
         } catch (Throwable e) {
-            LogUtil.global().warn("ExtendLoader loadJar failed!", e);
+            log.warn("ExtendLoader loadJar failed!", e);
             return false;
         }
     }
@@ -141,7 +144,7 @@ public class ExtendLoader {
             AppClassLoader.global().removeJar(file);
             return true;
         } catch (Throwable e) {
-            LogUtil.global().warn("ExtendLoader unloadJar failed!", e);
+            log.warn("ExtendLoader unloadJar failed!", e);
             return false;
         }
     }
@@ -201,7 +204,7 @@ public class ExtendLoader {
                 if (path.endsWith(".properties")) {
                     Solon.cfg().loadAdd(file.toURI().toURL());
 
-                    LogUtil.global().info("loaded: " + path);
+                    log.info("loaded: " + path);
                     return;
                 }
 
@@ -212,11 +215,11 @@ public class ExtendLoader {
 
                     Solon.cfg().loadAdd(file.toURI().toURL());
 
-                    LogUtil.global().info("loaded: " + path);
+                    log.info("loaded: " + path);
                     return;
                 }
             } catch (Throwable e) {
-                LogUtil.global().warn("ExtendLoader loadFile failed!", e);
+                log.warn("ExtendLoader loadFile failed!", e);
             }
         }
     }

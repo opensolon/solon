@@ -20,6 +20,9 @@ import org.noear.solon.core.PropsLoader;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.config.yaml.PropertiesYaml;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringReader;
@@ -35,6 +38,7 @@ import java.util.Properties;
  * @since 1.5
  */
 public class PropsLoaderExt extends PropsLoader {
+    static final Logger log = LoggerFactory.getLogger(PropsLoaderExt.class);
 
     @Override
     public boolean isSupport(String suffix) {
@@ -55,7 +59,7 @@ public class PropsLoaderExt extends PropsLoader {
 
         if (fileName.endsWith(".properties")) {
             if (Solon.appIf(app -> app.cfg().isDebugMode())) {
-                LogUtil.global().trace(fileName);
+                log.trace(fileName);
             }
 
             Properties tmp = new Properties();
@@ -74,7 +78,7 @@ public class PropsLoaderExt extends PropsLoader {
 
         if (fileName.endsWith(".yml") || fileName.endsWith(".yaml")) {
             if (Solon.appIf(app -> app.cfg().isDebugMode())) {
-                LogUtil.global().trace(fileName);
+                log.trace(fileName);
             }
 
             PropertiesYaml tmp = new PropertiesYaml();

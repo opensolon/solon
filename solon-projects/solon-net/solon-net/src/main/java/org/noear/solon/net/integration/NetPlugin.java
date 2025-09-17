@@ -28,11 +28,15 @@ import org.noear.solon.net.websocket.WebSocketListenerSupplier;
 import org.noear.solon.net.websocket.WebSocketRouter;
 import org.noear.solon.net.websocket.listener.ContextPathWebSocketListener;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @author noear
  * @since 2.6
  */
 public class NetPlugin implements Plugin {
+    static final Logger log = LoggerFactory.getLogger(NetPlugin.class);
 
     private SocketdRouter socketdRouter;
     private WebSocketRouter webSocketRouter;
@@ -93,7 +97,7 @@ public class NetPlugin implements Plugin {
         }
 
         if (registered == false) {
-            LogUtil.global().warn("@ServerEndpoint does not support type: " + clz.getName());
+            log.warn("@ServerEndpoint does not support type: " + clz.getName());
         }
     }
 }

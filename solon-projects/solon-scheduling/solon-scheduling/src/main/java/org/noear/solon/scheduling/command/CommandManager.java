@@ -29,7 +29,7 @@ import java.util.Map;
  * @since 2.7
  */
 public class CommandManager {
-    private static Logger log = LoggerFactory.getLogger(CommandManager.class);
+    private static final Logger log = LoggerFactory.getLogger(CommandManager.class);
 
     public static CommandManager getInstance() {
         //方便在单测环境下切换 SolonApp，可以相互独立

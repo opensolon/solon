@@ -18,6 +18,8 @@ package org.noear.solon.logging;
 import org.noear.solon.logging.appender.ConsoleAppender;
 import org.noear.solon.logging.event.Appender;
 import org.noear.solon.logging.event.LogEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -29,12 +31,11 @@ import java.util.concurrent.ConcurrentHashMap;
  * @since 1.3
  */
 public class AppenderManager {
-
     private static Map<String,AppenderHolder> appenderMap = new ConcurrentHashMap<>();
     private static List<AppenderHolder> appenderValues = new ArrayList<>();
 
     static {
-        //不能用 register，否则 LogUtil.global() 会死循环
+        //不能用 register，否则 log 会死循环
         registerDo("console", new ConsoleAppender(), true);
     }
 

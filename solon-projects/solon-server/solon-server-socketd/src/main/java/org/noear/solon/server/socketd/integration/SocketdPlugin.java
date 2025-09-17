@@ -35,11 +35,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @author noear
  * @since 2.6
  */
 public class SocketdPlugin implements Plugin {
+    static final Logger log = LoggerFactory.getLogger(SocketdPlugin.class);
+
     private List<Server> serverList = new ArrayList<>();
     private SocketdRouter socketdRouter;
     private ServerConfigHandler serverConfigHandler;
@@ -108,7 +113,7 @@ public class SocketdPlugin implements Plugin {
 
         if (serverList.size() == 0) {
             exchangeExecutor.shutdown();
-            LogUtil.global().warn("Missing socketd server provider!");
+            log.warn("Missing socketd server provider!");
         }
     }
 
@@ -142,8 +147,8 @@ public class SocketdPlugin implements Plugin {
         long time_end = System.currentTimeMillis();
 
         String serverUrl = server.getConfig().getSchema() + "://localhost:" + portReal;
-        LogUtil.global().info("Connector:main: socket.d: Started ServerConnector@{" + serverUrl + "}");
-        LogUtil.global().info("Server:main: socket.d: Started (" + server.getTitle() + ") @" + (time_end - time_start) + "ms");
+        log.info("Connector:main: socket.d: Started ServerConnector@{" + serverUrl + "}");
+        log.info("Server:main: socket.d: Started (" + server.getTitle() + ") @" + (time_end - time_start) + "ms");
     }
 
     @Override

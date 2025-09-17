@@ -23,9 +23,11 @@ import org.noear.solon.core.exception.StatusException;
 import org.noear.solon.core.route.RoutingDefault;
 import org.noear.solon.core.route.RoutingTable;
 import org.noear.solon.core.route.RoutingTableDefault;
-import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.PathUtil;
 import org.noear.solon.core.util.DataThrowable;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.function.Predicate;
 
@@ -54,6 +56,7 @@ import java.util.function.Predicate;
  * @since 3.0
  * */
 public abstract class Gateway extends HandlerAide implements Handler, Render {
+    static final Logger log = LoggerFactory.getLogger(Gateway.class);
 
     //主处理缺省
     private Handler mainDef;
@@ -139,7 +142,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
             if (c.remoting()) {
                 //尝试推送异常，不然没机会记录；也可对后继做控制
                 Throwable objE = (Throwable) obj;
-                LogUtil.global().warn("Gateway remoting handle failed!", objE);
+                log.warn("Gateway remoting handle failed!", objE);
 
                 if (c.getRendered() == false) {
                     if (objE instanceof StatusException) {

@@ -20,7 +20,12 @@ import org.noear.solon.core.Plugin;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.sessionstate.redisson.RedissonSessionStateFactory;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class SessionstateRedissonPlugin implements Plugin {
+    static final Logger log = LoggerFactory.getLogger(SessionstateRedissonPlugin.class);
+
     @Override
     public void start(AppContext context) {
         if (context.app().enableSessionState() == false) {
@@ -47,6 +52,8 @@ public class SessionstateRedissonPlugin implements Plugin {
 
         context.app().chainManager().setSessionStateFactory(RedissonSessionStateFactory.getInstance());
 
-        LogUtil.global().info("Session: Redis session state plugin is loaded");
+        if (log.isDebugEnabled()) {
+            log.debug("Session: Redis session state plugin is loaded");
+        }
     }
 }

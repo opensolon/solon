@@ -28,6 +28,9 @@ import java.net.URL;
 import java.util.*;
 import java.util.function.Predicate;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * 应用配置加载器
  *
@@ -48,6 +51,8 @@ import java.util.function.Predicate;
  * @since 1.0
  * */
 public final class SolonProps extends Props {
+    static final Logger log = LoggerFactory.getLogger(SolonProps.class);
+
     protected final List<String> warns = new ArrayList<>();
 
     private final SolonApp app;
@@ -113,7 +118,7 @@ public final class SolonProps extends Props {
             env = getArg("env");
 
             if (Utils.isNotEmpty(env)) {
-                LogUtil.global().info("The following profiles env: " + env);
+                log.info("The following profiles env: " + env);
                 loadInit(ResourceUtil.getResource("app-" + env + ".properties"), sysPropOrg);
                 loadInit(ResourceUtil.getResource("app-" + env + ".yml"), sysPropOrg);
             }

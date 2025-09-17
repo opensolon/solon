@@ -42,6 +42,9 @@ import java.util.TreeSet;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * aot 运行的启动类，用于生成 native 元数据
  *
@@ -49,6 +52,8 @@ import java.util.regex.Pattern;
  * @since 2023/4/11 14:11
  */
 public class SolonAotProcessor {
+    static final Logger log = LoggerFactory.getLogger(SolonAotProcessor.class);
+
     private final Options jsonOptions = Options.def().add(Feature.PrettyFormat).add(Feature.OrderedField);
 
     private Settings settings;
@@ -65,7 +70,7 @@ public class SolonAotProcessor {
 
     public static void main(String[] args) throws Exception {
 
-        LogUtil.global().info("Aot processor start, args: " + Arrays.toString(args));
+        log.info("Aot processor start, args: " + Arrays.toString(args));
 
         int requiredArgs = 6;
         if (args.length < requiredArgs) {
@@ -112,7 +117,7 @@ public class SolonAotProcessor {
             // 添加 proxy-config.json
             addJdkProxyConfig(metadata);
 
-            LogUtil.global().info("Aot processor end.");
+            log.info("Aot processor end.");
         } finally {
             // 确保正常退出（异常时也不影响）
             Solon.stopBlock(true, -1, 0);
@@ -301,7 +306,7 @@ public class SolonAotProcessor {
 
             boolean newFile = file.createNewFile();
             if (newFile) {
-                LogUtil.global().info("create file: " + file.getAbsolutePath());
+                log.info("create file: " + file.getAbsolutePath());
             }
             return new FileWriter(file);
         } catch (Exception e) {

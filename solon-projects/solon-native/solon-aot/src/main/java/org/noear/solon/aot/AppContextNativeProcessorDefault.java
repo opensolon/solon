@@ -24,6 +24,8 @@ import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.ReflectUtil;
 import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.core.wrap.FieldWrap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -43,6 +45,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @since 2.2
  */
 public class AppContextNativeProcessorDefault implements AppContextNativeProcessor {
+    static final Logger log = LoggerFactory.getLogger(AppContextNativeProcessorDefault.class);
+
     public static final String AOT_PROXY_CLASSNAME_SUFFIX = "$$SolonAotProxy";
     public static final String ASM_PROXY_CLASSNAME_SUFFIX = "$$SolonAsmProxy";
 
@@ -126,7 +130,7 @@ public class AppContextNativeProcessorDefault implements AppContextNativeProcess
         metadata.registerReflection(InvocationHandler.class, MemberCategory.INVOKE_DECLARED_METHODS);
 
 
-        LogUtil.global().info("Aot process bean, bean size: " + beanCount.get());
+        log.info("Aot process bean, bean size: " + beanCount.get());
     }
 
     /**
