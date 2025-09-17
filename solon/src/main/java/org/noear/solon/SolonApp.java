@@ -209,11 +209,11 @@ public class SolonApp extends RouterWrapper {
             try {
                 while (true) {
                     if (Utils.ping(addr)) {
-                        log.info("App: Start ping succeed: " + addr);
+                        log.info("Start ping succeed: " + addr);
                         Thread.sleep(1000); //成功也再等1s
                         break;
                     } else {
-                        log.warn("App: Start ping failure: " + addr);
+                        log.warn("Start ping failure: " + addr);
                         Thread.sleep(2000);
                     }
                 }
@@ -269,8 +269,8 @@ public class SolonApp extends RouterWrapper {
         List<PluginEntity> plugs = cfg().plugins();
         //1.0.尝式初始化插件 //一般插件不需要
         for (int i = 0, len = plugs.size(); i < len; i++) {
-            if (this.cfg().isDebugMode()) {
-                log.info("App: plugin init: " + plugs.get(i).getClassName());
+            if (log.isDebugEnabled()) {
+                log.debug("Plugin init: " + plugs.get(i).getClassName());
             }
             plugs.get(i).init(context());
         }
@@ -278,7 +278,7 @@ public class SolonApp extends RouterWrapper {
         //event::1.0.x推送Plugin init end事件
         EventBus.publish(new AppPluginInitEndEvent(this));
 
-        log.info("App: Plugin starting");
+        log.debug("Plugin start");
 
         //1.1.尝试启动插件（顺序不能乱） //不能用forEach，以免当中有插进来
         for (int i = 0, len = plugs.size(); i < len; i++) {
@@ -293,7 +293,7 @@ public class SolonApp extends RouterWrapper {
 
 
         if (enableScanning()) {
-            log.info("App: Bean scanning");
+            log.debug("Scanning start");
         }
 
         //2.1.通过注解导入bean（一般是些配置器）
@@ -317,6 +317,8 @@ public class SolonApp extends RouterWrapper {
         if (Utils.isNotEmpty(this.cfg().serverContextPath())) {
             filterIfAbsent(Constants.FT_IDX_CONTEXT_PATH, new ContextPathFilter());
         }
+
+        log.debug("AppContext start");
 
         //3.2.标识上下文加载完成
         context().start();

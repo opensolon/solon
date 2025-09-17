@@ -24,14 +24,13 @@ import org.fusesource.jansi.AnsiConsole;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.util.*;
-import org.noear.solon.logging.LogIncubator;
+import org.noear.solon.core.logging.LogIncubator;
 import org.noear.solon.logging.LogOptions;
 import org.noear.solon.logging.model.LoggerLevelEntity;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
