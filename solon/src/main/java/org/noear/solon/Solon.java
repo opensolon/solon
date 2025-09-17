@@ -17,7 +17,7 @@ package org.noear.solon;
 
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.AppClassLoader;
-import org.noear.solon.core.logging.LogIncubator;
+import org.noear.solon.logging.LogIncubator;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.util.ConsumerEx;
