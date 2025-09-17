@@ -29,6 +29,16 @@
 * Plugin 添加 postStart 事件
 
 
+### 3.4.5
+
+* 优化 solon-rx 确保 SimpleSubscriber:doOnComplete 只被运行一次（之前可能会被外部触发多次）
+* 优化 solon-rx SimpleSubscriber 改为流控模式（只请求1，之前请求 max）//所有相关的都要测试
+* 优化 solon-net-httputils 确保 TextStreamUtil:onSseStreamRequestDo 只会有一次触发 onComplete
+* 优化 solon-web-rx RxSubscriberImpl 改为流控模式（只请求1，之前请求 max）//所有相关的都要测试
+* 优化 solon-net-httputils sse 与背压处理的兼容性
+
+
+
 ### 3.4.4
 
 * 优化 solon-net-httputils HttpUtils 与 HttpUtilsFactory（部分功能迁到 HttpUtils） 关系简化
