@@ -15,6 +15,10 @@
  */
 package org.noear.solon.core.util;
 
+import org.noear.solon.Solon;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * 日志打印小工具（仅限内部使用）
  *
@@ -24,16 +28,8 @@ package org.noear.solon.core.util;
  * */
 @Deprecated
 public class LogUtil {
-    private static LogUtil global;
-
-    static {
-        //（静态扩展约定：org.noear.solon.extend.impl.XxxxExt）
-        global = ClassUtil.tryInstance("org.noear.solon.extend.impl.LogUtilExt");
-
-        if (global == null) {
-            global = new LogUtil();
-        }
-    }
+    static final Logger log = LoggerFactory.getLogger(Solon.class);
+    private static LogUtil global = new LogUtil();
 
     public static LogUtil global() {
         return global;
@@ -47,19 +43,15 @@ public class LogUtil {
     }
 
     public void trace(String content) {
-        System.out.print(title());
-
-        PrintUtil.purpleln(content);
+        log.trace(content);
     }
 
     public void debug(String content) {
-        System.out.print(title());
-        PrintUtil.blueln(content);
+        log.debug(content);
     }
 
     public void info(String content) {
-        System.out.print(title());
-        System.out.println(content);
+        log.info(content);
     }
 
     public void warn(String content) {
@@ -67,11 +59,10 @@ public class LogUtil {
     }
 
     public void warn(String content, Throwable throwable) {
-        System.out.print(title());
-
-        PrintUtil.yellowln("WARN: " + content);
-        if (throwable != null) {
-            throwable.printStackTrace();
+        if (throwable == null) {
+            log.warn(content);
+        } else {
+            log.warn(content, throwable);
         }
     }
 
@@ -80,11 +71,10 @@ public class LogUtil {
     }
 
     public void error(String content, Throwable throwable) {
-        System.out.print(title());
-
-        PrintUtil.redln("ERROR: " + content);
-        if (throwable != null) {
-            throwable.printStackTrace();
+        if (throwable == null) {
+            log.error(content);
+        } else {
+            log.error(content, throwable);
         }
     }
 }
