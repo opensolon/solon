@@ -108,11 +108,6 @@ public class TextStreamUtil {
     }
 
     private static void onLineStreamRequestDo(CloseTrackableBufferedReader reader, Subscriber<? super String> subscriber, SimpleSubscription subscription, long l) {
-        if (reader.isClosed()) {
-            //并发信号时；有些线程关闭了，仍可能会探测进来
-            return;
-        }
-
         try {
             while (l > 0) {
                 if (subscription.isCancelled()) {

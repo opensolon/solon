@@ -113,9 +113,9 @@ public class SimpleSubscriber<T> implements Subscriber<T> {
 
     @Override
     public void onComplete() {
-        if (isCompleted.compareAndSet(false, true)) {
-            //确保只运行一次
-            if (doOnComplete != null) {
+        if (doOnComplete != null) {
+            if (isCompleted.compareAndSet(false, true)) {
+                //确保只运行一次
                 doOnComplete.run();
             }
         }
