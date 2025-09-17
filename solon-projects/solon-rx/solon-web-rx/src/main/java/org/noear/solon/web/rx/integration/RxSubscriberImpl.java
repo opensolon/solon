@@ -42,7 +42,7 @@ public class RxSubscriberImpl implements Subscriber {
     }
 
     private void request(Subscription subscription) {
-        subscription.request(Long.MAX_VALUE);
+        subscription.request(1L);
     }
 
     private Subscription subscription;
@@ -71,6 +71,8 @@ public class RxSubscriberImpl implements Subscriber {
                 ctx.output(CRLF);
                 ctx.flush(); //流式输出，每次都要刷一下（避免缓存未输出）
             }
+
+            subscription.request(1L);
         } catch (Throwable e) {
             onError(e);
         }

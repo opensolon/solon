@@ -211,6 +211,11 @@ public class TextStreamUtil {
     }
 
     private static void onSseStreamRequestDo(CloseTrackableBufferedReader reader, Subscriber<? super ServerSentEvent> subscriber, SimpleSubscription subscription, long l) {
+        if (reader.isClosed()) {
+            //并发信号时；有些线程关闭了，仍可能会探测进来
+            return;
+        }
+
         try {
             Map<String, String> meta = new HashMap<>();
             StringBuilder data = new StringBuilder();
@@ -238,16 +243,20 @@ public class TextStreamUtil {
                     if (textLine.isEmpty()) {
                         if (data.length() > 0) {
                             String dataStr = data.toString();
+                            boolean isDone = (dataStr.length() == 6 && dataStr.equals("[DONE]"));
 
-                            subscriber.onNext(new ServerSentEvent(meta, dataStr));
+                            if (isDone) {
+                                //可能会再次触发信号（所以，要先关）
+                                RunUtil.runAndTry(reader::close);
+                            }
+
+                            subscriber.onNext(new ServerSentEvent(meta, dataStr)); //可能会触发再次进来（`subscription.request(1L)`）
                             l--; //提交后再减
                             meta.clear();
                             data.setLength(0);
 
-                            if(dataStr.length() == 6 && dataStr.equals("[DONE]")) {
-                                //完成需求
-                                RunUtil.runAndTry(reader::close);
-                                subscriber.onComplete(); //可能会再次触发信号（所以，要先关）
+                            if (isDone) {
+                                subscriber.onComplete();
                                 return;
                             }
                         }
