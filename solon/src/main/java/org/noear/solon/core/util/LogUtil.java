@@ -20,7 +20,9 @@ package org.noear.solon.core.util;
  *
  * @author noear
  * @since 1.10
+ * @deprecated 3.6 {@link org.slf4j.Logger}
  * */
+@Deprecated
 public class LogUtil {
     private static LogUtil global;
 

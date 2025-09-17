@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.logging;
+package org.noear.solon.core.logging;
 
 /**
  * 日志孵化器
