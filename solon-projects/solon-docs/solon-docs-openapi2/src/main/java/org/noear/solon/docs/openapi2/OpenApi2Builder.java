@@ -899,7 +899,12 @@ public class OpenApi2Builder {
                 propPr.setDescription(propAnno.value());
                 propPr.setRequired(propAnno.required());
                 propPr.setExample(propAnno.example());
-                propPr.setType(Utils.isBlank(propAnno.dataType()) ? propType.getSimpleName().toLowerCase() : propAnno.dataType());
+                if(FileBase.class.isAssignableFrom(propType)){
+                    // 文件类型固定为file
+                    propPr.setType("file");
+                }else{
+                    propPr.setType(Utils.isBlank(propAnno.dataType()) ? propType.getSimpleName().toLowerCase() : propAnno.dataType());
+                }
             } else {
                 propPr.setType(propType.getSimpleName().toLowerCase());
             }
