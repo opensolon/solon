@@ -45,6 +45,7 @@
 * 修复 solon-rx SimpleSubscriber 非法调用 onNext（直接调用） 会异常的问题？
 * snakeyaml 升为 2.5
 * lombok 升为 1.18.42
+* jansi 升为 2.4.2
 
 示例：
 
