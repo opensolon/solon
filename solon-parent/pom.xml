@@ -104,7 +104,7 @@
 
         <jackson.version>2.18.2</jackson.version>
         <gson.version>2.12.1</gson.version>
-        <fury.version>0.10.0</fury.version>
+        <fury.version>0.10.3</fury.version>
         <hessian.version>4.0.66</hessian.version>
         <hessian-sofa.version>4.0.4</hessian-sofa.version>
         <hessian-lite.version>4.0.3</hessian-lite.version>
