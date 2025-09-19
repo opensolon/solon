@@ -166,7 +166,7 @@
         <sms4j.version>3.3.5</sms4j.version>
 
         <mapstruct.version>1.5.5.Final</mapstruct.version>
-        <native.version>0.10.6</native.version>
+        <graalvm.buildtools.version>0.11.0</graalvm.buildtools.version>
 
         <beetl.version>3.19.1.RELEASE</beetl.version>
         <enjoy.version>5.1.3</enjoy.version>
@@ -2470,7 +2470,7 @@
                     <plugin>
                         <groupId>org.graalvm.buildtools</groupId>
                         <artifactId>native-maven-plugin</artifactId>
-                        <version>${native.version}</version>
+                        <version>${graalvm.buildtools.version}</version>
                         <!-- 使用graalvm提供的可达性元数据，很多第三方库就直接可以构建成可执行文件了 -->
                         <configuration>
                             <metadataRepository>

@@ -48,6 +48,7 @@
 * jansi 升为 2.4.2
 * guava 升为 33.4.8-jre
 * fury 升为 0.10.3
+* graalvm.buildtools 升为 0.11.0
 
 示例：
 
