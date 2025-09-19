@@ -46,6 +46,7 @@
 * snakeyaml 升为 2.5
 * lombok 升为 1.18.42
 * jansi 升为 2.4.2
+* guava 升为 33.4.8-jre
 
 示例：
 
