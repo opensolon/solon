@@ -44,6 +44,7 @@
 * 优化 solon-net-httputils sse 与背压处理的兼容性
 * 修复 solon-rx SimpleSubscriber 非法调用 onNext（直接调用） 会异常的问题？
 * snakeyaml 升为 2.5
+* lombok 升为 1.18.42
 
 示例：
 
