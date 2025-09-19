@@ -4,7 +4,8 @@ import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.data.annotation.Ds;
 
-import javax.activation.DataSource;
+import javax.sql.DataSource;
+
 
 /**
  * @author noear 2025/8/27 created
