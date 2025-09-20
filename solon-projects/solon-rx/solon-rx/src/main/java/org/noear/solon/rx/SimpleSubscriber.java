@@ -101,7 +101,9 @@ public class SimpleSubscriber<T> implements Subscriber<T> {
             doOnNextCons.accept(item);
         }
 
-        subscription.request(1L);
+        if (subscription != null) {
+            subscription.request(1L);
+        }
     }
 
     @Override
