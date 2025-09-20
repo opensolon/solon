@@ -41,9 +41,6 @@ public class RxSubscriberImpl implements Subscriber {
         this.completableEmitter = completableEmitter;
     }
 
-    private void request(Subscription subscription) {
-        subscription.request(1L);
-    }
 
     private Subscription subscription;
 
@@ -53,10 +50,10 @@ public class RxSubscriberImpl implements Subscriber {
 
         if (ctx.asyncStarted()) {
             //如果已是异步
-            request(subscription);
+            subscription.request(1L);
         } else {
             //如果不是，启动异步模式（-1 表示不超时）
-            ctx.asyncStart(-1L, () -> request(subscription));
+            ctx.asyncStart(-1L, () -> subscription.request(1L));
         }
     }
 
@@ -72,7 +69,9 @@ public class RxSubscriberImpl implements Subscriber {
                 ctx.flush(); //流式输出，每次都要刷一下（避免缓存未输出）
             }
 
-            subscription.request(1L);
+            if (subscription != null) {
+                subscription.request(1L);
+            }
         } catch (Throwable e) {
             onError(e);
         }
