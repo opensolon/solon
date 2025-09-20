@@ -2549,7 +2549,7 @@
                 <plugin>
                     <groupId>org.graalvm.buildtools</groupId>
                     <artifactId>native-maven-plugin</artifactId>
-                    <version>${native.version}</version>
+                    <version>${graalvm.buildtools.version}</version>
                     <!-- 使用graalvm提供的可达性元数据，很多第三方库就直接可以构建成可执行文件了 -->
                     <configuration>
                         <metadataRepository>
@@ -2561,6 +2561,19 @@
                             <id>add-reachability-metadata</id>
                             <goals>
                                 <goal>add-reachability-metadata</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.projectlombok</groupId>
+                    <artifactId>lombok-maven-plugin</artifactId>
+                    <version>${lombok.version}</version>
+                    <executions>
+                        <execution>
+                            <phase>generate-sources</phase>
+                            <goals>
+                                <goal>delombok</goal>
                             </goals>
                         </execution>
                     </executions>
