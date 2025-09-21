@@ -23,7 +23,9 @@ import org.noear.solon.serialization.JsonRenderFactory;
 /**
  * @author painter
  * @since 2.8
- */
+ * @deprecated 3.6
+ * */
+@Deprecated
 public abstract class JacksonXmlRenderFactoryBase implements JsonRenderFactory {
     protected final JacksonXmlStringSerializer serializer;
 

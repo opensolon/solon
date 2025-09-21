@@ -13,29 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.serialization.protostuff;
-
-import org.noear.solon.core.handle.Context;
-import org.noear.solon.core.handle.Render;
+package org.noear.solon.core.handle;
 
 /**
- * Protostuff 渲染器
  *
  * @author noear
- * @since 1.2
- * @since 2.8
- * @deprecated 3.6
- * */
-@Deprecated
-public class ProtostuffRender implements Render {
-    private final ProtostuffEntityConverter entityConverter;
+ * @since 3.6
+ */
+public class EntityConverter2Render implements Render {
+    private final EntityConverter entityConverter;
 
-    public ProtostuffRender(ProtostuffEntityConverter entityConverter) {
+    public EntityConverter2Render(EntityConverter entityConverter) {
         this.entityConverter = entityConverter;
     }
 
-    public ProtostuffBytesSerializer getSerializer() {
-        return entityConverter.getSerializer();
+    @Override
+    public String name() {
+        return entityConverter.name();
     }
 
     @Override

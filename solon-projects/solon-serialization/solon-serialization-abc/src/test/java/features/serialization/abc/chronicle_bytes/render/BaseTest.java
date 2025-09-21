@@ -18,6 +18,7 @@ package features.serialization.abc.chronicle_bytes.render;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.serialization.abc.AbcBytesSerializer;
+import org.noear.solon.serialization.abc.AbcEntityConverter;
 import org.noear.solon.serialization.abc.AbcRender;
 import org.noear.solon.test.SolonTest;
 
@@ -58,7 +59,7 @@ public class BaseTest {
             }
         };
 
-        AbcRender render = new AbcRender(new AbcBytesSerializer());
+        AbcRender render = new AbcRender(new AbcEntityConverter(new AbcBytesSerializer()));
         render.render(userDo, ctx);
 
         AbcBytesSerializer serializer = new AbcBytesSerializer();

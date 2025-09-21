@@ -38,15 +38,14 @@ public class SerializationFuryPlugin implements Plugin {
 
 
         //::render
-        FuryRender render = new FuryRender(serializer);
+        FuryRender render = new FuryRender(entityConverter);
         context.wrapAndPut(FuryRender.class, render); //用于扩展
-        context.app().renderManager().register(SerializerNames.AT_FURY,render);
+        context.app().renderManager().register(entityConverter);
 
         //::actionExecutor
         //支持 fury 内容类型执行
         FuryActionExecutor executor = new FuryActionExecutor(entityConverter);
         context.wrapAndPut(FuryActionExecutor.class, executor); //用于扩展
-
-        context.app().chainManager().addExecuteHandler(executor);
+        context.app().chainManager().addExecuteHandler(entityConverter);
     }
 }

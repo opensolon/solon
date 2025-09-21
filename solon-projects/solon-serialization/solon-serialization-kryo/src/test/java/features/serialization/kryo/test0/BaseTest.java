@@ -19,6 +19,7 @@ import features.serialization.kryo.model.UserDo;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.serialization.kryo.KryoBytesSerializer;
+import org.noear.solon.serialization.kryo.KryoEntityConverter;
 import org.noear.solon.serialization.kryo.KryoRender;
 import org.noear.solon.test.SolonTest;
 
@@ -68,7 +69,7 @@ public class BaseTest {
             }
         };
 
-        KryoRender render = new KryoRender(new KryoBytesSerializer());
+        KryoRender render = new KryoRender(new KryoEntityConverter(new KryoBytesSerializer()));
         render.render(userDo, ctx);
 
         KryoBytesSerializer serializer = new KryoBytesSerializer();

@@ -25,7 +25,9 @@ import org.noear.solon.serialization.JsonRenderFactory;
  *
  * @author noear
  * @since 1.5
- */
+ * @deprecated 3.6
+ * */
+@Deprecated
 public abstract class SnackRenderFactoryBase implements JsonRenderFactory {
     protected final SnackStringSerializer serializer;
 

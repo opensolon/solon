@@ -26,10 +26,12 @@ import org.noear.solon.serialization.gson.impl.*;
  *
  * @author noear
  * @since 1.5
- */
+ * @deprecated 3.6
+ * */
+@Deprecated
 public class GsonRenderFactory extends GsonRenderFactoryBase {
-    public GsonRenderFactory(GsonStringSerializer serializer) {
-        super(serializer);
+    public GsonRenderFactory(GsonEntityConverter entityConverter) {
+        super(entityConverter.getSerializer());
     }
 
     /**

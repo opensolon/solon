@@ -19,6 +19,7 @@ import features.serialization.hessian.model.UserDo;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.serialization.hessian.HessianBytesSerializer;
+import org.noear.solon.serialization.hessian.HessianEntityConverter;
 import org.noear.solon.serialization.hessian.HessianRender;
 import org.noear.solon.test.SolonTest;
 
@@ -61,7 +62,7 @@ public class BaseTest {
             }
         };
 
-        HessianRender render = new HessianRender(new HessianBytesSerializer());
+        HessianRender render = new HessianRender(new HessianEntityConverter(new HessianBytesSerializer()));
         render.render(userDo, ctx);
 
         HessianBytesSerializer serializer = new HessianBytesSerializer();

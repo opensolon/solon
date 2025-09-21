@@ -15,31 +15,39 @@
  */
 package org.noear.solon.serialization.hessian;
 
-import org.noear.solon.serialization.BytesSerializerRender;
-import org.noear.solon.serialization.ContextSerializer;
+import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.handle.Render;
 
 //不要要入参，方便后面多视图混用
 //
-public class HessianRender extends BytesSerializerRender {
-    private final HessianBytesSerializer serializer;
+ /**
+  *
+  * @deprecated 3.6
+  * */
+ @Deprecated
+public class HessianRender implements Render {
+     private final HessianEntityConverter entityConverter;
 
-    public HessianRender(HessianBytesSerializer serializer) {
-        this.serializer = serializer;
-    }
+     public HessianRender(HessianEntityConverter entityConverter) {
+         this.entityConverter = entityConverter;
+     }
 
-    /**
-     * 获取序列化器
-     */
-    @Override
-    public ContextSerializer<byte[]> getSerializer() {
-        return serializer;
-    }
+     public HessianBytesSerializer getSerializer() {
+         return entityConverter.getSerializer();
+     }
 
-    /**
-     * 获取渲染器名字
-     */
-    @Override
-    public String name() {
-        return this.getClass().getSimpleName();
-    }
-}
+     @Override
+     public boolean matched(Context ctx, String mime) {
+         return entityConverter.canWrite(mime, ctx);
+     }
+
+     @Override
+     public String renderAndReturn(Object data, Context ctx) throws Throwable {
+         return entityConverter.writeAndReturn(data, ctx);
+     }
+
+     @Override
+     public void render(Object data, Context ctx) throws Throwable {
+         entityConverter.write(data, ctx);
+     }
+ }

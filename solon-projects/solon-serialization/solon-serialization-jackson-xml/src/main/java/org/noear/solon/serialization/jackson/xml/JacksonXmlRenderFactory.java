@@ -26,13 +26,13 @@ import org.noear.solon.serialization.StringSerializerRender;
  *
  * @author painter
  * @since 2.8
- */
+ * @deprecated 3.6
+ * */
+@Deprecated
 public class JacksonXmlRenderFactory extends JacksonXmlRenderFactoryBase {
 
-    public JacksonXmlRenderFactory(JacksonXmlStringSerializer serializer) {
-        super(serializer);
-        serializer.getSerializeConfig().addFeatures(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        serializer.getSerializeConfig().getMapper().registerModule(new JavaTimeModule());
+    public JacksonXmlRenderFactory(JacksonXmlEntityConverter entityConverter) {
+        super(entityConverter.getSerializer());
     }
 
     /**

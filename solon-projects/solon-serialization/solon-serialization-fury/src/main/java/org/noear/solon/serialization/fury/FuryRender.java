@@ -15,33 +15,38 @@
  */
 package org.noear.solon.serialization.fury;
 
-import org.noear.solon.serialization.BytesSerializerRender;
-import org.noear.solon.serialization.ContextSerializer;
+import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.handle.Render;
 
 /**
  * @author noear
  * @since 2.5
+ * @deprecated 3.6
  * */
-public class FuryRender extends BytesSerializerRender {
-    private final FuryBytesSerializer serializer;
+@Deprecated
+public class FuryRender implements Render {
+    private final FuryEntityConverter entityConverter;
 
-    public FuryRender(FuryBytesSerializer serializer) {
-        this.serializer = serializer;
+    public FuryRender(FuryEntityConverter entityConverter) {
+        this.entityConverter = entityConverter;
     }
 
-    /**
-     * 获取序列化器
-     */
-    @Override
-    public ContextSerializer<byte[]> getSerializer() {
-        return serializer;
+    public FuryBytesSerializer getSerializer() {
+        return entityConverter.getSerializer();
     }
 
-    /**
-     * 获取渲染器名字
-     */
     @Override
-    public String name() {
-        return this.getClass().getSimpleName();
+    public boolean matched(Context ctx, String mime) {
+        return entityConverter.canWrite(mime, ctx);
+    }
+
+    @Override
+    public String renderAndReturn(Object data, Context ctx) throws Throwable {
+        return entityConverter.writeAndReturn(data, ctx);
+    }
+
+    @Override
+    public void render(Object data, Context ctx) throws Throwable {
+        entityConverter.write(data, ctx);
     }
 }
