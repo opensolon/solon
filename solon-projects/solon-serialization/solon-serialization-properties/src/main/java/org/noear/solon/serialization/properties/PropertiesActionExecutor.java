@@ -43,6 +43,21 @@ public class PropertiesActionExecutor extends ActionExecuteHandlerDefault {
     }
 
     /**
+     * 允许处理 Get 请求
+     */
+    public void allowGet(boolean allowGet) {
+        serializer.allowGet(allowGet);
+    }
+
+    /**
+     * 允许处理 PostForm 请求
+     */
+    public void allowPostForm(boolean allowPostForm) {
+        this.serializer.allowPostForm(allowPostForm);
+    }
+
+
+    /**
      * 反序列化配置
      */
     public Options config() {
