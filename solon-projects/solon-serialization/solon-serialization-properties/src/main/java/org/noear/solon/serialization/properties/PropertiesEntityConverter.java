@@ -18,6 +18,7 @@ package org.noear.solon.serialization.properties;
 import org.noear.snack.ONode;
 import org.noear.snack.core.Feature;
 import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.util.LazyReference;
 import org.noear.solon.core.wrap.MethodWrap;
 import org.noear.solon.core.wrap.ParamWrap;
@@ -46,6 +47,21 @@ public class PropertiesEntityConverter extends AbstractStringEntityConverter<Pro
     @Override
     public String[] mappings() {
         return new String[]{SerializerNames.AT_PROPERTIES};
+    }
+
+
+    @Override
+    public boolean canRead(Context ctx, String mime) {
+        if (serializer.allowGet() && MethodType.GET.name.equals(ctx.method()) ||
+                (serializer.allowPostForm() && (ctx.isFormUrlencoded() || ctx.isMultipartFormData()))) {
+            for (String key : ctx.paramMap().keySet()) {
+                if (key.indexOf('.') > 0 || key.indexOf('[') > 0) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**
