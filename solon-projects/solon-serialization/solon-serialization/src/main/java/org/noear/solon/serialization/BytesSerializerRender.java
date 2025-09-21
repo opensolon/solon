@@ -25,7 +25,9 @@ import java.util.Base64;
  *
  * @author noear
  * @since 2.8
+ * @deprecated 3.6
  */
+@Deprecated
 public abstract class BytesSerializerRender implements Render {
     /**
      * 获取序列化器

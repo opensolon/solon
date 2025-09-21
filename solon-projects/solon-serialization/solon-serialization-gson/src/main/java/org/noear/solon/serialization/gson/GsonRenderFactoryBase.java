@@ -22,7 +22,9 @@ import org.noear.solon.serialization.JsonRenderFactory;
 /**
  * @author noear
  * @since 1.5
- */
+ * @deprecated 3.6
+ * */
+@Deprecated
 public abstract class GsonRenderFactoryBase implements JsonRenderFactory {
     protected final GsonStringSerializer serializer;
 

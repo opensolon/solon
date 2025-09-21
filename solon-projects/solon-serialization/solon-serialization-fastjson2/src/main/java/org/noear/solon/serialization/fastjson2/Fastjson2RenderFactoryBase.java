@@ -27,7 +27,9 @@ import org.noear.solon.serialization.JsonRenderFactory;
  * @author noear
  * @author 暮城留风
  * @since 1.10
- */
+ * @deprecated 3.6
+ * */
+@Deprecated
 public abstract class Fastjson2RenderFactoryBase implements JsonRenderFactory {
     protected final Fastjson2StringSerializer serializer;
 

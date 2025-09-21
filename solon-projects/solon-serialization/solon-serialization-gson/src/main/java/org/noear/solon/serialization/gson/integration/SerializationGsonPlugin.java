@@ -39,15 +39,15 @@ public class SerializationGsonPlugin implements Plugin {
 
         //::renderFactory
         //绑定属性
-        GsonRenderFactory renderFactory = new GsonRenderFactory(serializer);
+        GsonRenderFactory renderFactory = new GsonRenderFactory(entityConverter);
         context.wrapAndPut(GsonRenderFactory.class, renderFactory); //用于扩展
-        context.app().renderManager().register(renderFactory);
+        context.app().renderManager().register(entityConverter);
 
         //::actionExecutor
         //支持 json 内容类型执行
         GsonActionExecutor actionExecutor = new GsonActionExecutor(entityConverter);
         context.wrapAndPut(GsonActionExecutor.class, actionExecutor); //用于扩展
-        context.app().chainManager().addExecuteHandler(actionExecutor);
+        context.app().chainManager().addExecuteHandler(entityConverter);
 
         //::renderTypedFactory
         GsonRenderTypedFactory renderTypedFactory = new GsonRenderTypedFactory();

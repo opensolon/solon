@@ -26,26 +26,28 @@ import org.noear.solon.serialization.StringSerializerRender;
  *
  * @author noear
  * @since 2.7
- */
+ * @deprecated 3.6
+ * */
+@Deprecated
 public class PropertiesRenderFactory  implements RenderFactory {
-    private final PropertiesStringSerializer serializer;
+    private final PropertiesEntityConverter entityConverter;
 
-    public PropertiesRenderFactory(PropertiesStringSerializer serializer) {
-        this.serializer = serializer;
+    public PropertiesRenderFactory(PropertiesEntityConverter entityConverter) {
+        this.entityConverter = entityConverter;
     }
 
     /**
      * 获取序列化器
      */
     public PropertiesStringSerializer getSerializer() {
-        return serializer;
+        return entityConverter.getSerializer();
     }
 
     /**
      * 序列化配置
      */
     public Options config() {
-        return serializer.getConfig();
+        return getSerializer().getConfig();
     }
 
     /**
@@ -61,6 +63,6 @@ public class PropertiesRenderFactory  implements RenderFactory {
      */
     @Override
     public Render create() {
-        return new StringSerializerRender(false, serializer);
+        return new StringSerializerRender(false, getSerializer());
     }
 }

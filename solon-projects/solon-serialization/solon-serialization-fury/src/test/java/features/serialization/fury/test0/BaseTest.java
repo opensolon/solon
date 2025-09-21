@@ -19,6 +19,7 @@ import features.serialization.fury.model.UserDo;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.serialization.fury.FuryBytesSerializer;
+import org.noear.solon.serialization.fury.FuryEntityConverter;
 import org.noear.solon.serialization.fury.FuryRender;
 import org.noear.solon.test.SolonTest;
 
@@ -68,7 +69,7 @@ public class BaseTest {
             }
         };
 
-        FuryRender render = new FuryRender(new FuryBytesSerializer());
+        FuryRender render = new FuryRender(new FuryEntityConverter(new FuryBytesSerializer()));
         render.render(userDo, ctx);
 
         FuryBytesSerializer serializer = new FuryBytesSerializer();

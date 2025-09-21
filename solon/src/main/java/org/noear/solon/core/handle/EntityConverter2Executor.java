@@ -13,40 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.serialization.kryo;
+package org.noear.solon.core.handle;
 
-import org.noear.solon.core.handle.Context;
-import org.noear.solon.core.handle.Render;
+import org.noear.solon.core.wrap.MethodWrap;
 
 /**
+ *
  * @author noear
- * @since 3.0
- * @deprecated 3.6
- * */
-@Deprecated
-public class KryoRender implements Render {
-    private final KryoEntityConverter entityConverter;
+ * @since 3.6
+ */
+public class EntityConverter2Executor implements ActionExecuteHandler {
+    private final EntityConverter entityConverter;
 
-    public KryoRender(KryoEntityConverter entityConverter) {
+    public EntityConverter2Executor(EntityConverter entityConverter) {
         this.entityConverter = entityConverter;
-    }
-
-    public KryoBytesSerializer getSerializer() {
-        return entityConverter.getSerializer();
     }
 
     @Override
     public boolean matched(Context ctx, String mime) {
-        return entityConverter.canWrite(mime, ctx);
+        return entityConverter.canRead(ctx, mime);
     }
 
     @Override
-    public String renderAndReturn(Object data, Context ctx) throws Throwable {
-        return entityConverter.writeAndReturn(data, ctx);
-    }
-
-    @Override
-    public void render(Object data, Context ctx) throws Throwable {
-        entityConverter.write(data, ctx);
+    public Object[] resolveArguments(Context ctx, Object target, MethodWrap mWrap) throws Throwable {
+        return entityConverter.read(ctx, target, mWrap);
     }
 }

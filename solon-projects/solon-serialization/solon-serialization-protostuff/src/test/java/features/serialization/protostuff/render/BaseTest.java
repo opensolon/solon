@@ -19,6 +19,7 @@ import features.serialization.protostuff.model.UserDo;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.serialization.protostuff.ProtostuffBytesSerializer;
+import org.noear.solon.serialization.protostuff.ProtostuffEntityConverter;
 import org.noear.solon.serialization.protostuff.ProtostuffRender;
 import org.noear.solon.test.SolonTest;
 
@@ -60,7 +61,7 @@ public class BaseTest {
             }
         };
 
-        ProtostuffRender render = new ProtostuffRender(new ProtostuffBytesSerializer());
+        ProtostuffRender render = new ProtostuffRender(new ProtostuffEntityConverter(new ProtostuffBytesSerializer()));
         render.render(userDo, ctx);
 
         ProtostuffBytesSerializer serializer = new  ProtostuffBytesSerializer();

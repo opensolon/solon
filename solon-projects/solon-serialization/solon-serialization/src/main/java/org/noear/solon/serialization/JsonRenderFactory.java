@@ -23,7 +23,9 @@ import org.noear.solon.core.handle.RenderFactory;
  *
  * @author noear
  * @since 1.5
+ * @deprecated 3.6
  */
+@Deprecated
 public interface JsonRenderFactory extends RenderFactory {
     /**
      * 添加数据转换器（用于简单场景）

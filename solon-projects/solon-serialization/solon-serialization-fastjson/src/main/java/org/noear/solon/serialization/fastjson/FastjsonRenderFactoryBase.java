@@ -28,7 +28,9 @@ import java.lang.reflect.Type;
  *
  * @author noear
  * @since 1.5
- */
+ * @deprecated 3.6
+ * */
+@Deprecated
 public abstract class FastjsonRenderFactoryBase implements JsonRenderFactory {
     protected final FastjsonStringSerializer serializer;
     public FastjsonRenderFactoryBase(FastjsonStringSerializer serializer) {

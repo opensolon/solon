@@ -27,12 +27,12 @@ import org.noear.solon.serialization.StringSerializerRender;
  * @author noear
  * @author 暮城留风
  * @since 1.10
- */
+ * @deprecated 3.6
+ * */
+@Deprecated
 public class Fastjson2RenderFactory extends Fastjson2RenderFactoryBase {
-    public Fastjson2RenderFactory(Fastjson2StringSerializer serializer) {
-        super(serializer);
-        serializer.getSerializeConfig().addFeatures(
-                JSONWriter.Feature.BrowserCompatible);
+    public Fastjson2RenderFactory(Fastjson2EntityConverter entityConverter) {
+        super(entityConverter.getSerializer());
     }
 
     /**

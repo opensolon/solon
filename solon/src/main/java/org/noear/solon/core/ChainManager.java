@@ -293,6 +293,27 @@ public class ChainManager {
     }
 
     /**
+     * 添加Action执行器
+     *
+     * @since 3.6
+     */
+    public void addExecuteHandler(EntityConverter e) {
+        addExecuteHandler(e, 0);
+    }
+
+    /**
+     * 添加Action执行器
+     *
+     * @param index 顺序位
+     * @since 3.6
+     */
+    public void addExecuteHandler(EntityConverter e, int index) {
+        if (e != null) {
+            addExecuteHandler(new EntityConverter2Executor(e), index);
+        }
+    }
+
+    /**
      * 移除Action执行器
      */
     public void removeExecuteHandler(Class<?> clz) {

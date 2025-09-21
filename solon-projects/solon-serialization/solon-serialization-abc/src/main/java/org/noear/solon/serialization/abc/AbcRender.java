@@ -15,33 +15,34 @@
  */
 package org.noear.solon.serialization.abc;
 
-import org.noear.solon.serialization.BytesSerializerRender;
-import org.noear.solon.serialization.ContextSerializer;
+import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.handle.Render;
 
 /**
  * @author noear
  * @since 3.0
+ * @deprecated 3.6
  * */
-public class AbcRender extends BytesSerializerRender {
-    private final AbcBytesSerializer serializer;
+@Deprecated
+public class AbcRender implements Render {
+    private final AbcEntityConverter entityConverter;
 
-    public AbcRender(AbcBytesSerializer serializer) {
-        this.serializer = serializer;
+    public AbcRender(AbcEntityConverter entityConverter) {
+        this.entityConverter = entityConverter;
     }
 
-    /**
-     * 获取序列化器
-     */
     @Override
-    public ContextSerializer<byte[]> getSerializer() {
-        return serializer;
+    public boolean matched(Context ctx, String mime) {
+        return entityConverter.canWrite(mime, ctx);
     }
 
-    /**
-     * 获取渲染器名字
-     */
     @Override
-    public String name() {
-        return this.getClass().getSimpleName();
+    public String renderAndReturn(Object data, Context ctx) throws Throwable {
+        return entityConverter.writeAndReturn(data, ctx);
+    }
+
+    @Override
+    public void render(Object data, Context ctx) throws Throwable {
+        entityConverter.write(data, ctx);
     }
 }

@@ -38,15 +38,15 @@ public class SerializationFastjson2Plugin implements Plugin {
 
 
         //::renderFactory
-        Fastjson2RenderFactory renderFactory = new Fastjson2RenderFactory(serializer);
+        Fastjson2RenderFactory renderFactory = new Fastjson2RenderFactory(entityConverter);
         context.wrapAndPut(Fastjson2RenderFactory.class, renderFactory); //用于扩展
-        context.app().renderManager().register(renderFactory);
+        context.app().renderManager().register(entityConverter);
 
         //::actionExecutor
         //支持 json 内容类型执行
         Fastjson2ActionExecutor actionExecutor = new Fastjson2ActionExecutor(entityConverter);
         context.wrapAndPut(Fastjson2ActionExecutor.class, actionExecutor); //用于扩展
-        context.app().chainManager().addExecuteHandler(actionExecutor);
+        context.app().chainManager().addExecuteHandler(entityConverter);
 
 
         //::renderTypedFactory

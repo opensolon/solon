@@ -26,11 +26,12 @@ import org.noear.solon.serialization.StringSerializerRender;
  * @author noear
  * @since 1.5
  * @since 2.8
- */
+ * @deprecated 3.6
+ * */
+@Deprecated
 public class SnackRenderFactory extends SnackRenderFactoryBase {
-    public SnackRenderFactory(SnackStringSerializer serializer) {
-        super(serializer);
-        serializer.getSerializeConfig().addFeatures(Feature.EnumUsingName);
+    public SnackRenderFactory(SnackEntityConverter entityConverter) {
+        super(entityConverter.getSerializer());
     }
 
     /**

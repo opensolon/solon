@@ -37,14 +37,14 @@ public class SerializationPropertiesPlugin implements Plugin {
 
         //::renderFactory
         //绑定属性
-        PropertiesRenderFactory renderFactory = new PropertiesRenderFactory(serializer);
+        PropertiesRenderFactory renderFactory = new PropertiesRenderFactory(entityConverter);
         context.wrapAndPut(PropertiesRenderFactory.class, renderFactory); //用于扩展
-        context.app().renderManager().register(renderFactory);
+        context.app().renderManager().register(entityConverter);
 
         //::actionExecutor
         //支持 props 内容类型执行
         PropertiesActionExecutor actionExecutor = new PropertiesActionExecutor(entityConverter);
         context.wrapAndPut(PropertiesActionExecutor.class, actionExecutor); //用于扩展
-        context.app().chainManager().addExecuteHandler(actionExecutor);
+        context.app().chainManager().addExecuteHandler(entityConverter);
     }
 }

@@ -38,14 +38,14 @@ public class SerializationJacksonPlugin implements Plugin {
 
         //::renderFactory
         //绑定属性
-        JacksonRenderFactory renderFactory = new JacksonRenderFactory(serializer);
+        JacksonRenderFactory renderFactory = new JacksonRenderFactory(entityConverter);
         context.wrapAndPut(JacksonRenderFactory.class, renderFactory); //用于扩展
-        context.app().renderManager().register(renderFactory);
+        context.app().renderManager().register(entityConverter);
 
         //支持 json 内容类型执行
         JacksonActionExecutor actionExecutor = new JacksonActionExecutor(entityConverter);
         context.wrapAndPut(JacksonActionExecutor.class, actionExecutor); //用于扩展
-        context.app().chainManager().addExecuteHandler(actionExecutor);
+        context.app().chainManager().addExecuteHandler(entityConverter);
 
 
         //::renderTypedFactory
