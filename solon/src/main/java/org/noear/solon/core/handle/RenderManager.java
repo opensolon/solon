@@ -17,6 +17,7 @@ package org.noear.solon.core.handle;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.Constants;
+import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.core.util.DataThrowable;
 import org.noear.solon.core.util.MimeType;
@@ -114,10 +115,15 @@ public class RenderManager implements Render {
         }
 
         Render render = _lib.get(clzName);
+
+        if (render == null && clzName.indexOf('.') > 0) {
+            //如果是全类名
+            render = ClassUtil.tryInstance(clzName);
+        }
+
         if (render == null) {
-            log.warn("Render: " + clzName + " not exists!");
+            log.warn("Render: " + clzName + " not found!");
             return;
-            //throw new IllegalStateException(classSimpleName + " not exists!");
         }
 
         _mapping.put(mapping, render);
