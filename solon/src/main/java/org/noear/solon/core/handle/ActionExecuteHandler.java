@@ -23,7 +23,9 @@ import org.noear.solon.core.wrap.MethodWrap;
  * @see Action#invoke(Context, Object)
  * @author noear
  * @since 1.0
- * */
+ * @deprecated 3.6
+ */
+@Deprecated
 @FunctionalInterface
 public interface ActionExecuteHandler {
     /**
