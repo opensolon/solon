@@ -27,6 +27,7 @@ import org.noear.solon.lang.Nullable;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Predicate;
 
 /**
  * 请求链管理
@@ -303,6 +304,15 @@ public class ChainManager {
      */
     public void removeExecuteHandler(Class<?> clz) {
         executeHandlers.removeIf(e -> clz.isInstance(e.target));
+    }
+
+    /**
+     * 移除Action执行器
+     *
+     * @deprecated 3.6
+     */
+    public void removeExecuteHandler(Predicate<ActionExecuteHandler> condition) {
+        executeHandlers.removeIf(e -> condition.test(e.target));
     }
 
     public ActionExecuteHandler getExecuteHandler(Context c, int paramSize) {
