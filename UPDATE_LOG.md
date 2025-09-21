@@ -16,7 +16,6 @@
 * 调整 使用更多的 slf4j 替换 LogUtil ???
 * 调整 取消启动参数简写模式，保持与应用参数相同的名字 ???
 * 调整 solon-docs-openapi2 合并 solon-docs-openapi2-javadoc ???
-* 新增 solon EntityConverter 接口（将用于替代 Render 和 ActionExecuteHandler 接口）???
 * 
 * 添加 序列化安全名单接口?
 * 优化 拦截体系与 rx 的兼容？
@@ -25,13 +24,14 @@
 * 优化 solon-flow （有包含结构的）网关的流入流出架构，使不再需要记录栈和计数器???
 * 添加 Plugin postStart 事件???
 * 调整 Plugin 统一交给 AppContext 管理（之前由 SolonApp 或 PluginPackage 管理）？？
-* 使用 solon-expression 替代其它临时的表达式处理
+* 使用 solon-expression 替代其它临时的表达式处理 //ok
 
 
 ### 3.6.0
 
-* 调整 `solon-serialization-*` 弱化 ActionExecuteHandler, Render 的定制，改为 XxxxSerializer 对外定制
+* 调整 `solon-serialization-*` 弱化 ActionExecuteHandler, Render 的定制，改为 XxxxSerializer 对外定制 //ok
 * 调整 `solon` LogIncubator 接口迁移到内核，由内核控制加载时机（权重提高）
+* 调整 `solon` EntityConverter 接口（替代 Render 和 ActionExecuteHandler 接口）
 * 引入 `slf4j-api` 替代 `solon` 内的 LogUtil（减少中转代码）
 * 引入 `solon-expression` 替代 `solon` 内的模板表达式工具（仍可使用）
 * 添加 `solon` Condition:onExpression（采用 SnEL 表达式）用于替代 onProperty（标为弃用）
