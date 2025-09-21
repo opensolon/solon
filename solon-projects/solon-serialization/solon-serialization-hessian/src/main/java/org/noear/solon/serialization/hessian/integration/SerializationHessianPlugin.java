@@ -36,15 +36,19 @@ public class SerializationHessianPlugin implements Plugin {
         HessianEntityConverter entityConverter = new HessianEntityConverter(serializer);
         context.wrapAndPut(HessianEntityConverter.class, entityConverter); //用于扩展
 
+        //会自动转为 executor, renderer
+        context.app().chainManager().addEntityConverter(entityConverter);
+
+
+        //===> 以下将弃用 v3.6
+
         //::render
         HessianRender render = new HessianRender(entityConverter);
         context.wrapAndPut(HessianRender.class, render); //用于扩展
-        context.app().renderManager().register(entityConverter);
 
         //::actionExecutor
         //支持 hessian 内容类型执行
         HessianActionExecutor executor = new HessianActionExecutor(entityConverter);
         context.wrapAndPut(HessianActionExecutor.class, executor); //用于扩展
-        context.app().chainManager().addExecuteHandler(entityConverter);
     }
 }

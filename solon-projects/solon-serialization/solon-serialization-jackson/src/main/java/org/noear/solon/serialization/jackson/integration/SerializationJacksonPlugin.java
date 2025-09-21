@@ -32,20 +32,24 @@ public class SerializationJacksonPlugin implements Plugin {
         context.wrapAndPut(JacksonStringSerializer.class, serializer); //用于扩展
         context.app().serializerManager().register(SerializerNames.AT_JSON, serializer);
 
-        //::converter
+        //::entityConverter
         JacksonEntityConverter entityConverter = new JacksonEntityConverter(serializer);
         context.wrapAndPut(JacksonEntityConverter.class, entityConverter); //用于扩展
+
+        //会自动转为 executor, renderer
+        context.app().chainManager().addEntityConverter(entityConverter);
+
+
+        //===> 以下将弃用 v3.6
 
         //::renderFactory
         //绑定属性
         JacksonRenderFactory renderFactory = new JacksonRenderFactory(entityConverter);
         context.wrapAndPut(JacksonRenderFactory.class, renderFactory); //用于扩展
-        context.app().renderManager().register(entityConverter);
 
         //支持 json 内容类型执行
         JacksonActionExecutor actionExecutor = new JacksonActionExecutor(entityConverter);
         context.wrapAndPut(JacksonActionExecutor.class, actionExecutor); //用于扩展
-        context.app().chainManager().addExecuteHandler(entityConverter);
 
 
         //::renderTypedFactory

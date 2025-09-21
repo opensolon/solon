@@ -77,19 +77,6 @@ public class RenderManager implements Render {
     }
 
     /**
-     * 登记渲染器
-     *
-     * @param entityConverter 实体转换器
-     * @since 3.6
-     */
-    public void register(EntityConverter entityConverter) {
-        Render render = new EntityConverter2Render(entityConverter);
-        for (String mapping : entityConverter.mappings()) {
-            register(mapping, render);
-        }
-    }
-
-    /**
      * 登记渲染器（并映射关系）
      *
      * @param mapping 映射（例：.ftl, @json）

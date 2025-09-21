@@ -25,7 +25,9 @@ import org.noear.solon.core.serialize.Serializer;
  * @author noear
  * @since 1.5
  * @since 2.8
+ * @deprecated 3.6
  */
+@Deprecated
 public class StringSerializerRender implements Render {
     private transient boolean typed;
     private transient ContextSerializer<String> serializer;

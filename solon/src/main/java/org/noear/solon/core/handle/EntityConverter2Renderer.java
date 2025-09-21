@@ -16,14 +16,19 @@
 package org.noear.solon.core.handle;
 
 /**
+ * EntityConverter 转为 Renderer 接口
  *
  * @author noear
  * @since 3.6
  */
-public class EntityConverter2Render implements Render {
+public class EntityConverter2Renderer implements Render {
     private final EntityConverter entityConverter;
 
-    public EntityConverter2Render(EntityConverter entityConverter) {
+    public EntityConverter getEntityConverter() {
+        return entityConverter;
+    }
+
+    public EntityConverter2Renderer(EntityConverter entityConverter) {
         this.entityConverter = entityConverter;
     }
 
