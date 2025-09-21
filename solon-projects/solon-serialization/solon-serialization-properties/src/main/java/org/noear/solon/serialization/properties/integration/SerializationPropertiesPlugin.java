@@ -43,7 +43,7 @@ public class SerializationPropertiesPlugin implements Plugin {
 
         //::actionExecutor
         //支持 props 内容类型执行
-        PropertiesActionExecutor actionExecutor = new PropertiesActionExecutor(serializer);
+        PropertiesActionExecutor actionExecutor = new PropertiesActionExecutor(entityConverter);
         context.wrapAndPut(PropertiesActionExecutor.class, actionExecutor); //用于扩展
         context.app().chainManager().addExecuteHandler(actionExecutor);
     }

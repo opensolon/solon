@@ -45,7 +45,7 @@ public class SerializationProtostuffPlugin implements Plugin {
         context.app().renderManager().register(SerializerNames.AT_PROTOBUF, render);
 
         //支持 protostuff 内容类型执行
-        ProtostuffActionExecutor executor = new ProtostuffActionExecutor(serializer);
+        ProtostuffActionExecutor executor = new ProtostuffActionExecutor(entityConverter);
         context.wrapAndPut(ProtostuffActionExecutor.class, executor); //用于扩展
         context.app().chainManager().addExecuteHandler(executor);
     }

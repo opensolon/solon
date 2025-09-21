@@ -15,28 +15,28 @@
  */
 package org.noear.solon.serialization.abc;
 
+import org.noear.solon.core.handle.ActionExecuteHandler;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.core.mvc.ActionExecuteHandlerDefault;
-import org.noear.solon.core.util.LazyReference;
 import org.noear.solon.core.wrap.MethodWrap;
-import org.noear.solon.core.wrap.ParamWrap;
 
 /**
  * @author noear
  * @since 3.0
+ * @deprecated 3.6
  * */
-public class AbcActionExecutor extends ActionExecuteHandlerDefault {
-    private final AbcBytesSerializer serializer;
+@Deprecated
+public class AbcActionExecutor implements ActionExecuteHandler {
+    private final AbcEntityConverter entityConverter;
 
-    public AbcActionExecutor(AbcBytesSerializer serializer) {
-        this.serializer = serializer;
+    public AbcActionExecutor(AbcEntityConverter entityConverter) {
+        this.entityConverter = entityConverter;
     }
 
     /**
      * 获取序列化接口
      */
     public AbcBytesSerializer getSerializer() {
-        return serializer;
+        return entityConverter.getSerializer();
     }
 
     /**
@@ -47,45 +47,11 @@ public class AbcActionExecutor extends ActionExecuteHandlerDefault {
      */
     @Override
     public boolean matched(Context ctx, String mime) {
-        return getSerializer().matched(ctx, mime);
+        return entityConverter.canRead(ctx, mime);
     }
 
-    /**
-     * 转换 body
-     *
-     * @param ctx   请求上下文
-     * @param mWrap 函数包装器
-     */
     @Override
-    protected Object changeBody(Context ctx, MethodWrap mWrap) throws Exception {
-        return null;
-    }
-
-    /**
-     * 转换 value
-     *
-     * @param ctx     请求上下文
-     * @param p       参数包装器
-     * @param pi      参数序位
-     * @param pt      参数类型
-     * @param bodyRef 主体对象
-     */
-    @Override
-    protected Object changeValue(Context ctx, ParamWrap p, int pi, Class<?> pt, LazyReference bodyRef) throws Throwable {
-        if (p.spec().isRequiredPath() || p.spec().isRequiredCookie() || p.spec().isRequiredHeader()) {
-            //如果是 path、cookie, header
-            return super.changeValue(ctx, p, pi, pt, bodyRef);
-        }
-
-        if (p.spec().isRequiredBody() == false && ctx.paramMap().containsKey(p.spec().getName())) {
-            //有可能是path、queryString变量
-            return super.changeValue(ctx, p, pi, pt, bodyRef);
-        }
-
-        if (p.spec().isRequiredBody()) {
-            return getSerializer().deserializeFromBody(ctx, p.getType());
-        } else {
-            return null;
-        }
+    public Object[] resolveArguments(Context ctx, Object target, MethodWrap mWrap) throws Throwable {
+        return entityConverter.read(ctx, target, mWrap);
     }
 }

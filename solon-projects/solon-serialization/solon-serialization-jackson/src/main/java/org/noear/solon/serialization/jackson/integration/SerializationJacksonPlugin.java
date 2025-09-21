@@ -33,8 +33,8 @@ public class SerializationJacksonPlugin implements Plugin {
         context.app().serializerManager().register(SerializerNames.AT_JSON, serializer);
 
         //::converter
-        JacksonEntityConverter converter = new JacksonEntityConverter(serializer);
-        context.wrapAndPut(JacksonEntityConverter.class, converter); //用于扩展
+        JacksonEntityConverter entityConverter = new JacksonEntityConverter(serializer);
+        context.wrapAndPut(JacksonEntityConverter.class, entityConverter); //用于扩展
 
         //::renderFactory
         //绑定属性
@@ -43,7 +43,7 @@ public class SerializationJacksonPlugin implements Plugin {
         context.app().renderManager().register(renderFactory);
 
         //支持 json 内容类型执行
-        JacksonActionExecutor actionExecutor = new JacksonActionExecutor(serializer);
+        JacksonActionExecutor actionExecutor = new JacksonActionExecutor(entityConverter);
         context.wrapAndPut(JacksonActionExecutor.class, actionExecutor); //用于扩展
         context.app().chainManager().addExecuteHandler(actionExecutor);
 

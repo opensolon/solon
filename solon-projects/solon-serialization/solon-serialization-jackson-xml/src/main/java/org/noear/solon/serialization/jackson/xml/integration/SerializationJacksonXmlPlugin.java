@@ -49,7 +49,7 @@ public class SerializationJacksonXmlPlugin implements Plugin {
         context.app().renderManager().register(renderFactory);
 
         //支持 xml 内容类型执行
-        JacksonXmlActionExecutor actionExecutor = new JacksonXmlActionExecutor(serializer);
+        JacksonXmlActionExecutor actionExecutor = new JacksonXmlActionExecutor(entityConverter);
         context.wrapAndPut(JacksonXmlActionExecutor.class, actionExecutor); //用于扩展
         context.app().chainManager().addExecuteHandler(actionExecutor);
 

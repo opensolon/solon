@@ -47,7 +47,7 @@ public class SerializationAbcPlugin implements Plugin {
 
         //::actionExecutor
         //支持 sbe 内容类型执行
-        AbcActionExecutor executor = new AbcActionExecutor(serializer);
+        AbcActionExecutor executor = new AbcActionExecutor(entityConverter);
         context.wrapAndPut(AbcActionExecutor.class, executor); //用于扩展
 
         context.app().chainManager().addExecuteHandler(executor);
