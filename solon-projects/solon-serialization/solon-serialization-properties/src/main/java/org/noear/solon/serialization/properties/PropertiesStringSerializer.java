@@ -43,6 +43,36 @@ public class PropertiesStringSerializer implements ContextSerializer<String> {
         return _default;
     }
 
+    private boolean allowGet = true;
+    private boolean allowPostForm = false;
+
+    /**
+     * 允许处理 Get 请求
+     */
+    public boolean allowGet() {
+        return allowGet;
+    }
+
+    /**
+     * 允许处理 PostForm 请求
+     */
+    public boolean allowPostForm() {
+        return allowPostForm;
+    }
+
+    /**
+     * 允许处理 Get 请求
+     */
+    public void allowGet(boolean allowGet) {
+        this.allowGet = allowGet;
+    }
+
+    /**
+     * 允许处理 PostForm 请求
+     */
+    public void allowPostForm(boolean allowPostForm) {
+        this.allowPostForm = allowPostForm;
+    }
 
     private Options config;
 
@@ -76,7 +106,7 @@ public class PropertiesStringSerializer implements ContextSerializer<String> {
 
     /**
      * 数据类型
-     * */
+     */
     @Override
     public Class<String> dataType() {
         return String.class;

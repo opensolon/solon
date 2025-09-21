@@ -36,26 +36,10 @@ import java.util.List;
  * */
 public class PropertiesActionExecutor extends ActionExecuteHandlerDefault {
     private final PropertiesStringSerializer serializer;
-    private boolean allowGet = true;
-    private boolean allowPostForm = false;
 
     public PropertiesActionExecutor(PropertiesStringSerializer serializer) {
         this.serializer = serializer;
         serializer.getConfig().add(Feature.DisableClassNameRead);
-    }
-
-    /**
-     * 允许处理 Get 请求
-     */
-    public void allowGet(boolean allowGet) {
-        this.allowGet = allowGet;
-    }
-
-    /**
-     * 允许处理 PostForm 请求
-     */
-    public void allowPostForm(boolean allowPostForm) {
-        this.allowPostForm = allowPostForm;
     }
 
     /**
@@ -73,8 +57,8 @@ public class PropertiesActionExecutor extends ActionExecuteHandlerDefault {
      */
     @Override
     public boolean matched(Context ctx, String mime) {
-        if (allowGet && MethodType.GET.name.equals(ctx.method()) ||
-                (allowPostForm && (ctx.isFormUrlencoded() || ctx.isMultipartFormData()))) {
+        if (serializer.allowGet() && MethodType.GET.name.equals(ctx.method()) ||
+                (serializer.allowPostForm() && (ctx.isFormUrlencoded() || ctx.isMultipartFormData()))) {
             for (String key : ctx.paramMap().keySet()) {
                 if (key.indexOf('.') > 0 || key.indexOf('[') > 0) {
                     return true;
