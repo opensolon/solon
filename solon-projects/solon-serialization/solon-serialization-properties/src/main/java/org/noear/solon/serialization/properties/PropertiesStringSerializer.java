@@ -23,7 +23,7 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.lang.Nullable;
-import org.noear.solon.serialization.ContextSerializer;
+import org.noear.solon.serialization.EntitySerializer;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -36,7 +36,7 @@ import java.util.Properties;
  * @since 2.7
  * @since 2.8
  */
-public class PropertiesStringSerializer implements ContextSerializer<String> {
+public class PropertiesStringSerializer implements EntitySerializer<String> {
     private static final PropertiesStringSerializer _default = new PropertiesStringSerializer();
 
     public static PropertiesStringSerializer getDefault() {

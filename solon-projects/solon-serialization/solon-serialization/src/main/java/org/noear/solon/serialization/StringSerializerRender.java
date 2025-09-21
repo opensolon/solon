@@ -30,10 +30,10 @@ import org.noear.solon.core.serialize.Serializer;
 @Deprecated
 public class StringSerializerRender implements Render {
     private transient boolean typed;
-    private transient ContextSerializer<String> serializer;
+    private transient EntitySerializer<String> serializer;
 
 
-    public StringSerializerRender(boolean typed, ContextSerializer<String> serializer) {
+    public StringSerializerRender(boolean typed, EntitySerializer<String> serializer) {
         this.typed = typed;
         this.serializer = serializer;
     }

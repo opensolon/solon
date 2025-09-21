@@ -24,7 +24,7 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.util.MimeType;
 import org.noear.solon.lang.Nullable;
-import org.noear.solon.serialization.JsonContextSerializer;
+import org.noear.solon.serialization.EntityStringSerializer;
 import org.noear.solon.serialization.prop.JsonProps;
 import org.noear.solon.serialization.prop.JsonPropsUtil2;
 
@@ -38,7 +38,7 @@ import java.lang.reflect.Type;
  * @since 1.5
  * @since 2.8
  */
-public class SnackStringSerializer implements JsonContextSerializer {
+public class SnackStringSerializer implements EntityStringSerializer {
     private static final String label = "/json";
     private static final SnackStringSerializer _default = new SnackStringSerializer();
 

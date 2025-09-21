@@ -18,12 +18,12 @@ package org.noear.solon.serialization;
 import org.noear.solon.core.convert.Converter;
 
 /**
- * Json 序列化器
+ * 通用上下文接口字符串序列化器
  *
  * @author noear
  * @since 3.6
  */
-public interface JsonContextSerializer extends ContextSerializer<String> {
+public interface EntityStringSerializer extends EntitySerializer<String> {
     /**
      * 添加数据转换器（用于简单场景）
      */

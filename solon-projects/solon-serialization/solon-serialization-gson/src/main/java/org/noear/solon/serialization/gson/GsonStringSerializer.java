@@ -22,7 +22,7 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.util.MimeType;
 import org.noear.solon.lang.Nullable;
-import org.noear.solon.serialization.JsonContextSerializer;
+import org.noear.solon.serialization.EntityStringSerializer;
 import org.noear.solon.serialization.gson.impl.*;
 import org.noear.solon.serialization.prop.JsonProps;
 import org.noear.solon.serialization.prop.JsonPropsUtil2;
@@ -39,7 +39,7 @@ import java.util.Date;
  * @author noear
  * @since 2.8
  */
-public class GsonStringSerializer implements JsonContextSerializer {
+public class GsonStringSerializer implements EntityStringSerializer {
     private static final String label = "/json";
     private static final GsonStringSerializer _default = new GsonStringSerializer();
 

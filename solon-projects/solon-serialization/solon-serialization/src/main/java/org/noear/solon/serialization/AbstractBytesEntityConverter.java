@@ -27,7 +27,7 @@ import java.util.Base64;
  * @author noear
  * @since 3.6
  */
-public abstract class AbstractBytesEntityConverter<T extends ContextSerializer<byte[]>> extends AbstractEntityConverter {
+public abstract class AbstractBytesEntityConverter<T extends EntitySerializer<byte[]>> extends AbstractEntityConverter {
     protected final T serializer;
 
     public T getSerializer() {

@@ -25,7 +25,7 @@ import org.noear.solon.core.util.Assert;
  * @author noear
  * @since 3.6
  */
-public abstract class AbstractStringEntityConverter<T extends ContextSerializer<String>> extends AbstractEntityConverter {
+public abstract class AbstractStringEntityConverter<T extends EntitySerializer<String>> extends AbstractEntityConverter {
     protected final T serializer;
 
     public T getSerializer() {

@@ -29,7 +29,7 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.util.MimeType;
 import org.noear.solon.lang.Nullable;
-import org.noear.solon.serialization.JsonContextSerializer;
+import org.noear.solon.serialization.EntityStringSerializer;
 import org.noear.solon.serialization.jackson.impl.NullValueSerializerImpl;
 import org.noear.solon.serialization.jackson.impl.TypeReferenceImpl;
 import org.noear.solon.serialization.prop.JsonProps;
@@ -49,7 +49,7 @@ import com.fasterxml.jackson.databind.MapperFeature;
  * @since 1.5
  * @since 2.8
  */
-public class JacksonStringSerializer implements JsonContextSerializer {
+public class JacksonStringSerializer implements EntityStringSerializer {
     private static final String label = "/json";
     private static final JacksonStringSerializer _default = new JacksonStringSerializer();
 

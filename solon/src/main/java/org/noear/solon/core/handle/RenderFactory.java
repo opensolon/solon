@@ -20,7 +20,9 @@ package org.noear.solon.core.handle;
  *
  * @author noear
  * @since 2.7
+ * @deprecated 3.6
  */
+@Deprecated
 public interface RenderFactory {
     /**
      * 映射

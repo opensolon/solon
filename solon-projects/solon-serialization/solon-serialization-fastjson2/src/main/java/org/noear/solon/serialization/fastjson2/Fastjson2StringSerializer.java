@@ -27,7 +27,7 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.util.MimeType;
 import org.noear.solon.lang.Nullable;
-import org.noear.solon.serialization.JsonContextSerializer;
+import org.noear.solon.serialization.EntityStringSerializer;
 import org.noear.solon.serialization.prop.JsonProps;
 import org.noear.solon.serialization.prop.JsonPropsUtil2;
 
@@ -42,7 +42,7 @@ import java.lang.reflect.Type;
  * @since 1.10
  * @since 2.8
  */
-public class Fastjson2StringSerializer implements JsonContextSerializer {
+public class Fastjson2StringSerializer implements EntityStringSerializer {
     private static final String label = "/json";
     private static final Fastjson2StringSerializer _default = new Fastjson2StringSerializer();
 
