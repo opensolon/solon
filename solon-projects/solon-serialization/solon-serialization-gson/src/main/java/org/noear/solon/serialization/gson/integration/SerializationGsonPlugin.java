@@ -18,10 +18,7 @@ package org.noear.solon.serialization.gson.integration;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.serialization.SerializerNames;
-import org.noear.solon.serialization.gson.GsonActionExecutor;
-import org.noear.solon.serialization.gson.GsonRenderFactory;
-import org.noear.solon.serialization.gson.GsonRenderTypedFactory;
-import org.noear.solon.serialization.gson.GsonStringSerializer;
+import org.noear.solon.serialization.gson.*;
 import org.noear.solon.serialization.prop.JsonProps;
 
 public class SerializationGsonPlugin implements Plugin {
@@ -34,6 +31,11 @@ public class SerializationGsonPlugin implements Plugin {
         GsonStringSerializer serializer = new GsonStringSerializer(jsonProps);
         context.wrapAndPut(GsonStringSerializer.class, serializer); //用于扩展
         context.app().serializerManager().register(SerializerNames.AT_JSON, serializer);
+
+        //entityConverter
+        GsonEntityConverter entityConverter = new GsonEntityConverter(serializer);
+        context.wrapAndPut(GsonEntityConverter.class, entityConverter); //用于扩展
+
 
         //::renderFactory
         //绑定属性

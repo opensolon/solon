@@ -20,6 +20,7 @@ import org.noear.solon.core.Plugin;
 import org.noear.solon.serialization.SerializerNames;
 import org.noear.solon.serialization.protostuff.ProtostuffActionExecutor;
 import org.noear.solon.serialization.protostuff.ProtostuffBytesSerializer;
+import org.noear.solon.serialization.protostuff.ProtostuffEntityConverter;
 import org.noear.solon.serialization.protostuff.ProtostuffRender;
 
 /**
@@ -33,6 +34,10 @@ public class SerializationProtostuffPlugin implements Plugin {
         ProtostuffBytesSerializer serializer = new ProtostuffBytesSerializer();
         context.wrapAndPut(ProtostuffBytesSerializer.class, serializer); //用于扩展
         context.app().serializerManager().register(SerializerNames.AT_PROTOBUF, serializer);
+
+        //::entityConverter
+        ProtostuffEntityConverter entityConverter = new ProtostuffEntityConverter(serializer);
+        context.wrapAndPut(ProtostuffEntityConverter.class, entityConverter); //用于扩展
 
         //::render
         ProtostuffRender render = new ProtostuffRender(serializer);

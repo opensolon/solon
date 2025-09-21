@@ -13,28 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.core.mvc;
+package org.noear.solon.core.handle;
 
-import org.noear.solon.core.handle.*;
 import org.noear.solon.core.wrap.MethodWrap;
 
 /**
- * ActionExecutor 默认实现
+ * 虚拟实体转换器
  *
- * @see ActionDefault#executeDo(Context, Object)
  * @author noear
- * @since 1.0
- * */
-public class ActionExecuteHandlerDefault extends AbstractEntityReader implements ActionExecuteHandler {
-    /**
-     * 执行
-     *
-     * @param ctx    请求上下文
-     * @param target 控制器
-     * @param mWrap  函数包装器
-     */
+ * @since 3.6
+ */
+public abstract class AbstractEntityConverter extends AbstractEntityReader implements EntityConverter {
     @Override
-    public Object[] resolveArguments(Context ctx, Object target, MethodWrap mWrap) throws Throwable {
+    public Object[] read(Context ctx, Object target, MethodWrap mWrap) throws Throwable {
         return doRead(ctx, target, mWrap);
     }
 }

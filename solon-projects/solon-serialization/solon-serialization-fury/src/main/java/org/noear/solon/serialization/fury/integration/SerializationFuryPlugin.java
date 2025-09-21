@@ -20,6 +20,7 @@ import org.noear.solon.core.Plugin;
 import org.noear.solon.serialization.SerializerNames;
 import org.noear.solon.serialization.fury.FuryActionExecutor;
 import org.noear.solon.serialization.fury.FuryBytesSerializer;
+import org.noear.solon.serialization.fury.FuryEntityConverter;
 import org.noear.solon.serialization.fury.FuryRender;
 
 public class SerializationFuryPlugin implements Plugin {
@@ -30,6 +31,11 @@ public class SerializationFuryPlugin implements Plugin {
         FuryBytesSerializer serializer = FuryBytesSerializer.getDefault();
         context.wrapAndPut(FuryBytesSerializer.class, serializer); //用于扩展
         context.app().serializerManager().register(SerializerNames.AT_FURY, serializer);
+
+        //::entityConverter
+        FuryEntityConverter entityConverter = new FuryEntityConverter(serializer);
+        context.wrapAndPut(FuryEntityConverter.class, entityConverter); //用于扩展
+
 
         //::render
         FuryRender render = new FuryRender(serializer);
