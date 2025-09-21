@@ -18,10 +18,7 @@ package org.noear.solon.serialization.fastjson.integration;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.serialization.SerializerNames;
-import org.noear.solon.serialization.fastjson.FastjsonActionExecutor;
-import org.noear.solon.serialization.fastjson.FastjsonRenderFactory;
-import org.noear.solon.serialization.fastjson.FastjsonRenderTypedFactory;
-import org.noear.solon.serialization.fastjson.FastjsonStringSerializer;
+import org.noear.solon.serialization.fastjson.*;
 import org.noear.solon.serialization.prop.JsonProps;
 
 public class SerializationFastjsonPlugin implements Plugin {
@@ -34,6 +31,11 @@ public class SerializationFastjsonPlugin implements Plugin {
         FastjsonStringSerializer serializer = new FastjsonStringSerializer(jsonProps);
         context.wrapAndPut(FastjsonStringSerializer.class, serializer); //用于扩展
         context.app().serializerManager().register(SerializerNames.AT_JSON, serializer);
+
+        //::entityConverter
+        FastjsonEntityConverter entityConverter = new FastjsonEntityConverter(serializer);
+        context.wrapAndPut(FastjsonEntityConverter.class, entityConverter); //用于扩展
+
 
         //::renderFactory
         //绑定属性

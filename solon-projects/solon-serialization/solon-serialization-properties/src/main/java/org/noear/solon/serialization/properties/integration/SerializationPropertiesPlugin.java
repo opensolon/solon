@@ -19,6 +19,7 @@ import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.serialization.SerializerNames;
 import org.noear.solon.serialization.properties.PropertiesActionExecutor;
+import org.noear.solon.serialization.properties.PropertiesEntityConverter;
 import org.noear.solon.serialization.properties.PropertiesRenderFactory;
 import org.noear.solon.serialization.properties.PropertiesStringSerializer;
 
@@ -29,6 +30,10 @@ public class SerializationPropertiesPlugin implements Plugin {
         PropertiesStringSerializer serializer = new PropertiesStringSerializer();
         context.wrapAndPut(PropertiesStringSerializer.class, serializer); //用于扩展
         context.app().serializerManager().register(SerializerNames.AT_PROPERTIES, serializer);
+
+        //entityConverter
+        PropertiesEntityConverter entityConverter = new PropertiesEntityConverter(serializer);
+        context.wrapAndPut(PropertiesEntityConverter.class, entityConverter); //用于扩展
 
         //::renderFactory
         //绑定属性

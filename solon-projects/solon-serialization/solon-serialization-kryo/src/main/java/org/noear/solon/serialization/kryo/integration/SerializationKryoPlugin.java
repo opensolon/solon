@@ -20,6 +20,7 @@ import org.noear.solon.core.Plugin;
 import org.noear.solon.serialization.SerializerNames;
 import org.noear.solon.serialization.kryo.KryoActionExecutor;
 import org.noear.solon.serialization.kryo.KryoBytesSerializer;
+import org.noear.solon.serialization.kryo.KryoEntityConverter;
 import org.noear.solon.serialization.kryo.KryoRender;
 
 /**
@@ -34,6 +35,10 @@ public class SerializationKryoPlugin implements Plugin {
         KryoBytesSerializer serializer = KryoBytesSerializer.getDefault();
         context.wrapAndPut(KryoBytesSerializer.class, serializer); //用于扩展
         context.app().serializerManager().register(SerializerNames.AT_KRYO, serializer);
+
+        //entityConverter
+        KryoEntityConverter entityConverter = new KryoEntityConverter(serializer);
+        context.wrapAndPut(KryoEntityConverter.class, entityConverter); //用于扩展
 
         //::render
         KryoRender render = new KryoRender(serializer);

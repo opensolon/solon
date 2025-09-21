@@ -19,20 +19,22 @@ import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.serialization.SerializerNames;
 import org.noear.solon.serialization.prop.JsonProps;
-import org.noear.solon.serialization.snack3.SnackActionExecutor;
-import org.noear.solon.serialization.snack3.SnackRenderFactory;
-import org.noear.solon.serialization.snack3.SnackRenderTypedFactory;
-import org.noear.solon.serialization.snack3.SnackStringSerializer;
+import org.noear.solon.serialization.snack3.*;
 
 public class SerializationSnackPlugin implements Plugin {
     @Override
     public void start(AppContext context) {
         JsonProps jsonProps = JsonProps.create(context);
 
-        //serializer
+        //::serializer
         SnackStringSerializer serializer = new SnackStringSerializer(jsonProps);
         context.wrapAndPut(SnackStringSerializer.class, serializer); //用于扩展
         context.app().serializerManager().register(SerializerNames.AT_JSON, serializer);
+
+        //::entityConverter
+        SnackEntityConverter entityConverter = new SnackEntityConverter(serializer);
+        context.wrapAndPut(SnackEntityConverter.class, entityConverter); //用于扩展
+
 
         //::renderFactory
         //绑定属性
