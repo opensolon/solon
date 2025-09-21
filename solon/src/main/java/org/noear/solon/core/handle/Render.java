@@ -22,6 +22,7 @@ package org.noear.solon.core.handle;
  * @author noear
  * @since 1.0
  * */
+@FunctionalInterface
 public interface Render {
     /**
      * 名字
