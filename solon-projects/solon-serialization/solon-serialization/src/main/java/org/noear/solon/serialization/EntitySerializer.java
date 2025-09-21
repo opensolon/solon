@@ -27,10 +27,9 @@ import java.lang.reflect.Type;
  *
  * @author noear
  * @since 2.8
- * @deprecated 3.6
+ * @since 3.6
  */
-@Deprecated
-public interface ContextSerializer<T> extends Serializer<T> {
+public interface EntitySerializer<T> extends Serializer<T> {
     /**
      * 匹配
      *

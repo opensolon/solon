@@ -32,7 +32,7 @@ public abstract class BytesSerializerRender implements Render {
     /**
      * 获取序列化器
      */
-    public abstract ContextSerializer<byte[]> getSerializer();
+    public abstract EntitySerializer<byte[]> getSerializer();
 
     /**
      * 获取渲染器名字

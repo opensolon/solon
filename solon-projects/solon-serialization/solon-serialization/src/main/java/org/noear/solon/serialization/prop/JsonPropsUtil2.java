@@ -16,7 +16,7 @@
 package org.noear.solon.serialization.prop;
 
 import org.noear.solon.Utils;
-import org.noear.solon.serialization.JsonContextSerializer;
+import org.noear.solon.serialization.EntityStringSerializer;
 import org.noear.solon.serialization.JsonRenderFactory;
 
 import java.text.DateFormat;
@@ -35,10 +35,10 @@ public class JsonPropsUtil2 {
     /**
      * 尝试应用 Json 全局配置
      *
-     * @deprecated 3.2 {@link #dateAsFormat(JsonContextSerializer, JsonProps),#dateAsTicks(JsonRenderFactory, JsonProps),#boolAsInt(JsonRenderFactory, JsonProps)}
+     * @deprecated 3.2 {@link #dateAsFormat(EntityStringSerializer, JsonProps),#dateAsTicks(JsonRenderFactory, JsonProps),#boolAsInt(JsonRenderFactory, JsonProps)}
      */
     @Deprecated
-    public static boolean apply(JsonContextSerializer serializer, JsonProps jsonProps) {
+    public static boolean apply(EntityStringSerializer serializer, JsonProps jsonProps) {
         if (jsonProps == null) {
             return false;
         }
@@ -54,7 +54,7 @@ public class JsonPropsUtil2 {
     /**
      * 尝试把 bool 转为 int
      */
-    public static void boolAsInt(JsonContextSerializer serializer, JsonProps jsonProps) {
+    public static void boolAsInt(EntityStringSerializer serializer, JsonProps jsonProps) {
         if (jsonProps == null) {
             return;
         }
@@ -68,7 +68,7 @@ public class JsonPropsUtil2 {
     /**
      * 尝试把 long 转为 string
      */
-    public static void longAsString(JsonContextSerializer serializer, JsonProps jsonProps) {
+    public static void longAsString(EntityStringSerializer serializer, JsonProps jsonProps) {
         if (jsonProps == null) {
             return;
         }
@@ -82,7 +82,7 @@ public class JsonPropsUtil2 {
     /**
      * 尝试把 date 转为 ticks(long)
      */
-    public static void dateAsTicks(JsonContextSerializer serializer, JsonProps jsonProps) {
+    public static void dateAsTicks(EntityStringSerializer serializer, JsonProps jsonProps) {
         if (jsonProps == null) {
             return;
         }
@@ -98,7 +98,7 @@ public class JsonPropsUtil2 {
         }
     }
 
-    public static void dateAsFormat(JsonContextSerializer serializer, JsonProps jsonProps) {
+    public static void dateAsFormat(EntityStringSerializer serializer, JsonProps jsonProps) {
         if (jsonProps == null) {
             return;
         }

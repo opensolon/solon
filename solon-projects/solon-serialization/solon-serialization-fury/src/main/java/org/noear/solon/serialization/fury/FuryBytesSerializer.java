@@ -24,7 +24,7 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.lang.Nullable;
-import org.noear.solon.serialization.ContextSerializer;
+import org.noear.solon.serialization.EntitySerializer;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -36,7 +36,7 @@ import java.util.Collection;
  * @author noear
  * @since 2.8
  */
-public class FuryBytesSerializer implements ContextSerializer<byte[]> {
+public class FuryBytesSerializer implements EntitySerializer<byte[]> {
     private static final String label = "application/fury";
     private static final FuryBytesSerializer _default = new FuryBytesSerializer();
 
