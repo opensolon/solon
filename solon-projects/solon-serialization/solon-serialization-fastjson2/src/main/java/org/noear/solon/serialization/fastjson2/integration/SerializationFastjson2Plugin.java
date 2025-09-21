@@ -44,7 +44,7 @@ public class SerializationFastjson2Plugin implements Plugin {
 
         //::actionExecutor
         //支持 json 内容类型执行
-        Fastjson2ActionExecutor actionExecutor = new Fastjson2ActionExecutor(serializer);
+        Fastjson2ActionExecutor actionExecutor = new Fastjson2ActionExecutor(entityConverter);
         context.wrapAndPut(Fastjson2ActionExecutor.class, actionExecutor); //用于扩展
         context.app().chainManager().addExecuteHandler(actionExecutor);
 

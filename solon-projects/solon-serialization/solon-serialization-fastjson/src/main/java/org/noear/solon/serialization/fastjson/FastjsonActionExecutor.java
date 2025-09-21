@@ -15,17 +15,10 @@
  */
 package org.noear.solon.serialization.fastjson;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.parser.ParserConfig;
-import org.noear.solon.core.mvc.ActionExecuteHandlerDefault;
+import org.noear.solon.core.handle.ActionExecuteHandler;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.core.util.LazyReference;
 import org.noear.solon.core.wrap.MethodWrap;
-import org.noear.solon.core.wrap.ParamWrap;
-
-import java.util.Collection;
-import java.util.List;
 
 /**
  * Json 动作执行器
@@ -33,19 +26,21 @@ import java.util.List;
  * @author noear
  * @author 夜の孤城
  * @since 1.5
+ * @deprecated 3.6
  */
-public class FastjsonActionExecutor extends ActionExecuteHandlerDefault {
-    private final FastjsonStringSerializer serializer;
+@Deprecated
+public class FastjsonActionExecutor implements ActionExecuteHandler {
+    private final FastjsonEntityConverter entityConverter;
 
-    public FastjsonActionExecutor(FastjsonStringSerializer serializer){
-        this.serializer = serializer;
+    public FastjsonActionExecutor(FastjsonEntityConverter entityConverter) {
+        this.entityConverter = entityConverter;
     }
 
     /**
      * 获取序列化接口
      */
     public FastjsonStringSerializer getSerializer() {
-        return serializer;
+        return entityConverter.getSerializer();
     }
 
     /**
@@ -63,101 +58,11 @@ public class FastjsonActionExecutor extends ActionExecuteHandlerDefault {
      */
     @Override
     public boolean matched(Context ctx, String mime) {
-        return serializer.matched(ctx, mime);
+        return entityConverter.canRead(ctx, mime);
     }
 
-    /**
-     * 转换 body
-     *
-     * @param ctx   请求上下文
-     * @param mWrap 函数包装器
-     */
     @Override
-    protected Object changeBody(Context ctx, MethodWrap mWrap) throws Exception {
-        return serializer.deserializeFromBody(ctx);
-    }
-
-    /**
-     * 转换 value
-     *
-     * @param ctx     请求上下文
-     * @param p       参数包装器
-     * @param pi      参数序位
-     * @param pt      参数类型
-     * @param bodyRef 主体对象
-     */
-    @Override
-    protected Object changeValue(Context ctx, ParamWrap p, int pi, Class<?> pt, LazyReference bodyRef) throws Throwable {
-        if (p.spec().isRequiredPath() || p.spec().isRequiredCookie() || p.spec().isRequiredHeader()) {
-            //如果是 path、cookie, header
-            return super.changeValue(ctx, p, pi, pt, bodyRef);
-        }
-
-        if (p.spec().isRequiredBody() == false && ctx.paramMap().containsKey(p.spec().getName())) {
-            //有可能是path、queryString变量
-            return super.changeValue(ctx, p, pi, pt, bodyRef);
-        }
-
-        Object bodyObj = bodyRef.get();
-
-        if (bodyObj == null) {
-            return super.changeValue(ctx, p, pi, pt, bodyRef);
-        }
-
-        if (bodyObj instanceof JSONObject) {
-            JSONObject tmp = (JSONObject) bodyObj;
-
-            if (p.spec().isRequiredBody() == false) {
-                //
-                //如果没有 body 要求；尝试找按属性找
-                //
-                if (tmp.containsKey(p.spec().getName())) {
-                    //支持泛型的转换
-                    if (p.spec().isGenericType()) {
-                        return tmp.getObject(p.spec().getName(), p.getGenericType());
-                    } else {
-                        return tmp.getObject(p.spec().getName(), pt);
-                    }
-                }
-            }
-
-            //尝试 body 转换
-            if (pt.isPrimitive() || pt.getTypeName().startsWith("java.lang.")) {
-                return super.changeValue(ctx, p, pi, pt, bodyRef);
-            } else {
-                if (List.class.isAssignableFrom(pt)) {
-                    return null;
-                }
-
-                if (pt.isArray()) {
-                    return null;
-                }
-
-                //支持泛型的转换 如：Map<T>
-                if (p.spec().isGenericType()) {
-                    return tmp.toJavaObject(p.getGenericType());
-                } else {
-                    return tmp.toJavaObject(pt);
-                }
-            }
-        }
-
-        if (bodyObj instanceof JSONArray) {
-            JSONArray tmp = (JSONArray) bodyObj;
-            //如果参数是非集合类型
-            if (!Collection.class.isAssignableFrom(pt)) {
-                return null;
-            }
-            //集合类型转换
-            if (p.spec().isGenericType()) {
-                //转换带泛型的集合
-                return tmp.toJavaObject(p.getGenericType());
-            } else {
-                //不仅可以转换为List 还可以转换成Set
-                return tmp.toJavaObject(pt);
-            }
-        }
-
-        return bodyObj;
+    public Object[] resolveArguments(Context ctx, Object target, MethodWrap mWrap) throws Throwable {
+        return entityConverter.read(ctx, target, mWrap);
     }
 }

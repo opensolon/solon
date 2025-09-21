@@ -47,7 +47,7 @@ public class SerializationKryoPlugin implements Plugin {
 
         //::actionExecutor
         //支持 kryo 内容类型执行
-        KryoActionExecutor executor = new KryoActionExecutor(serializer);
+        KryoActionExecutor executor = new KryoActionExecutor(entityConverter);
         context.wrapAndPut(KryoActionExecutor.class, executor); //用于扩展
 
         context.app().chainManager().addExecuteHandler(executor);

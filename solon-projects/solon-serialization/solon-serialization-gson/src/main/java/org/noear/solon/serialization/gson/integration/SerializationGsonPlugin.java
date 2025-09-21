@@ -45,7 +45,7 @@ public class SerializationGsonPlugin implements Plugin {
 
         //::actionExecutor
         //支持 json 内容类型执行
-        GsonActionExecutor actionExecutor = new GsonActionExecutor(serializer);
+        GsonActionExecutor actionExecutor = new GsonActionExecutor(entityConverter);
         context.wrapAndPut(GsonActionExecutor.class, actionExecutor); //用于扩展
         context.app().chainManager().addExecuteHandler(actionExecutor);
 

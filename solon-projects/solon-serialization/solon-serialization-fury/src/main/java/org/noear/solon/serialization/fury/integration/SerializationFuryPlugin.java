@@ -44,7 +44,7 @@ public class SerializationFuryPlugin implements Plugin {
 
         //::actionExecutor
         //支持 fury 内容类型执行
-        FuryActionExecutor executor = new FuryActionExecutor(serializer);
+        FuryActionExecutor executor = new FuryActionExecutor(entityConverter);
         context.wrapAndPut(FuryActionExecutor.class, executor); //用于扩展
 
         context.app().chainManager().addExecuteHandler(executor);

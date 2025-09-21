@@ -43,7 +43,7 @@ public class SerializationHessianPlugin implements Plugin {
 
         //::actionExecutor
         //支持 hessian 内容类型执行
-        HessianActionExecutor executor = new HessianActionExecutor(serializer);
+        HessianActionExecutor executor = new HessianActionExecutor(entityConverter);
         context.wrapAndPut(HessianActionExecutor.class, executor); //用于扩展
         context.app().chainManager().addExecuteHandler(executor);
     }

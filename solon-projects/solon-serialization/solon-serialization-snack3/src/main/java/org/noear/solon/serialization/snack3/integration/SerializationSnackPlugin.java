@@ -44,7 +44,7 @@ public class SerializationSnackPlugin implements Plugin {
 
         //::actionExecutor
         //支持 json 内容类型执行
-        SnackActionExecutor actionExecutor = new SnackActionExecutor(serializer);
+        SnackActionExecutor actionExecutor = new SnackActionExecutor(entityConverter);
         context.wrapAndPut(SnackActionExecutor.class, actionExecutor); //用于扩展
         context.app().chainManager().addExecuteHandler(actionExecutor);
 
