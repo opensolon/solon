@@ -487,10 +487,22 @@ public class AppContext extends BeanContainer {
             singletonHint = "Render";
         }
 
-        //RenderFactory
+        //EntityConverter //v3.6
+        if (bw.raw() instanceof EntityConverter) {
+            app().chainManager().addEntityConverter(bw.raw(), bw.index());
+            singletonHint = "EntityConverter";
+        }
+
+        //RenderFactory //将弃用 v3.6
         if (bw.raw() instanceof RenderFactory) {
-            app().renderManager().register(bw.raw());
+            app().renderManager().register((RenderFactory)bw.raw());
             singletonHint = "RenderFactory";
+        }
+
+        //ActionExecuteHandler //将弃用 v3.6
+        if (bw.raw() instanceof ActionExecuteHandler) {
+            app().chainManager().addExecuteHandler((ActionExecuteHandler)bw.raw(), bw.index());
+            singletonHint = "ActionExecuteHandler";
         }
 
         //Filter
@@ -509,12 +521,6 @@ public class AppContext extends BeanContainer {
         if (bw.raw() instanceof ReturnValueHandler) {
             app().chainManager().addReturnHandler(bw.raw(), bw.index());
             singletonHint = "ReturnValueHandler";
-        }
-
-        //ActionExecuteHandler
-        if (bw.raw() instanceof ActionExecuteHandler) {
-            app().chainManager().addExecuteHandler(bw.raw(), bw.index());
-            singletonHint = "ActionExecuteHandler";
         }
 
         //ActionArgumentResolver

@@ -40,15 +40,19 @@ public class SerializationKryoPlugin implements Plugin {
         KryoEntityConverter entityConverter = new KryoEntityConverter(serializer);
         context.wrapAndPut(KryoEntityConverter.class, entityConverter); //用于扩展
 
+        //会自动转为 executor, renderer
+        context.app().chainManager().addEntityConverter(entityConverter);
+
+
+        //===> 以下将弃用 v3.6
+
         //::render
         KryoRender render = new KryoRender(entityConverter);
         context.wrapAndPut(KryoRender.class, render); //用于扩展
-        context.app().renderManager().register(entityConverter);
 
         //::actionExecutor
         //支持 kryo 内容类型执行
         KryoActionExecutor executor = new KryoActionExecutor(entityConverter);
         context.wrapAndPut(KryoActionExecutor.class, executor); //用于扩展
-        context.app().chainManager().addExecuteHandler(entityConverter);
     }
 }

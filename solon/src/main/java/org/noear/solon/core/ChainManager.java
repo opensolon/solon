@@ -35,6 +35,12 @@ import java.util.concurrent.locks.ReentrantLock;
  * @since 1.12
  */
 public class ChainManager {
+    private final SolonApp app;
+
+    public ChainManager(SolonApp app) {
+        this.app = app;
+    }
+
     /**
      * 类型集合（用于重复检测）
      */
@@ -293,27 +299,6 @@ public class ChainManager {
     }
 
     /**
-     * 添加Action执行器
-     *
-     * @since 3.6
-     */
-    public void addExecuteHandler(EntityConverter e) {
-        addExecuteHandler(e, 0);
-    }
-
-    /**
-     * 添加Action执行器
-     *
-     * @param index 顺序位
-     * @since 3.6
-     */
-    public void addExecuteHandler(EntityConverter e, int index) {
-        if (e != null) {
-            addExecuteHandler(new EntityConverter2Executor(e), index);
-        }
-    }
-
-    /**
      * 移除Action执行器
      */
     public void removeExecuteHandler(Class<?> clz) {
@@ -428,5 +413,38 @@ public class ChainManager {
      */
     public SessionState getSessionState(Context ctx) {
         return _sessionStateFactory.create(ctx);
+    }
+
+
+    /**
+     * 添加实体转换器
+     *
+     * @param e 实体转换器
+     * @since 3.6
+     */
+    public void addEntityConverter(EntityConverter e) {
+        addEntityConverter(e, 0);
+    }
+
+    /**
+     * 添加实体转换器
+     *
+     * @param e     实体转换器
+     * @param index 顺序位
+     * @since 3.6
+     */
+    public void addEntityConverter(EntityConverter e, int index) {
+        if (e != null) {
+            //executor
+            addExecuteHandler(new EntityConverter2Executor(e), index);
+
+            //renderer
+            if (e.mappings() != null) {
+                Render render = new EntityConverter2Renderer(e);
+                for (String mapping : e.mappings()) {
+                    app.renderManager().register(mapping, render);
+                }
+            }
+        }
     }
 }

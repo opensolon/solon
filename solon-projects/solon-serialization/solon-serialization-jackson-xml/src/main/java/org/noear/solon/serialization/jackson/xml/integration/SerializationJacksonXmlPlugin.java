@@ -42,16 +42,20 @@ public class SerializationJacksonXmlPlugin implements Plugin {
         JacksonXmlEntityConverter entityConverter = new JacksonXmlEntityConverter(serializer);
         context.wrapAndPut(JacksonXmlEntityConverter.class, entityConverter); //用于扩展
 
+        //会自动转为 executor, renderer
+        context.app().chainManager().addEntityConverter(entityConverter);
+
+
+        //===> 以下将弃用 v3.6
+
         //::renderFactory
         //绑定属性
         JacksonXmlRenderFactory renderFactory = new JacksonXmlRenderFactory(entityConverter);
         context.wrapAndPut(JacksonXmlRenderFactory.class, renderFactory); //用于扩展
-        context.app().renderManager().register(entityConverter);
 
         //支持 xml 内容类型执行
         JacksonXmlActionExecutor actionExecutor = new JacksonXmlActionExecutor(entityConverter);
         context.wrapAndPut(JacksonXmlActionExecutor.class, actionExecutor); //用于扩展
-        context.app().chainManager().addExecuteHandler(entityConverter);
 
 
         //::renderTypedFactory

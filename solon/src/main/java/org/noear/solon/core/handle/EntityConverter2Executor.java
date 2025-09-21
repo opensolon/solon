@@ -18,12 +18,17 @@ package org.noear.solon.core.handle;
 import org.noear.solon.core.wrap.MethodWrap;
 
 /**
+ * EntityConverter 转为 Executor 接口
  *
  * @author noear
  * @since 3.6
  */
 public class EntityConverter2Executor implements ActionExecuteHandler {
     private final EntityConverter entityConverter;
+
+    public EntityConverter getEntityConverter() {
+        return entityConverter;
+    }
 
     public EntityConverter2Executor(EntityConverter entityConverter) {
         this.entityConverter = entityConverter;

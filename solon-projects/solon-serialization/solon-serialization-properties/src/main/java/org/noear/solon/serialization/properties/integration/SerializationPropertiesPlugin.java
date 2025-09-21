@@ -35,16 +35,21 @@ public class SerializationPropertiesPlugin implements Plugin {
         PropertiesEntityConverter entityConverter = new PropertiesEntityConverter(serializer);
         context.wrapAndPut(PropertiesEntityConverter.class, entityConverter); //用于扩展
 
+        //会自动转为 executor, renderer
+        context.app().chainManager().addEntityConverter(entityConverter);
+
+
+        //===> 以下将弃用 v3.6
+
         //::renderFactory
         //绑定属性
         PropertiesRenderFactory renderFactory = new PropertiesRenderFactory(entityConverter);
         context.wrapAndPut(PropertiesRenderFactory.class, renderFactory); //用于扩展
-        context.app().renderManager().register(entityConverter);
 
         //::actionExecutor
         //支持 props 内容类型执行
         PropertiesActionExecutor actionExecutor = new PropertiesActionExecutor(entityConverter);
         context.wrapAndPut(PropertiesActionExecutor.class, actionExecutor); //用于扩展
-        context.app().chainManager().addExecuteHandler(entityConverter);
+
     }
 }

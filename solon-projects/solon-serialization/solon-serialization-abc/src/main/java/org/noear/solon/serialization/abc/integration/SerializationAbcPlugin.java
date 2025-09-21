@@ -40,16 +40,20 @@ public class SerializationAbcPlugin implements Plugin {
         AbcEntityConverter entityConverter = new AbcEntityConverter(serializer);
         context.wrapAndPut(AbcEntityConverter.class, entityConverter); //用于扩展
 
+        //会自动转为 executor, renderer
+        context.app().chainManager().addEntityConverter(entityConverter);
+
+
+        //===> 以下将弃用 v3.6
+
         //::render
         AbcRender render = new AbcRender(entityConverter);
         context.wrapAndPut(AbcRender.class, render); //用于扩展
-        context.app().renderManager().register(entityConverter);
+
 
         //::actionExecutor
         //支持 sbe 内容类型执行
         AbcActionExecutor executor = new AbcActionExecutor(entityConverter);
         context.wrapAndPut(AbcActionExecutor.class, executor); //用于扩展
-
-        context.app().chainManager().addExecuteHandler(entityConverter);
     }
 }
