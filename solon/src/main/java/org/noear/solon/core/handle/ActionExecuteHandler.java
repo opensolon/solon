@@ -24,6 +24,7 @@ import org.noear.solon.core.wrap.MethodWrap;
  * @author noear
  * @since 1.0
  * */
+@FunctionalInterface
 public interface ActionExecuteHandler {
     /**
      * 是否匹配
@@ -31,7 +32,9 @@ public interface ActionExecuteHandler {
      * @param ctx  请求上下文
      * @param mime 内容类型
      */
-    boolean matched(Context ctx, String mime);
+    default boolean matched(Context ctx, String mime) {
+        return true;
+    }
 
     /**
      * 参数分析
@@ -51,5 +54,8 @@ public interface ActionExecuteHandler {
      * @deprecated 3.4
      */
     @Deprecated
-    Object executeHandle(Context ctx, Object target, MethodWrap mWrap) throws Throwable;
+    default Object executeHandle(Context ctx, Object target, MethodWrap mWrap) throws Throwable {
+        Object[] args = resolveArguments(ctx, target, mWrap);
+        return mWrap.invokeByAspect(target, args);
+    }
 }
