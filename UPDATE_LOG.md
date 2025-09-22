@@ -44,6 +44,7 @@
 * 优化 solon-web-rx RxSubscriberImpl 改为流控模式（只请求1，之前请求 max）//所有相关的都要测试
 * 优化 solon-net-httputils sse 与背压处理的兼容性
 * 修复 solon-rx SimpleSubscriber 非法调用 onNext（直接调用） 会异常的问题？
+* 修复 solon-net-httputils JdkHttpResponse:contentEncoding 不能获取 charset 的问题（并更名为 contentCharset，原名标为弃用）
 * snakeyaml 升为 2.5
 * lombok 升为 1.18.42
 * jansi 升为 2.4.2
