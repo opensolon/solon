@@ -56,9 +56,9 @@ public class ViewBeetlPlugin implements Plugin {
             });
         });
 
-        context.app().renderManager().register(null, render); //def
-        context.app().renderManager().register(".htm", render);
-        context.app().renderManager().register(".btl", render);
+        context.app().renders().register(null, render); //def
+        context.app().renders().register(".htm", render);
+        context.app().renders().register(".btl", render);
         context.wrapAndPut(BeetlRender.class, render); //用于扩展
 
         if (ClassUtil.hasClass(() -> AuthUtil.class)) {

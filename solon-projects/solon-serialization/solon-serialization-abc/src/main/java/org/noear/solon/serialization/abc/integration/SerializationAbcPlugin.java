@@ -34,14 +34,14 @@ public class SerializationAbcPlugin implements Plugin {
         //::serializer
         AbcBytesSerializer serializer = AbcBytesSerializer.getDefault();
         context.wrapAndPut(AbcBytesSerializer.class, serializer); //用于扩展
-        context.app().serializerManager().register(SerializerNames.AT_ABC, serializer);
+        context.app().serializers().register(SerializerNames.AT_ABC, serializer);
 
         //::entityConverter
         AbcEntityConverter entityConverter = new AbcEntityConverter(serializer);
         context.wrapAndPut(AbcEntityConverter.class, entityConverter); //用于扩展
 
         //会自动转为 executor, renderer
-        context.app().chainManager().addEntityConverter(entityConverter);
+        context.app().chains().addEntityConverter(entityConverter);
 
 
         //===> 以下将弃用 v3.6

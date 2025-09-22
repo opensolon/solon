@@ -55,8 +55,8 @@ public class ViewVelocityPlugin implements Plugin {
             });
         });
 
-        context.app().renderManager().register(null, render);
-        context.app().renderManager().register(".vm", render);
+        context.app().renders().register(null, render);
+        context.app().renders().register(".vm", render);
         context.wrapAndPut(VelocityRender.class, render); //用于扩展
 
         if (ClassUtil.hasClass(() -> AuthUtil.class)) {

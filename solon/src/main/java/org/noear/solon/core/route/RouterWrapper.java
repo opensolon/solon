@@ -61,7 +61,16 @@ public abstract class RouterWrapper implements HandlerSlots {
     /**
      * 处理链管理器
      */
-    public ChainManager chainManager() {
+    public ChainManager chainManager() { //预计 v4.0 后标为弃用
+        return chains();
+    }
+
+    /**
+     * 处理链管理器
+     *
+     * @since 3.6
+     */
+    public ChainManager chains() {
         return _chainManager;
     }
 
@@ -135,21 +144,36 @@ public abstract class RouterWrapper implements HandlerSlots {
 
     /**
      * 添加渲染器
+     *
+     * <pre>{@code
+     * Solon.app().renders().register(name, render);
+     * }</pre>
+     * @deprecated 3.6 {@link SolonApp#renders()#register(String, Render)}
      */
+    @Deprecated
     public void render(String name, Render render) {
-        Solon.app().renderManager().register(name, render);
+        Solon.app().renders().register(name, render);
     }
 
     /**
      * 获取渲染器
+     *
+     * <pre>{@code
+     * Solon.app().renders().get(name);
+     * }</pre>
+     * @deprecated 3.6 {@link SolonApp#renders()#get(String)}
      */
+    @Deprecated
     public Render render(String name) {
-        return Solon.app().renderManager().get(name);
+        return Solon.app().renders().get(name);
     }
 
     /**
      * 获取 Json 渲染器
+     *
+     * @deprecated 3.6 {@link SolonApp#renders()#get(String)}
      */
+    @Deprecated
     public Render renderOfJson() {
         return render(Constants.RENDER_JSON);
     }

@@ -17,7 +17,6 @@ package org.noear.solon.sessionstate.local.integration;
 
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
-import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.sessionstate.local.LocalSessionStateFactory;
 
 import org.slf4j.Logger;
@@ -32,12 +31,12 @@ public class SessionstateLocalPlugin implements Plugin {
             return;
         }
 
-        if (context.app().chainManager().getSessionStateFactory().priority()
+        if (context.app().chains().getSessionStateFactory().priority()
                 >= LocalSessionStateFactory.SESSION_STATE_PRIORITY) {
             return;
         }
 
-        context.app().chainManager().setSessionStateFactory(LocalSessionStateFactory.getInstance());
+        context.app().chains().setSessionStateFactory(LocalSessionStateFactory.getInstance());
 
         if (log.isDebugEnabled()) {
             log.debug("Session: Local session state plugin is loaded");

@@ -34,6 +34,6 @@ public class WebRxPlugin implements Plugin {
             chainManager.addFilter(bw.get(), bw.index());
         });
 
-        context.app().chainManager().addReturnHandler(new RxReturnValueHandler());
+        context.app().chains().addReturnHandler(new RxReturnValueHandler());
     }
 }

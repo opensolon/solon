@@ -17,7 +17,6 @@ package org.noear.solon.sessionstate.jedis.integration;
 
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
-import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.sessionstate.jedis.JedisSessionStateFactory;
 
 import org.slf4j.Logger;
@@ -32,7 +31,7 @@ public class SessionstateJedisPlugin implements Plugin {
             return;
         }
 
-        if (context.app().chainManager().getSessionStateFactory().priority()
+        if (context.app().chains().getSessionStateFactory().priority()
                 >= JedisSessionStateFactory.SESSION_STATE_PRIORITY) {
             return;
         }
@@ -51,7 +50,7 @@ public class SessionstateJedisPlugin implements Plugin {
             return;
         }
 
-        context.app().chainManager().setSessionStateFactory(JedisSessionStateFactory.getInstance());
+        context.app().chains().setSessionStateFactory(JedisSessionStateFactory.getInstance());
 
         if (log.isDebugEnabled()) {
             log.debug("Session: Redis session state plugin is loaded");

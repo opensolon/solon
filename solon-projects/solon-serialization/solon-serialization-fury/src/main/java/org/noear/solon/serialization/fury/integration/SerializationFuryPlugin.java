@@ -30,14 +30,14 @@ public class SerializationFuryPlugin implements Plugin {
         //::serializer
         FuryBytesSerializer serializer = FuryBytesSerializer.getDefault();
         context.wrapAndPut(FuryBytesSerializer.class, serializer); //用于扩展
-        context.app().serializerManager().register(SerializerNames.AT_FURY, serializer);
+        context.app().serializers().register(SerializerNames.AT_FURY, serializer);
 
         //::entityConverter
         FuryEntityConverter entityConverter = new FuryEntityConverter(serializer);
         context.wrapAndPut(FuryEntityConverter.class, entityConverter); //用于扩展
 
         //会自动转为 executor, renderer
-        context.app().chainManager().addEntityConverter(entityConverter);
+        context.app().chains().addEntityConverter(entityConverter);
 
 
         //===> 以下将弃用 v3.6

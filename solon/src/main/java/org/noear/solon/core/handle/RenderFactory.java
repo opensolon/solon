@@ -20,7 +20,7 @@ package org.noear.solon.core.handle;
  *
  * @author noear
  * @since 2.7
- * @deprecated 3.6
+ * @deprecated 3.6 {@link EntityConverter}
  */
 @Deprecated
 public interface RenderFactory {

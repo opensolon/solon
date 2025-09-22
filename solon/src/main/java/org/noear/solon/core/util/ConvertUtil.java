@@ -259,7 +259,7 @@ public class ConvertUtil {
     public static Object tryTo(Class<?> type, String val) {
         //尝试获取转换器
         if (Solon.app() != null) {
-            Converter converter = Solon.app().converterManager().find(String.class, type);
+            Converter converter = Solon.app().converters().find(String.class, type);
             if (converter != null) {
                 return converter.convert(val);
             }

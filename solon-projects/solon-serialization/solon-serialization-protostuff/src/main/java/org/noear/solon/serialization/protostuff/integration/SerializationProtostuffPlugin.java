@@ -33,14 +33,14 @@ public class SerializationProtostuffPlugin implements Plugin {
         //::serializer
         ProtostuffBytesSerializer serializer = new ProtostuffBytesSerializer();
         context.wrapAndPut(ProtostuffBytesSerializer.class, serializer); //用于扩展
-        context.app().serializerManager().register(SerializerNames.AT_PROTOBUF, serializer);
+        context.app().serializers().register(SerializerNames.AT_PROTOBUF, serializer);
 
         //::entityConverter
         ProtostuffEntityConverter entityConverter = new ProtostuffEntityConverter(serializer);
         context.wrapAndPut(ProtostuffEntityConverter.class, entityConverter); //用于扩展
 
         //会自动转为 executor, renderer
-        context.app().chainManager().addEntityConverter(entityConverter);
+        context.app().chains().addEntityConverter(entityConverter);
 
 
         //===> 以下将弃用 v3.6

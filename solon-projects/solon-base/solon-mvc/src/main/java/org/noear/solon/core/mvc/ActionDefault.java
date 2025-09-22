@@ -348,7 +348,7 @@ public class ActionDefault extends HandlerAide implements Action {
 
                 if (returnHandler == null) {
                     if (c.result != null) {
-                        returnHandler = bWrap.context().app().chainManager().getReturnHandler(c, c.result.getClass());
+                        returnHandler = bWrap.context().app().chains().getReturnHandler(c, c.result.getClass());
                     }
                 }
 
@@ -389,7 +389,7 @@ public class ActionDefault extends HandlerAide implements Action {
     }
 
     protected Object executeDo(Context c, Object target) throws Throwable {
-        ActionExecuteHandler executeHandler = bWrap.context().app().chainManager()
+        ActionExecuteHandler executeHandler = bWrap.context().app().chains()
                 .getExecuteHandler(c, mWrap.getParamWraps().length);
 
 
@@ -397,7 +397,7 @@ public class ActionDefault extends HandlerAide implements Action {
         Object[] args = executeHandler.resolveArguments(c, target, mWrap);
 
         //参数提交确认
-        bWrap.context().app().chainManager().postArguments(c, mWrap.getParamWraps(), args);
+        bWrap.context().app().chains().postArguments(c, mWrap.getParamWraps(), args);
 
         //质变行
         return mWrap.invokeByAspect(target, args);
@@ -418,7 +418,7 @@ public class ActionDefault extends HandlerAide implements Action {
         //
         //可以通过before关掉render
         //
-        obj = bWrap.context().app().chainManager().postResult(c, obj);
+        obj = bWrap.context().app().chains().postResult(c, obj);
 
         if (allowMultiple || c.getRendered() == false) {
             c.result = obj;

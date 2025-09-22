@@ -452,7 +452,7 @@ public class ChainManager {
             if (e.mappings() != null) {
                 Render render = new EntityConverter2Renderer(e);
                 for (String mapping : e.mappings()) {
-                    app.renderManager().register(mapping, render);
+                    app.renders().register(mapping, render);
                 }
             }
         }

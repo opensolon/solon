@@ -477,31 +477,31 @@ public class AppContext extends BeanContainer {
 
         //Render
         if (bw.raw() instanceof Serializer) {
-            app().serializerManager().register(bw.name(), bw.raw());
+            app().serializers().register(bw.name(), bw.raw());
             singletonHint = "Serializer";
         }
 
         //Render
         if (bw.raw() instanceof Render) {
-            app().renderManager().register(bw.name(), (Render) bw.raw());
+            app().renders().register(bw.name(), (Render) bw.raw());
             singletonHint = "Render";
         }
 
         //EntityConverter //v3.6
         if (bw.raw() instanceof EntityConverter) {
-            app().chainManager().addEntityConverter(bw.raw(), bw.index());
+            app().chains().addEntityConverter(bw.raw(), bw.index());
             singletonHint = "EntityConverter";
         }
 
         //RenderFactory //将弃用 v3.6
         if (bw.raw() instanceof RenderFactory) {
-            app().renderManager().register((RenderFactory)bw.raw());
+            app().renders().register(bw.raw());
             singletonHint = "RenderFactory";
         }
 
         //ActionExecuteHandler //将弃用 v3.6
         if (bw.raw() instanceof ActionExecuteHandler) {
-            app().chainManager().addExecuteHandler((ActionExecuteHandler)bw.raw(), bw.index());
+            app().chains().addExecuteHandler(bw.raw(), bw.index());
             singletonHint = "ActionExecuteHandler";
         }
 
@@ -519,27 +519,27 @@ public class AppContext extends BeanContainer {
 
         //ReturnValueHandler
         if (bw.raw() instanceof ReturnValueHandler) {
-            app().chainManager().addReturnHandler(bw.raw(), bw.index());
+            app().chains().addReturnHandler(bw.raw(), bw.index());
             singletonHint = "ReturnValueHandler";
         }
 
         //ActionArgumentResolver
         if (bw.raw() instanceof ActionArgumentResolver) {
-            app().chainManager().addArgumentResolver(bw.raw(), bw.index());
+            app().chains().addArgumentResolver(bw.raw(), bw.index());
             singletonHint = "ActionArgumentResolver";
         }
 
         //Converter
         if (bw.raw() instanceof Converter) {
             Converter c = bw.raw();
-            app().converterManager().register(c);
+            app().converters().register(c);
             singletonHint = "Converter";
         }
 
         //ConverterFactory
         if (bw.raw() instanceof ConverterFactory) {
             ConverterFactory cf = bw.raw();
-            app().converterManager().register(cf);
+            app().converters().register(cf);
             singletonHint = "ConverterFactory";
         }
 

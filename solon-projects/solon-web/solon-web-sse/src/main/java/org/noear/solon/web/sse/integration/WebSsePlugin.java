@@ -26,7 +26,7 @@ import org.noear.solon.web.sse.SseRender;
 public class WebSsePlugin implements Plugin {
     @Override
     public void start(AppContext context) throws Throwable {
-        context.app().renderManager().register("@see", SseRender.getInstance());
-        context.app().chainManager().addReturnHandler(new SseReturnValueHandler());
+        context.app().renders().register("@see", SseRender.getInstance());
+        context.app().chains().addReturnHandler(new SseReturnValueHandler());
     }
 }
