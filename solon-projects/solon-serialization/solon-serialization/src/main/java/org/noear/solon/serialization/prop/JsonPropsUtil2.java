@@ -17,7 +17,6 @@ package org.noear.solon.serialization.prop;
 
 import org.noear.solon.Utils;
 import org.noear.solon.serialization.EntityStringSerializer;
-import org.noear.solon.serialization.JsonRenderFactory;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -34,10 +33,7 @@ import java.util.TimeZone;
 public class JsonPropsUtil2 {
     /**
      * 尝试应用 Json 全局配置
-     *
-     * @deprecated 3.2 {@link #dateAsFormat(EntityStringSerializer, JsonProps),#dateAsTicks(JsonRenderFactory, JsonProps),#boolAsInt(JsonRenderFactory, JsonProps)}
      */
-    @Deprecated
     public static boolean apply(EntityStringSerializer serializer, JsonProps jsonProps) {
         if (jsonProps == null) {
             return false;
