@@ -42,7 +42,7 @@ public class ReturnValueHandlerDefault implements ReturnValueHandler {
     public void returnHandle(Context c, Object obj) throws Throwable {
         //可以通过before关掉render
         //
-        obj = Solon.app().chainManager().postResult(c, obj);
+        obj = Solon.app().chains().postResult(c, obj);
 
         if (c.getRendered() == false) {
             c.result = obj;

@@ -82,7 +82,7 @@ public class RollbackInterceptor implements MethodInterceptor {
     public static void rollbackDo(AppContext context, RunnableEx runnable) throws Throwable {
         try {
             //应用 //添加路由拦截器（放到最里层）
-            context.app().chainManager().addInterceptorIfAbsent(RollbackRouterInterceptor.getInstance(), Integer.MAX_VALUE);
+            context.app().chains().addInterceptorIfAbsent(RollbackRouterInterceptor.getInstance(), Integer.MAX_VALUE);
 
             //当前
             TranUtils.execute(new TranAnno(), () -> {
@@ -98,7 +98,7 @@ public class RollbackInterceptor implements MethodInterceptor {
             }
         } finally {
             //应用 //移除路由拦截器（恢复原状）
-            context.app().chainManager().removeInterceptor(RollbackRouterInterceptor.class);
+            context.app().chains().removeInterceptor(RollbackRouterInterceptor.class);
         }
     }
 }

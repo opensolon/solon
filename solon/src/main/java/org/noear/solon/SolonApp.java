@@ -26,7 +26,6 @@ import org.noear.solon.core.route.RouterWrapper;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.serialize.SerializerManager;
 import org.noear.solon.core.util.ConsumerEx;
-import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.RunUtil;
 
 import java.lang.annotation.Annotation;
@@ -81,28 +80,64 @@ public class SolonApp extends RouterWrapper {
     /**
      * 转换管理器
      */
-    public ConverterManager converterManager() {
+    public ConverterManager converterManager() { //预计 v4.0 后标为弃用
+        return converters();
+    }
+
+    /**
+     * 转换管理器
+     *
+     * @since 3.6
+     */
+    public ConverterManager converters() {
         return _converterManager;
     }
 
     /**
      * 序列化管理器
      */
-    public SerializerManager serializerManager() {
+    public SerializerManager serializerManager() { //预计 v4.0 后标为弃用
+        return serializers();
+    }
+
+    /**
+     * 序列化管理器
+     *
+     * @since 3.6
+     */
+    public SerializerManager serializers() {
         return _serializerManager;
     }
 
     /**
      * 渲染管理器
      */
-    public RenderManager renderManager() {
+    public RenderManager renderManager() { //预计 v4.0 后标为弃用
+        return renders();
+    }
+
+    /**
+     * 渲染管理器
+     *
+     * @since 3.6
+     */
+    public RenderManager renders() {
         return _renderManager;
     }
 
     /**
      * 工厂管理器
      */
-    public FactoryManager factoryManager() {
+    public FactoryManager factoryManager() { //预计 v4.0 后标为弃用
+        return factories();
+    }
+
+    /**
+     * 工厂管理器
+     *
+     * @since 3.6
+     */
+    public FactoryManager factories() {
         return FactoryManager.getGlobal();
     }
 
@@ -310,7 +345,7 @@ public class SolonApp extends RouterWrapper {
         //3.加载渲染关系
         Map<String, String> map = cfg().getMap("solon.view.mapping.");
         map.forEach((k, v) -> {
-            renderManager().register("." + k, v);
+            renders().register("." + k, v);
         });
 
         //3.1.尝试设置 context-path
@@ -532,7 +567,7 @@ public class SolonApp extends RouterWrapper {
             if (stopping) {
                 x.status(503);
             } else {
-                chainManager().doFilter(x, _handler);
+                chains().doFilter(x, _handler);
 
                 //todo: 改由 HttpException 处理（不会到这里来了）
 //                if (x.getHandled() == false) { //@since: 1.9

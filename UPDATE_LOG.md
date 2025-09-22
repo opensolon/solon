@@ -37,6 +37,7 @@
 * 添加 `solon` Condition:onExpression（采用 SnEL 表达式）用于替代 onProperty（标为弃用）
 * 添加 `solon` SnelUtil（基于 SnEL 且兼容旧的 TmplUtil） 替代 TmplUtil（标为弃用）//如果有 # 则为新表达式
 * 添加 `solon-mvc` `List<UploadedFile>` 注入支持（用 `UploadedFile[]` 性能更好）
+* 添加 `solon` converters,serializers,renders,factories,chains（简化名自：converterManager,serializerManager,renderManager,factoryManager,chainManager）
 * 优化 solon-rx 确保 SimpleSubscriber:doOnComplete 只被运行一次（之前可能会被外部触发多次）
 * 优化 solon-rx SimpleSubscriber 改为流控模式（只请求1，之前请求 max）//所有相关的都要测试
 * 优化 solon-net-httputils 确保 TextStreamUtil:onSseStreamRequestDo 只会有一次触发 onComplete

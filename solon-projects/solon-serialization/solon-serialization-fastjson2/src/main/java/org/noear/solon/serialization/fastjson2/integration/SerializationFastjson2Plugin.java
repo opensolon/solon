@@ -30,14 +30,14 @@ public class SerializationFastjson2Plugin implements Plugin {
         //::serializer
         Fastjson2StringSerializer serializer = new Fastjson2StringSerializer(jsonProps);
         context.wrapAndPut(Fastjson2StringSerializer.class, serializer); //用于扩展
-        context.app().serializerManager().register(SerializerNames.AT_JSON, serializer);
+        context.app().serializers().register(SerializerNames.AT_JSON, serializer);
 
         //::entityConverter
         Fastjson2EntityConverter entityConverter = new Fastjson2EntityConverter(serializer);
         context.wrapAndPut(Fastjson2EntityConverter.class, entityConverter); //用于扩展
 
         //会自动转为 executor, renderer
-        context.app().chainManager().addEntityConverter(entityConverter);
+        context.app().chains().addEntityConverter(entityConverter);
 
 
         //===> 以下将弃用 v3.6
@@ -55,7 +55,7 @@ public class SerializationFastjson2Plugin implements Plugin {
         //::renderTypedFactory
         Fastjson2RenderTypedFactory renderTypedFactory = new Fastjson2RenderTypedFactory();
         context.wrapAndPut(Fastjson2RenderTypedFactory.class, renderTypedFactory); //用于扩展
-        context.app().renderManager().register(renderTypedFactory);
-        context.app().serializerManager().register(SerializerNames.AT_JSON_TYPED, renderTypedFactory.getSerializer());
+        context.app().renders().register(renderTypedFactory);
+        context.app().serializers().register(SerializerNames.AT_JSON_TYPED, renderTypedFactory.getSerializer());
     }
 }

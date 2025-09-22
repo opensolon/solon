@@ -34,14 +34,14 @@ public class SerializationKryoPlugin implements Plugin {
         //::serializer
         KryoBytesSerializer serializer = KryoBytesSerializer.getDefault();
         context.wrapAndPut(KryoBytesSerializer.class, serializer); //用于扩展
-        context.app().serializerManager().register(SerializerNames.AT_KRYO, serializer);
+        context.app().serializers().register(SerializerNames.AT_KRYO, serializer);
 
         //entityConverter
         KryoEntityConverter entityConverter = new KryoEntityConverter(serializer);
         context.wrapAndPut(KryoEntityConverter.class, entityConverter); //用于扩展
 
         //会自动转为 executor, renderer
-        context.app().chainManager().addEntityConverter(entityConverter);
+        context.app().chains().addEntityConverter(entityConverter);
 
 
         //===> 以下将弃用 v3.6

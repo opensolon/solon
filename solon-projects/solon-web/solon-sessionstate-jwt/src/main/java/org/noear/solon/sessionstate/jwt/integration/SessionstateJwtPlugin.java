@@ -17,7 +17,6 @@ package org.noear.solon.sessionstate.jwt.integration;
 
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
-import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.sessionstate.jwt.JwtSessionStateFactory;
 import org.noear.solon.sessionstate.jwt.JwtSessionProps;
 
@@ -37,14 +36,14 @@ public class SessionstateJwtPlugin implements Plugin {
             return;
         }
 
-        if (context.app().chainManager().getSessionStateFactory().priority()
+        if (context.app().chains().getSessionStateFactory().priority()
                 >= JwtSessionStateFactory.SESSION_STATE_PRIORITY) {
             return;
         }
 
         JwtSessionProps.getInstance();
 
-        context.app().chainManager().setSessionStateFactory(JwtSessionStateFactory.getInstance());
+        context.app().chains().setSessionStateFactory(JwtSessionStateFactory.getInstance());
 
         if (log.isDebugEnabled()) {
             log.debug("Session: Jwt session state plugin is loaded");

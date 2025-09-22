@@ -29,14 +29,14 @@ public class SerializationPropertiesPlugin implements Plugin {
         //::serializer
         PropertiesStringSerializer serializer = new PropertiesStringSerializer();
         context.wrapAndPut(PropertiesStringSerializer.class, serializer); //用于扩展
-        context.app().serializerManager().register(SerializerNames.AT_PROPERTIES, serializer);
+        context.app().serializers().register(SerializerNames.AT_PROPERTIES, serializer);
 
         //entityConverter
         PropertiesEntityConverter entityConverter = new PropertiesEntityConverter(serializer);
         context.wrapAndPut(PropertiesEntityConverter.class, entityConverter); //用于扩展
 
         //会自动转为 executor, renderer
-        context.app().chainManager().addEntityConverter(entityConverter);
+        context.app().chains().addEntityConverter(entityConverter);
 
 
         //===> 以下将弃用 v3.6

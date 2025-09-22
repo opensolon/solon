@@ -29,14 +29,14 @@ public class SerializationSnackPlugin implements Plugin {
         //::serializer
         SnackStringSerializer serializer = new SnackStringSerializer(jsonProps);
         context.wrapAndPut(SnackStringSerializer.class, serializer); //用于扩展
-        context.app().serializerManager().register(SerializerNames.AT_JSON, serializer);
+        context.app().serializers().register(SerializerNames.AT_JSON, serializer);
 
         //::entityConverter
         SnackEntityConverter entityConverter = new SnackEntityConverter(serializer);
         context.wrapAndPut(SnackEntityConverter.class, entityConverter); //用于扩展
 
         //会自动转为 executor, renderer
-        context.app().chainManager().addEntityConverter(entityConverter);
+        context.app().chains().addEntityConverter(entityConverter);
 
 
         //===> 以下将弃用 v3.6
@@ -55,7 +55,7 @@ public class SerializationSnackPlugin implements Plugin {
         //::renderTypedFactory
         SnackRenderTypedFactory renderTypedFactory = new SnackRenderTypedFactory();
         context.wrapAndPut(SnackRenderTypedFactory.class, renderTypedFactory); //用于扩展
-        context.app().renderManager().register(renderTypedFactory);
-        context.app().serializerManager().register(SerializerNames.AT_JSON_TYPED, renderTypedFactory.getSerializer());
+        context.app().renders().register(renderTypedFactory);
+        context.app().serializers().register(SerializerNames.AT_JSON_TYPED, renderTypedFactory.getSerializer());
     }
 }

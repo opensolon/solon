@@ -26,7 +26,7 @@ import org.noear.solon.core.wrap.ParamWrap;
 public class ExeTest {
     public static void main(String[] args) {
         Solon.start(ExeTest.class, args, app -> {
-            app.chainManager().defExecuteHandler(new ActionExecuteHandlerDefault() {
+            app.chains().defExecuteHandler(new ActionExecuteHandlerDefault() {
                 @Override
                 protected Object changeValueDo(Context ctx, ParamWrap p, String name, Class<?> type, String value) {
                     if(type.isEnum()){

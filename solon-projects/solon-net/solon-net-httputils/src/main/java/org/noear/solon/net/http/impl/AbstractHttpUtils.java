@@ -95,7 +95,7 @@ public abstract class AbstractHttpUtils implements HttpUtils {
     public Serializer serializer() {
         if (_serializer == null) {
             if (Solon.app() != null) {
-                _serializer = Solon.app().serializerManager().get(SerializerNames.AT_JSON);
+                _serializer = Solon.app().serializers().get(SerializerNames.AT_JSON);
             }
 
             if (_serializer == null) {
