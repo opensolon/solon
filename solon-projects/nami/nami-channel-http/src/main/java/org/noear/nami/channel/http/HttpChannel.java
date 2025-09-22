@@ -125,7 +125,7 @@ public class HttpChannel extends ChannelBase implements Channel {
         }
 
         //2.2.设置字符码
-        Charset contentEncoding = response.contentEncoding();
+        Charset contentEncoding = response.contentCharset();
         if (contentEncoding != null) {
             result.charsetSet(contentEncoding);
         }

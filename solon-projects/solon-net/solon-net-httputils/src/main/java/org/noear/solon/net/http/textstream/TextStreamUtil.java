@@ -73,7 +73,7 @@ public class TextStreamUtil {
     public static Publisher<String> parseLineStream(HttpResponse response) {
         return subscriber -> {
             try {
-                TextStreamUtil.parseLineStream(response.body(), response.contentEncoding(), subscriber);
+                TextStreamUtil.parseLineStream(response.body(), response.contentCharset(), subscriber);
             } catch (Exception e) {
                 subscriber.onError(e);
             }
@@ -87,7 +87,7 @@ public class TextStreamUtil {
      * @return 发布者
      */
     public static void parseLineStream(HttpResponse response, Subscriber<? super String> subscriber) {
-        TextStreamUtil.parseLineStream(response.body(), response.contentEncoding(), subscriber);
+        TextStreamUtil.parseLineStream(response.body(), response.contentCharset(), subscriber);
     }
 
     /**
@@ -176,7 +176,7 @@ public class TextStreamUtil {
     public static Publisher<ServerSentEvent> parseSseStream(HttpResponse response) {
         return subscriber -> {
             try {
-                TextStreamUtil.parseSseStream(response.body(), response.contentEncoding(), subscriber);
+                TextStreamUtil.parseSseStream(response.body(), response.contentCharset(), subscriber);
             } catch (Exception e) {
                 subscriber.onError(e);
             }
@@ -190,7 +190,7 @@ public class TextStreamUtil {
      * @return 发布者
      */
     public static void parseSseStream(HttpResponse response, Subscriber<? super ServerSentEvent> subscriber) {
-        TextStreamUtil.parseSseStream(response.body(), response.contentEncoding(), subscriber);
+        TextStreamUtil.parseSseStream(response.body(), response.contentCharset(), subscriber);
     }
 
     /**
