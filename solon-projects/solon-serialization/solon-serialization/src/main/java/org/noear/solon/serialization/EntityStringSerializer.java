@@ -18,7 +18,7 @@ package org.noear.solon.serialization;
 import org.noear.solon.core.convert.Converter;
 
 /**
- * 通用上下文接口字符串序列化器
+ * 通用实体字符串序列化器
  *
  * @author noear
  * @since 3.6

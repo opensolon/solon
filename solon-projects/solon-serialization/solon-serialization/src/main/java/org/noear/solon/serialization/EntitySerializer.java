@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 
 /**
- * 通用上下文接口序列化器
+ * 通用实体序列化器（与 EntityConverter 相互对应）
  *
  * @author noear
  * @since 2.8
