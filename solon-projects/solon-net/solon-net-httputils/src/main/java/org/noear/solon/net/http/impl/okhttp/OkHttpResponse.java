@@ -114,7 +114,7 @@ public class OkHttpResponse implements HttpResponse {
     }
 
     @Override
-    public Charset contentEncoding() {
+    public Charset contentCharset() {
         MediaType tmp = response.body().contentType();
         if (tmp == null) {
             return null;

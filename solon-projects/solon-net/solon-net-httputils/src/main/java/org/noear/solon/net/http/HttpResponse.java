@@ -71,9 +71,18 @@ public interface HttpResponse extends Closeable {
     String contentType();
 
     /**
-     * 获取内容编码
+     * 获取内容字符集
      */
-    Charset contentEncoding();
+    Charset contentCharset();
+
+    /**
+     * @deprecated 3.6
+     *
+     */
+    @Deprecated
+    default Charset contentEncoding() {
+        return contentCharset();
+    }
 
     /**
      * 获取小饼数组

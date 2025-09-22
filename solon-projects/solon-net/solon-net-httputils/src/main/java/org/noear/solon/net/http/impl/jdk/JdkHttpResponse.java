@@ -151,10 +151,25 @@ public class JdkHttpResponse implements HttpResponse {
         return http.getContentType();
     }
 
+
+    private Charset _contentCharset;
     @Override
-    public Charset contentEncoding() {
-        String tmp = http.getContentEncoding();
-        return tmp == null ? null : Charset.forName(tmp);
+    public Charset contentCharset() {
+        if (_contentCharset == null) {
+            String contentType = http.getContentType();
+            if (contentType != null) {
+                int charsetIdx = contentType.indexOf("charset=");
+                if (charsetIdx > 0) {
+                    String charset = contentType.substring(charsetIdx + 8);
+                    if (charset.indexOf(';') > 0) {
+                        charset = charset.substring(0, charset.indexOf(';'));
+                    }
+                    _contentCharset = Charset.forName(charset.trim());
+                }
+            }
+        }
+
+        return _contentCharset;
     }
 
     @Override
