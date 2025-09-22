@@ -73,7 +73,17 @@ public interface HttpResponse extends Closeable {
     /**
      * 获取内容编码
      */
-    Charset contentEncoding();
+    Charset contentCharset();
+
+    /**
+     * 获取内容编码
+     *
+     * @deprecated 3.4
+     */
+    @Deprecated
+    default Charset contentEncoding(){
+        return contentCharset();
+    }
 
     /**
      * 获取小饼数组
