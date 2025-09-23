@@ -38,6 +38,7 @@
 * 添加 `solon` SnelUtil（基于 SnEL 且兼容旧的 TmplUtil） 替代 TmplUtil（标为弃用）//如果有 # 则为新表达式
 * 添加 `solon-mvc` `List<UploadedFile>` 注入支持（用 `UploadedFile[]` 性能更好）
 * 添加 `solon` converters,serializers,renders,factories,chains（简化名自：converterManager,serializerManager,renderManager,factoryManager,chainManager）
+* 修复 `solon-web-rx` 会发射中断的问题（v3.5.3 引起的）
 * snakeyaml 升为 2.5
 * lombok 升为 1.18.42
 * jansi 升为 2.4.2
