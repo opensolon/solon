@@ -45,6 +45,7 @@
 * guava 升为 33.4.8-jre
 * log4j 升为 2.25.1
 * fury 升为 0.10.3
+* reactor-core 升为 3.7.4
 * graalvm.buildtools 升为 0.11.0
 
 示例：
