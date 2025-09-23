@@ -33,6 +33,11 @@
 * 调整 `solon-serialization-*` 弱化 ActionExecuteHandler, Render 的定制，改为 XxxxSerializer 对外定制
 * 引入 `solon-expression` 替代 `solon` 内的表达式
 
+
+### 3.5.4
+
+* 修复 `solon-web-rx` 会发射中断的问题（v3.5.3 引起的）
+
 ### 3.5.3
 
 * 优化 solon-rx 确保 SimpleSubscriber:doOnComplete 只被运行一次（之前可能会被外部触发多次）
