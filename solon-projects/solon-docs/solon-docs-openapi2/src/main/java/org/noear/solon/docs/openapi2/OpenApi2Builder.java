@@ -480,8 +480,10 @@ public class OpenApi2Builder {
                     }
 
                 } else if ("file".equals(dataType)) {
-                    //array file
+                    //file
                     FormParameter formParameter = new FormParameter();
+                    //设置参数类型 解决导入到apifox后，参数类型变为string的问题
+                    formParameter.type("file");
                     formParameter.items(new FileProperty());
 
                     parameter = formParameter;
@@ -897,7 +899,12 @@ public class OpenApi2Builder {
                 propPr.setDescription(propAnno.value());
                 propPr.setRequired(propAnno.required());
                 propPr.setExample(propAnno.example());
-                propPr.setType(Utils.isBlank(propAnno.dataType()) ? propType.getSimpleName().toLowerCase() : propAnno.dataType());
+                if(FileBase.class.isAssignableFrom(propType)){
+                    // 文件类型固定为file
+                    propPr.setType("file");
+                }else{
+                    propPr.setType(Utils.isBlank(propAnno.dataType()) ? propType.getSimpleName().toLowerCase() : propAnno.dataType());
+                }
             } else {
                 propPr.setType(propType.getSimpleName().toLowerCase());
             }
