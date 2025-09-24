@@ -28,6 +28,9 @@
 * 把 Plugin 统一交给 AppContext 管理（之前由 SolonApp 或 PluginPackage 管理）
 * Plugin 添加 postStart 事件
 
+### 3.4.6
+
+* 修复 `solon-web-rx` 会发射中断的问题（v3.4.5 / 3.5.3 引起的）
 
 ### 3.4.5
 
