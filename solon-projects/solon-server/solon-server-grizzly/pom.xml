@@ -15,6 +15,10 @@
     <name>${project.artifactId}</name>
     <packaging>jar</packaging>
 
+    <properties>
+        <grizzly.version>4.0.2</grizzly.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
@@ -24,19 +28,19 @@
         <dependency>
             <groupId>org.glassfish.grizzly</groupId>
             <artifactId>grizzly-http-server</artifactId>
-            <version>3.0.1</version>
+            <version>${grizzly.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.glassfish.grizzly</groupId>
             <artifactId>grizzly-websockets-server</artifactId>
-            <version>3.0.1</version>
+            <version>${grizzly.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.glassfish.grizzly</groupId>
             <artifactId>grizzly-http-servlet</artifactId>
-            <version>3.0.1</version>
+            <version>${grizzly.version}</version>
         </dependency>
 
         <dependency>
