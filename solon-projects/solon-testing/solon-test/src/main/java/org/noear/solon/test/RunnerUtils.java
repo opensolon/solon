@@ -202,17 +202,27 @@ public class RunnerUtils {
 
         } else {
             Method main = RunnerUtils.getMainMethod(mainClz);
+            String[] args = argsAry.toArray(new String[argsAry.size()]);
 
             if (main != null && Modifier.isStatic(main.getModifiers())) {
-                String[] args = argsAry.toArray(new String[argsAry.size()]);
-
                 initDo(klass, null);
                 main.invoke(null, new Object[]{args});
 
-                return Solon.context();
-            } else {
-                String[] args = argsAry.toArray(new String[argsAry.size()]);
+                if (Solon.app() != null) {
+                    return Solon.context();
+                } else {
+                    //如果不是 solon 应用，则启动一个 solon
+                    SimpleSolonApp testApp = new SimpleSolonApp(mainClz, args);
+                    testApp.start(x -> {
+                        //默认关闭 http（避免与已经存在的服务端口冲突）
+                        x.enableScanning(false);
+                        x.enableHttp(enableHttp);
+                        initDo(klass, x);
+                    });
 
+                    return testApp.context();
+                }
+            } else {
                 SimpleSolonApp testApp = new SimpleSolonApp(mainClz, args);
                 testApp.start(x -> {
                     //默认关闭 http（避免与已经存在的服务端口冲突）
