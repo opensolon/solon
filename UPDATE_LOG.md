@@ -101,6 +101,11 @@ public class SnelDemo {
 }
 ```
 
+### 3.5.4
+
+* 优化 `solon-test` `@SolonTest` 支持非 solon 的 main 程序单测启动
+* 修复 `solon-web-rx` 会发射中断的问题（v3.5.3, v3.4.5 引起的）
+
 ### 3.5.3
 
 * 优化 solon-rx 确保 SimpleSubscriber:doOnComplete 只被运行一次（之前可能会被外部触发多次）
@@ -110,7 +115,6 @@ public class SnelDemo {
 * 优化 solon-net-httputils sse 与背压处理的兼容性
 * 修复 solon-net-httputils JdkHttpResponse:contentEncoding 不能获取 charset 的问题（并更名为 contentCharset，原名标为弃用）
 * 修复 solon-docs-openapi2 ApiModel 中使用 UploadedFile 类型是解析报错的问题
-
 
 ### 3.5.2
 
@@ -196,6 +200,11 @@ public class SnelDemo {
 * liquor 升为 1.6.2 （兼容 arm jdk）
 * jetty 升为 9.4.58.v20250814
 
+
+### 3.4.6
+
+* 优化 `solon-test` `@SolonTest` 支持非 solon 的 main 程序单测启动
+* 修复 `solon-web-rx` 会发射中断的问题（v3.5.3, v3.4.5 引起的）
 
 ### 3.4.5
 
