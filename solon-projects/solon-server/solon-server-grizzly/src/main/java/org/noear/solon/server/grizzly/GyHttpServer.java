@@ -1,7 +1,11 @@
 package org.noear.solon.server.grizzly;
 
 import org.glassfish.grizzly.http.server.*;
+import org.noear.solon.Solon;
+import org.noear.solon.core.util.Assert;
 import org.noear.solon.server.ServerLifecycle;
+import org.noear.solon.server.grizzly.http.GyHttpContextHandler;
+import org.noear.solon.server.prop.impl.HttpServerProps;
 
 /**
  *
@@ -9,20 +13,28 @@ import org.noear.solon.server.ServerLifecycle;
  *
  */
 public class GyHttpServer implements ServerLifecycle {
-    HttpServer httpServer;
+    private HttpServer httpServer;
+    private HttpServerProps  props;
+
+    public GyHttpServer(HttpServerProps props) {
+        this.props = props;
+    }
+
+    public boolean isSecure(){
+        return false;
+    }
 
     @Override
     public void start(String host, int port) throws Throwable {
+        if(Assert.isEmpty(host)){
+            host = "0.0.0.0";
+        }
+
         httpServer = new HttpServer();
 
-        httpServer.addListener(new NetworkListener("", "", 8080));
+        httpServer.addListener(new NetworkListener("solon", host, port));
 
-        httpServer.getServerConfiguration().addHttpHandler(new HttpHandler() {
-            @Override
-            public void service(Request request, Response response) throws Exception {
-
-            }
-        });
+        httpServer.getServerConfiguration().addHttpHandler(new GyHttpContextHandler(Solon.app()::tryHandle));
 
         httpServer.start();
     }
