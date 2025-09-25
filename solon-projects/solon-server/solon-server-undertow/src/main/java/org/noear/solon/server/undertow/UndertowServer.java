@@ -50,16 +50,9 @@ public class UndertowServer extends UndertowServerBase implements ServerLifecycl
     }
 
     @Override
-    public void start(String host, int port) {
-        try {
-            setup(host, port);
-
-            _server.start();
-        } catch (RuntimeException e) {
-            throw e;
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    public void start(String host, int port) throws  Throwable {
+        setup(host, port);
+        _server.start();
     }
 
     @Override

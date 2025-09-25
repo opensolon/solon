@@ -96,15 +96,14 @@ public class GyHttpPlugin implements Plugin {
 
 
         _server = new GyHttpServer(props);
-        //_server.enableWebSocket(context.app().enableWebSocket());
-        //_server.setCoreThreads(props.getCoreThreads());
+        _server.enableWebSocket(context.app().enableWebSocket());
 
-//        if (props.isIoBound()) {
-//            //如果是io密集型的，加二段线程池
-//            _server.setExecutor(props.newWorkExecutor("grizzlyhttp-"));
-//        }
-//
-//        _server.setHandler(context.app()::tryHandle);
+        if (props.isIoBound()) {
+            //如果是io密集型的，加二段线程池
+            _server.setExecutor(props.newWorkExecutor("grizzlyhttp-"));
+        }
+
+        _server.setHandler(context.app()::tryHandle);
 
         //尝试事件扩展
         EventBus.publish(_server);
