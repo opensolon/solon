@@ -30,6 +30,7 @@ import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.core.util.MultiMap;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Web 解码工具类
@@ -42,9 +43,10 @@ public class DecodeUtils {
     /**
      * 解码多部分主体
      */
-    public static void decodeMultipart(Context ctx, MultiMap<UploadedFile> filesMap) {
+    public static void decodeMultipart(Context ctx, InputStream unlimitedInputStream, MultiMap<UploadedFile> filesMap) {
         try {
-            HttpMultipartCollection parts = new HttpMultipartCollection(ctx.contentType(), ctx.bodyAsStream());
+            LimitedInputStream limitedInputStream = new LimitedInputStream(unlimitedInputStream, ServerProps.request_maxFileSize);
+            HttpMultipartCollection parts = new HttpMultipartCollection(ctx.contentType(), limitedInputStream);
 
             while (parts.hasNext()) {
                 HttpMultipart part = parts.next();
