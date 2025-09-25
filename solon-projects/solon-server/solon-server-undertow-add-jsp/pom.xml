@@ -16,6 +16,11 @@
     <packaging>jar</packaging>
 
     <dependencies>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+        </dependency>
+
         <!--jsp try start-->
         <dependency>
             <groupId>io.undertow.jastow</groupId>
