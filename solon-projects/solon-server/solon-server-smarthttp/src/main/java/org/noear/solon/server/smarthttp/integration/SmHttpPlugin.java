@@ -69,6 +69,11 @@ public final class SmHttpPlugin implements Plugin {
             return;
         }
 
+        //如果有 grizzly 插件，就不启动了
+        if (ClassUtil.loadClass("org.noear.solon.server.grizzly.integration.GyHttpPlugin") != null) {
+            return;
+        }
+
         if (context.isStarted()) {
             start0(context);
         } else {
