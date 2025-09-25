@@ -54,7 +54,7 @@ class MultipartUtil {
 
     public static StatusException status4xx(Context ctx, Exception e) {
         if (e instanceof StatusException) {
-            return  (StatusException) e;
+            return (StatusException) e;
         } else {
             if (isBodyLargerEx(e)) {
                 return new StatusException("Request Entity Too Large: " + ctx.method() + " " + ctx.pathNew(), e, 413);
@@ -94,14 +94,20 @@ class MultipartUtil {
      * 是否为 body larger ex?
      */
     public static boolean isBodyLargerEx(Throwable e) {
-        return hasLargerStr(e) || hasLargerStr(e.getCause());
+        return hasLargerEx(e);
     }
 
-    private static boolean hasLargerStr(Throwable e) {
-        if (e == null || e.getMessage() == null) {
-            return false;
-        } else {
-            return e.getMessage().contains("larger than");
+    private static boolean hasLargerEx(Throwable e) {
+        if (e != null) {
+            if (e.getMessage() != null && e.getMessage().contains("large")) {
+                return true;
+            }
+
+            if (e.getCause() != null) {
+                return hasLargerEx(e.getCause());
+            }
         }
+
+        return false;
     }
 }
