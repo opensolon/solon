@@ -161,17 +161,12 @@ abstract class JettyServerBase implements ServerLifecycle , HttpServerConfigure 
 
         String _tempdir = scratchDir.getAbsolutePath();
         int _fileOutputBuffer = 0;
-        long _maxBodySize = (ServerProps.request_maxBodySize > 0 ? ServerProps.request_maxBodySize : -1L);
         long _maxFileSize = (ServerProps.request_maxFileSize > 0 ? ServerProps.request_maxFileSize : -1L);
-
-        if (_maxBodySize < _maxFileSize) {
-            _maxBodySize = _maxFileSize; //maxRequestSize
-        }
 
         MultipartConfigElement multipartConfig = new MultipartConfigElement(
                 _tempdir,
                 _maxFileSize,
-                _maxBodySize,
+                ServerProps.request_maRequestSize(),
                 _fileOutputBuffer);
 
         ServletHolder servletHolder = new ServletHolder(new JtHttpContextServletHandler());
