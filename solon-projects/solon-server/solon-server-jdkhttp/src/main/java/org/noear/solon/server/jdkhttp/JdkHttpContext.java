@@ -62,7 +62,7 @@ public class JdkHttpContext extends ContextBase {
 
         //文件上传需要
         if (isMultipartFormData()) {
-            DecodeUtils.decodeMultipart(this, _fileMap);
+            DecodeUtils.decodeMultipart(this, _exchange.getRequestBody(), _fileMap);
         }
     }
 

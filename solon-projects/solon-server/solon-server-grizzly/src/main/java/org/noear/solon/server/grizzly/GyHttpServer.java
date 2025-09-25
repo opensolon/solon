@@ -60,6 +60,7 @@ public class GyHttpServer implements ServerLifecycle {
         httpServer.addListener(networkListener);
 
         httpServer.getServerConfiguration().addHttpHandler(new GyHttpContextHandler(Solon.app()::tryHandle));
+        httpServer.getServerConfiguration().setAllowPayloadForUndefinedHttpMethods(true);//允许未定义的 method
 
         httpServer.start();
     }
