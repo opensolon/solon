@@ -27,6 +27,7 @@ import org.noear.solon.server.prop.impl.HttpServerProps;
 import org.noear.solon.server.prop.impl.WebSocketServerProps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.bridge.SLF4JBridgeHandler;
 
 /**
  *
@@ -70,6 +71,11 @@ public class GyHttpPlugin implements Plugin {
     private void start0(AppContext context) throws Throwable {
         //初始化属性
         ServerProps.init();
+
+        //grizzly 日志转为 slf4j
+        SLF4JBridgeHandler.removeHandlersForRootLogger(); // 移除默认的 JUL 处理器
+        SLF4JBridgeHandler.install(); // 安装 SLF4J 桥接处理器
+
 
         HttpServerProps props = new HttpServerProps();
         final String _host = props.getHost();
