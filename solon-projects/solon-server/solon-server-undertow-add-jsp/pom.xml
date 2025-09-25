@@ -28,6 +28,10 @@
             <version>${undertow.jastow.version}</version>
             <exclusions>
                 <exclusion>
+                    <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
+                </exclusion>
+                <exclusion>
                     <groupId>io.undertow</groupId>
                     <artifactId>undertow-core</artifactId>
                 </exclusion>
@@ -42,12 +46,24 @@
             <groupId>org.jboss.metadata</groupId>
             <artifactId>jboss-metadata-common</artifactId>
             <version>${undertow.jboss-metadata.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
             <groupId>org.jboss.metadata</groupId>
             <artifactId>jboss-metadata-web</artifactId>
             <version>${undertow.jboss-metadata.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
