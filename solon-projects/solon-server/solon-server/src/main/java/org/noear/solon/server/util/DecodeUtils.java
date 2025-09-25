@@ -45,7 +45,7 @@ public class DecodeUtils {
      */
     public static void decodeMultipart(Context ctx, InputStream unlimitedInputStream, MultiMap<UploadedFile> filesMap) {
         try {
-            LimitedInputStream limitedInputStream = new LimitedInputStream(unlimitedInputStream, ServerProps.request_maxFileSize);
+            LimitedInputStream limitedInputStream = new LimitedInputStream(unlimitedInputStream, ServerProps.request_maRequestSize());
             HttpMultipartCollection parts = new HttpMultipartCollection(ctx.contentType(), limitedInputStream);
 
             while (parts.hasNext()) {

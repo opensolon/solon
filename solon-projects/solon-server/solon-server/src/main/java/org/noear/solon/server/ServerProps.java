@@ -49,6 +49,15 @@ public class ServerProps {
      * 上传最大文件大小
      */
     public static final long request_maxFileSize;
+
+    public static long request_maRequestSize() {
+        if (request_maxBodySize > request_maxFileSize) {
+            return request_maxBodySize;
+        } else {
+            return request_maxFileSize;
+        }
+    }
+
     /**
      * 上传使用临时文件
      */
