@@ -47,11 +47,6 @@
             <scope>provided</scope>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>sa-token-solon-plugin</artifactId>-->
-<!--        </dependency>-->
-
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon-logging-simple</artifactId>
@@ -479,10 +474,6 @@
             <groupId>org.noear</groupId>
             <artifactId>solon-test</artifactId>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>cron4j-solon-plugin</artifactId>
         </dependency>
 
         <!--        <dependency>-->
