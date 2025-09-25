@@ -2343,19 +2343,19 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-server-jetty-jakarta</artifactId>
-                <version>${project.version}</version>
+                <version>${solon-jakarta.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-server-jetty-add-jsp-jakarta</artifactId>
-                <version>${project.version}</version>
+                <version>${solon-jakarta.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-server-jetty-add-websocket-jakarta</artifactId>
-                <version>${project.version}</version>
+                <version>${solon-jakarta.version}</version>
             </dependency>
 
             <dependency>
