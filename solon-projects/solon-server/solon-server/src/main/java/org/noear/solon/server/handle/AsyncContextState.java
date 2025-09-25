@@ -19,6 +19,7 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.core.util.RunnableEx;
+import org.noear.solon.lang.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,7 +42,7 @@ public class AsyncContextState implements ContextAsyncListener {
     public CompletableFuture<Object> asyncFuture;
 
     private ScheduledFuture<?> timeoutFuture;
-    private List<ContextAsyncListener> listeners;
+    private @Nullable List<ContextAsyncListener> listeners;
 
     public void addListener(ContextAsyncListener listener) {
         if (listeners == null) {
@@ -65,11 +66,13 @@ public class AsyncContextState implements ContextAsyncListener {
                     ctx.status(500);
 
                     //超时通知
-                    for (ContextAsyncListener listener1 : listeners) {
-                        try {
-                            listener1.onTimeout(ctx);
-                        } catch (IOException e) {
-                            log.warn(e.getMessage(), e);
+                    if(listeners != null) {
+                        for (ContextAsyncListener listener1 : listeners) {
+                            try {
+                                listener1.onTimeout(ctx);
+                            } catch (IOException e) {
+                                log.warn(e.getMessage(), e);
+                            }
                         }
                     }
                 } finally {
