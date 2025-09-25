@@ -20,7 +20,6 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.*;
 import org.noear.solon.core.bean.LifecycleBean;
 import org.noear.solon.core.event.EventBus;
-import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.server.ServerConstants;
 import org.noear.solon.server.ServerProps;
 import org.noear.solon.server.grizzly.GyHttpServer;
@@ -53,21 +52,6 @@ public class GyHttpPlugin implements Plugin {
     @Override
     public void start(AppContext context) throws Throwable {
         if (context.app().enableHttp() == false) {
-            return;
-        }
-
-        //如果有 jetty 插件，就不启动了
-        if (ClassUtil.loadClass("org.noear.solon.server.jetty.integration.JettyPlugin") != null) {
-            return;
-        }
-
-        //如果有undrtow插件，就不启动了
-        if (ClassUtil.loadClass("org.noear.solon.server.undertow.integration.UndertowPlugin") != null) {
-            return;
-        }
-
-        //如果有 vertx 插件，就不启动了
-        if (ClassUtil.loadClass("org.noear.solon.server.vertx.integration.VxHttpPlugin") != null) {
             return;
         }
 

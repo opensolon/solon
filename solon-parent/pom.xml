@@ -71,6 +71,7 @@
 
         <smartsocket.version>1.5.55</smartsocket.version>
         <smarthttp.version>2.5.12</smarthttp.version>
+        <grizzly.version>3.0.1</grizzly.version>
         <jetty.version>9.4.58.v20250814</jetty.version>
         <undertow.version>2.2.37.Final</undertow.version>
         <undertow.jastow.version>2.1.0.Final</undertow.jastow.version>
@@ -360,6 +361,12 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-server-grizzly</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-server-grizzly-add-webscoket</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 

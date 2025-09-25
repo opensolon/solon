@@ -296,7 +296,12 @@
             <artifactId>solon-server-grizzly</artifactId>
         </dependency>
 
-<!--        <dependency>-->
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-server-grizzly-add-webscoket</artifactId>
+        </dependency>
+
+        <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
 <!--            <artifactId>solon-server-smarthttp</artifactId>-->
 <!--        </dependency>-->
