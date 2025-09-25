@@ -26,14 +26,13 @@
         </dependency>
 
         <dependency>
-            <groupId>org.glassfish.grizzly</groupId>
-            <artifactId>grizzly-http-server</artifactId>
-            <version>${grizzly.version}</version>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-net</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.glassfish.grizzly</groupId>
-            <artifactId>grizzly-websockets-server</artifactId>
+            <artifactId>grizzly-http-server</artifactId>
             <version>${grizzly.version}</version>
         </dependency>
 
