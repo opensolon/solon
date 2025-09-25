@@ -18,6 +18,7 @@ package org.noear.solon.server.grizzly.http;
 import org.glassfish.grizzly.http.server.HttpHandler;
 import org.glassfish.grizzly.http.server.Request;
 import org.glassfish.grizzly.http.server.Response;
+import org.glassfish.grizzly.http.util.HttpStatus;
 import org.noear.solon.core.handle.Handler;
 import org.noear.solon.core.util.MimeType;
 import org.noear.solon.server.ServerProps;
@@ -89,6 +90,11 @@ public class GyHttpContextHandler extends HttpHandler {
 
     protected void handleDo(GyHttpContext ctx) {
         try {
+            if ("PRI".equals(ctx.method())) {
+                ctx.innerGetResponse().setStatus(HttpStatus.NOT_IMPLEMENTED_501);
+                return;
+            }
+
             ctx.contentType(MimeType.TEXT_PLAIN_UTF8_VALUE);
             if (ServerProps.output_meta) {
                 ctx.headerSet("Solon-Server", GyHttpPlugin.solon_server_ver());
