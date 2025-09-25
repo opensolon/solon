@@ -274,23 +274,10 @@ public class GyHttpContext extends ContextBase {
     }
 
 
-    private ByteArrayOutputStream _outputStreamTmp;
-
     @Override
     public OutputStream outputStream() throws IOException {
         sendHeaders(false);
-
-        if (_allows_write) {
-            return _response.getOutputStream();
-        } else {
-            if (_outputStreamTmp == null) {
-                _outputStreamTmp = new ByteArrayOutputStream();
-            } else {
-                _outputStreamTmp.reset();
-            }
-
-            return _outputStreamTmp;
-        }
+        return _response.getOutputStream();
     }
 
     @Override
