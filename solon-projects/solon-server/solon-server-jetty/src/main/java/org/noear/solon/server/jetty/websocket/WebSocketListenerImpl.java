@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
 import java.nio.ByteBuffer;
 
 public class WebSocketListenerImpl extends WebSocketAdapter implements WebSocketPingPongListener {
-    static final Logger log = LoggerFactory.getLogger(WebSocketListenerImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(WebSocketListenerImpl.class);
 
     private WebSocketImpl webSocket;
     private final WebSocketRouter webSocketRouter = WebSocketRouter.getInstance();
@@ -52,7 +52,7 @@ public class WebSocketListenerImpl extends WebSocketAdapter implements WebSocket
             ByteBuffer buf = ByteBuffer.wrap(payload, offset, len);
             webSocketRouter.getListener().onMessage(webSocket, buf);
         } catch (Throwable e) {
-            log.warn(e.getMessage(), e);
+            webSocketRouter.getListener().onError(webSocket, e);
         }
     }
 
@@ -60,6 +60,25 @@ public class WebSocketListenerImpl extends WebSocketAdapter implements WebSocket
     public void onWebSocketText(String text) {
         try {
             webSocketRouter.getListener().onMessage(webSocket, text);
+        } catch (Throwable e) {
+            webSocketRouter.getListener().onError(webSocket, e);
+        }
+    }
+
+    @Override
+    public void onWebSocketPing(ByteBuffer byteBuffer) {
+        webSocketRouter.getListener().onPing(webSocket);
+    }
+
+    @Override
+    public void onWebSocketPong(ByteBuffer byteBuffer) {
+        webSocketRouter.getListener().onPong(webSocket);
+    }
+
+    @Override
+    public void onWebSocketError(Throwable cause) {
+        try {
+            webSocketRouter.getListener().onError(webSocket, cause);
         } catch (Throwable e) {
             log.warn(e.getMessage(), e);
         }
@@ -75,20 +94,5 @@ public class WebSocketListenerImpl extends WebSocketAdapter implements WebSocket
 
         webSocketRouter.getListener().onClose(webSocket);
         super.onWebSocketClose(statusCode, reason);
-    }
-
-    @Override
-    public void onWebSocketError(Throwable cause) {
-        webSocketRouter.getListener().onError(webSocket, cause);
-    }
-
-    @Override
-    public void onWebSocketPing(ByteBuffer byteBuffer) {
-        webSocketRouter.getListener().onPing(webSocket);
-    }
-
-    @Override
-    public void onWebSocketPong(ByteBuffer byteBuffer) {
-        webSocketRouter.getListener().onPong(webSocket);
     }
 }
