@@ -16,6 +16,7 @@
 package org.noear.solon.web.servlet;
 
 import org.noear.solon.Utils;
+import org.noear.solon.core.exception.StatusException;
 import org.noear.solon.server.ServerProps;
 import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.UploadedFile;
@@ -24,6 +25,7 @@ import org.noear.solon.core.util.MultiMap;
 import org.noear.solon.server.handle.AsyncContextState;
 import org.noear.solon.server.handle.ContextBase;
 import org.noear.solon.server.handle.HeaderNames;
+import org.noear.solon.server.io.LimitedInputException;
 import org.noear.solon.server.util.DecodeUtils;
 import org.noear.solon.server.util.RedirectUtils;
 import org.slf4j.Logger;
@@ -175,6 +177,11 @@ public class SolonServletContext extends ContextBase {
 
     @Override
     public InputStream bodyAsStream() throws IOException {
+        if (_request.getContentLengthLong() > ServerProps.request_maxBodySize) {
+            //可兼容不同框架的情况
+            throw new StatusException("Request Entity Too Large: " + _request.getContentLengthLong(), 413);
+        }
+
         return _request.getInputStream();
     }
 
