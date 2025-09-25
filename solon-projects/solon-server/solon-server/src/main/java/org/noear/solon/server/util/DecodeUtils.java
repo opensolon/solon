@@ -138,7 +138,7 @@ public class DecodeUtils {
         decodeCookiesDo(ctx, cookies, 0);
     }
 
-    private static  void decodeCookiesDo(Context ctx, String cookies, int offset) {
+    private static void decodeCookiesDo(Context ctx, String cookies, int offset) {
         //去掉头部空隔
         while (offset < cookies.length() && cookies.charAt(offset) == ' ') {
             offset++;
@@ -175,7 +175,8 @@ public class DecodeUtils {
 
     /**
      * 提取内容长度
-     * */
+     *
+     */
     public static long decodeContentLengthLong(Context ctx) {
         String contentLength = ctx.header("Content-Length");
         return contentLength != null && !contentLength.isEmpty() ? Long.parseLong(contentLength) : -1L;
@@ -183,9 +184,10 @@ public class DecodeUtils {
 
     /**
      * 提取头信息中的分段值（例：Content-Type:text/json;charset=utf-8）
-     * */
+     *
+     */
     public static String extractQuotedValueFromHeader(String header, String key) {
-        if(Utils.isEmpty(header)){
+        if (Utils.isEmpty(header)) {
             return null;
         }
 
@@ -196,7 +198,7 @@ public class DecodeUtils {
 
         int i;
         int start;
-        for(i = 0; i < header.length() - 1; ++i) {
+        for (i = 0; i < header.length() - 1; ++i) {
             start = header.charAt(i);
             if (inQuotes) {
                 if (start == 34) {
@@ -233,7 +235,7 @@ public class DecodeUtils {
             if (header.charAt(pos) == '"') {
                 start = pos + 1;
 
-                for(i = start; i < header.length(); ++i) {
+                for (i = start; i < header.length(); ++i) {
                     c = header.charAt(i);
                     if (c == '"') {
                         break;
@@ -242,7 +244,7 @@ public class DecodeUtils {
 
                 return header.substring(start, i);
             } else {
-                for(i = pos; i < header.length(); ++i) {
+                for (i = pos; i < header.length(); ++i) {
                     c = header.charAt(i);
                     if (c == ' ' || c == '\t' || c == ';') {
                         break;
@@ -259,7 +261,8 @@ public class DecodeUtils {
 
     /**
      * 清洗 uri
-     * */
+     *
+     */
     public static String rinseUri(String uri) {
         int idx = uri.indexOf("://");
 
@@ -307,11 +310,15 @@ public class DecodeUtils {
      * 是否为 body larger ex?
      */
     public static boolean isBodyLargerEx(Throwable e) {
-        return hasLargerStr(e) || hasLargerStr(e.getCause());
+        return hasLargerEx(e) || hasLargerEx(e.getCause());
     }
 
-    private static boolean hasLargerStr(Throwable e) {
+    private static boolean hasLargerEx(Throwable e) {
         if (e instanceof LimitedInputException) {
+            return true;
+        }
+
+        if (e.getMessage() != null && e.getMessage().contains("too large")) {
             return true;
         }
 
