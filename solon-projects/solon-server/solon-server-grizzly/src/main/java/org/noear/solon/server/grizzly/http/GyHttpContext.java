@@ -12,6 +12,7 @@ import org.noear.solon.server.ServerProps;
 import org.noear.solon.server.handle.AsyncContextState;
 import org.noear.solon.server.handle.ContextBase;
 import org.noear.solon.server.handle.HeaderNames;
+import org.noear.solon.server.io.LimitedInputStream;
 import org.noear.solon.server.util.DecodeUtils;
 import org.noear.solon.server.util.RedirectUtils;
 import org.slf4j.Logger;
@@ -19,6 +20,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.net.URI;
+import java.nio.charset.Charset;
 import java.util.*;
 
 /**
@@ -111,7 +113,7 @@ public class GyHttpContext extends ContextBase {
     @Override
     public String url() {
         if (_url == null) {
-            _url = _request.getRequestURL().toString();
+            _url = _request.getRequestURI();
         }
 
         return _url;
@@ -152,9 +154,14 @@ public class GyHttpContext extends ContextBase {
         }
     }
 
+    private LimitedInputStream _inputStream;
     @Override
     public InputStream bodyAsStream() throws IOException {
-        return _request.getInputStream();
+        if(_inputStream == null) {
+            _inputStream = new LimitedInputStream(_request.getInputStream(), ServerProps.request_maxBodySize);
+        }
+
+        return _inputStream;
     }
 
     private MultiMap<String> _paramMap;
@@ -181,6 +188,14 @@ public class GyHttpContext extends ContextBase {
                 //多分段处理
                 if (autoMultipart()) {
                     loadMultipartFormData();
+                }
+
+                if(_request.getParameters().getEncoding() == null){
+                    _request.getParameters().setEncoding(Charset.forName(ServerProps.request_encoding));
+                }
+
+                if(_request.getParameters().getQueryStringEncoding() == null){
+                    _request.getParameters().setQueryStringEncoding(Charset.forName(ServerProps.request_encoding));
                 }
 
                 for (String name : _request.getParameters().getParameterNames()) {

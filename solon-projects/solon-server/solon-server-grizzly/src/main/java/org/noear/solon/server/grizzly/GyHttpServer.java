@@ -1,11 +1,14 @@
 package org.noear.solon.server.grizzly;
 
 import org.glassfish.grizzly.http.server.*;
+import org.glassfish.grizzly.threadpool.ThreadPoolConfig;
 import org.noear.solon.Solon;
 import org.noear.solon.core.util.Assert;
 import org.noear.solon.server.ServerLifecycle;
 import org.noear.solon.server.grizzly.http.GyHttpContextHandler;
 import org.noear.solon.server.prop.impl.HttpServerProps;
+
+import java.util.concurrent.ThreadFactory;
 
 /**
  *
@@ -30,9 +33,20 @@ public class GyHttpServer implements ServerLifecycle {
             host = "0.0.0.0";
         }
 
+        ThreadPoolConfig threadPoolConfig = ThreadPoolConfig.defaultConfig();
+        threadPoolConfig.setThreadFactory(r -> {
+            Thread thread = new Thread(r);
+            thread.setDaemon(false);
+            thread.setName("Grizzly-Worker-" + thread.getId());
+            return thread;
+        });
+
+        NetworkListener networkListener = new NetworkListener("solon", host, port);
+        networkListener.getTransport().setWorkerThreadPoolConfig(threadPoolConfig);
+
         httpServer = new HttpServer();
 
-        httpServer.addListener(new NetworkListener("solon", host, port));
+        httpServer.addListener(networkListener);
 
         httpServer.getServerConfiguration().addHttpHandler(new GyHttpContextHandler(Solon.app()::tryHandle));
 
