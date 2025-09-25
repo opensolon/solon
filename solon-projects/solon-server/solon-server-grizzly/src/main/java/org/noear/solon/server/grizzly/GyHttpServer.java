@@ -5,6 +5,7 @@ import org.glassfish.grizzly.threadpool.ThreadPoolConfig;
 import org.noear.solon.Solon;
 import org.noear.solon.core.util.Assert;
 import org.noear.solon.server.ServerLifecycle;
+import org.noear.solon.server.ServerProps;
 import org.noear.solon.server.grizzly.http.GyHttpContextHandler;
 import org.noear.solon.server.prop.impl.HttpServerProps;
 
@@ -29,7 +30,7 @@ public class GyHttpServer implements ServerLifecycle {
 
     @Override
     public void start(String host, int port) throws Throwable {
-        if(Assert.isEmpty(host)){
+        if (Assert.isEmpty(host)) {
             host = "0.0.0.0";
         }
 
@@ -43,6 +44,16 @@ public class GyHttpServer implements ServerLifecycle {
 
         NetworkListener networkListener = new NetworkListener("solon", host, port);
         networkListener.getTransport().setWorkerThreadPoolConfig(threadPoolConfig);
+
+        // max form size
+        if (ServerProps.request_maxBodySize > Integer.MAX_VALUE) {
+            networkListener.setMaxFormPostSize(Integer.MAX_VALUE);
+        } else {
+            networkListener.setMaxFormPostSize((int) ServerProps.request_maxBodySize);
+        }
+
+        // max header size
+        networkListener.setMaxHttpHeaderSize(ServerProps.request_maxHeaderSize);
 
         httpServer = new HttpServer();
 

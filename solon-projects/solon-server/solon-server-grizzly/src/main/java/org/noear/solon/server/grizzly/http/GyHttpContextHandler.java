@@ -33,8 +33,14 @@ public class GyHttpContextHandler extends HttpHandler {
         this.executor = executor;
     }
 
+
+
     @Override
     public void service(Request request, Response response) throws Exception {
+        if(request.getCharacterEncoding() == null) {
+            request.setCharacterEncoding(ServerProps.request_encoding);
+        }
+
         GyHttpContext ctx = new GyHttpContext(request, response);
 
         try {

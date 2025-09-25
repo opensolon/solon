@@ -113,7 +113,7 @@ public class GyHttpContext extends ContextBase {
     @Override
     public String url() {
         if (_url == null) {
-            _url = _request.getRequestURI();
+            _url = _request.getRequestURL().toString();
         }
 
         return _url;
@@ -190,17 +190,9 @@ public class GyHttpContext extends ContextBase {
                     loadMultipartFormData();
                 }
 
-                if(_request.getParameters().getEncoding() == null){
-                    _request.getParameters().setEncoding(Charset.forName(ServerProps.request_encoding));
-                }
-
-                if(_request.getParameters().getQueryStringEncoding() == null){
-                    _request.getParameters().setQueryStringEncoding(Charset.forName(ServerProps.request_encoding));
-                }
-
-                for (String name : _request.getParameters().getParameterNames()) {
-                    String key = ServerProps.urlDecode(name);
-                    _paramMap.holder(key).setValues(_request.getParameters().getParameterValues(name));
+                for (Map.Entry<String,String[]> entry: _request.getParameterMap().entrySet()) {
+                    String key = ServerProps.urlDecode(entry.getKey());
+                    _paramMap.holder(key).setValues(entry.getValue());
                 }
             } catch (Exception e) {
                 throw DecodeUtils.status4xx(this, e);
