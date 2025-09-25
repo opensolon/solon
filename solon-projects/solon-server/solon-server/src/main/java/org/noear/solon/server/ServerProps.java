@@ -50,7 +50,7 @@ public class ServerProps {
      */
     public static final long request_maxFileSize;
 
-    public static long request_maRequestSize() {
+    public static long request_maxFileRequestSize() {
         if (request_maxBodySize > request_maxFileSize) {
             return request_maxBodySize;
         } else {

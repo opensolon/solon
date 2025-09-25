@@ -161,12 +161,13 @@ abstract class JettyServerBase implements ServerLifecycle , HttpServerConfigure 
 
         String _tempdir = scratchDir.getAbsolutePath();
         int _fileOutputBuffer = 0;
+        long _maxBodySize = (ServerProps.request_maxBodySize > 0 ? ServerProps.request_maxBodySize : -1L);
         long _maxFileSize = (ServerProps.request_maxFileSize > 0 ? ServerProps.request_maxFileSize : -1L);
 
         MultipartConfigElement multipartConfig = new MultipartConfigElement(
                 _tempdir,
                 _maxFileSize,
-                ServerProps.request_maRequestSize(),
+                ServerProps.request_maxFileRequestSize(),
                 _fileOutputBuffer);
 
         ServletHolder servletHolder = new ServletHolder(new JtHttpContextServletHandler());
@@ -176,6 +177,11 @@ abstract class JettyServerBase implements ServerLifecycle , HttpServerConfigure 
         ServletContextHandler handler = new ServletContextHandler();
         handler.setContextPath("/");
         handler.addServlet(servletHolder, "/");
+
+        if(_maxBodySize > Integer.MAX_VALUE) {
+            _maxBodySize =  Integer.MAX_VALUE;
+        }
+        handler.setMaxFormContentSize((int) _maxBodySize);
 
 
         //添加session state 支持
