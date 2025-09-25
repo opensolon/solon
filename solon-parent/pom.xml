@@ -359,6 +359,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon-server-grizzly</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon-server-vertx</artifactId>
                 <version>${solon.version}</version>
             </dependency>
