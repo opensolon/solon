@@ -16,6 +16,7 @@
 package org.noear.solon.server.grizzly;
 
 import org.glassfish.grizzly.http.server.*;
+import org.glassfish.grizzly.http2.Http2AddOn;
 import org.glassfish.grizzly.ssl.SSLEngineConfigurator;
 import org.glassfish.grizzly.threadpool.ThreadPoolConfig;
 import org.glassfish.grizzly.websockets.WebSocketAddOn;
@@ -139,9 +140,6 @@ public class GyHttpServer implements HttpServerConfigure, ServerLifecycle {
         }
 
         if (enableWebSocket) {
-            for (NetworkListener listener : _server.getListeners()) {
-                listener.registerAddOn(new WebSocketAddOn());
-            }
             WebSocketEngine.getEngine().register("/", "/*", new GyWebSocketApplication());
         }
 
@@ -160,12 +158,22 @@ public class GyHttpServer implements HttpServerConfigure, ServerLifecycle {
         networkListener.getTransport().setWorkerThreadPoolConfig(threadPoolConfig);
 
         // ssl
-        if (isMain && sslConfig.isSslEnable()) {
-            isSecure = true;
-            networkListener.setSecure(true);
-            networkListener.setSSLEngineConfig(new SSLEngineConfigurator(sslConfig.getSslContext())
-                    .setClientMode(false)
-                    .setNeedClientAuth(false));
+        if (isMain) {
+            if (sslConfig.isSslEnable()) {
+                isSecure = true;
+                networkListener.setSecure(true);
+                networkListener.setSSLEngineConfig(new SSLEngineConfigurator(sslConfig.getSslContext())
+                        .setClientMode(false)
+                        .setNeedClientAuth(false));
+            }
+
+            if (enableWebSocket) {
+                networkListener.registerAddOn(new WebSocketAddOn());
+            }
+
+            if (enableHttp2) {
+                networkListener.registerAddOn(new Http2AddOn());
+            }
         }
 
         // max form size
