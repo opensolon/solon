@@ -16,10 +16,10 @@
 package org.noear.solon.server.grizzly;
 
 import org.glassfish.grizzly.http.server.*;
+import org.glassfish.grizzly.ssl.SSLEngineConfigurator;
 import org.glassfish.grizzly.threadpool.ThreadPoolConfig;
 import org.glassfish.grizzly.websockets.WebSocketAddOn;
 import org.glassfish.grizzly.websockets.WebSocketEngine;
-import org.noear.solon.Solon;
 import org.noear.solon.core.handle.Handler;
 import org.noear.solon.core.util.Assert;
 import org.noear.solon.core.util.NamedThreadFactory;
@@ -36,6 +36,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLContext;
+import java.io.IOException;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.concurrent.Executor;
@@ -130,11 +131,11 @@ public class GyHttpServer implements HttpServerConfigure, ServerLifecycle {
         _server = new HttpServer();
 
         //main port
-        doAddHetworkListener(host, port);
+        doAddHetworkListener(host, port, true);
 
         //http port add
         for (Integer portAdd : addHttpPorts) {
-            doAddHetworkListener(host, portAdd);
+            doAddHetworkListener(host, portAdd, false);
         }
 
         if (enableWebSocket) {
@@ -149,7 +150,7 @@ public class GyHttpServer implements HttpServerConfigure, ServerLifecycle {
 
     }
 
-    protected void doAddHetworkListener(String host, int port) {
+    protected void doAddHetworkListener(String host, int port, boolean isMain) throws IOException {
         NamedThreadFactory threadFactory = new NamedThreadFactory("Grizzly-Worker-").daemon(false);
 
         ThreadPoolConfig threadPoolConfig = ThreadPoolConfig.defaultConfig();
@@ -157,6 +158,15 @@ public class GyHttpServer implements HttpServerConfigure, ServerLifecycle {
 
         NetworkListener networkListener = new NetworkListener("port-" + port, host, port);
         networkListener.getTransport().setWorkerThreadPoolConfig(threadPoolConfig);
+
+        // ssl
+        if (isMain && sslConfig.isSslEnable()) {
+            isSecure = true;
+            networkListener.setSecure(true);
+            networkListener.setSSLEngineConfig(new SSLEngineConfigurator(sslConfig.getSslContext())
+                    .setClientMode(false)
+                    .setNeedClientAuth(false));
+        }
 
         // max form size
         if (ServerProps.request_maxBodySize > 0) {
