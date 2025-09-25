@@ -16,11 +16,8 @@
 package org.noear.solon.server.grizzly;
 
 import org.glassfish.grizzly.http.server.*;
-import org.glassfish.grizzly.http2.Http2AddOn;
 import org.glassfish.grizzly.ssl.SSLEngineConfigurator;
 import org.glassfish.grizzly.threadpool.ThreadPoolConfig;
-import org.glassfish.grizzly.websockets.WebSocketAddOn;
-import org.glassfish.grizzly.websockets.WebSocketEngine;
 import org.noear.solon.core.handle.Handler;
 import org.noear.solon.core.util.Assert;
 import org.noear.solon.core.util.NamedThreadFactory;
@@ -29,7 +26,7 @@ import org.noear.solon.server.ServerConstants;
 import org.noear.solon.server.ServerLifecycle;
 import org.noear.solon.server.ServerProps;
 import org.noear.solon.server.grizzly.http.GyHttpContextHandler;
-import org.noear.solon.server.grizzly.websocket.GyWebSocketApplication;
+import org.noear.solon.server.grizzly.util.ProvidedUtil;
 import org.noear.solon.server.http.HttpServerConfigure;
 import org.noear.solon.server.prop.impl.HttpServerProps;
 import org.noear.solon.server.ssl.SslConfig;
@@ -104,7 +101,7 @@ public class GyHttpServer implements HttpServerConfigure, ServerLifecycle {
 
     @Override
     public void setExecutor(Executor executor) {
-        log.warn("Undertow does not support user-defined executor");
+        log.warn("Grizzly does not support user-defined executor");
     }
 
 
@@ -140,13 +137,15 @@ public class GyHttpServer implements HttpServerConfigure, ServerLifecycle {
         }
 
         if (enableWebSocket) {
-            WebSocketEngine.getEngine().register("/", "/*", new GyWebSocketApplication());
+            //没引入包时，不至于出错
+            ProvidedUtil.doAddWsApp();
         }
 
         _server.getServerConfiguration().addHttpHandler(new GyHttpContextHandler(handler));
         _server.getServerConfiguration().setAllowPayloadForUndefinedHttpMethods(true);//允许未定义的 method
 
     }
+
 
     protected void doAddHetworkListener(String host, int port, boolean isMain) throws IOException {
         NamedThreadFactory threadFactory = new NamedThreadFactory("Grizzly-Worker-").daemon(false);
@@ -169,12 +168,14 @@ public class GyHttpServer implements HttpServerConfigure, ServerLifecycle {
 
             // http2
             if (enableHttp2) {
-                listener.registerAddOn(new Http2AddOn());
+                //没引入包时，不至于出错
+                ProvidedUtil.doAddOnH2(listener);
             }
 
             // ws
             if (enableWebSocket) {
-                listener.registerAddOn(new WebSocketAddOn());
+                //没引入包时，不至于出错
+                ProvidedUtil.onAddOnWs(listener);
             }
         }
 
@@ -194,6 +195,7 @@ public class GyHttpServer implements HttpServerConfigure, ServerLifecycle {
 
         _server.addListener(listener);
     }
+
 
     @Override
     public void stop() throws Throwable {
