@@ -59,7 +59,7 @@ public class GyHttpContext extends ContextBase {
 
         //文件上传需要
         if (isMultipartFormData()) {
-            DecodeUtils.decodeMultipart(this, _fileMap);
+            DecodeUtils.decodeMultipart(this, _request.getInputStream(), _fileMap);
         }
     }
 
@@ -182,8 +182,8 @@ public class GyHttpContext extends ContextBase {
             _paramMap = new MultiMap<String>();
 
             try {
-                //编码窗体预处理（不再需要了）
-                //DecodeUtils.decodeFormUrlencoded(this);
+                //编码窗体预处理
+                DecodeUtils.decodeFormUrlencoded(this);
 
                 //多分段处理
                 if (autoMultipart()) {

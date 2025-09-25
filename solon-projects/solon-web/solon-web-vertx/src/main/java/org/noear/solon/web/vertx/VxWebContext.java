@@ -15,6 +15,7 @@
  */
 package org.noear.solon.web.vertx;
 
+import io.netty.buffer.ByteBufInputStream;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
@@ -74,7 +75,7 @@ public class VxWebContext extends ContextBase {
 
         //文件上传需要
         if (isMultipartFormData()) {
-            DecodeUtils.decodeMultipart(this, _fileMap);
+            DecodeUtils.decodeMultipart(this, new ByteBufInputStream(_requestBody.getByteBuf()), _fileMap);
         }
     }
 
