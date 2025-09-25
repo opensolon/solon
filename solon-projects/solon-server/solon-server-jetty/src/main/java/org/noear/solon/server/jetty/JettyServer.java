@@ -26,6 +26,7 @@ import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.ClassUtil;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 public class JettyServer extends JettyServerBase implements ServerLifecycle {
     protected Server real = null;
@@ -54,7 +55,7 @@ public class JettyServer extends JettyServerBase implements ServerLifecycle {
         }
     }
 
-    protected void setup(String host, int port) throws IOException {
+    protected void setup(String host, int port) throws IOException, URISyntaxException {
         QueuedThreadPool threadPool = new QueuedThreadPool(
                 props.getMaxThreads(props.isIoBound()),
                 props.getCoreThreads());
@@ -75,7 +76,7 @@ public class JettyServer extends JettyServerBase implements ServerLifecycle {
             real.setSessionIdManager(new DefaultSessionIdManager(real));
         }
 
-        if (enableWebSocket && ClassUtil.hasClass(()-> UpgradeRequest.class)) {
+        if (enableWebSocket && ClassUtil.hasClass(() -> UpgradeRequest.class)) {
             real.setHandler(new HandlerHub(buildHandler()));
         } else {
             //没有ws包 或 没有开启
@@ -89,7 +90,7 @@ public class JettyServer extends JettyServerBase implements ServerLifecycle {
     /**
      * 获取Server Handler
      */
-    protected ServletContextHandler buildHandler() throws IOException {
+    protected ServletContextHandler buildHandler() throws IOException, URISyntaxException {
         return getServletHandler();
     }
 }
