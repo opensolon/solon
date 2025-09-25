@@ -154,44 +154,45 @@ public class GyHttpServer implements HttpServerConfigure, ServerLifecycle {
         ThreadPoolConfig threadPoolConfig = ThreadPoolConfig.defaultConfig();
         threadPoolConfig.setThreadFactory(threadFactory);
 
-        NetworkListener networkListener = new NetworkListener("port-" + port, host, port);
-        networkListener.getTransport().setWorkerThreadPoolConfig(threadPoolConfig);
+        NetworkListener listener = new NetworkListener("port-" + port, host, port);
+        listener.getTransport().setWorkerThreadPoolConfig(threadPoolConfig);
 
-        // ssl
         if (isMain) {
+            // ssl
             if (sslConfig.isSslEnable()) {
                 isSecure = true;
-                networkListener.setSecure(true);
-                networkListener.setSSLEngineConfig(new SSLEngineConfigurator(sslConfig.getSslContext())
+                listener.setSecure(true);
+                listener.setSSLEngineConfig(new SSLEngineConfigurator(sslConfig.getSslContext())
                         .setClientMode(false)
                         .setNeedClientAuth(false));
             }
 
-            if (enableWebSocket) {
-                networkListener.registerAddOn(new WebSocketAddOn());
+            // http2
+            if (enableHttp2) {
+                listener.registerAddOn(new Http2AddOn());
             }
 
-            if (enableHttp2) {
-                networkListener.registerAddOn(new Http2AddOn());
+            // ws
+            if (enableWebSocket) {
+                listener.registerAddOn(new WebSocketAddOn());
             }
         }
 
         // max form size
         if (ServerProps.request_maxBodySize > 0) {
             if (ServerProps.request_maxBodySize > Integer.MAX_VALUE) {
-                networkListener.setMaxFormPostSize(Integer.MAX_VALUE);
+                listener.setMaxFormPostSize(Integer.MAX_VALUE);
             } else {
-                networkListener.setMaxFormPostSize((int) ServerProps.request_maxBodySize);
+                listener.setMaxFormPostSize((int) ServerProps.request_maxBodySize);
             }
         }
 
         // max header size
         if (ServerProps.request_maxHeaderSize > 0) {
-            networkListener.setMaxHttpHeaderSize(ServerProps.request_maxHeaderSize);
+            listener.setMaxHttpHeaderSize(ServerProps.request_maxHeaderSize);
         }
 
-
-        _server.addListener(networkListener);
+        _server.addListener(listener);
     }
 
     @Override
