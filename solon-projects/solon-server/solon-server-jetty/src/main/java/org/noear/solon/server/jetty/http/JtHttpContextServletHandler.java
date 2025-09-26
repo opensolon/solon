@@ -15,54 +15,16 @@
  */
 package org.noear.solon.server.jetty.http;
 
-import org.eclipse.jetty.http.MultiPartFormInputStream;
 import org.noear.solon.server.ServerProps;
 import org.noear.solon.server.jetty.integration.JettyPlugin;
 import org.noear.solon.web.servlet.SolonServletHandler;
 import org.noear.solon.core.handle.Context;
 
-import javax.servlet.MultipartConfigElement;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.*;
-
 public class JtHttpContextServletHandler extends SolonServletHandler {
-    private File _tempdir;
-
     @Override
-    public void init() throws ServletException {
-        super.init();
-
-        _tempdir = (File) getServletContext().getAttribute("javax.servlet.context.tempdir");
-    }
-
-    @Override
-    protected void preHandle(Context ctx) throws IOException {
+    protected void preHandle(Context ctx) {
         if (ServerProps.output_meta) {
             ctx.headerSet("Solon-Server", JettyPlugin.solon_server_ver());
         }
-    }
-
-    @Override
-    protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (request.getContentType() != null && request.getContentType().startsWith("multipart/form-data")) {
-            MultipartConfigElement config = (MultipartConfigElement) request.getAttribute("org.eclipse.jetty.multipartConfig");
-
-            if (ServerProps.request_useTempfile) {
-                //如果使用临时文件
-                //
-                InputStream in = new BufferedInputStream(request.getInputStream());
-                String ct = request.getContentType();
-
-
-                MultiPartFormInputStream multiPartParser = new MultiPartFormInputStream(in, ct, config, _tempdir);
-                multiPartParser.setWriteFilesWithFilenames(true);
-
-                request = new JtHttpRequestWrapper(request, multiPartParser);
-            }
-        }
-
-        super.service(request, response);
     }
 }
