@@ -31,6 +31,12 @@
             <artifactId>solon-web-servlet</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-to-slf4j</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+
         <!-- server core begin -->
         <dependency>
             <groupId>io.undertow</groupId>
