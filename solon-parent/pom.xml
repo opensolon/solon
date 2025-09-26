@@ -336,6 +336,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon-handle</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon-mvc</artifactId>
                 <version>${solon.version}</version>
             </dependency>
@@ -742,6 +748,12 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-web-sdl</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-web-version</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 

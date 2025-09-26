@@ -31,6 +31,7 @@
         <module>../../solon-projects/solon-web/solon-web-vertx</module>
         <module>../../solon-projects/solon-web/solon-web-servlet</module>
         <module>../../solon-projects/solon-web/solon-web-webservices</module>
+        <module>../../solon-projects/solon-web/solon-web-version</module>
 
 
         <module>../../solon-projects/solon-base_old/solon.proxy</module>

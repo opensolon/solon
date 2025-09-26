@@ -51,6 +51,12 @@
             <artifactId>solon-web-cors</artifactId>
         </dependency>
 
+        <!-- 接口版本插件 -->
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-web-version</artifactId>
+        </dependency>
+
         <!-- 参数与实体验证扩展插件 -->
         <dependency>
             <groupId>org.noear</groupId>
