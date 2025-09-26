@@ -17,6 +17,7 @@ package org.noear.solon.web.servlet;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.core.util.IoUtil;
 import org.noear.solon.server.ServerProps;
 import org.noear.solon.core.Constants;
 import org.noear.solon.core.event.AppInitEndEvent;
@@ -63,16 +64,14 @@ public class SolonServletContextListener implements ServletContextListener {
                 //mapping
                 registration.addMapping("/*");
 
-                //configElement
-                int _fileOutputBuffer = 0;
-                long _maxBodySize = (ServerProps.request_maxBodySize > 0 ? ServerProps.request_maxBodySize : -1L);
-                long _maxFileSize = (ServerProps.request_maxFileSize > 0 ? ServerProps.request_maxFileSize : -1L);
+                String _tempdir = IoUtil.getTempDirAsString("solon-server");
 
+                //configElement
                 MultipartConfigElement configElement = new MultipartConfigElement(
-                        System.getProperty("java.io.tmpdir"),
-                        _maxFileSize,
-                        _maxBodySize,
-                        _fileOutputBuffer);
+                        _tempdir,
+                        ServerProps.request_maxFileSize,
+                        ServerProps.request_maxFileRequestSize(),
+                        ServerProps.request_fileSizeThreshold);
                 registration.setMultipartConfig(configElement);
             }
 

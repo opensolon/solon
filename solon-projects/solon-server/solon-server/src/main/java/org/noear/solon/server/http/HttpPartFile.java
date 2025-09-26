@@ -33,7 +33,7 @@ import java.nio.file.Path;
 public class HttpPartFile {
     private static Path tempdir;
     private File tempfile;
-    private final InputStream content;
+    private InputStream content;
     private final long size;
 
     public HttpPartFile(String filename, InputStream ins) throws IOException {
@@ -42,7 +42,7 @@ public class HttpPartFile {
                 Utils.locker().lock();
                 try {
                     if (tempdir == null) {
-                        tempdir = Files.createTempDirectory("solon.upload.");
+                        tempdir = IoUtil.getTempDirAsFile("solon-server").toPath();
                     }
                 } finally {
                     Utils.locker().unlock();
@@ -69,12 +69,24 @@ public class HttpPartFile {
      * 删除
      */
     public void delete() throws IOException {
-        if (tempfile != null) {
+        if (content != null) {
             try {
                 content.close();
-            } finally {
-                tempfile.delete();
+            } catch (Exception ignore) {
+
             }
+
+            content = null;
+        }
+
+        if (tempfile != null) {
+            try {
+                tempfile.delete();
+            } catch (Exception ignore) {
+
+            }
+
+            tempfile = null;
         }
     }
 
