@@ -24,6 +24,12 @@
 
         <dependency>
             <groupId>org.noear</groupId>
+            <artifactId>solon-handle</artifactId>
+        </dependency>
+
+        <!-- 后面要排除 -->
+        <dependency>
+            <groupId>org.noear</groupId>
             <artifactId>solon-mvc</artifactId>
         </dependency>
 
