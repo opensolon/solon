@@ -30,42 +30,49 @@ public class ViewTest extends HttpTester {
     @Test
     public void test90() throws IOException {
         String rst = path("/demo9/view/json").get();
-        assert  rst.indexOf("dock") > 0;
-        assert  rst.indexOf("world") > 0;
+        assert rst.indexOf("dock") > 0;
+        assert rst.indexOf("world") > 0;
     }
 
     @Test
-    public void test91() throws IOException {
+    public void test91_beetl() throws IOException {
         String rst = path("/demo9/view/beetl").get();
-        assert  rst.indexOf("beetl::") > 0;
-        assert  rst.indexOf("你好") > 0;
+        assert rst.indexOf("beetl::") > 0;
+        assert rst.indexOf("你好") > 0;
     }
 
     @Test
-    public void test92() throws IOException{
+    public void test92_ftl() throws IOException {
         String rst = path("/demo9/view/ftl").get();
-        assert  rst.indexOf("ftl::") > 0;
-        assert  rst.indexOf("你好") > 0;
+        assert rst.indexOf("ftl::") > 0;
+        assert rst.indexOf("你好") > 0;
     }
 
     @Test
-    public void test93() throws IOException{
+    public void test93_enjoy() throws IOException {
         String rst = path("/demo9/view/enjoy").get();
-        assert  rst.indexOf("enjoy::") > 0;
-        assert  rst.indexOf("你好") > 0;
+        assert rst.indexOf("enjoy::") > 0;
+        assert rst.indexOf("你好") > 0;
     }
 
     @Test
-    public void test94() throws IOException{
+    public void test94_thymeleaf() throws IOException {
         String rst = path("/demo9/view/thymeleaf").get();
-        assert  rst.indexOf("thymeleaf::") > 0;
-        assert  rst.indexOf("你好") > 0;
+        assert rst.indexOf("thymeleaf::") > 0;
+        assert rst.indexOf("你好") > 0;
     }
 
     @Test
-    public void test95() throws IOException{
+    public void test95_velocity() throws IOException {
         String rst = path("/demo9/view/velocity").get();
-        assert  rst.indexOf("velocity::") > 0;
-        assert  rst.indexOf("你好") > 0;
+        assert rst.indexOf("velocity::") > 0;
+        assert rst.indexOf("你好") > 0;
+    }
+
+    @Test
+    public void test96_jsp() throws IOException {
+        String rst = path("/demo9/view/jsp").get();
+        assert rst.indexOf("jsp::") > 0;
+        assert rst.indexOf("你好") > 0;
     }
 }
