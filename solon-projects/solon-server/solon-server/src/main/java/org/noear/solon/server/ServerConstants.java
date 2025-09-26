@@ -36,6 +36,8 @@ public interface ServerConstants {
     String SERVER_REQUEST_MAXHEADERSIZE = "server.request.maxHeaderSize";
     String SERVER_REQUEST_MAXBODYSIZE = "server.request.maxBodySize";
     String SERVER_REQUEST_MAXFILESIZE = "server.request.maxFileSize";
+    String SERVER_REQUEST_FILESIZETHRESHOLD = "server.request.fileSizeThreshold";
+
     String SERVER_REQUEST_USETEMPFILE = "server.request.useTempfile";
     String SERVER_REQUEST_USERAWPATH = "server.request.useRawpath";
     String SERVER_REQUEST_ENCODING = "server.request.encoding";

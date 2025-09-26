@@ -50,6 +50,11 @@ public class ServerProps {
      */
     public static final long request_maxFileSize;
 
+    /**
+     * 文件落盘的阈值
+     */
+    public static final long request_fileSizeThreshold;
+
     public static long request_maxFileRequestSize() {
         if (request_maxBodySize > request_maxFileSize) {
             return request_maxBodySize;
@@ -86,6 +91,10 @@ public class ServerProps {
         //
         // for request
         //
+
+        tmp = Solon.cfg().get(ServerConstants.SERVER_REQUEST_FILESIZETHRESHOLD, "").trim().toLowerCase();//k数
+        request_fileSizeThreshold = (int) getSize(tmp, 1048576L);//1m
+
 
         tmp = Solon.cfg().get(ServerConstants.SERVER_REQUEST_MAXHEADERSIZE, "").trim().toLowerCase();//k数
         request_maxHeaderSize = (int) getSize(tmp, 8192L);//8k
