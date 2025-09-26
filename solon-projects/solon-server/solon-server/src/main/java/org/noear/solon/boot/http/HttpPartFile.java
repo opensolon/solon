@@ -43,7 +43,7 @@ public class HttpPartFile {
                 Utils.locker().lock();
                 try {
                     if (tempdir == null) {
-                        tempdir = Files.createTempDirectory("solon.upload.");
+                        tempdir = IoUtil.getTempDirAsFile("solon-server").toPath();
                     }
                 } finally {
                     Utils.locker().unlock();
