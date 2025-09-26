@@ -28,21 +28,21 @@ import java.util.function.Predicate;
  * @since 1.0
  * */
 public class ScanUtil {
-    static ResourceScanner global;
+    static Scanner global;
 
     static {
         //（静态扩展约定：org.noear.solon.extend.impl.XxxxExt）
-        global = ClassUtil.tryInstance("org.noear.solon.extend.impl.ResourceScannerExt");
+        global = ClassUtil.tryInstance("org.noear.solon.extend.impl.ScannerExt");
 
         if (global == null) {
-            global = new ResourceScanner();
+            global = new Scanner();
         }
     }
 
     /**
      * 设置扫描器（用户层扩展）
      */
-    public static void setScanner(ResourceScanner scanner) {
+    public static void setScanner(Scanner scanner) {
         if (scanner != null) {
             ScanUtil.global = scanner;
         }

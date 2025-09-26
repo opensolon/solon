@@ -36,7 +36,7 @@ import java.util.jar.JarFile;
  * @author noear
  * @since 1.5
  */
-public class ResourceScanner {
+public class Scanner {
 
     /**
      * 扫描路径下的的资源（path 扫描路径）
