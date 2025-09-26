@@ -264,7 +264,7 @@ public class SolonAotProcessor {
             addReflectConfigDo(metadata, "org.noear.solon.extend.impl.PropsConverterExt");
             addReflectConfigDo(metadata, "org.noear.solon.extend.impl.AppClassLoaderExt");
             addReflectConfigDo(metadata, "org.noear.solon.extend.impl.ReflectionExt");
-            addReflectConfigDo(metadata, "org.noear.solon.extend.impl.ResourceScannerExt");
+            addReflectConfigDo(metadata, "org.noear.solon.extend.impl.ScannerExt");
             addReflectConfigDo(metadata, "org.noear.solon.extend.impl.LogUtilExt");
             addReflectConfigDo(metadata, "org.noear.solon.extend.impl.ProxyBinderExt");
             addReflectConfigDo(metadata, "org.noear.solon.core.mvc.MvcFactoryDefault");

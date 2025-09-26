@@ -18,7 +18,7 @@ package org.noear.solon.extend.impl;
 import org.noear.solon.Solon;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.aot.graalvm.GraalvmUtil;
-import org.noear.solon.core.util.ResourceScanner;
+import org.noear.solon.core.util.Scanner;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,8 +32,8 @@ import java.util.function.Predicate;
  * @author songyinyin
  * @since 2.2
  */
-public class ResourceScannerExt extends ResourceScanner {
-    static final Logger log = LoggerFactory.getLogger(ResourceScannerExt.class);
+public class ScannerExt extends Scanner {
+    static final Logger log = LoggerFactory.getLogger(ScannerExt.class);
 
     @Override
     public Set<String> scan(ClassLoader classLoader, String path, boolean fileMode, Predicate<String> filter) {
