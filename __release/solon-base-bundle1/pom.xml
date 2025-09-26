@@ -19,6 +19,7 @@
     <modules>
         <module>../../solon-projects/solon-native/solon-aot</module>
 
+        <module>../../solon-projects/solon-base/solon-handle</module>
         <module>../../solon-projects/solon-base/solon-proxy</module>
         <module>../../solon-projects/solon-base/solon-i18n</module>
         <module>../../solon-projects/solon-base/solon-mvc</module>

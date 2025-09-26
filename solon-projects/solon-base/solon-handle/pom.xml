@@ -11,16 +11,15 @@
         <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
     
-    <artifactId>solon-mvc</artifactId>
+    <artifactId>solon-handle</artifactId>
     <name>${project.artifactId}</name>
     <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-handle</artifactId>
+            <artifactId>solon</artifactId>
         </dependency>
     </dependencies>
-
 
 </project>

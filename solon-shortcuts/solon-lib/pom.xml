@@ -25,7 +25,7 @@
         <!-- 提供 Handler 处理支持插件（job,web,message） -->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-mvc</artifactId>
+            <artifactId>solon-handle</artifactId>
         </dependency>
 
         <!-- 提供事务、数据源构建支持插件 -->
