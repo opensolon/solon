@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.core;
+package org.noear.solon.core.util;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.core.util.ResourceUtil;
 
 import java.io.File;
 import java.io.IOException;

@@ -17,7 +17,7 @@ package org.noear.solon.extend.impl;
 
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.aot.graalvm.GraalvmUtil;
-import org.noear.solon.core.Reflection;
+import org.noear.solon.core.util.Reflection;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
