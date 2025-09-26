@@ -42,6 +42,7 @@
 * 添加 `solon` Condition:onExpression（采用 SnEL 表达式）用于替代 onProperty（标为弃用）
 * 添加 `solon` SnelUtil（基于 SnEL 且兼容旧的 TmplUtil） 替代 TmplUtil（标为弃用）//如果有 # 则为新表达式
 * 添加 `solon-mvc` `List<UploadedFile>` 注入支持（用 `UploadedFile[]` 性能更好）
+* 添加 `solon-server` `server.request.fileSizeThreshold` 配置支持
 * 添加 `solon` converters,serializers,renders,factories,chains（简化名自：converterManager,serializerManager,renderManager,factoryManager,chainManager）
 * snakeyaml 升为 2.5
 * lombok 升为 1.18.42
