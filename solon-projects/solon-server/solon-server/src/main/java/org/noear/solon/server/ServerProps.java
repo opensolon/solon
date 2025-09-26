@@ -17,6 +17,7 @@ package org.noear.solon.server;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.core.util.Assert;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -53,21 +54,14 @@ public class ServerProps {
     /**
      * 文件落盘的阈值
      */
-    public static final long request_fileSizeThreshold;
+    public static final int request_fileSizeThreshold;
 
-    public static long request_maxBodySize() {
-        if (request_maxBodySize > 0) {
-            return request_maxBodySize;
-        } else {
-            return -1L;
-        }
-    }
 
-    public static long request_maxFileSize() {
-        if (request_maxFileSize > 0) {
-            return request_maxFileSize;
+    public static int request_maxBodySizeAsInt() {
+        if (request_maxBodySize > Integer.MAX_VALUE) {
+            return Integer.MAX_VALUE;
         } else {
-            return -1L;
+            return (int) request_maxBodySize;
         }
     }
 
@@ -166,7 +160,7 @@ public class ServerProps {
     }
 
     static long getSize(String tmp, long def) {
-        if (tmp == null) {
+        if (Assert.isEmpty(tmp)) {
             return def;
         }
 
@@ -176,10 +170,14 @@ public class ServerProps {
         } else if (tmp.endsWith("kb")) {
             long val = Long.parseLong(tmp.substring(0, tmp.length() - 2));
             return val * 1204;
-        } else if (tmp.length() > 0) {
-            return Long.parseLong(tmp); //支持-1
         } else {
-            return def;//默认0，表示不设置
+            long val = Long.parseLong(tmp); //支持-1
+
+            if (val < 0) {
+                return -1L;
+            } else {
+                return val;
+            }
         }
     }
 }

@@ -28,7 +28,6 @@ import org.smartboot.http.server.HttpRequest;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
 
 /**
  * @author noear
@@ -43,13 +42,13 @@ public class MultipartUtil {
     public static void init() throws IOException {
         if (multipartConfig == null) {
             if (ServerProps.request_useTempfile) {
-                long _maxBodySize = (ServerProps.request_maxBodySize > 0 ? ServerProps.request_maxBodySize : 0L);
-                long _maxFileSize = (ServerProps.request_maxFileSize > 0 ? ServerProps.request_maxFileSize : 0L);
-                int _fileOutputBuffer = 0;
-                _maxBodySize = Math.max(_maxBodySize, _maxFileSize);
-                String tempdir = Files.createTempDirectory("solon-server").toFile().getAbsolutePath();
+                String _tempdir = IoUtil.getTempDirAsString("solon-server");
 
-                multipartConfig = new MultipartConfig(tempdir, _maxFileSize, _maxBodySize, _fileOutputBuffer);
+                multipartConfig = new MultipartConfig(
+                        _tempdir,
+                        ServerProps.request_maxFileSize,
+                        ServerProps.request_maxFileRequestSize(),
+                        ServerProps.request_fileSizeThreshold);
             } else {
                 multipartConfig = new MultipartConfig();
             }

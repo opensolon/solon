@@ -30,7 +30,7 @@ public class IoUtil {
      * 默认缓冲区大小
      */
     private static final int BUFFER_SIZE = 512;
-    
+
     /**
      * 转移到字符串
      *
@@ -63,7 +63,7 @@ public class IoUtil {
             return outs.toString(charset);
         }
     }
-    
+
     /**
      * 将输入流转换为byte数组
      *
@@ -78,7 +78,7 @@ public class IoUtil {
 
         return transferTo(ins, new ByteArrayOutputStream()).toByteArray();
     }
-    
+
     /**
      * 将输入流转换为输出流
      *
@@ -102,7 +102,7 @@ public class IoUtil {
 
         return out;
     }
-    
+
     /**
      * 将输入流转换为输出流
      *
@@ -141,5 +141,25 @@ public class IoUtil {
         out.flush();
 
         return out;
+    }
+
+    /**
+     * 获取临时目录
+     */
+    public static String getTempDirAsString(String child) {
+        return getTempDirAsFile(child).getAbsolutePath();
+    }
+
+    /**
+     * 获取临时目录
+     */
+    public static File getTempDirAsFile(String child) {
+        File rootDir = new File(System.getProperty("java.io.tmpdir"));
+        File childDir = new File(rootDir, child);
+        if (childDir.exists() == false) {
+            childDir.mkdirs();
+        }
+
+        return childDir;
     }
 }

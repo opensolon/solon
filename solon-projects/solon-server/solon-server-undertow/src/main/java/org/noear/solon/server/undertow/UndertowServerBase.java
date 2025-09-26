@@ -18,6 +18,7 @@ package org.noear.solon.server.undertow;
 import io.undertow.servlet.api.DeploymentInfo;
 import io.undertow.servlet.util.DefaultClassIntrospector;
 import org.noear.solon.Solon;
+import org.noear.solon.core.util.IoUtil;
 import org.noear.solon.server.ServerConstants;
 import org.noear.solon.server.ServerLifecycle;
 import org.noear.solon.server.ServerProps;
@@ -35,7 +36,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLContext;
 import javax.servlet.MultipartConfigElement;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -97,24 +97,13 @@ abstract class UndertowServerBase implements ServerLifecycle, HttpServerConfigur
     }
 
     protected DeploymentInfo initDeploymentInfo() {
-        //MultipartConfigElement configElement = new MultipartConfigElement(System.getProperty("java.io.tmpdir"));
-
-        File tempDir = new File(System.getProperty("java.io.tmpdir"));
-        File scratchDir = new File(tempDir, "solon-server");
-        if(scratchDir.exists() == false){
-            scratchDir.mkdirs();
-        }
-
-        String _tempdir = scratchDir.getAbsolutePath();
-        int _fileOutputBuffer = 0;
-        long _maxBodySize = (ServerProps.request_maxBodySize > 0 ? ServerProps.request_maxBodySize : -1L);
-        long _maxFileSize = (ServerProps.request_maxFileSize > 0 ? ServerProps.request_maxFileSize : -1L);
+        String _tempdir = IoUtil.getTempDirAsString("solon-server");
 
         MultipartConfigElement multipartConfig = new MultipartConfigElement(
                 _tempdir,
-                _maxFileSize,
-                _maxBodySize,
-                _fileOutputBuffer);
+                ServerProps.request_maxFileSize,
+                ServerProps.request_maxFileRequestSize(),
+                ServerProps.request_fileSizeThreshold);
 
         DeploymentInfo builder = new DeploymentInfo()
                 .setClassLoader(UndertowPlugin.class.getClassLoader())
