@@ -55,6 +55,22 @@ public class ServerProps {
      */
     public static final long request_fileSizeThreshold;
 
+    public static long request_maxBodySize() {
+        if (request_maxBodySize > 0) {
+            return request_maxBodySize;
+        } else {
+            return -1L;
+        }
+    }
+
+    public static long request_maxFileSize() {
+        if (request_maxFileSize > 0) {
+            return request_maxFileSize;
+        } else {
+            return -1L;
+        }
+    }
+
     public static long request_maxFileRequestSize() {
         if (request_maxBodySize > request_maxFileSize) {
             return request_maxBodySize;
