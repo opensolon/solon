@@ -16,7 +16,6 @@
 package org.noear.solon.core.util;
 
 import org.noear.solon.core.AppClassLoader;
-import org.noear.solon.core.ResourceScanner;
 
 import java.util.*;
 import java.util.function.Predicate;

@@ -15,8 +15,6 @@
  */
 package org.noear.solon.core.util;
 
-import org.noear.solon.core.Reflection;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
