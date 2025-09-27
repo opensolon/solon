@@ -461,7 +461,7 @@ public class AppContext extends BeanContainer {
 
         //LoadBalance.Factory
         if (bw.raw() instanceof LoadBalance.Factory) {
-            app().factoryManager().loadBalanceFactory(bw.raw());
+            FactoryManager.getGlobal().loadBalanceFactory(bw.raw());
             singletonHint = "LoadBalance.Factory";
         }
 

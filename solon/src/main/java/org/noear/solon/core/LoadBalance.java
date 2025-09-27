@@ -94,7 +94,7 @@ public interface LoadBalance {
      * @param group   服务分组
      */
     static LoadBalance get(String group, String service) {
-        return Solon.app().factoryManager().newLoadBalance(group, service);
+        return FactoryManager.getGlobal().newLoadBalance(group, service);
     }
 
 

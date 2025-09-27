@@ -16,6 +16,7 @@
 package org.noear.solon.core.wrap;
 
 import org.noear.solon.Solon;
+import org.noear.solon.core.FactoryManager;
 import org.noear.solon.core.handle.ActionParam;
 
 import java.lang.reflect.AnnotatedElement;
@@ -84,8 +85,8 @@ public abstract class VarSpecBase implements VarSpec {
 
     protected void initAction() {
         //没有时，不处理
-        if (Solon.appIf(app -> app.factoryManager().hasMvcFactory())) {
-            Solon.app().factoryManager().mvcFactory().resolveActionParam(vo, element);
+        if (FactoryManager.getGlobal().hasMvcFactory()) {
+            FactoryManager.getGlobal().resolveActionParam(vo, element);
         }
     }
 

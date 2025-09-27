@@ -18,6 +18,7 @@ package org.noear.solon.core.route;
 import org.noear.solon.Solon;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.Constants;
+import org.noear.solon.core.FactoryManager;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.util.PathMatcher;
 
@@ -62,7 +63,7 @@ public class RouterDefault implements Router, HandlerSlots {
     @Override
     public void add(BeanWrap controllerWrap) {
         if (controllerWrap != null) {
-            ActionLoader al = Solon.app().factoryManager().mvcFactory()
+            ActionLoader al = FactoryManager.getGlobal()
                     .createLoader(controllerWrap);
 
             if (controllerWrap.remoting()) {
@@ -79,7 +80,7 @@ public class RouterDefault implements Router, HandlerSlots {
     @Override
     public void add(String path, BeanWrap controllerWrap) {
         if (controllerWrap != null) {
-            Solon.app().factoryManager().mvcFactory()
+            FactoryManager.getGlobal()
                     .createLoader(controllerWrap, path, controllerWrap.remoting(), null, true)
                     .load(this);
         }
