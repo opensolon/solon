@@ -16,7 +16,6 @@
 package org.noear.solon.core.handle;
 
 import org.noear.solon.core.BeanWrap;
-import org.noear.solon.core.FactoryManager;
 import org.noear.solon.core.wrap.MethodWrap;
 
 import java.lang.reflect.Method;
@@ -27,7 +26,7 @@ import java.lang.reflect.Method;
  * @author noear
  * @since 2.0
  * */
-public class MethodHandler implements Handler {
+public class MethodHandler extends AbstractEntityReader implements Handler {
     private final BeanWrap bw;
     private final MethodWrap mw;
     private final boolean allowResult;
@@ -50,10 +49,7 @@ public class MethodHandler implements Handler {
     @Override
     public void handle(Context c) throws Throwable {
         Object target = bw.get(true);
-        Object[] args = FactoryManager.getGlobal()
-                .mvcFactory()
-                .getExecuteHandlerDefault()
-                .resolveArguments(c, target, mw);
+        Object[] args = doRead(c, target, mw);
 
         Object rst = mw.invokeByAspect(target, args);
 
