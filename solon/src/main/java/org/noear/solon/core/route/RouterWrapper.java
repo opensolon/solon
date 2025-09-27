@@ -34,11 +34,13 @@ public abstract class RouterWrapper implements HandlerSlots {
     private Router _router;
     private RouterHandler _routerHandler;
     private ChainManager _chainManager;
+    private SolonApp _app;
 
     public abstract AppContext context();
 
     protected void initRouter(SolonApp app) {
         //顺序不能换
+        _app = app;
         _chainManager = new ChainManager(app);
         _router = new RouterDefault();
         _routerHandler = new RouterHandler(_router, _chainManager);
@@ -152,7 +154,7 @@ public abstract class RouterWrapper implements HandlerSlots {
      */
     @Deprecated
     public void render(String name, Render render) {
-        Solon.app().renders().register(name, render);
+        _app.renders().register(name, render);
     }
 
     /**
@@ -165,17 +167,17 @@ public abstract class RouterWrapper implements HandlerSlots {
      */
     @Deprecated
     public Render render(String name) {
-        return Solon.app().renders().get(name);
+        return _app.renders().get(name);
     }
 
     /**
      * 获取 Json 渲染器
      *
-     * @deprecated 3.6 {@link SolonApp#renders()#get(String)}
+     * @deprecated 3.6 {@link SolonApp#renders()#jsonOf()}
      */
     @Deprecated
     public Render renderOfJson() {
-        return render(Constants.RENDER_JSON);
+        return _app.renders().get(Constants.AT_JSON);
     }
 
     /**

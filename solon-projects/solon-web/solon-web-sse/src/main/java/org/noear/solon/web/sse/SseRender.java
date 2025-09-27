@@ -51,7 +51,7 @@ public class SseRender implements Render {
             if (data instanceof String) {
                 event = new SseEvent().data(data);
             } else {
-                String json = Solon.app().renderOfJson().renderAndReturn(data, ctx);
+                String json = Solon.app().serializers().jsonOf().serialize(data);
                 event = new SseEvent().data(json);
             }
         }

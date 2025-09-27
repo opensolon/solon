@@ -42,7 +42,14 @@ public interface Constants {
     //@since: 3.2
     String ATTR_RENDER = "@render";
 
+    String AT_JSON = "@json";
+
+    /**
+     * @deprecated 3.6 {@link #AT_JSON}
+     * */
+    @Deprecated
     String RENDER_JSON = "@json";
+    @Deprecated
     String RENDER_TYPE_JSON = "@type_json";
 
     //@since: 3.0

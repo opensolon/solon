@@ -79,7 +79,10 @@ public class SolonApp extends RouterWrapper {
 
     /**
      * 转换管理器
+     *
+     * @deprecated 3.6 {@link #converters()}
      */
+    @Deprecated
     public ConverterManager converterManager() { //预计 v4.0 后标为弃用
         return converters();
     }
@@ -95,7 +98,10 @@ public class SolonApp extends RouterWrapper {
 
     /**
      * 序列化管理器
+     *
+     * @deprecated 3.6 {@link #serializers()}
      */
+    @Deprecated
     public SerializerManager serializerManager() { //预计 v4.0 后标为弃用
         return serializers();
     }
@@ -111,7 +117,10 @@ public class SolonApp extends RouterWrapper {
 
     /**
      * 渲染管理器
+     *
+     * @deprecated 3.6 {@link #renders()}
      */
+    @Deprecated
     public RenderManager renderManager() { //预计 v4.0 后标为弃用
         return renders();
     }
@@ -127,7 +136,10 @@ public class SolonApp extends RouterWrapper {
 
     /**
      * 工厂管理器
+     *
+     * @deprecated 3.6 {@link #factories()}
      */
+    @Deprecated
     public FactoryManager factoryManager() { //预计 v4.0 后标为弃用
         return FactoryManager.getGlobal();
     }
