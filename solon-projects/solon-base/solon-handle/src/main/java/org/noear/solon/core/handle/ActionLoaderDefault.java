@@ -13,14 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.core.handle.action;
+package org.noear.solon.core.handle;
 
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Addition;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.FactoryManager;
-import org.noear.solon.core.handle.*;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.ConsumerEx;
 import org.noear.solon.core.util.ProxyBinder;
