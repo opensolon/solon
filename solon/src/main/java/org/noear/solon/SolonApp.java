@@ -129,7 +129,7 @@ public class SolonApp extends RouterWrapper {
      * 工厂管理器
      */
     public FactoryManager factoryManager() { //预计 v4.0 后标为弃用
-        return factories();
+        return FactoryManager.getGlobal();
     }
 
     /**

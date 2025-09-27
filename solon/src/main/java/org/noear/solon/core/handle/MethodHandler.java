@@ -50,8 +50,8 @@ public class MethodHandler implements Handler {
     @Override
     public void handle(Context c) throws Throwable {
         Object target = bw.get(true);
-        //Solon.app().chainManager().getExecuteHandlerDefault()
-        Object[] args = FactoryManager.getGlobal().mvcFactory()
+        Object[] args = FactoryManager.getGlobal()
+                .mvcFactory()
                 .getExecuteHandlerDefault()
                 .resolveArguments(c, target, mw);
 

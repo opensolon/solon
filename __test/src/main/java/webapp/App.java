@@ -96,7 +96,7 @@ public class App {
 
             x.filter(new SecurityFilter(new XContentTypeOptionsHeaderHandler()));
 
-            x.factoryManager().threadLocalFactory((applyFor, inheritance0) -> {
+            x.factories().threadLocalFactory((applyFor, inheritance0) -> {
                 if (inheritance0) {
                     return new InheritableThreadLocal();
                 } else {

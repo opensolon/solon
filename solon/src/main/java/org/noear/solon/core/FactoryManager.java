@@ -15,8 +15,12 @@
  */
 package org.noear.solon.core;
 
+import org.noear.solon.core.handle.ActionLoader;
+import org.noear.solon.core.handle.ActionParam;
+import org.noear.solon.core.handle.Render;
 import org.noear.solon.core.util.ClassUtil;
 
+import java.lang.reflect.AnnotatedElement;
 import java.util.function.BiFunction;
 
 /**
@@ -32,11 +36,11 @@ public final class FactoryManager {
         return global;
     }
 
-    public FactoryManager(){
+    public FactoryManager() {
         mvcFactory = ClassUtil.tryInstance("org.noear.solon.core.mvc.MvcFactoryDefault");
     }
 
-    //////////
+    /// ///////
     //
     // threadLocalFactory
     //
@@ -67,7 +71,7 @@ public final class FactoryManager {
         return threadLocalFactory.apply(applyFor, inheritance0);
     }
 
-    //////////
+    /// ///////
     //
     // loadBalanceFactory 对接
     //
@@ -90,7 +94,7 @@ public final class FactoryManager {
     }
 
 
-    //////////
+    /// ///////
     //
     // mvcFactory 对接
     //
@@ -111,5 +115,26 @@ public final class FactoryManager {
         if (factory != null) {
             mvcFactory = factory;
         }
+    }
+
+    /**
+     * 创建动作加载器
+     */
+    public ActionLoader createLoader(BeanWrap wrap) {
+        return mvcFactory().createLoader(wrap);
+    }
+
+    /**
+     * 创建动作加载器
+     */
+    public ActionLoader createLoader(BeanWrap wrap, String mapping, boolean remoting, Render render, boolean allowMapping) {
+        return mvcFactory().createLoader(wrap, mapping, remoting, render, allowMapping);
+    }
+
+    /**
+     * 分析动作参数
+     */
+    public void resolveActionParam(ActionParam vo, AnnotatedElement element) {
+        mvcFactory().resolveActionParam(vo, element);
     }
 }
