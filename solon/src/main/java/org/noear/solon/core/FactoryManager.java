@@ -160,10 +160,6 @@ public final class FactoryManager {
     /**
      * 分析动作参数
      */
-    public void resolveActionParam(ActionParam vo, AnnotatedElement element) {
-        actionLoaderFactory().resolveActionParam(vo, element);
-    }
-
     public void resolveActionParamTry(ActionParam vo, AnnotatedElement element) {
         if (actionLoaderFactory != null) {
             actionLoaderFactory.resolveActionParam(vo, element);
