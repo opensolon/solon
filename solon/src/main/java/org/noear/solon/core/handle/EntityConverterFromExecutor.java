@@ -13,55 +13,47 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.serialization;
+package org.noear.solon.core.handle;
 
-import org.noear.solon.core.handle.AbstractEntityConverter;
-import org.noear.solon.core.handle.Context;
-import org.noear.solon.core.util.Assert;
-
-import java.util.Base64;
+import org.noear.solon.core.wrap.MethodWrap;
 
 /**
- * 虚拟字节码实体转换器
+ * ActionExecuteHandler 接口转为 EntityConverter
  *
  * @author noear
  * @since 3.6
  */
-public abstract class AbstractBytesEntityConverter<T extends EntitySerializer<byte[]>> extends AbstractEntityConverter {
-    protected final T serializer;
+public class EntityConverterFromExecutor implements EntityConverter {
+    private final ActionExecuteHandler executeHandler;
 
-    public T getSerializer() {
-        return serializer;
+
+    public EntityConverterFromExecutor(ActionExecuteHandler executeHandler) {
+        this.executeHandler = executeHandler;
     }
 
-    public AbstractBytesEntityConverter(T serializer) {
-        Assert.notNull(serializer, "Serializer not be null");
-        this.serializer = serializer;
+    @Override
+    public boolean isInstance(Class<?> clz) {
+        return clz.isInstance(this) || clz.isInstance(executeHandler);
     }
 
     @Override
     public boolean allowWrite() {
-        return true;
+        return false;
     }
 
     @Override
     public boolean canWrite(String mime, Context ctx) {
-        return serializer.matched(ctx, mime);
+        return false;
     }
 
     @Override
     public String writeAndReturn(Object data, Context ctx) throws Throwable {
-        byte[] tmp = serializer.serialize(data);
-        return Base64.getEncoder().encodeToString(tmp);
+        return null;
     }
 
     @Override
     public void write(Object data, Context ctx) throws Throwable {
-        if (SerializationConfig.isOutputMeta()) {
-            ctx.headerAdd("solon.serialization", name());
-        }
 
-        serializer.serializeToBody(ctx, data);
     }
 
     @Override
@@ -71,6 +63,11 @@ public abstract class AbstractBytesEntityConverter<T extends EntitySerializer<by
 
     @Override
     public boolean canRead(Context ctx, String mime) {
-        return serializer.matched(ctx, mime);
+        return executeHandler.matched(ctx, mime);
+    }
+
+    @Override
+    public Object[] read(Context ctx, Object target, MethodWrap mWrap) throws Throwable {
+        return executeHandler.resolveArguments(ctx, target, mWrap);
     }
 }

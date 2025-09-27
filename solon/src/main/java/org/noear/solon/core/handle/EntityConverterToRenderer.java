@@ -21,14 +21,14 @@ package org.noear.solon.core.handle;
  * @author noear
  * @since 3.6
  */
-public class EntityConverter2Renderer implements Render {
+public class EntityConverterToRenderer implements Render {
     private final EntityConverter entityConverter;
 
     public EntityConverter getEntityConverter() {
         return entityConverter;
     }
 
-    public EntityConverter2Renderer(EntityConverter entityConverter) {
+    public EntityConverterToRenderer(EntityConverter entityConverter) {
         this.entityConverter = entityConverter;
     }
 
@@ -39,7 +39,11 @@ public class EntityConverter2Renderer implements Render {
 
     @Override
     public boolean matched(Context ctx, String mime) {
-        return entityConverter.canWrite(mime, ctx);
+        if (entityConverter.allowWrite()) {
+            return entityConverter.canWrite(mime, ctx);
+        } else {
+            return false;
+        }
     }
 
     @Override

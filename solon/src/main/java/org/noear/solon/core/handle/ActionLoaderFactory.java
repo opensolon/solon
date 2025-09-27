@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.core;
+package org.noear.solon.core.handle;
 
-import org.noear.solon.core.handle.*;
+import org.noear.solon.core.BeanWrap;
 
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
@@ -23,41 +23,51 @@ import java.util.Set;
 import java.util.function.Predicate;
 
 /**
- * Mvc 工厂
+ * 动作加载器工厂
  *
  * @author noear
- * @since 2.7
- * @deprecated 3.7 {@link ActionLoaderFactory}
+ * @since 3.6
  */
-@Deprecated
-public interface MvcFactory {
+public interface ActionLoaderFactory {
     /**
      * 创建动作加载器
+     *
+     * @since 2.7
      */
     ActionLoader createLoader(BeanWrap wrap);
 
     /**
      * 创建动作加载器
+     *
+     * @since 2.7
      */
     ActionLoader createLoader(BeanWrap wrap, String mapping, boolean remoting, Render render, boolean allowMapping);
 
     /**
      * 查找动作方式类型
+     *
+     * @since 2.7
      */
     Set<MethodType> findMethodTypes(Set<MethodType> list, Predicate<Class> checker);
 
     /**
      * 分析动作参数
+     *
+     * @since 2.7
      */
     void resolveActionParam(ActionParam vo, AnnotatedElement element);
 
     /**
      * 确认动作路径
+     *
+     * @since 2.7
      */
     String postActionPath(BeanWrap bw, String bPath, Method method, String mPath);
 
     /**
      * 获取动作默认执行器
+     *
+     * @since 2.7
      */
-    ActionExecuteHandler getExecuteHandlerDefault();
+    EntityConverter getEntityConverterDefault();
 }

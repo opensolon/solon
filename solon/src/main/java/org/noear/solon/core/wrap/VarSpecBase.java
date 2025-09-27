@@ -84,10 +84,8 @@ public abstract class VarSpecBase implements VarSpec {
     }
 
     protected void initAction() {
-        //没有时，不处理
-        if (FactoryManager.getGlobal().hasMvcFactory()) {
-            FactoryManager.getGlobal().resolveActionParam(vo, element);
-        }
+        //尝试处理。没有时则不处理
+        FactoryManager.getGlobal().resolveActionParamTry(vo, element);
     }
 
     /////////////////

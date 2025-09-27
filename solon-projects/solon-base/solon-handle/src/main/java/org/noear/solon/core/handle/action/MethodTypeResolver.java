@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.core.mvc;
+package org.noear.solon.core.handle.action;
 
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.handle.MethodType;

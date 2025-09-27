@@ -27,6 +27,13 @@ import org.noear.solon.lang.Preview;
 @Preview("3.2")
 public interface EntityConverter {
     /**
+     * 实例检测（移除时用）
+     * */
+    default boolean isInstance(Class<?> clz) {
+        return clz.isInstance(this);
+    }
+
+    /**
      * 名字
      */
     default String name() {
@@ -40,9 +47,14 @@ public interface EntityConverter {
         return null;
     }
 
+    /**
+     * 是否允许写
+     *
+     */
+    boolean allowWrite();
 
     /**
-     * 是否可写
+     * 是否能写
      */
     boolean canWrite(String mime, Context ctx);
 
@@ -59,9 +71,13 @@ public interface EntityConverter {
      */
     void write(Object data, Context ctx) throws Throwable;
 
+    /**
+     * 是否允许读
+     */
+    boolean allowRead();
 
     /**
-     * 是否可读
+     * 是否能读
      */
     boolean canRead(Context ctx, String mime);
 

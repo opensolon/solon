@@ -29,6 +29,11 @@ public class EntityConverterDefault extends AbstractEntityConverter {
     }
 
     @Override
+    public boolean allowWrite() {
+        return false;
+    }
+
+    @Override
     public boolean canWrite(String mime, Context ctx) {
         return false;
     }
@@ -41,6 +46,11 @@ public class EntityConverterDefault extends AbstractEntityConverter {
     @Override
     public void write(Object data, Context ctx) throws Throwable {
 
+    }
+
+    @Override
+    public boolean allowRead() {
+        return true;
     }
 
     @Override

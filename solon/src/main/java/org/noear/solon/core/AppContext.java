@@ -501,8 +501,10 @@ public class AppContext extends BeanContainer {
 
         //ActionExecuteHandler //将弃用 v3.6
         if (bw.raw() instanceof ActionExecuteHandler) {
-            app().chains().addExecuteHandler(bw.raw(), bw.index());
+            //app().chains().addExecuteHandler(bw.raw(), bw.index());
+            app().chains().addEntityConverter(new EntityConverterFromExecutor(bw.raw()), bw.index());
             singletonHint = "ActionExecuteHandler";
+            log.warn("The ActionExecuteHandler will be deprecated. Please use EntityConverter instead: {}", bw.clz().getName());
         }
 
         //Filter

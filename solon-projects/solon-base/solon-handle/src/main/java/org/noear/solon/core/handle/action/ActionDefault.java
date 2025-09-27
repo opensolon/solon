@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.core.mvc;
+package org.noear.solon.core.handle.action;
 
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Consumes;
@@ -389,12 +389,12 @@ public class ActionDefault extends HandlerAide implements Action {
     }
 
     protected Object executeDo(Context c, Object target) throws Throwable {
-        ActionExecuteHandler executeHandler = bWrap.context().app().chains()
-                .getExecuteHandler(c, mWrap.getParamWraps().length);
+        EntityConverter entityConverter = bWrap.context().app().chains()
+                .getCanReadEntityConverter(c, mWrap.getParamWraps().length);
 
 
         //分析参数
-        Object[] args = executeHandler.resolveArguments(c, target, mWrap);
+        Object[] args = entityConverter.read(c, target, mWrap);
 
         //参数提交确认
         bWrap.context().app().chains().postArguments(c, mWrap.getParamWraps(), args);

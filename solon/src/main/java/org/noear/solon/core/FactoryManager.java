@@ -15,9 +15,7 @@
  */
 package org.noear.solon.core;
 
-import org.noear.solon.core.handle.ActionLoader;
-import org.noear.solon.core.handle.ActionParam;
-import org.noear.solon.core.handle.Render;
+import org.noear.solon.core.handle.*;
 import org.noear.solon.core.util.ClassUtil;
 
 import java.lang.reflect.AnnotatedElement;
@@ -37,7 +35,7 @@ public final class FactoryManager {
     }
 
     public FactoryManager() {
-        mvcFactory = ClassUtil.tryInstance("org.noear.solon.core.mvc.MvcFactoryDefault");
+        actionLoaderFactory = ClassUtil.tryInstance("org.noear.solon.extend.impl.ActionLoaderFactoryExt");
     }
 
     /// ///////
@@ -75,7 +73,7 @@ public final class FactoryManager {
     //
     // loadBalanceFactory 对接
     //
-    protected LoadBalance.Factory loadBalanceFactory = (g, s) -> null;
+    private LoadBalance.Factory loadBalanceFactory = (g, s) -> null;
 
     /**
      * 配置负载工厂
@@ -98,22 +96,50 @@ public final class FactoryManager {
     //
     // mvcFactory 对接
     //
-    private MvcFactory mvcFactory;
 
+    /**
+     * @deprecated 3.6
+     *
+     */
+    @Deprecated
     public boolean hasMvcFactory() {
-        return mvcFactory != null;
+        throw new UnsupportedOperationException();
     }
 
+    /**
+     * @deprecated 3.6
+     *
+     */
     public MvcFactory mvcFactory() {
-        if (mvcFactory == null) {
-            throw new IllegalStateException("The 'solon-mvc' plugin is missing");
-        }
-        return mvcFactory;
+        throw new UnsupportedOperationException();
     }
 
+    /**
+     * @deprecated 3.6
+     *
+     */
     public void mvcFactory(MvcFactory factory) {
+        throw new UnsupportedOperationException();
+    }
+
+    /// ///////
+    //
+    // loadBalanceFactory 对接
+    //
+
+    private ActionLoaderFactory actionLoaderFactory;
+
+    public ActionLoaderFactory actionLoaderFactory() {
+        if (actionLoaderFactory == null) {
+            throw new IllegalStateException("The 'solon-handle' plugin is missing");
+        }
+
+        return actionLoaderFactory;
+    }
+
+    public void actionLoaderFactory(ActionLoaderFactory factory) {
         if (factory != null) {
-            mvcFactory = factory;
+            this.actionLoaderFactory = factory;
         }
     }
 
@@ -121,20 +147,30 @@ public final class FactoryManager {
      * 创建动作加载器
      */
     public ActionLoader createLoader(BeanWrap wrap) {
-        return mvcFactory().createLoader(wrap);
+        return actionLoaderFactory().createLoader(wrap);
     }
 
     /**
      * 创建动作加载器
      */
     public ActionLoader createLoader(BeanWrap wrap, String mapping, boolean remoting, Render render, boolean allowMapping) {
-        return mvcFactory().createLoader(wrap, mapping, remoting, render, allowMapping);
+        return actionLoaderFactory().createLoader(wrap, mapping, remoting, render, allowMapping);
     }
 
     /**
      * 分析动作参数
      */
     public void resolveActionParam(ActionParam vo, AnnotatedElement element) {
-        mvcFactory().resolveActionParam(vo, element);
+        actionLoaderFactory().resolveActionParam(vo, element);
+    }
+
+    public void resolveActionParamTry(ActionParam vo, AnnotatedElement element) {
+        if (actionLoaderFactory != null) {
+            actionLoaderFactory.resolveActionParam(vo, element);
+        }
+    }
+
+    public EntityConverter entityConverterDefault() {
+        return actionLoaderFactory().getEntityConverterDefault();
     }
 }
