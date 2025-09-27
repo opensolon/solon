@@ -13,34 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.core.handle;
+package org.noear.solon.core.mvc;
 
+import org.noear.solon.core.handle.AbstractEntityReader;
+import org.noear.solon.core.handle.ActionExecuteHandler;
+import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.wrap.MethodWrap;
 
 /**
- * EntityConverter 转为 Executor 接口
+ * ActionExecutor 默认实现
  *
  * @author noear
- * @since 3.6
- */
-public class EntityConverter2Executor implements ActionExecuteHandler {
-    private final EntityConverter entityConverter;
-
-    public EntityConverter getEntityConverter() {
-        return entityConverter;
-    }
-
-    public EntityConverter2Executor(EntityConverter entityConverter) {
-        this.entityConverter = entityConverter;
-    }
-
-    @Override
-    public boolean matched(Context ctx, String mime) {
-        return entityConverter.canRead(ctx, mime);
-    }
-
+ * @since 1.0
+ * @deprecated 3.6 {@link org.noear.solon.core.handle.EntityConverterDefault}
+ * */
+@Deprecated
+public class ActionExecuteHandlerDefault extends AbstractEntityReader implements ActionExecuteHandler {
+    /**
+     * 执行
+     *
+     * @param ctx    请求上下文
+     * @param target 控制器
+     * @param mWrap  函数包装器
+     */
     @Override
     public Object[] resolveArguments(Context ctx, Object target, MethodWrap mWrap) throws Throwable {
-        return entityConverter.read(ctx, target, mWrap);
+        return doRead(ctx, target, mWrap);
     }
 }

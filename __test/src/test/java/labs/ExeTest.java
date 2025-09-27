@@ -16,6 +16,7 @@
 package labs;
 
 import org.noear.solon.Solon;
+import org.noear.solon.core.handle.EntityConverterDefault;
 import org.noear.solon.core.mvc.ActionExecuteHandlerDefault;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.wrap.ParamWrap;
@@ -26,7 +27,7 @@ import org.noear.solon.core.wrap.ParamWrap;
 public class ExeTest {
     public static void main(String[] args) {
         Solon.start(ExeTest.class, args, app -> {
-            app.chains().defExecuteHandler(new ActionExecuteHandlerDefault() {
+            app.chains().defEntityConverter(new EntityConverterDefault() {
                 @Override
                 protected Object changeValueDo(Context ctx, ParamWrap p, String name, Class<?> type, String value) {
                     if(type.isEnum()){

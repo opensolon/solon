@@ -13,11 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.core.mvc;
+package org.noear.solon.extend.impl;
 
 import org.noear.solon.core.BeanWrap;
-import org.noear.solon.core.MvcFactory;
 import org.noear.solon.core.handle.*;
+import org.noear.solon.core.handle.action.ActionLoaderDefault;
+import org.noear.solon.core.handle.action.ActionParamResolver;
+import org.noear.solon.core.handle.action.MethodTypeResolver;
 import org.noear.solon.core.util.PathUtil;
 
 import java.lang.reflect.AnnotatedElement;
@@ -26,12 +28,12 @@ import java.util.Set;
 import java.util.function.Predicate;
 
 /**
- * Mvc 对接工厂默认实现
+ * 动作加载器工厂默认实现
  *
  * @author noear
- * @since 2.7
+ * @since 3.6
  */
-public class MvcFactoryDefault implements MvcFactory {
+public class ActionLoaderFactoryExt implements ActionLoaderFactory {
     /**
      * 创建动作加载器
      */
@@ -72,13 +74,8 @@ public class MvcFactoryDefault implements MvcFactory {
         return PathUtil.mergePath(bPath, mPath);
     }
 
-    private final ActionExecuteHandler executeHandlerDefault = new ActionExecuteHandlerDefault();
-
-    /**
-     * 获取动作默认执行器
-     */
     @Override
-    public ActionExecuteHandler getExecuteHandlerDefault() {
-        return executeHandlerDefault;
+    public EntityConverter getEntityConverterDefault() {
+        return EntityConverterDefault.instance();
     }
 }

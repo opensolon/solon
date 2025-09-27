@@ -42,6 +42,11 @@ public abstract class AbstractStringEntityConverter<T extends EntitySerializer<S
     }
 
     @Override
+    public boolean allowWrite() {
+        return true;
+    }
+
+    @Override
     public boolean canWrite(String mime, Context ctx) {
         return serializer.matched(ctx, mime);
     }
@@ -104,6 +109,11 @@ public abstract class AbstractStringEntityConverter<T extends EntitySerializer<S
 
             ctx.output(text);
         }
+    }
+
+    @Override
+    public boolean allowRead() {
+        return true;
     }
 
     @Override

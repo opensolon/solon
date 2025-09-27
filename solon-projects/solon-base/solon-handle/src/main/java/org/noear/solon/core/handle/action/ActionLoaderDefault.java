@@ -13,17 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.core.mvc;
+package org.noear.solon.core.handle.action;
 
-import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Addition;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.core.BeanWrap;
+import org.noear.solon.core.FactoryManager;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.ConsumerEx;
-import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.ProxyBinder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -134,7 +133,7 @@ public class ActionLoaderDefault extends HandlerAide implements ActionLoader {
         }
 
         Handler handler = bw.raw();
-        Set<MethodType> mtSet = Solon.app().factoryManager().mvcFactory().findMethodTypes(new HashSet<>(), t -> bw.annotationGet(t) != null);
+        Set<MethodType> mtSet = FactoryManager.getGlobal().actionLoaderFactory().findMethodTypes(new HashSet<>(), t -> bw.annotationGet(t) != null);
         if (mtSet.size() == 0) {
             mtSet = new HashSet<>(Arrays.asList(bMapping.method()));
         }
@@ -150,7 +149,7 @@ public class ActionLoaderDefault extends HandlerAide implements ActionLoader {
         Set<MethodType> b_limitMethodSet = new HashSet<>();
         Set<MethodType> b_addinMethodSet = new HashSet<>();
 
-        Solon.app().factoryManager().mvcFactory().findMethodTypes(b_limitMethodSet, t -> bw.clz().getAnnotation(t) != null);
+        FactoryManager.getGlobal().actionLoaderFactory().findMethodTypes(b_limitMethodSet, t -> bw.clz().getAnnotation(t) != null);
         loadControllerAide(b_addinMethodSet);
         if (b_limitMethodSet.size() == 0 && bMapping != null) {
             //如果没有独立注解，尝试获取 Mapping 上的方式
@@ -206,7 +205,7 @@ public class ActionLoaderDefault extends HandlerAide implements ActionLoader {
         Set<MethodType> m_addinMethodSet = new HashSet<>(b_addinMethodSet);
 
         //获取 action 的 methodTypes
-        Solon.app().factoryManager().mvcFactory().findMethodTypes(m_limitMethodSet, t -> method.getAnnotation(t) != null);
+        FactoryManager.getGlobal().actionLoaderFactory().findMethodTypes(m_limitMethodSet, t -> method.getAnnotation(t) != null);
 
         //构建 path and method
         if (m_map != null) {
@@ -336,7 +335,7 @@ public class ActionLoaderDefault extends HandlerAide implements ActionLoader {
      * 确认 Action 路径
      */
     protected String postActionPath(BeanWrap bw, String bPath, Method method, String mPath) {
-        return Solon.app().factoryManager().mvcFactory().postActionPath(bw, bPath, method, mPath);
+        return FactoryManager.getGlobal().actionLoaderFactory().postActionPath(bw, bPath, method, mPath);
     }
 
     /**

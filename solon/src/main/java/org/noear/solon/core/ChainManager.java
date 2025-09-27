@@ -263,84 +263,8 @@ public class ChainManager {
         return null;
     }
 
-    //=========
 
-    /**
-     * 动作默认执行器
-     */
-    private ActionExecuteHandler executeHandlerDefault; //todo:new ActionExecuteHandlerDefault();
-    /**
-     * 动作执行库
-     */
-    private List<RankEntity<ActionExecuteHandler>> executeHandlers = new ArrayList<>();
-
-    public void defExecuteHandler(ActionExecuteHandler e) {
-        if (e != null) {
-            executeHandlerDefault = e;
-        }
-    }
-
-    /**
-     * 添加Action执行器
-     */
-    public void addExecuteHandler(ActionExecuteHandler e) {
-        addExecuteHandler(e, 0);
-    }
-
-    /**
-     * 添加Action执行器
-     *
-     * @param index 顺序位
-     */
-    public void addExecuteHandler(ActionExecuteHandler e, int index) {
-        if (e != null) {
-            executeHandlers.add(new RankEntity<>(e, index));
-            Collections.sort(executeHandlers);
-        }
-    }
-
-    /**
-     * 移除Action执行器
-     */
-    public void removeExecuteHandler(Class<?> clz) {
-        executeHandlers.removeIf(e -> clz.isInstance(e.target));
-    }
-
-    /**
-     * 移除Action执行器
-     *
-     * @deprecated 3.6
-     */
-    public void removeExecuteHandler(Predicate<ActionExecuteHandler> condition) {
-        executeHandlers.removeIf(e -> condition.test(e.target));
-    }
-
-    public ActionExecuteHandler getExecuteHandler(Context c, int paramSize) {
-        String ct = c.contentType();
-
-        if (paramSize > 0) {
-            //
-            //仅有参数时，才执行执行其它执行器
-            //
-            for (RankEntity<ActionExecuteHandler> me : executeHandlers) {
-                if (me.target.matched(c, ct)) {
-                    return me.target;
-                }
-            }
-        }
-
-        return getExecuteHandlerDefault();
-    }
-
-    public ActionExecuteHandler getExecuteHandlerDefault() {
-        if (executeHandlerDefault == null) {
-            return FactoryManager.getGlobal().mvcFactory().getExecuteHandlerDefault();
-        } else {
-            return executeHandlerDefault;
-        }
-    }
-
-    /// ////
+    /// /////////////////////
 
     private List<RankEntity<ActionArgumentResolver>> argumentResolvers = new ArrayList<>();
 
@@ -426,11 +350,27 @@ public class ChainManager {
     }
 
 
+    /// ///////////////////////////
+
+
+    /**
+     * 默认的实体转换器
+     */
+    private EntityConverter entityConverterDefault;
+
+    /**
+     * 实体转换器集合
+     */
+    private List<RankEntity<EntityConverter>> entityConverters = new ArrayList<>();
+
+    public void defEntityConverter(EntityConverter e) {
+        if (e != null) {
+            entityConverterDefault = e;
+        }
+    }
+
     /**
      * 添加实体转换器
-     *
-     * @param e 实体转换器
-     * @since 3.6
      */
     public void addEntityConverter(EntityConverter e) {
         addEntityConverter(e, 0);
@@ -439,22 +379,144 @@ public class ChainManager {
     /**
      * 添加实体转换器
      *
-     * @param e     实体转换器
      * @param index 顺序位
-     * @since 3.6
      */
     public void addEntityConverter(EntityConverter e, int index) {
         if (e != null) {
-            //executor
-            addExecuteHandler(new EntityConverter2Executor(e), index);
+            //converter
+            entityConverters.add(new RankEntity<>(e, index));
+            Collections.sort(entityConverters);
 
             //renderer
             if (e.mappings() != null) {
-                Render render = new EntityConverter2Renderer(e);
+                Render render = new EntityConverterToRenderer(e);
                 for (String mapping : e.mappings()) {
                     app.renders().register(mapping, render);
                 }
             }
         }
+    }
+
+    /**
+     * 移除实体转换器
+     */
+    public void removeEntityConverter(Class<?> clz) {
+        entityConverters.removeIf(e -> e.target.isInstance(clz));
+    }
+
+    /**
+     * 获取可读的实体转换器
+     *
+     * @since 3.6
+     */
+    public EntityConverter getCanReadEntityConverter(Context c, int paramSize) {
+        String ct = c.contentType();
+
+        if (paramSize > 0) {
+            //
+            //仅有参数时，才执行执行其它执行器
+            //
+            for (RankEntity<EntityConverter> me : entityConverters) {
+                if (me.target.canRead(c, ct)) {
+                    return me.target;
+                }
+            }
+        }
+
+        return getEntityConverterDefault();
+    }
+
+    /**
+     * 获取可写的实体转换器
+     *
+     * @since 3.6
+     */
+    public EntityConverter getCanWriteEntityConverter(Context c) {
+        String ct = c.contentType();
+
+        for (RankEntity<EntityConverter> me : entityConverters) {
+            if (me.target.canWrite(ct, c)) {
+                return me.target;
+            }
+        }
+
+        return getEntityConverterDefault();
+    }
+
+    /**
+     * 获取默认实体转换器
+     *
+     * @since 3.6
+     */
+    public EntityConverter getEntityConverterDefault() {
+        if (entityConverterDefault == null) {
+            return FactoryManager.getGlobal().entityConverterDefault();
+        } else {
+            return entityConverterDefault;
+        }
+    }
+
+
+    //=========
+
+    /**
+     * @deprecated 3.6 {@link #defEntityConverter(EntityConverter)}
+     */
+    @Deprecated
+    public void defExecuteHandler(ActionExecuteHandler e) {
+        if (e != null) {
+            defEntityConverter(new EntityConverterFromExecutor(e));
+        }
+    }
+
+    /**
+     * 添加Action执行器
+     *
+     * @deprecated 3.6 {@link #addEntityConverter(EntityConverter)}
+     */
+    @Deprecated
+    public void addExecuteHandler(ActionExecuteHandler e) {
+        if (e != null) {
+            addEntityConverter(new EntityConverterFromExecutor(e), 0);
+        }
+    }
+
+    /**
+     * 添加Action执行器
+     *
+     * @param index 顺序位
+     * @deprecated 3.6 {@link #addEntityConverter(EntityConverter, int)}
+     */
+    @Deprecated
+    public void addExecuteHandler(ActionExecuteHandler e, int index) {
+        if (e != null) {
+            addEntityConverter(new EntityConverterFromExecutor(e), index);
+        }
+    }
+
+    /**
+     * 移除Action执行器
+     *
+     * @deprecated 3.6 {@link #removeEntityConverter(Class)}
+     */
+    @Deprecated
+    public void removeExecuteHandler(Class<?> clz) {
+        removeEntityConverter(clz);
+    }
+
+    /**
+     * @deprecated 3.6 {@link #getCanReadEntityConverter(Context, int)}
+     */
+    @Deprecated
+    public ActionExecuteHandler getExecuteHandler(Context c, int paramSize) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    /**
+     * @deprecated 3.6 {@link #getEntityConverterDefault()}
+     */
+    @Deprecated
+    public ActionExecuteHandler getExecuteHandlerDefault() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
