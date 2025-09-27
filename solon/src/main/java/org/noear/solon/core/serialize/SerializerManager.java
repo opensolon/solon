@@ -15,6 +15,8 @@
  */
 package org.noear.solon.core.serialize;
 
+import org.noear.solon.core.Constants;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,5 +60,14 @@ public class SerializerManager {
      * */
     public <T> Serializer<T> get(String name) {
         return _mapping.get(name);
+    }
+
+    /**
+     * json 序列化器
+     *
+     * @since 3.6
+     * */
+    public Serializer<String> jsonOf()  {
+        return this.<String>get(Constants.AT_JSON);
     }
 }

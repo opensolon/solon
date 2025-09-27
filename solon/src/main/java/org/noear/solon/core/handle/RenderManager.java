@@ -347,9 +347,18 @@ public class RenderManager implements Render {
 //            } else {
 //                render = _mapping.get(Constants.RENDER_JSON);
 //            }
-            render = _mapping.get(Constants.RENDER_JSON);
+            render = _mapping.get(Constants.AT_JSON);
         }
 
         return render;
+    }
+
+    /**
+     * Json 渲染器
+     *
+     * @since 3.6
+     */
+    public Render jsonOf() {
+        return get(Constants.AT_JSON);
     }
 }
