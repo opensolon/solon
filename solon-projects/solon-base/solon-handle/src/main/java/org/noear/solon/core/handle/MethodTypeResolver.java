@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.core.handle.action;
+package org.noear.solon.core.handle;
 
 import org.noear.solon.annotation.*;
-import org.noear.solon.core.handle.MethodType;
 
 import java.util.Set;
 import java.util.function.Predicate;

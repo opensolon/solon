@@ -17,9 +17,9 @@ package org.noear.solon.extend.impl;
 
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.handle.*;
-import org.noear.solon.core.handle.action.ActionLoaderDefault;
-import org.noear.solon.core.handle.action.ActionParamResolver;
-import org.noear.solon.core.handle.action.MethodTypeResolver;
+import org.noear.solon.core.handle.ActionLoaderDefault;
+import org.noear.solon.core.handle.ActionParamResolver;
+import org.noear.solon.core.handle.MethodTypeResolver;
 import org.noear.solon.core.util.PathUtil;
 
 import java.lang.reflect.AnnotatedElement;

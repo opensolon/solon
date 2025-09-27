@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.core.handle.action;
+package org.noear.solon.core.handle;
 
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.*;
+import org.noear.solon.annotation.Cookie;
 import org.noear.solon.core.Constants;
-import org.noear.solon.core.handle.ActionParam;
 
 import java.lang.reflect.AnnotatedElement;
 
@@ -142,7 +142,7 @@ public class ActionParamResolver {
      * 分析 cookie 注解
      */
     private static boolean resolveCookie(ActionParam vo, AnnotatedElement element) {
-        Cookie cookieAnno = element.getAnnotation(Cookie.class);
+        org.noear.solon.annotation.Cookie cookieAnno = element.getAnnotation(Cookie.class);
 
         if (cookieAnno == null) {
             return false;
