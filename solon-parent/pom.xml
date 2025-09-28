@@ -2366,6 +2366,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon-server-tomcat-jakarta</artifactId>
+                <version>${solon-jakarta.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon-server-jetty-jakarta</artifactId>
                 <version>${solon-jakarta.version}</version>
             </dependency>
