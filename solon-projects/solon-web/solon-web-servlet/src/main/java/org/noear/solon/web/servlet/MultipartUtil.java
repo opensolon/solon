@@ -100,7 +100,7 @@ class MultipartUtil {
     private static boolean hasLargerEx(Throwable e) {
         if (e != null) {
             if (e.getMessage() != null) {
-                if (e.getMessage().contains("large") || e.getMessage().contains("length exceeded")) {
+                if (e.getMessage().contains(" large") || e.getMessage().contains(" exceed")) {
                     return true;
                 }
             }

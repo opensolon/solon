@@ -16,11 +16,15 @@
 package org.noear.solon.server.tomcat.http;
 
 import org.noear.solon.server.ServerProps;
-import org.noear.solon.server.tomcat.XPluginImp;
+import org.noear.solon.server.tomcat.integration.TomcatPlugin;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.web.servlet.SolonServletHandler;
 
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 //Servlet模式 注解用于JSP混合模式的搭建
 @WebServlet(
@@ -31,7 +35,16 @@ public class TCHttpContextHandler extends SolonServletHandler {
     @Override
     protected void preHandle(Context ctx) {
         if (ServerProps.output_meta) {
-            ctx.headerSet("Solon-Server", XPluginImp.solon_server_ver());
+            ctx.headerSet("Solon-Server", TomcatPlugin.solon_server_ver());
         }
+    }
+
+    @Override
+    protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if (request.getCharacterEncoding() == null) {
+            request.setCharacterEncoding(ServerProps.request_encoding);
+        }
+
+        super.service(request, response);
     }
 }
