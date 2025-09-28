@@ -21,16 +21,10 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.web.servlet.SolonServletHandler;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-//Servlet模式 注解用于JSP混合模式的搭建
-@WebServlet(
-        name = "solon",
-        urlPatterns = {"/"}
-)
 public class TCHttpContextHandler extends SolonServletHandler {
     @Override
     protected void preHandle(Context ctx) {
