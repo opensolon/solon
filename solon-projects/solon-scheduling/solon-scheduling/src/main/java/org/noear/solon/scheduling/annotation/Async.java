@@ -27,5 +27,8 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Async {
+    /**
+     * 异步执行器名字
+     */
     String value() default "";
 }
