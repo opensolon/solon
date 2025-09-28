@@ -50,8 +50,6 @@ import org.slf4j.LoggerFactory;
  * @since 1.0
  * */
 public final class SolonProps extends Props {
-    static final Logger log = LoggerFactory.getLogger(SolonProps.class);
-
     protected final List<String> warns = new ArrayList<>();
 
     private final SolonApp app;
@@ -117,7 +115,6 @@ public final class SolonProps extends Props {
             env = getArg("env");
 
             if (Utils.isNotEmpty(env)) {
-                log.info("The following profiles env: " + env);
                 loadInit(ResourceUtil.getResource("app-" + env + ".properties"), sysPropOrg);
                 loadInit(ResourceUtil.getResource("app-" + env + ".yml"), sysPropOrg);
             }

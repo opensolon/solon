@@ -204,6 +204,10 @@ public class SolonApp extends RouterWrapper {
      */
     protected void startDo(ConsumerEx<SolonApp> initialize) throws Throwable {
         //1.0.打印构造时的告警
+        if(Utils.isNotEmpty(_cfg.env())){
+            log.info("The following profiles env: " + _cfg.env());
+        }
+
         if (_cfg.warns.size() > 0) {
             for (String warn : _cfg.warns) {
                 log.warn(warn);
