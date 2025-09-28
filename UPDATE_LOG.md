@@ -46,6 +46,7 @@
 * 添加 `solon-mvc` `List<UploadedFile>` 注入支持（用 `UploadedFile[]` 性能更好）
 * 添加 `solon-server` `server.request.fileSizeThreshold` 配置支持
 * 添加 `solon` converters,serializers,renders,factories,chains（简化名自：converterManager,serializerManager,renderManager,factoryManager,chainManager）
+* 修复 `solon-scheduling` `@Async` 执行器名字配置失效的问题
 * snakeyaml 升为 2.5
 * lombok 升为 1.18.42
 * jansi 升为 2.4.2

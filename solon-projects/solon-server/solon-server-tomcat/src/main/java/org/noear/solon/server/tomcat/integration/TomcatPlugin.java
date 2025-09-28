@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.server.tomcat;
+package org.noear.solon.server.tomcat.integration;
 
 import org.apache.catalina.util.ServerInfo;
 import org.noear.solon.Solon;
@@ -25,6 +25,7 @@ import org.noear.solon.server.prop.impl.HttpServerProps;
 import org.noear.solon.core.*;
 import org.noear.solon.core.util.ClassUtil;
 
+import org.noear.solon.server.tomcat.TomcatServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,8 +33,8 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.annotation.WebListener;
 import javax.servlet.annotation.WebServlet;
 
-public final class XPluginImp implements Plugin {
-    static final Logger log = LoggerFactory.getLogger(XPluginImp.class);
+public final class TomcatPlugin implements Plugin {
+    static final Logger log = LoggerFactory.getLogger(TomcatPlugin.class);
 
     private static Signal _signal;
 
@@ -76,11 +77,7 @@ public final class XPluginImp implements Plugin {
         final int _port = props.getPort();
         final String _name = props.getName();
 
-        if (jspClz == null) {
-            _server = new TomcatServer();
-        } else {
-            _server = new TomcatServerAddJsp();
-        }
+        _server = new TomcatServer();
 
         long time_start = System.currentTimeMillis();
 
