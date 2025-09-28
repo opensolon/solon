@@ -18,6 +18,7 @@ package org.noear.solon.net.http;
 
 import org.noear.solon.Solon;
 import org.noear.solon.core.serialize.Serializer;
+import org.noear.solon.core.util.Assert;
 import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.core.util.MimeType;
 import org.noear.solon.lang.Preview;
@@ -536,6 +537,8 @@ public interface HttpUtils {
      * map 转为 queryString
      */
     static CharSequence toQueryString(Map<?, ?> map, String charset) throws IOException {
+        Assert.notNull(map, "map");
+
         StringBuilder buf = new StringBuilder();
         for (Map.Entry<?, ?> entry : map.entrySet()) {
             //过滤 null
