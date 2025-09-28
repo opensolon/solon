@@ -23,7 +23,6 @@ import org.noear.solon.server.prop.impl.WebSocketServerProps;
 import org.noear.solon.server.websocket.JavaWsServer;
 import org.noear.solon.core.*;
 import org.noear.solon.core.bean.LifecycleBean;
-import org.noear.solon.core.util.LogUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

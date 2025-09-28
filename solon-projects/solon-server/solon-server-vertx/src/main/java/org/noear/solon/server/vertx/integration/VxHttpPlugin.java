@@ -27,7 +27,6 @@ import org.noear.solon.server.vertx.VxHttpServerComb;
 import org.noear.solon.core.*;
 import org.noear.solon.core.bean.LifecycleBean;
 import org.noear.solon.core.event.EventBus;
-import org.noear.solon.core.util.LogUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

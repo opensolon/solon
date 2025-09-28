@@ -17,7 +17,6 @@ package org.noear.solon.extend.impl;
 
 import org.noear.solon.Solon;
 import org.noear.solon.core.PropsLoader;
-import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.config.yaml.PropertiesYaml;
 
 import org.slf4j.Logger;

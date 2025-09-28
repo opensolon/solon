@@ -20,7 +20,6 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.*;
 import org.noear.solon.core.util.ClassUtil;
-import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.net.annotation.ServerEndpoint;
 import org.noear.solon.net.socketd.SocketdRouter;
 import org.noear.solon.net.websocket.WebSocketListener;
