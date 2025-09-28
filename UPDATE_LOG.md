@@ -31,6 +31,8 @@
 
 * 新增 `solon-server-grizzly` 插件
 * 新增 `solon-server-grizzly-add-webscoket` 插件
+* 新增 `solon-server-tomcat` 插件（基于 tomcat v9.0 适配）//试用
+* 新增 `solon-server-tomcat-jakarta` 插件（基于 tomcat v11.0 适配）//试用
 * 新增 `solon-server-undertow-jakarta` 插件（基于 undertow v2.3 适配）
 * 新增 `solon-server-undertow-add-jsp-jakarta` 插件（基于 undertow v2.3 适配）
 * 完善 `solon-server-jetty-jakarta` 插件（基于 jetty v12 适配）
@@ -93,8 +95,8 @@ public class ConditionDemo(){
 
 @Managed
 public class SnelDemo {
-    //ps: 之前基于 TmplUtil 实现（功能有限，不够体系化） //（仍可使用）
-    @Cache(key = "oath_#{code}", seconds = 10) //SnEL 模板表达式（通过 SnelUtil 实现兼容）
+    //ps: 之前基于 TmplUtil 实现（功能有限，不够体系化） //（仍可使用） //旧模板符号：`${}`
+    @Cache(key = "oath_#{code}", seconds = 10) //SnEL 模板表达式（通过 SnelUtil 实现兼容）//新模板符号：`#{}`
     public Oauth queryInfoByCode(String code) {
         return new Oauth(code, LocalDateTime.now());
     }
