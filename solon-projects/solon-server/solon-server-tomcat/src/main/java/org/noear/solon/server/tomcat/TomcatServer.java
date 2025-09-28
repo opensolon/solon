@@ -25,7 +25,6 @@ import org.noear.solon.server.tomcat.http.TCHttpContextHandler;
 
 import javax.servlet.MultipartConfigElement;
 
-
 /**
  * @author Yukai
  * @since 2019/3/28 15:49
@@ -60,15 +59,15 @@ public class TomcatServer extends TomcatServerBase {
         context.getServletContext().setAttribute("org.apache.catalina.MultipartConfigElement", multipartConfig);
         context.setAllowCasualMultipartParsing(true);
 
+        if (SessionProps.session_timeout > 0) {
+            context.setSessionTimeout(SessionProps.session_timeout);
+        }
 
+        // for http
         Tomcat.addServlet(context, "solon", new TCHttpContextHandler())
                 .setAsyncSupported(true);
 
         context.addServletMappingDecoded("/", "solon");//Servlet与对应uri映射
-
-        if (SessionProps.session_timeout > 0) {
-            context.setSessionTimeout(SessionProps.session_timeout);
-        }
 
         return context;
     }
