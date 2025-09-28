@@ -27,12 +27,10 @@ import javax.servlet.MultipartConfigElement;
 
 
 /**
- * @Created by: Yukai
- * @Date: 2019/3/28 15:49
- * @Description : Yukai is so handsome xxD
+ * @author Yukai
+ * @since 2019/3/28 15:49
  */
 public class TomcatServer extends TomcatServerBase {
-
     @Override
     protected Connector addConnector(int port) throws Throwable {
         Connector connector = _server.getConnector();
@@ -49,11 +47,7 @@ public class TomcatServer extends TomcatServerBase {
 
     @Override
     protected Context initContext() {
-        //context configuration start 开始上下文相关配置
-        //1.初始化上下文
-        Context context = _server.addContext("", null);//第二个参数与文档相关
-
-        context.setAllowCasualMultipartParsing(true);
+        Context context = _server.addContext("/", null);//第二个参数与文档相关
 
         String _tempdir = IoUtil.getTempDirAsString("solon-server");
 
@@ -64,20 +58,18 @@ public class TomcatServer extends TomcatServerBase {
                 ServerProps.request_fileSizeThreshold);
 
         context.getServletContext().setAttribute("org.apache.catalina.MultipartConfigElement", multipartConfig);
+        context.setAllowCasualMultipartParsing(true);
 
 
+        Tomcat.addServlet(context, "solon", new TCHttpContextHandler())
+                .setAsyncSupported(true);
 
-        //2.添加 servlet
-        Tomcat.addServlet(context, "solon", new TCHttpContextHandler());
-        //3.建立 servlet 映射
         context.addServletMappingDecoded("/", "solon");//Servlet与对应uri映射
-        //**************session time setting start Session时间相关*****************
+
         if (SessionProps.session_timeout > 0) {
             context.setSessionTimeout(SessionProps.session_timeout);
         }
-        //**************session time setting end*****************
 
         return context;
     }
-
 }

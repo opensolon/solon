@@ -21,9 +21,8 @@ import org.noear.solon.Utils;
 import org.noear.solon.server.ServerLifecycle;
 
 /**
- * @Author: Yukai
- * Description: master T
- * create time: 2022/8/26 17:01
+ * @author Yukai
+ * @since 2022/8/26 17:01
  **/
 public abstract class TomcatServerBase implements ServerLifecycle {
     protected Tomcat _server;
@@ -49,12 +48,10 @@ public abstract class TomcatServerBase implements ServerLifecycle {
     @Override
     public void stop() throws Throwable {
         if (_server != null) {
-            _server.stop();
+            _server.destroy();
             _server = null;
         }
     }
-
-
 
     protected abstract Context initContext() throws Throwable;
 
