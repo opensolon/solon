@@ -77,7 +77,7 @@
         <undertow.jastow.version>2.1.0.Final</undertow.jastow.version>
         <undertow.jboss-metadata.version>13.4.0.Final</undertow.jboss-metadata.version>
         <undertow.jboss-jsp.version>2.0.1.Final</undertow.jboss-jsp.version>
-        <tomcat.version>9.0.64</tomcat.version>
+        <tomcat.version>9.0.109</tomcat.version>
         <vertx.version>4.5.14</vertx.version>
         <rxjava.version>3.1.9</rxjava.version>
         <netty.version>4.1.118.Final</netty.version>
