@@ -538,13 +538,16 @@ public interface HttpUtils {
     static CharSequence toQueryString(Map<?, ?> map, String charset) throws IOException {
         StringBuilder buf = new StringBuilder();
         for (Map.Entry<?, ?> entry : map.entrySet()) {
-            if (buf.length() > 0) {
-                buf.append('&');
-            }
+            //过滤 null
+            if (entry.getValue() != null) {
+                if (buf.length() > 0) {
+                    buf.append('&');
+                }
 
-            buf.append(urlEncode(entry.getKey().toString(), charset))
-                    .append('=')
-                    .append(urlEncode(entry.getValue().toString(), charset));
+                buf.append(urlEncode(entry.getKey().toString(), charset))
+                        .append('=')
+                        .append(urlEncode(entry.getValue().toString(), charset));
+            }
         }
 
         return buf.toString();
