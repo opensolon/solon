@@ -26,7 +26,6 @@ import org.noear.solon.server.ssl.SslConfig;
 import org.noear.solon.core.*;
 import org.noear.solon.core.bean.LifecycleBean;
 import org.noear.solon.core.event.EventBus;
-import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.net.socketd.SocketdRouter;
 

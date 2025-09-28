@@ -23,7 +23,6 @@ import org.noear.solon.core.Plugin;
 import org.noear.solon.core.Props;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.ClassUtil;
-import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.docs.integration.properties.DocDocketProperties;
 import org.noear.solon.docs.integration.properties.DocsProperties;
 import org.slf4j.Logger;

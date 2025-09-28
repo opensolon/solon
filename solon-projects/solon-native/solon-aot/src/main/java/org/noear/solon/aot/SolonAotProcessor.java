@@ -27,7 +27,6 @@ import org.noear.solon.core.AppContext;
 import org.noear.solon.core.PluginEntity;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.ClassUtil;
-import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.ScanUtil;
 
 import java.io.File;

@@ -20,7 +20,6 @@ import javax.servlet.ServletResponse; //用于检测
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.util.ClassUtil;
-import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.view.jsp.JspRender;
 
 import org.slf4j.Logger;

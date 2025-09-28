@@ -25,7 +25,6 @@ import org.java_websocket.server.WebSocketServer;
 import org.noear.solon.Utils;
 import org.noear.solon.server.prop.impl.WebSocketServerProps;
 import org.noear.solon.server.util.DecodeUtils;
-import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.net.websocket.SubProtocolCapable;
 import org.noear.solon.net.websocket.WebSocketRouter;
