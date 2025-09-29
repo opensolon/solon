@@ -43,6 +43,9 @@ public class GsonStringSerializer implements EntityStringSerializer {
     private static final String label = "/json";
     private static final GsonStringSerializer _default = new GsonStringSerializer();
 
+    /**
+     * 默认实例
+     */
     public static GsonStringSerializer getDefault() {
         return _default;
     }

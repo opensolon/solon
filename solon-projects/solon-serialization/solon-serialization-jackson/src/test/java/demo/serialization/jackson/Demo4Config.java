@@ -21,7 +21,8 @@ import java.util.Date;
 public class Demo4Config {
     @Bean
     public void config(JacksonStringSerializer serializer) {
-        //方式1：通过转换器，做简单类型的定制
+        //::序列化（用于渲染输出）
+        //示例1：通过转换器，做简单类型的定制（addConvertor 新统一为 addEncoder）
         serializer.addEncoder(Date.class, s -> s.getTime());
 
         serializer.addEncoder(LocalDate.class, s -> s.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
@@ -30,7 +31,7 @@ public class Demo4Config {
 
         serializer.addEncoder(BigDecimal.class, s -> s.toPlainString());
 
-        //方式2：通过编码器，做复杂类型的原生定制（基于框架原生接口）
+        //示例2：通过编码器，做复杂类型的原生定制（基于框架原生接口）
         serializer.addEncoder(Date.class, new JsonSerializer<Date>() {
             @Override
             public void serialize(Date date, JsonGenerator out, SerializerProvider sp) throws IOException {
@@ -38,7 +39,8 @@ public class Demo4Config {
             }
         });
 
-        //
+        //::反序列化（用于接收参数）
+        //示例3：替换 mapper
         serializer.getDeserializeConfig().setMapper(new ObjectMapper());
     }
 }

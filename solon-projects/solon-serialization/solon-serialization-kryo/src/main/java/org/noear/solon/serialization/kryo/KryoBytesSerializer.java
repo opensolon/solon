@@ -38,6 +38,9 @@ public class KryoBytesSerializer implements EntitySerializer<byte[]> {
     private static final String label = "application/kryo";
     private static final KryoBytesSerializer _default = new KryoBytesSerializer();
 
+    /**
+     * 默认实例
+     */
     public static KryoBytesSerializer getDefault() {
         return _default;
     }

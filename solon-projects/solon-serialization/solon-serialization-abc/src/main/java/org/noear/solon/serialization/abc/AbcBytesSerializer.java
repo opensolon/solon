@@ -33,13 +33,16 @@ public class AbcBytesSerializer implements EntitySerializer<byte[]> {
     private static final String label = "application/abc";
     private static final AbcBytesSerializer _default = new AbcBytesSerializer();
 
+    /**
+     * 默认实例
+     */
     public static AbcBytesSerializer getDefault() {
         return _default;
     }
 
     /**
      * @deprecated 3.6 {@link #getDefault()}
-     * */
+     */
     @Deprecated
     public static AbcBytesSerializer getInstance() {
         return _default;
@@ -98,7 +101,7 @@ public class AbcBytesSerializer implements EntitySerializer<byte[]> {
         }
     }
 
-    ///////////////
+    /// ////////////
 
     @Override
     public boolean matched(Context ctx, String mime) {
