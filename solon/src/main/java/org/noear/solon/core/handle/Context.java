@@ -203,7 +203,7 @@ public abstract class Context {
             }
         }
 
-        return isFormUrlencoded;
+        return isFormUrlencoded.booleanValue();
     }
 
     private Boolean isMultipart;
@@ -221,10 +221,10 @@ public abstract class Context {
             }
         }
 
-        return isMultipart;
+        return isMultipart.booleanValue();
     }
 
-    Boolean isMultipartFormData;
+    private Boolean isMultipartFormData;
 
     /**
      * 是否为分段表单数据
@@ -239,7 +239,7 @@ public abstract class Context {
             }
         }
 
-        return isMultipartFormData;
+        return isMultipartFormData.booleanValue();
     }
 
     /**
