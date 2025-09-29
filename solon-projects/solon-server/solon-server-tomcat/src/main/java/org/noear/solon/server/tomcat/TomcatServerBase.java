@@ -35,11 +35,11 @@ public abstract class TomcatServerBase implements ServerLifecycle {
             _server.setHostname(host);
         }
 
-        //初始化链接
-        addConnector(port);
-
         //初始化上下文
         initContext();
+
+        //添加连接端口
+        addConnector(port);
 
         _server.start();
     }
