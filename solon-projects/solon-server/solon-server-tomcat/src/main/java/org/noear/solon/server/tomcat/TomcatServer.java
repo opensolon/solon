@@ -19,17 +19,24 @@ import org.apache.catalina.Context;
 import org.apache.catalina.Wrapper;
 import org.apache.catalina.connector.Connector;
 import org.apache.catalina.startup.Tomcat;
+import org.apache.coyote.http11.Http11NioProtocol;
+import org.apache.tomcat.util.net.SSLHostConfig;
+import org.apache.tomcat.util.net.SSLHostConfigCertificate;
 import org.noear.solon.core.util.IoUtil;
 import org.noear.solon.server.ServerProps;
 import org.noear.solon.server.handle.SessionProps;
 import org.noear.solon.server.prop.impl.HttpServerProps;
 import org.noear.solon.server.tomcat.http.TCHttpContextHandler;
+import org.noear.solon.server.tomcat.ssl.TomcatSslContext;
 
+import javax.net.ssl.SSLContext;
 import javax.servlet.MultipartConfigElement;
 
 /**
  * @author Yukai
+ * @author noear
  * @since 2019/3/28 15:49
+ * @since 3.6
  */
 public class TomcatServer extends TomcatServerBase {
     protected boolean isSecure;
@@ -81,32 +88,59 @@ public class TomcatServer extends TomcatServerBase {
 
     @Override
     protected void addConnector(int port, boolean isMain) throws Throwable {
-        Connector connector = new Connector("HTTP/1.1");
+        //::protocol
+        final Http11NioProtocol protocol = new Http11NioProtocol();
+
+        if (ServerProps.request_maxHeaderSize > 0) {
+            protocol.setMaxHttpHeaderSize(ServerProps.request_maxHeaderSize);
+        }
+
+        if (ServerProps.request_maxBodySize > 0) {
+            protocol.setMaxSwallowSize(ServerProps.request_maxBodySizeAsInt());
+        }
+
+        protocol.setRelaxedQueryChars("[]|{}");
+
+        if (isMain) {
+            //for protocol ssl
+            if (sslConfig.isSslEnable()) {
+                protocol.setSSLEnabled(true);
+                protocol.setSecure(true);
+                protocol.addSslHostConfig(createSSLHostConfig(sslConfig.getSslContext()));
+                isSecure = true;
+            }
+        }
+
+
+        //::connector
+        final Connector connector = new Connector(protocol);
 
         connector.setPort(port);
 
         if (isMain) {
-            //for ssl
+            //for connector ssl
             if (sslConfig.isSslEnable()) {
-                // 1. 标识 ssl
                 connector.setSecure(true);
                 connector.setScheme("https");
-
-                isSecure = true;
             }
         }
 
         connector.setMaxPostSize(ServerProps.request_maxBodySizeAsInt());
         connector.setMaxPartHeaderSize(ServerProps.request_maxHeaderSize);
-
-        connector.setProperty("maxHttpHeaderSize", String.valueOf(ServerProps.request_maxHeaderSize));
-        connector.setProperty("maxSwallowSize", String.valueOf(ServerProps.request_maxBodySize));
-
-        connector.setProperty("relaxedQueryChars", "[]|{}");
         connector.setURIEncoding(ServerProps.request_encoding);
         connector.setUseBodyEncodingForURI(true);
 
-
         _server.getService().addConnector(connector);
+    }
+
+    private static SSLHostConfig createSSLHostConfig(final SSLContext sslContext) {
+        final SSLHostConfig sslHostConfig = new SSLHostConfig();
+
+        final SSLHostConfigCertificate sslHostConfigCertificate =
+                new SSLHostConfigCertificate(sslHostConfig, SSLHostConfigCertificate.Type.RSA);
+        sslHostConfigCertificate.setSslContext(new TomcatSslContext(sslContext));
+
+        sslHostConfig.addCertificate(sslHostConfigCertificate);
+        return sslHostConfig;
     }
 }
