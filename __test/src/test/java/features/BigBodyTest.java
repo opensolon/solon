@@ -15,6 +15,7 @@
  */
 package features;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.noear.snack.ONode;
 import org.noear.solon.net.http.HttpResponse;
@@ -73,15 +74,7 @@ public class BigBodyTest extends HttpTester {
         System.out.println("code: " + resp.code());
         System.out.println("body: " + resp.bodyAsString());
 
-        assert resp.code() == 413;
-
-//        String resp_body = resp.bodyAsString();
-//        if (resp_body.contains("IOException")) {
-//            assert true;
-//            return;
-//        }
-//
-//        assert false;
+        Assertions.assertEquals(413, resp.code());
     }
 
     @Test
@@ -129,14 +122,6 @@ public class BigBodyTest extends HttpTester {
         System.out.println("code: " + resp.code());
         System.out.println("body: " + resp.bodyAsString());
 
-        assert  resp.code() == 413;
-
-//        String resp_body = resp.bodyAsString();
-//        if (resp_body.contains("IOException") || resp_body.contains("HTTP ERROR 400 Unable to parse form content")) {
-//            assert true;
-//            return;
-//        }
-//
-//        assert false;
+        Assertions.assertEquals(413, resp.code());
     }
 }
