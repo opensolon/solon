@@ -34,7 +34,9 @@ import java.util.concurrent.Executor;
 
 /**
  * @author Yukai
+ * @author noear
  * @since 2022/8/26 17:01
+ * @since 3.6
  **/
 public abstract class TomcatServerBase implements ServerLifecycle, HttpServerConfigure {
     static final Logger log = LoggerFactory.getLogger(TomcatServerBase.class);
