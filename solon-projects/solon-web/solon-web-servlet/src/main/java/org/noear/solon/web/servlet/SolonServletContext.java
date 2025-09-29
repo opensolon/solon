@@ -25,7 +25,7 @@ import org.noear.solon.core.util.MultiMap;
 import org.noear.solon.server.handle.AsyncContextState;
 import org.noear.solon.server.handle.ContextBase;
 import org.noear.solon.server.handle.HeaderNames;
-import org.noear.solon.server.io.LimitedInputException;
+import org.noear.solon.server.io.LimitedInputStream;
 import org.noear.solon.server.util.DecodeUtils;
 import org.noear.solon.server.util.RedirectUtils;
 import org.slf4j.Logger;
@@ -53,12 +53,18 @@ import java.util.*;
 public class SolonServletContext extends ContextBase {
     static final Logger log = LoggerFactory.getLogger(SolonServletContext.class);
 
-    private HttpServletRequest _request;
-    private HttpServletResponse _response;
+    private final HttpServletRequest _request;
+    private final HttpServletResponse _response;
+    private final boolean _useLimitStream;
 
     public SolonServletContext(HttpServletRequest request, HttpServletResponse response) {
+        this(request, response, false);
+    }
+
+    public SolonServletContext(HttpServletRequest request, HttpServletResponse response, boolean useLimitStream) {
         _request = request;
         _response = response;
+        _useLimitStream = useLimitStream;
 
         if (sessionState().replaceable()) {
             sessionState = new SolonServletSessionState(request);
@@ -175,11 +181,20 @@ public class SolonServletContext extends ContextBase {
         }
     }
 
+    private InputStream limitStream;
     @Override
     public InputStream bodyAsStream() throws IOException {
         assertMaxBodySize();
 
-        return _request.getInputStream();
+        if (_useLimitStream) {
+            if (limitStream == null) {
+                limitStream = new LimitedInputStream(_request.getInputStream(), ServerProps.request_maxBodySize);
+            }
+
+            return limitStream;
+        } else {
+            return _request.getInputStream();
+        }
     }
 
 

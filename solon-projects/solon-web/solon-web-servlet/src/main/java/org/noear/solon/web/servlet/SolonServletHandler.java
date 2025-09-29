@@ -37,16 +37,20 @@ public class SolonServletHandler extends HttpServlet {
 
     }
 
+    protected boolean useLimitStream() {
+        return false;
+    }
+
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        SolonServletContext ctx = new SolonServletContext(request, response);
+        SolonServletContext ctx = new SolonServletContext(request, response, useLimitStream());
         ctx.contentType(MimeType.TEXT_PLAIN_UTF8_VALUE);
 
         preHandle(ctx);
 
         Solon.app().tryHandle(ctx);
 
-        if(ctx.asyncStarted() == false){
+        if (ctx.asyncStarted() == false) {
             ctx.innerCommit();
         }
     }

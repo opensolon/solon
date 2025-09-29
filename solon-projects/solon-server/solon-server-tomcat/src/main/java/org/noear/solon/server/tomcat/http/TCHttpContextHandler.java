@@ -34,6 +34,12 @@ public class TCHttpContextHandler extends SolonServletHandler {
     }
 
     @Override
+    protected boolean useLimitStream() {
+        // max body size 目前没法生效，所以采用 LimitedInputStream 控制
+        return true;
+    }
+
+    @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (request.getCharacterEncoding() == null) {
             request.setCharacterEncoding(ServerProps.request_encoding);
