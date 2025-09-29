@@ -22,6 +22,12 @@ import org.noear.solon.core.handle.Context;
 
 public class JtHttpContextServletHandler extends SolonServletHandler {
     @Override
+    protected boolean useLimitStream() {
+        // max body size 目前没法生效，所以采用 LimitedInputStream 控制
+        return true;
+    }
+
+    @Override
     protected void preHandle(Context ctx) {
         if (ServerProps.output_meta) {
             ctx.headerSet("Solon-Server", JettyPlugin.solon_server_ver());
