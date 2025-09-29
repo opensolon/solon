@@ -69,6 +69,9 @@ public class TomcatServer extends TomcatServerBase {
 
         context.addServletMappingDecoded("/", "solon");//Servlet与对应uri映射
 
+        //servlet 临时目录（用于生成 jsp 之类）
+        _server.setBaseDir(_tempdir);
+
         return context;
     }
 }
