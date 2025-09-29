@@ -22,6 +22,7 @@ import org.apache.catalina.startup.Tomcat;
 import org.noear.solon.core.util.IoUtil;
 import org.noear.solon.server.ServerProps;
 import org.noear.solon.server.handle.SessionProps;
+import org.noear.solon.server.prop.impl.HttpServerProps;
 import org.noear.solon.server.tomcat.http.TCHttpContextHandler;
 
 import javax.servlet.MultipartConfigElement;
@@ -31,6 +32,21 @@ import javax.servlet.MultipartConfigElement;
  * @since 2019/3/28 15:49
  */
 public class TomcatServer extends TomcatServerBase {
+    protected boolean isSecure;
+    protected boolean enableWebSocket;
+
+    public boolean isSecure() {
+        return isSecure;
+    }
+
+    public void enableWebSocket(boolean enableWebSocket) {
+        this.enableWebSocket = enableWebSocket;
+    }
+
+    public TomcatServer(HttpServerProps props) {
+        super(props);
+    }
+
     @Override
     protected Context initContext() {
         String _tempdir = IoUtil.getTempDirAsString("solon-server");
@@ -64,10 +80,22 @@ public class TomcatServer extends TomcatServerBase {
     }
 
     @Override
-    protected void addConnector(int port) throws Throwable {
+    protected void addConnector(int port, boolean isMain) throws Throwable {
         Connector connector = new Connector("HTTP/1.1");
 
         connector.setPort(port);
+
+        if (isMain) {
+            //for ssl
+            if (sslConfig.isSslEnable()) {
+                // 1. 标识 ssl
+                connector.setSecure(true);
+                connector.setScheme("https");
+
+                isSecure = true;
+            }
+        }
+
         connector.setMaxPostSize(ServerProps.request_maxBodySizeAsInt());
         connector.setMaxPartHeaderSize(ServerProps.request_maxHeaderSize);
 
