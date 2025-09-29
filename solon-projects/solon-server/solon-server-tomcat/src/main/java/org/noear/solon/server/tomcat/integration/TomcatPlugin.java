@@ -17,14 +17,14 @@ package org.noear.solon.server.tomcat.integration;
 
 import org.apache.catalina.util.ServerInfo;
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
+import org.noear.solon.Utils;
+import org.noear.solon.core.event.EventBus;
 import org.noear.solon.server.ServerConstants;
-import org.noear.solon.server.ServerLifecycle;
 import org.noear.solon.server.ServerProps;
 import org.noear.solon.server.prop.impl.HttpServerProps;
 import org.noear.solon.core.*;
-import org.noear.solon.core.util.ClassUtil;
 
+import org.noear.solon.server.prop.impl.WebSocketServerProps;
 import org.noear.solon.server.tomcat.TomcatServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,10 +42,10 @@ public final class TomcatPlugin implements Plugin {
         return _signal;
     }
 
-    private ServerLifecycle _server = null;
+    private TomcatServer _server = null;
 
     public static String solon_server_ver() {
-    	return ServerInfo.getServerInfo() + "/" + Solon.version();
+        return ServerInfo.getServerInfo() + "/" + Solon.version();
     }
 
     @Override
@@ -62,42 +62,53 @@ public final class TomcatPlugin implements Plugin {
         });
 
         context.lifecycle(ServerConstants.SIGNAL_LIFECYCLE_INDEX, () -> {
-            start0(Solon.app());
+            start0(context);
         });
     }
 
-    private void start0(SolonApp app) throws Throwable {
+    private void start0(AppContext context) throws Throwable {
         //初始化属性
         ServerProps.init();
 
-        Class<?> jspClz = ClassUtil.loadClass("org.apache.jasper.servlet.JspServlet");
+        long time_start = System.currentTimeMillis();
 
-        HttpServerProps props = HttpServerProps.getInstance();
+        HttpServerProps props = new HttpServerProps();
         final String _host = props.getHost();
         final int _port = props.getPort();
         final String _name = props.getName();
 
-        _server = new TomcatServer();
+        _server = new TomcatServer(props);
+        _server.enableWebSocket(context.app().enableWebSocket());
 
-        long time_start = System.currentTimeMillis();
-
+        EventBus.publish(_server);
         _server.start(_host, _port);
+
 
         final String _wrapHost = props.getWrapHost();
         final int _wrapPort = props.getWrapPort();
         _signal = new SignalSim(_name, _wrapHost, _wrapPort, "http", SignalType.HTTP);
 
-        app.signalAdd(_signal);
+        context.app().signalAdd(_signal);
 
         long time_end = System.currentTimeMillis();
 
-        String connectorInfo = "solon.connector:main: tomcat: Started ServerConnector@{HTTP/1.1,[http/1.1]";
-        if (app.enableWebSocket()) {
-            String wsServerUrl = props.buildWsServerUrl(false);
+        String connectorInfo = "Connector:main: tomcat: Started ServerConnector@{HTTP/1.1,[http/1.1]";
+        if (_server.isSecure() && _server.isEnableHttp2()) {
+            connectorInfo += ";HTTP/2,[http/2]";
+        }
+        if (context.app().enableWebSocket()) {
+            //有名字定义时，添加信号注册
+            WebSocketServerProps wsProps = WebSocketServerProps.getInstance();
+            if (Utils.isNotEmpty(wsProps.getName())) {
+                SignalSim wsSignal = new SignalSim(wsProps.getName(), _wrapHost, _wrapPort, "ws", SignalType.WEBSOCKET);
+                context.app().signalAdd(wsSignal);
+            }
+
+            String wsServerUrl = props.buildWsServerUrl(_server.isSecure());
             log.info(connectorInfo + "[WebSocket]}{" + wsServerUrl + "}");
         }
 
-        String httpServerUrl = props.buildHttpServerUrl(false);
+        String httpServerUrl = props.buildHttpServerUrl(_server.isSecure());
         log.info(connectorInfo + "}{" + httpServerUrl + "}");
         log.info("Server:main: tomcat: Started (" + solon_server_ver() + ") @" + (time_end - time_start) + "ms");
     }
