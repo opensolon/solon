@@ -43,6 +43,9 @@ public class FastjsonStringSerializer implements EntityStringSerializer {
     private static final String label = "/json";
     private static final FastjsonStringSerializer _default = new FastjsonStringSerializer();
 
+    /**
+     * 默认实例
+     */
     public static FastjsonStringSerializer getDefault() {
         return _default;
     }

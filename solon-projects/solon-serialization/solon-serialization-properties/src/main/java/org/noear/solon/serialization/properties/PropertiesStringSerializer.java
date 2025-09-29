@@ -39,6 +39,9 @@ import java.util.Properties;
 public class PropertiesStringSerializer implements EntitySerializer<String> {
     private static final PropertiesStringSerializer _default = new PropertiesStringSerializer();
 
+    /**
+     * 默认实例
+     */
     public static PropertiesStringSerializer getDefault() {
         return _default;
     }

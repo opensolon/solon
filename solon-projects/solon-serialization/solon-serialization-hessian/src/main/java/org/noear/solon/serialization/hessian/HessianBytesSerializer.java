@@ -35,6 +35,9 @@ public class HessianBytesSerializer implements EntitySerializer<byte[]> {
     private static final String label = "application/hessian";
     private static final HessianBytesSerializer _default = new HessianBytesSerializer();
 
+    /**
+     * 默认实例
+     */
     public static HessianBytesSerializer getDefault() {
         return _default;
     }

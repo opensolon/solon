@@ -37,6 +37,9 @@ public class ProtostuffBytesSerializer implements EntitySerializer<byte[]> {
     private static final String label = "application/protobuf";
     private static final ProtostuffBytesSerializer _default = new ProtostuffBytesSerializer();
 
+    /**
+     * 默认实例
+     */
     public static ProtostuffBytesSerializer getDefault() {
         return _default;
     }

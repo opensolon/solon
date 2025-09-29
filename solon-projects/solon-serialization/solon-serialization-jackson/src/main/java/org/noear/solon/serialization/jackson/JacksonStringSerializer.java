@@ -53,6 +53,9 @@ public class JacksonStringSerializer implements EntityStringSerializer {
     private static final String label = "/json";
     private static final JacksonStringSerializer _default = new JacksonStringSerializer();
 
+    /**
+     * 默认实例
+     */
     public static JacksonStringSerializer getDefault() {
         return _default;
     }

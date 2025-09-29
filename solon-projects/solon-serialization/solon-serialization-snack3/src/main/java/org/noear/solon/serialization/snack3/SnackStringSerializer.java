@@ -42,6 +42,9 @@ public class SnackStringSerializer implements EntityStringSerializer {
     private static final String label = "/json";
     private static final SnackStringSerializer _default = new SnackStringSerializer();
 
+    /**
+     * 默认实例
+     */
     public static SnackStringSerializer getDefault() {
         return _default;
     }

@@ -40,6 +40,9 @@ public class FuryBytesSerializer implements EntitySerializer<byte[]> {
     private static final String label = "application/fury";
     private static final FuryBytesSerializer _default = new FuryBytesSerializer();
 
+    /**
+     * 默认实例
+     */
     public static FuryBytesSerializer getDefault() {
         return _default;
     }

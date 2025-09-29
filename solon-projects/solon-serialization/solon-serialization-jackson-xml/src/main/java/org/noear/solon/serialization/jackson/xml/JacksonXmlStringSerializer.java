@@ -53,6 +53,9 @@ public class JacksonXmlStringSerializer implements EntityStringSerializer {
     public static final String label = "/xml";
     private static final JacksonXmlStringSerializer _default = new JacksonXmlStringSerializer();
 
+    /**
+     * 默认实例
+     */
     public static JacksonXmlStringSerializer getDefault() {
         return _default;
     }
