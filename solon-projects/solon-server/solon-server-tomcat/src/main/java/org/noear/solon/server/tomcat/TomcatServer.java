@@ -16,6 +16,7 @@
 package org.noear.solon.server.tomcat;
 
 import org.apache.catalina.Context;
+import org.apache.catalina.Wrapper;
 import org.apache.catalina.connector.Connector;
 import org.apache.catalina.startup.Tomcat;
 import org.noear.solon.core.util.IoUtil;
@@ -54,13 +55,6 @@ public class TomcatServer extends TomcatServerBase {
         // for context
         Context context = _server.addContext("/", null);//第二个参数与文档相关
 
-        MultipartConfigElement multipartConfig = new MultipartConfigElement(
-                _tempdir,
-                ServerProps.request_maxFileSize,
-                ServerProps.request_maxFileRequestSize(),
-                ServerProps.request_fileSizeThreshold);
-
-        context.getServletContext().setAttribute("org.apache.catalina.MultipartConfigElement", multipartConfig);
         context.setAllowCasualMultipartParsing(true);
 
         if (SessionProps.session_timeout > 0) {
@@ -68,11 +62,17 @@ public class TomcatServer extends TomcatServerBase {
         }
 
         // for http
-        Tomcat.addServlet(context, "solon", new TCHttpContextHandler())
-                .setAsyncSupported(true);
+        MultipartConfigElement multipartConfig = new MultipartConfigElement(
+                _tempdir,
+                ServerProps.request_maxFileSize,
+                ServerProps.request_maxFileRequestSize(),
+                ServerProps.request_fileSizeThreshold);
+
+        Wrapper servlet = Tomcat.addServlet(context, "solon", new TCHttpContextHandler());
+        servlet.setAsyncSupported(true);
+        servlet.setMultipartConfigElement(multipartConfig);
 
         context.addServletMappingDecoded("/", "solon");//Servlet与对应uri映射
-
 
         return context;
     }
