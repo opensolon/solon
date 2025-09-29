@@ -32,20 +32,6 @@ import javax.servlet.MultipartConfigElement;
  */
 public class TomcatServer extends TomcatServerBase {
     @Override
-    protected Connector addConnector(int port) throws Throwable {
-        Connector connector = _server.getConnector();
-
-        connector.setPort(port);
-        connector.setMaxPostSize(ServerProps.request_maxBodySizeAsInt());
-        connector.setProperty("maxHttpHeaderSize", String.valueOf(ServerProps.request_maxHeaderSize));
-        connector.setProperty("relaxedQueryChars", "[]|{}");
-        connector.setURIEncoding(ServerProps.request_encoding);
-        connector.setUseBodyEncodingForURI(true);
-
-        return connector;
-    }
-
-    @Override
     protected Context initContext() {
         String _tempdir = IoUtil.getTempDirAsString("solon-server");
 
@@ -75,5 +61,24 @@ public class TomcatServer extends TomcatServerBase {
         context.addServletMappingDecoded("/", "solon");//Servlet与对应uri映射
 
         return context;
+    }
+
+    @Override
+    protected void addConnector(int port) throws Throwable {
+        Connector connector = new Connector("HTTP/1.1");
+
+        connector.setPort(port);
+        connector.setMaxPostSize(ServerProps.request_maxBodySizeAsInt());
+        connector.setMaxPartHeaderSize(ServerProps.request_maxHeaderSize);
+
+        connector.setProperty("maxHttpHeaderSize", String.valueOf(ServerProps.request_maxHeaderSize));
+        connector.setProperty("maxSwallowSize", String.valueOf(ServerProps.request_maxBodySize));
+
+        connector.setProperty("relaxedQueryChars", "[]|{}");
+        connector.setURIEncoding(ServerProps.request_encoding);
+        connector.setUseBodyEncodingForURI(true);
+
+
+        _server.getService().addConnector(connector);
     }
 }

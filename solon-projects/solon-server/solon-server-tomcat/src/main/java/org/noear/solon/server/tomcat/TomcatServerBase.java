@@ -55,5 +55,5 @@ public abstract class TomcatServerBase implements ServerLifecycle {
 
     protected abstract Context initContext() throws Throwable;
 
-    protected abstract Connector addConnector(int port) throws Throwable;
+    protected abstract void addConnector(int port) throws Throwable;
 }
