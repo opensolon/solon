@@ -46,9 +46,13 @@ public class TomcatServer extends TomcatServerBase {
 
     @Override
     protected Context initContext() {
-        Context context = _server.addContext("/", null);//第二个参数与文档相关
-
         String _tempdir = IoUtil.getTempDirAsString("solon-server");
+
+        // servlet 临时目录（用于生成 jsp 之类）
+        _server.setBaseDir(_tempdir);
+
+        // for context
+        Context context = _server.addContext("/", null);//第二个参数与文档相关
 
         MultipartConfigElement multipartConfig = new MultipartConfigElement(
                 _tempdir,
@@ -69,8 +73,6 @@ public class TomcatServer extends TomcatServerBase {
 
         context.addServletMappingDecoded("/", "solon");//Servlet与对应uri映射
 
-        //servlet 临时目录（用于生成 jsp 之类）
-        _server.setBaseDir(_tempdir);
 
         return context;
     }
