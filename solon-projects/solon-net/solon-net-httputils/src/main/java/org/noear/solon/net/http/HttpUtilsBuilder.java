@@ -36,6 +36,7 @@ public class HttpUtilsBuilder {
     private HttpTimeout timeout;
     private Proxy proxy;
     private HttpSslSupplier sslSupplier;
+    private HttpUtilsFactory utilsFactory;
 
     /**
      * 服务名
@@ -124,6 +125,14 @@ public class HttpUtilsBuilder {
     }
 
     /**
+     * 设置工具工厂
+     */
+    public HttpUtilsBuilder factory(HttpUtilsFactory factory) {
+        this.utilsFactory = factory;
+        return this;
+    }
+
+    /**
      * 构建 Http 工具
      */
     public HttpUtils build(String url) {
@@ -135,6 +144,10 @@ public class HttpUtilsBuilder {
             url = PathUtil.joinUri(baseUri, url);
         }
 
-        return HttpUtils.http(url).headers(headers).timeout(timeout).proxy(proxy).ssl(sslSupplier);
+        if (utilsFactory == null) {
+            return HttpUtils.http(url).headers(headers).timeout(timeout).proxy(proxy).ssl(sslSupplier);
+        } else {
+            return utilsFactory.http(url).headers(headers).timeout(timeout).proxy(proxy).ssl(sslSupplier);
+        }
     }
 }

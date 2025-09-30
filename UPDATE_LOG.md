@@ -48,6 +48,7 @@
 * 添加 `solon-mvc` `List<UploadedFile>` 注入支持（用 `UploadedFile[]` 性能更好）
 * 添加 `solon-server` 所有 http-server 适配 `server.request.fileSizeThreshold` 配置支持（重要升级）
 * 添加 `solon` converters,serializers,renders,factories,chains（简化名自：converterManager,serializerManager,renderManager,factoryManager,chainManager）
+* 添加 `solon-net-httputils` HttpUtilsBuilder:factory 方法
 * 修复 `solon-scheduling` `@Async` 执行器名字配置失效的问题
 * 修复 `solon-net-httputils` HttpUtils:toQueryString map 里有 null item 时会异常的问题
 * snakeyaml 升为 2.5
