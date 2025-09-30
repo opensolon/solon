@@ -28,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLContext;
+import java.io.IOException;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.concurrent.Executor;
@@ -71,7 +72,7 @@ public abstract class TomcatServerBase implements ServerLifecycle, HttpServerCon
         this.enableHttp2 = enable;
     }
 
-    public boolean isEnableHttp2(){
+    public boolean isEnableHttp2() {
         return enableHttp2;
     }
 
@@ -91,7 +92,6 @@ public abstract class TomcatServerBase implements ServerLifecycle, HttpServerCon
     public HttpServerProps getProps() {
         return props;
     }
-
 
 
     @Override
@@ -125,7 +125,7 @@ public abstract class TomcatServerBase implements ServerLifecycle, HttpServerCon
         }
     }
 
-    protected abstract Context initContext() throws Throwable;
+    protected abstract Context initContext() throws IOException;
 
-    protected abstract void addConnector(int port, boolean isMain) throws Throwable;
+    protected abstract void addConnector(int port, boolean isMain) throws IOException;
 }
