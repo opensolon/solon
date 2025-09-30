@@ -142,4 +142,17 @@ public class HeaderTest extends HttpTester {
         rst = path("/demo2/header/server?out=1").exec("GET").header("Server");
         Assertions.assertEquals("solon", rst);
     }
+
+    @Test
+    public void testList() throws Exception {
+        String list = path("/demo2/header/list")
+                .header("X-Test","1")
+                .accept("application/json")
+                .get();
+
+        assert list.length() > 0;
+        assert list.contains("X-Test");
+        assert list.contains("Accept");
+        assert list.contains("application/json");
+    }
 }
