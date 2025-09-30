@@ -19,7 +19,7 @@
     <modules>
         <module>../../solon-projects/solon-server/solon-server</module>
         <module>../../solon-projects/solon-server/solon-server-grizzly</module>
-        <module>../../solon-projects/solon-server/solon-server-grizzly-add-webscoket</module>
+        <module>../../solon-projects/solon-server/solon-server-grizzly-add-websocket</module>
         <module>../../solon-projects/solon-server/solon-server-jdkhttp</module>
         <module>../../solon-projects/solon-server/solon-server-smarthttp</module>
         <module>../../solon-projects/solon-server/solon-server-jetty</module>

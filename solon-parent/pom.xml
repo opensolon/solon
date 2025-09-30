@@ -372,7 +372,7 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon-server-grizzly-add-webscoket</artifactId>
+                <artifactId>solon-server-grizzly-add-websocket</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
