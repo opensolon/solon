@@ -19,7 +19,10 @@ import org.apache.catalina.Context;
 import org.apache.catalina.Wrapper;
 import org.apache.catalina.connector.Connector;
 import org.apache.catalina.startup.Tomcat;
+import org.apache.coyote.ProtocolHandler;
+import org.apache.coyote.http11.Http11Nio2Protocol;
 import org.apache.coyote.http11.Http11NioProtocol;
+import org.apache.coyote.http2.Http2Protocol;
 import org.apache.tomcat.util.net.SSLHostConfig;
 import org.apache.tomcat.util.net.SSLHostConfigCertificate;
 import org.noear.solon.core.util.IoUtil;
@@ -31,6 +34,7 @@ import org.noear.solon.server.tomcat.ssl.TomcatSslContext;
 
 import javax.net.ssl.SSLContext;
 import javax.servlet.MultipartConfigElement;
+import java.io.IOException;
 
 /**
  * @author Yukai
@@ -87,28 +91,12 @@ public class TomcatServer extends TomcatServerBase {
     }
 
     @Override
-    protected void addConnector(int port, boolean isMain) throws Throwable {
+    protected void addConnector(int port, boolean isMain) throws IOException {
         //::protocol
-        final Http11NioProtocol protocol = new Http11NioProtocol();
+        ProtocolHandler protocol = createHttp11Protocol(isMain);
 
-        if (ServerProps.request_maxHeaderSize > 0) {
-            protocol.setMaxHttpHeaderSize(ServerProps.request_maxHeaderSize);
-        }
-
-        if (ServerProps.request_maxBodySize > 0) {
-            protocol.setMaxSwallowSize(ServerProps.request_maxBodySizeAsInt());
-        }
-
-        protocol.setRelaxedQueryChars("[]|{}");
-
-        if (isMain) {
-            //for protocol ssl
-            if (sslConfig.isSslEnable()) {
-                protocol.setSSLEnabled(true);
-                protocol.setSecure(true);
-                protocol.addSslHostConfig(createSSLHostConfig(sslConfig.getSslContext()));
-                isSecure = true;
-            }
+        if (isMain && enableHttp2) {
+            protocol.addUpgradeProtocol(new Http2Protocol());
         }
 
 
@@ -132,6 +120,33 @@ public class TomcatServer extends TomcatServerBase {
 
         _server.getService().addConnector(connector);
     }
+
+    private ProtocolHandler createHttp11Protocol(boolean isMain) throws IOException {
+        final Http11Nio2Protocol protocol = new Http11Nio2Protocol();
+
+        if (ServerProps.request_maxHeaderSize > 0) {
+            protocol.setMaxHttpHeaderSize(ServerProps.request_maxHeaderSize);
+        }
+
+        if (ServerProps.request_maxBodySize > 0) {
+            protocol.setMaxSwallowSize(ServerProps.request_maxBodySizeAsInt());
+        }
+
+        protocol.setRelaxedQueryChars("[]|{}");
+
+        if (isMain) {
+            //for protocol ssl
+            if (sslConfig.isSslEnable()) {
+                protocol.setSSLEnabled(true);
+                protocol.setSecure(true);
+                protocol.addSslHostConfig(createSSLHostConfig(sslConfig.getSslContext()));
+                isSecure = true;
+            }
+        }
+
+        return protocol;
+    }
+
 
     private static SSLHostConfig createSSLHostConfig(final SSLContext sslContext) {
         final SSLHostConfig sslHostConfig = new SSLHostConfig();
