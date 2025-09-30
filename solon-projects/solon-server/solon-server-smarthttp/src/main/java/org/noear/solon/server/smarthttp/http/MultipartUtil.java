@@ -41,17 +41,13 @@ public class MultipartUtil {
      */
     public static void init() throws IOException {
         if (multipartConfig == null) {
-            if (ServerProps.request_useTempfile) {
-                String _tempdir = IoUtil.getTempDirAsString("solon-server");
+            String _tempdir = IoUtil.getTempDirAsString("solon-server");
 
-                multipartConfig = new MultipartConfig(
-                        _tempdir,
-                        ServerProps.request_maxFileSize,
-                        ServerProps.request_maxFileRequestSize(),
-                        ServerProps.request_fileSizeThreshold);
-            } else {
-                multipartConfig = new MultipartConfig();
-            }
+            multipartConfig = new MultipartConfig(
+                    _tempdir,
+                    ServerProps.request_maxFileSize,
+                    ServerProps.request_maxFileRequestSize(),
+                    ServerProps.request_fileSizeThreshold);
         }
     }
 
