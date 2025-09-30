@@ -46,7 +46,7 @@
 * 添加 `solon` Condition:onExpression（采用 SnEL 表达式）用于替代 onProperty（标为弃用）
 * 添加 `solon` SnelUtil（基于 SnEL 且兼容旧的 TmplUtil） 替代 TmplUtil（标为弃用）//如果有 # 则为新表达式
 * 添加 `solon-mvc` `List<UploadedFile>` 注入支持（用 `UploadedFile[]` 性能更好）
-* 添加 `solon-server` `server.request.fileSizeThreshold` 配置支持
+* 添加 `solon-server` 所有 http-server 适配 `server.request.fileSizeThreshold` 配置支持（重要升级）
 * 添加 `solon` converters,serializers,renders,factories,chains（简化名自：converterManager,serializerManager,renderManager,factoryManager,chainManager）
 * 修复 `solon-scheduling` `@Async` 执行器名字配置失效的问题
 * 修复 `solon-net-httputils` HttpUtils:toQueryString map 里有 null item 时会异常的问题
