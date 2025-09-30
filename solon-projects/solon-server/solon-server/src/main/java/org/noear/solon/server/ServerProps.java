@@ -77,7 +77,10 @@ public class ServerProps {
 
     /**
      * 上传使用临时文件
+     *
+     * @deprecated 3.6 不需要了
      */
+    @Deprecated
     public static final boolean request_useTempfile;
 
     /**
