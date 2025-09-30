@@ -30,7 +30,7 @@
 ### 3.6.0
 
 * 新增 `solon-server-grizzly` 插件
-* 新增 `solon-server-grizzly-add-webscoket` 插件
+* 新增 `solon-server-grizzly-add-websocket` 插件
 * 新增 `solon-server-tomcat` 插件（基于 tomcat v9.0 适配）//试用？？？ 添加 ssl 
 * 新增 `solon-server-tomcat-jakarta` 插件（基于 tomcat v11.0 适配）//试用
 * 新增 `solon-server-undertow-jakarta` 插件（基于 undertow v2.3 适配）
