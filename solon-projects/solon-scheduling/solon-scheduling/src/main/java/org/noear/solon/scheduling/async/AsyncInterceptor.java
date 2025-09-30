@@ -15,8 +15,10 @@
  */
 package org.noear.solon.scheduling.async;
 
-import org.noear.solon.core.aspect.Interceptor;
+import org.noear.solon.Utils;
 import org.noear.solon.core.aspect.Invocation;
+import org.noear.solon.core.aspect.MethodInterceptor;
+import org.noear.solon.lang.Nullable;
 import org.noear.solon.scheduling.annotation.Async;
 
 import java.util.concurrent.Future;
@@ -27,13 +29,12 @@ import java.util.concurrent.Future;
  * @author noear
  * @since 1.11
  */
-public class AsyncInterceptor implements Interceptor {
-    private AsyncExecutor asyncExecutor = new AsyncExecutorDefault();
+public class AsyncInterceptor implements MethodInterceptor {
+    private final AsyncExecutor asyncExecutorDef = new AsyncExecutorDefault();
+    private @Nullable AsyncExecutor asyncExecutor; //按 type 注册到容器的
 
     public void setAsyncExecutor(AsyncExecutor asyncExecutor) {
-        if (asyncExecutor != null) {
-            this.asyncExecutor = asyncExecutor;
-        }
+        this.asyncExecutor = asyncExecutor;
     }
 
     @Override
@@ -41,7 +42,23 @@ public class AsyncInterceptor implements Interceptor {
         Async anno = inv.getMethodAnnotation(Async.class);
 
         if (anno != null) {
-            Future future = asyncExecutor.submit(inv, anno);
+            AsyncExecutor executor = null;
+
+            //尝试按名字
+            if (Utils.isNotEmpty(anno.value())) {
+                executor = inv.context().getBean(anno.value());
+            }
+
+            //如果没有
+            if (executor == null) {
+                if (asyncExecutor == null) {
+                    executor = asyncExecutorDef;
+                } else {
+                    executor = asyncExecutor;
+                }
+            }
+
+            Future future = executor.submit(inv, anno);
 
             if (inv.method().getReturnType().isAssignableFrom(Future.class)) {
                 return future;

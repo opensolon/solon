@@ -36,6 +36,7 @@
 
 ### 3.5.5
 
+* 修复 `solon-scheduling` `@Async` 执行器名字配置失效的问题
 * 修复 `solon-net-httputils` HttpUtils:toQueryString map 里有 null item 时会异常的问题
 
 ### 3.5.4
