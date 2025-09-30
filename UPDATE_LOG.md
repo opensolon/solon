@@ -34,6 +34,10 @@
 * 引入 `solon-expression` 替代 `solon` 内的表达式
 
 
+### 3.5.5
+
+* 修复 `solon-net-httputils` HttpUtils:toQueryString map 里有 null item 时会异常的问题
+
 ### 3.5.4
 
 * 优化 `solon-test` `@SolonTest` 支持非 solon 的 main 程序单测启动

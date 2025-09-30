@@ -291,12 +291,14 @@ public class OkHttpUtils extends AbstractHttpUtils implements HttpUtils {
             for (KeyValues<String> kv : _params) {
                 String key = HttpUtils.urlEncode(kv.getKey(), charset.name());
                 for (String val : kv.getValues()) {
-                    if (newUrl.indexOf("?") < 0) {
-                        newUrl.append("?");
-                    } else {
-                        newUrl.append("&");
+                    if (val != null) {
+                        if (newUrl.indexOf("?") < 0) {
+                            newUrl.append("?");
+                        } else {
+                            newUrl.append("&");
+                        }
+                        newUrl.append(key).append("=").append(HttpUtils.urlEncode(val, charset.name()));
                     }
-                    newUrl.append(key).append("=").append(HttpUtils.urlEncode(val, charset.name()));
                 }
             }
 
