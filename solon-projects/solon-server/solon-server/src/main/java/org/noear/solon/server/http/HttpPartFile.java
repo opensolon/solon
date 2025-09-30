@@ -31,37 +31,37 @@ import java.nio.file.Path;
  * @since 3.5
  */
 public class HttpPartFile {
-    private static Path tempdir;
     private File tempfile;
     private InputStream content;
     private final long size;
+    private final String filename;
 
     public HttpPartFile(String filename, InputStream ins) throws IOException {
-        if (ServerProps.request_useTempfile && Utils.isNotEmpty(filename)) {
-            if (tempdir == null) {
-                Utils.locker().lock();
-                try {
-                    if (tempdir == null) {
-                        tempdir = IoUtil.getTempDirAsFile("solon-server").toPath();
-                    }
-                } finally {
-                    Utils.locker().unlock();
-                }
-            }
+        this.filename = filename;
+
+        ByteArrayOutputStream thresholdBuffer = new ByteArrayOutputStream();
+        if (ServerProps.request_fileSizeThreshold > 0) {
+            IoUtil.transferTo(ins, thresholdBuffer, 0, ServerProps.request_fileSizeThreshold);
+        }
+
+        if (thresholdBuffer.size() < ServerProps.request_fileSizeThreshold) {
+            //说明没到阀值
+            size = thresholdBuffer.size();
+            content = new ByteArrayInputStream(thresholdBuffer.toByteArray());
+        } else {
+            //说明到阀值
+            Path tempdir = ServerProps.request_tempDir.toPath();
 
             tempfile = Files.createTempFile(tempdir, "solon.", ".tmp").toFile();
             try (OutputStream outs = new BufferedOutputStream(new FileOutputStream(tempfile))) {
+                //转入缓冲
+                outs.write(thresholdBuffer.toByteArray());
+                //转入剩余部分
                 IoUtil.transferTo(ins, outs);
             }
 
             size = tempfile.length();
             content = new FileInputStream(tempfile);
-        } else {
-            ByteArrayOutputStream output = new ByteArrayOutputStream();
-            IoUtil.transferTo(ins, output);
-
-            size = output.size();
-            content = new ByteArrayInputStream(output.toByteArray());
         }
     }
 
@@ -88,6 +88,13 @@ public class HttpPartFile {
 
             tempfile = null;
         }
+    }
+
+    /**
+     * 获取文件名
+     */
+    public String getFilename() {
+        return filename;
     }
 
     /**

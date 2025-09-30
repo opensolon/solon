@@ -18,7 +18,9 @@ package org.noear.solon.server;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.util.Assert;
+import org.noear.solon.core.util.IoUtil;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
@@ -79,6 +81,11 @@ public class ServerProps {
     public static final boolean request_useTempfile;
 
     /**
+     * 上传临时目录
+     */
+    public static final File request_tempDir;
+
+    /**
      * 上传使用原始路径
      *
      * @since 2.8
@@ -95,32 +102,34 @@ public class ServerProps {
     }
 
     static {
-        String tmp = null;
         output_meta = Solon.cfg().getInt("solon.output.meta", 0) > 0;
+        request_tempDir = IoUtil.getTempDirAsFile("solon-server");
+
+        String tmp = null;
 
         //
         // for request
         //
 
         tmp = Solon.cfg().get(ServerConstants.SERVER_REQUEST_FILESIZETHRESHOLD, "").trim().toLowerCase();//k数
-        request_fileSizeThreshold = (int) getSize(tmp, 1048576L);//1m
+        request_fileSizeThreshold = (int) getSize(tmp, 512L * 1024L);//512k
 
 
         tmp = Solon.cfg().get(ServerConstants.SERVER_REQUEST_MAXHEADERSIZE, "").trim().toLowerCase();//k数
-        request_maxHeaderSize = (int) getSize(tmp, 8192L);//8k
+        request_maxHeaderSize = (int) getSize(tmp, 8L * 1024L);//8k
 
         tmp = Solon.cfg().get(ServerConstants.SERVER_REQUEST_MAXBODYSIZE, "").trim().toLowerCase();//k数
         if (Utils.isEmpty(tmp)) {
             //兼容旧的配置
-            tmp = Solon.cfg().get("server.request.maxRequestSize", "").trim().toLowerCase();//k数
+            tmp = Solon.cfg().get(ServerConstants.SERVER_REQUEST_MAXREQUESTSIZE, "").trim().toLowerCase();//k数
         }
-        request_maxBodySize = getSize(tmp, 2097152L);//2m
+        request_maxBodySize = getSize(tmp, 2L * 1024L * 1024L);//2m
 
         tmp = Solon.cfg().get(ServerConstants.SERVER_REQUEST_MAXFILESIZE, "").trim().toLowerCase();//k数
         if (Utils.isEmpty(tmp)) {
             request_maxFileSize = request_maxBodySize;
         } else {
-            request_maxFileSize = getSize(tmp, 2097152L);//2m
+            request_maxFileSize = getSize(tmp, 2L * 1024L * 1024L);//2m
         }
 
         tmp = Solon.cfg().get(ServerConstants.SERVER_REQUEST_ENCODING, "").trim();
@@ -139,7 +148,7 @@ public class ServerProps {
         //
         // for response
         //
-        tmp = Solon.cfg().get("server.response.encoding", "").trim();
+        tmp = Solon.cfg().get(ServerConstants.SERVER_RESPONSE_ENCODING, "").trim();
 
         if (Utils.isEmpty(tmp)) {
             response_encoding = Solon.encoding();
@@ -166,10 +175,10 @@ public class ServerProps {
 
         if (tmp.endsWith("mb")) {
             long val = Long.parseLong(tmp.substring(0, tmp.length() - 2));
-            return val * 1204 * 1204;
+            return val * 1024L * 1024L;
         } else if (tmp.endsWith("kb")) {
             long val = Long.parseLong(tmp.substring(0, tmp.length() - 2));
-            return val * 1204;
+            return val * 1024L;
         } else {
             long val = Long.parseLong(tmp); //支持-1
 

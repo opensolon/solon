@@ -34,13 +34,16 @@ public interface ServerConstants {
     String SERVER_HTTP_GZIP_MIMETYPES = "server.http.gzip.mimeTypes";
 
     String SERVER_REQUEST_MAXHEADERSIZE = "server.request.maxHeaderSize";
-    String SERVER_REQUEST_MAXBODYSIZE = "server.request.maxBodySize";
+    String SERVER_REQUEST_MAXBODYSIZE = "server.request.maxBodySize"; //新
+    String SERVER_REQUEST_MAXREQUESTSIZE = "server.request.maxRequestSize"; //旧
     String SERVER_REQUEST_MAXFILESIZE = "server.request.maxFileSize";
     String SERVER_REQUEST_FILESIZETHRESHOLD = "server.request.fileSizeThreshold";
 
     String SERVER_REQUEST_USETEMPFILE = "server.request.useTempfile";
     String SERVER_REQUEST_USERAWPATH = "server.request.useRawpath";
     String SERVER_REQUEST_ENCODING = "server.request.encoding";
+
+    String SERVER_RESPONSE_ENCODING = "server.response.encoding";
 
     String SIGNAL_HTTP = "http";
     String SIGNAL_SOCKET = "socket";
