@@ -122,7 +122,7 @@ public class TomcatServer extends TomcatServerBase {
     }
 
     private ProtocolHandler createHttp11Protocol(boolean isMain) throws IOException {
-        final Http11Nio2Protocol protocol = new Http11Nio2Protocol();
+        final Http11NioProtocol protocol = new Http11NioProtocol();
 
         if (ServerProps.request_maxHeaderSize > 0) {
             protocol.setMaxHttpHeaderSize(ServerProps.request_maxHeaderSize);
