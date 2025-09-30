@@ -63,4 +63,9 @@ public class HeaderController {
             ctx.headerSet("Server", "solon");
         }
     }
+
+    @Mapping("/demo2/header/list")
+    public String header_list(Context ctx) throws Exception {
+        return ctx.headerMap().toString();
+    }
 }
