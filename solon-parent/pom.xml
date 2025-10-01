@@ -39,7 +39,7 @@
         <solon-integration.version>3.6.0</solon-integration.version>
         <solon-jakarta.version>3.6.0</solon-jakarta.version>
 
-        <solonx.version>1.1.4</solonx.version>
+        <solonx.version>1.2.0</solonx.version>
 
         <snack3.version>3.2.139</snack3.version>
         <weed3.version>3.4.33</weed3.version>
