@@ -17,6 +17,7 @@ package org.noear.solon.core.util;
 
 import java.io.Serializable;
 import java.util.*;
+import java.util.function.Consumer;
 
 /**
  * 忽略大小写的LinkedMap
@@ -68,7 +69,6 @@ public class IgnoreCaseMap<V> implements Map<String, V>, Serializable, Cloneable
         this._k = (HashMap<String, String>) other._k.clone();
         this.locale = other.locale;
     }
-
 
     // Implementation of java.util.Map
 
@@ -197,5 +197,15 @@ public class IgnoreCaseMap<V> implements Map<String, V>, Serializable, Cloneable
 
     protected boolean removeEldestEntry(Map.Entry<String, V> eldest) {
         return false;
+    }
+
+    /// /////
+
+    /**
+     * @since 3.6
+     * */
+    public IgnoreCaseMap<V> then(Consumer<IgnoreCaseMap<V>> consumer) {
+        consumer.accept(this);
+        return this;
     }
 }

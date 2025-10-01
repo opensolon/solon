@@ -18,17 +18,12 @@ package org.noear.solon;
 import org.noear.solon.annotation.Import;
 import org.noear.solon.core.*;
 import org.noear.solon.core.runtime.NativeDetector;
-import org.noear.solon.core.util.JavaUtil;
-import org.noear.solon.core.util.PluginUtil;
-import org.noear.solon.core.util.ResourceUtil;
+import org.noear.solon.core.util.*;
 
 import java.lang.annotation.Annotation;
 import java.net.URL;
 import java.util.*;
 import java.util.function.Predicate;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * 应用配置加载器
@@ -53,7 +48,7 @@ public final class SolonProps extends Props {
     protected final List<String> warns = new ArrayList<>();
 
     private final SolonApp app;
-    private final NvMap args;
+    private final MultiMap<String> argx;
     private final boolean testing;
     private final List<PluginEntity> plugins = new ArrayList<>();
     private final List<String> pluginExcludeds = new ArrayList<>();
@@ -74,15 +69,15 @@ public final class SolonProps extends Props {
     private String extend;
     private String extendFilter;
 
-    public SolonProps(SolonApp app, NvMap args) throws Exception {
+    public SolonProps(SolonApp app, MultiMap<String> argx) throws Exception {
         super(System.getProperties());
 
         //1.关联应用
         this.app = app;
         //1.1.接收启动参数
-        this.args = args;
+        this.argx = argx;
         //1.2.测试隔离
-        this.testing = args.containsKey("testing");
+        this.testing = argx.containsKey("testing");
 
 
         //::: 开始加载
@@ -103,7 +98,7 @@ public final class SolonProps extends Props {
 
 
         //4.加载文件配置
-        String config = args.get("cfg"); //？限定属性文件，且不再加应用属性文件（一般用于内嵌场景）
+        String config = argx.get("cfg"); //？限定属性文件，且不再加应用属性文件（一般用于内嵌场景）
         if(Utils.isEmpty(config)) {
             loadInit(ResourceUtil.getResource("app.properties"), sysPropOrg);
             loadInit(ResourceUtil.getResource("app.yml"), sysPropOrg);
@@ -250,9 +245,9 @@ public final class SolonProps extends Props {
 
     private void syncArgsToSys() {
         //1.同步所有属性
-        for(Map.Entry<String,String> kv: this.args.entrySet()) {
+        for(KeyValues<String> kv: this.argx) {
             if (kv.getKey().contains(".")) {
-                System.setProperty(kv.getKey(), kv.getValue());
+                System.setProperty(kv.getKey(), kv.getFirstValue());
             }
         }
 
@@ -274,7 +269,7 @@ public final class SolonProps extends Props {
      * @param name 参数名
      * */
     private void syncArgToSys(String name) {
-        String val = args.get(name);
+        String val = argx.get(name);
         if (val != null) {
             //如果为空，尝试从属性配置取
             System.setProperty("solon." + name, val);
@@ -288,7 +283,7 @@ public final class SolonProps extends Props {
      */
     private String getArg(String name) {
         //尝试去启动参数取
-        String val = args.get(name);
+        String val = argx.get(name);
         if (val == null) {
             //如果为空，尝试从属性配置取
             val = get("solon." + name);
@@ -398,8 +393,8 @@ public final class SolonProps extends Props {
     /**
      * 获取启动参数
      */
-    public NvMap argx() {
-        return args;
+    public MultiMap<String> argx() {
+        return argx;
     }
 
     /**

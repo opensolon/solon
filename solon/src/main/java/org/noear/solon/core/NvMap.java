@@ -31,7 +31,9 @@ import java.util.Map;
  * @see Context#paramMap()
  * @author noear
  * @since 1.0
+ * @deprecated 3.6
  * */
+@Deprecated
 public class NvMap extends IgnoreCaseMap<String> {
     public static NvMap from(Map map) {
         NvMap d = new NvMap();

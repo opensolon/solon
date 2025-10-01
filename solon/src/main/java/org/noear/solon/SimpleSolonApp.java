@@ -15,8 +15,8 @@
  */
 package org.noear.solon;
 
-import org.noear.solon.core.NvMap;
 import org.noear.solon.core.util.ConsumerEx;
+import org.noear.solon.core.util.MultiMap;
 
 /**
  * 简单应用（临时应用对象）
@@ -27,11 +27,11 @@ import org.noear.solon.core.util.ConsumerEx;
 public class SimpleSolonApp extends SolonApp {
 
     public SimpleSolonApp(Class<?> source, String... args) throws Exception {
-        this(source, NvMap.from(args));
+        this(source, MultiMap.from(args));
     }
 
-    public SimpleSolonApp(Class<?> source, NvMap args) throws Exception {
-        super(source, args);
+    public SimpleSolonApp(Class<?> source, MultiMap<String> argx) throws Exception {
+        super(source, argx);
     }
 
     @Override
