@@ -18,6 +18,8 @@
 
 package org.noear.solon.configurationprocessor;
 
+import org.noear.solon.configurationprocessor.support.NestedConfigurationProperty;
+
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
@@ -52,7 +54,7 @@ class ConstructorParameterPropertyDescriptor extends ParameterPropertyDescriptor
 
     @Override
     protected boolean isMarkedAsNested(MetadataGenerationEnvironment environment) {
-        return false;
+        return environment.hasAnnotation(this.field, NestedConfigurationProperty.class.getCanonicalName());
     }
 
     @Override
