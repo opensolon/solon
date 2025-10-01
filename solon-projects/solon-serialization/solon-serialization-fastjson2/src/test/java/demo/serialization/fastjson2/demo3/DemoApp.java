@@ -16,7 +16,9 @@
 package demo.serialization.fastjson2.demo3;
 
 import org.noear.solon.Solon;
-import org.noear.solon.serialization.fastjson2.Fastjson2ActionExecutor;
+import org.noear.solon.serialization.fastjson2.Fastjson2StringSerializer;
+
+import java.util.Locale;
 
 /**
  * @author noear 2022/10/31 created
@@ -24,8 +26,9 @@ import org.noear.solon.serialization.fastjson2.Fastjson2ActionExecutor;
 public class DemoApp {
     public static void main(String[] args) {
         Solon.start(demo.serialization.fastjson2.demo2.DemoApp.class, args, app -> {
-            app.onEvent(Fastjson2ActionExecutor.class, executor -> {
+            app.context().getBeanAsync(Fastjson2StringSerializer.class, e -> {
                 //executor.config().setLocale();
+                e.getDeserializeConfig().getContext().setLocale(Locale.CHINA);
             });
         });
     }

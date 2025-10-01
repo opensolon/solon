@@ -204,7 +204,7 @@ public class IgnoreCaseMap<V> implements Map<String, V>, Serializable, Cloneable
     /**
      * @since 3.6
      * */
-    public IgnoreCaseMap<V> then(Consumer<IgnoreCaseMap<V>> consumer) {
+    public IgnoreCaseMap then(Consumer<IgnoreCaseMap<V>> consumer) {
         consumer.accept(this);
         return this;
     }

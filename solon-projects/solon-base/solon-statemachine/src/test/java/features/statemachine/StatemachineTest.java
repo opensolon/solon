@@ -246,7 +246,7 @@ public class StatemachineTest {
     public void normalNullFieldTest() {
         StateMachine<OrderState, OrderEvent, Order> stateMachine = new StateMachine<>();
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        Assertions.assertThrows(NullPointerException.class, () -> {
             stateMachine.addTransition(t ->
                     t.from(null).to(OrderState.CREATED).on(OrderEvent.CREATE).then(ctx -> {
                                 Order payload = ctx.getPayload();
@@ -265,7 +265,7 @@ public class StatemachineTest {
     public void dslNullFieldTest() {
         StateMachine<OrderState, OrderEvent, Order> stateMachine = new StateMachine<>();
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        Assertions.assertThrows(NullPointerException.class, () -> {
             stateMachine.addTransition(t ->
                     t.from(OrderState.NONE).to(null).on(OrderEvent.CREATE).then(ctx -> {
                         Order payload = ctx.getPayload();

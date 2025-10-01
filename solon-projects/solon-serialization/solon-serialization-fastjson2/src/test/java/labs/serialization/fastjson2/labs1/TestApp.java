@@ -18,7 +18,7 @@ package labs.serialization.fastjson2.labs1;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
-import org.noear.solon.serialization.fastjson2.Fastjson2RenderFactory;
+import org.noear.solon.serialization.fastjson2.Fastjson2StringSerializer;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -34,20 +34,20 @@ import java.util.Map;
 public class TestApp {
     public static void main(String[] args) {
         Solon.start(TestApp.class, args, app -> {
-            app.onEvent(Fastjson2RenderFactory.class, factory -> initMvcJsonCustom(factory));
+            app.context().getBeanAsync(Fastjson2StringSerializer.class, serializer -> initMvcJsonCustom(serializer));
         });
     }
 
     /**
      * 初始化json定制（需要在插件运行前定制）
      */
-    private static void initMvcJsonCustom(Fastjson2RenderFactory factory) {
+    private static void initMvcJsonCustom(Fastjson2StringSerializer serializer) {
         //通过转换器，做简单类型的定制
-        factory.addConvertor(Date.class, s -> s.getTime());
+        serializer.addEncoder(Date.class, s -> s.getTime());
 
-        factory.addConvertor(LocalDate.class, s -> s.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        serializer.addEncoder(LocalDate.class, s -> s.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 
-        factory.addConvertor(LocalDateTime.class, s -> s.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+        serializer.addEncoder(LocalDateTime.class, s -> s.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
 
     }
 
