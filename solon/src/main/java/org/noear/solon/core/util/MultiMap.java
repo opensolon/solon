@@ -19,6 +19,7 @@ import org.noear.solon.lang.Nullable;
 
 import java.io.Serializable;
 import java.util.*;
+import java.util.function.Consumer;
 
 /**
  * 多值，忽略大小写的LinkedMap
@@ -227,5 +228,34 @@ public class MultiMap<T> implements Iterable<KeyValues<T>>, Serializable {
     @Override
     public String toString() {
         return innerMap.values().toString();
+    }
+
+    /// ////////
+
+    public static MultiMap<String> from(String[] args) {
+        MultiMap<String> d = new MultiMap<>();
+
+        if (args != null) {
+            for (String arg : args) {
+                int index = arg.indexOf('=');
+                if (index > 0) {
+                    String name = arg.substring(0, index);
+                    String value = arg.substring(index + 1);
+                    d.add(name.replaceAll("^-*", ""), value);
+                } else {
+                    d.add(arg.replaceAll("^-*", ""), "");
+                }
+            }
+        }
+
+        return d;
+    }
+
+    /**
+     * @since 3.6
+     * */
+    public MultiMap<T> then(Consumer<MultiMap<T>> consumer) {
+        consumer.accept(this);
+        return this;
     }
 }

@@ -26,6 +26,7 @@ import org.noear.solon.core.route.RouterWrapper;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.serialize.SerializerManager;
 import org.noear.solon.core.util.ConsumerEx;
+import org.noear.solon.core.util.MultiMap;
 import org.noear.solon.core.util.RunUtil;
 
 import java.lang.annotation.Annotation;
@@ -167,7 +168,7 @@ public class SolonApp extends RouterWrapper {
         return true;
     }
 
-    protected SolonApp(Class<?> source, NvMap args) throws Exception {
+    protected SolonApp(Class<?> source, MultiMap<String> args) throws Exception {
         //添加启动类检测
         if (source == null) {
             throw new IllegalArgumentException("The startup class parameter('source') cannot be null");
@@ -205,7 +206,7 @@ public class SolonApp extends RouterWrapper {
     protected void startDo(ConsumerEx<SolonApp> initialize) throws Throwable {
         //1.0.打印构造时的告警
         if(Utils.isNotEmpty(_cfg.env())){
-            log.info("The following profiles env: " + _cfg.env());
+            log.info("Using profiles env: " + _cfg.env());
         }
 
         if (_cfg.warns.size() > 0) {
