@@ -40,6 +40,7 @@
 * 调整 `solon-serialization-*` 弱化 ActionExecuteHandler, Render 的定制，改为 XxxxSerializer 对外定制
 * 调整 `solon` LogIncubator 接口迁移到内核，由内核控制加载时机（权重提高）
 * 调整 `solon` EntityConverter 接口（替代 Render 和 ActionExecuteHandler 接口），旧接口仍可用
+* 调整 `solon` SolonProps:argx 改为 MultiMap 类型（支持多值），NvMap 标为弃用
 * 引入 `slf4j-api` 替代 `solon` 内的 LogUtil（减少中转代码）
 * 引入 `solon-expression` 替代 `solon` 内的模板表达式工具（仍可使用）
 * 添加 `solon` Condition:onExpression（采用 SnEL 表达式）用于替代 onProperty（标为弃用）

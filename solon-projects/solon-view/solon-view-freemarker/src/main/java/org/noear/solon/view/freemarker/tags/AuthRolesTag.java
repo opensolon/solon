@@ -24,7 +24,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.auth.AuthUtil;
 import org.noear.solon.auth.annotation.Logical;
 import org.noear.solon.auth.tags.AuthConstants;
-import org.noear.solon.core.NvMap;
+import org.noear.solon.core.util.IgnoreCaseMap;
 
 import java.io.IOException;
 import java.util.Map;
@@ -36,7 +36,13 @@ import java.util.Map;
 public class AuthRolesTag implements TemplateDirectiveModel {
     @Override
     public void execute(Environment env, Map map, TemplateModel[] templateModels, TemplateDirectiveBody body) throws TemplateException, IOException {
-        NvMap mapExt = NvMap.from(map);
+        IgnoreCaseMap<String> mapExt = new IgnoreCaseMap<>().then(my -> {
+            map.forEach((k, v) -> {
+                if (k != null && v != null) {
+                    my.put(k.toString(), v.toString());
+                }
+            });
+        });
 
         String nameStr = mapExt.get(AuthConstants.ATTR_name);
         String logicalStr = mapExt.get(AuthConstants.ATTR_logical);

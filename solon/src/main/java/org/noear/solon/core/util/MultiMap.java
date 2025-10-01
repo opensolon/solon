@@ -254,7 +254,7 @@ public class MultiMap<T> implements Iterable<KeyValues<T>>, Serializable {
     /**
      * @since 3.6
      * */
-    public MultiMap<T> then(Consumer<MultiMap<T>> consumer) {
+    public MultiMap then(Consumer<MultiMap<T>> consumer) {
         consumer.accept(this);
         return this;
     }

@@ -21,7 +21,7 @@ import org.noear.snack.ONode;
 import org.noear.solon.annotation.Import;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.handle.ContextEmpty;
-import org.noear.solon.serialization.fastjson2.Fastjson2RenderFactory;
+import org.noear.solon.serialization.fastjson2.Fastjson2EntityConverter;
 import org.noear.solon.test.SolonTest;
 
 import java.util.Date;
@@ -35,7 +35,7 @@ import java.util.Map;
 @SolonTest
 public class TestQuickConfig {
     @Inject
-    Fastjson2RenderFactory renderFactory;
+    Fastjson2EntityConverter entityConverter;
 
     @Test
     public void hello2() throws Throwable{
@@ -50,7 +50,7 @@ public class TestQuickConfig {
         userDo.setMap1(data);
 
         ContextEmpty ctx = new ContextEmpty();
-        renderFactory.create().render(userDo, ctx);
+        entityConverter.write(userDo, ctx);
         String output = ctx.attr("output");
 
         System.out.println(output);
