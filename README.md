@@ -4,9 +4,9 @@
 Solon
 </h1>
 <p align="center">
-	<strong>Java enterprise application development framework for full scenario: Restrained, Efficient, Open</strong>
+	<strong>Java enterprise application development framework for full scenario</strong>
     <br/>
-    <strong>[OpenAtom foundation, incubation project]</strong>
+    <strong>Restrained, Efficient, Open</strong>
 </p>
 <p align="center">
 	<a href="https://solon.noear.org/">https://solon.noear.org</a>
@@ -64,15 +64,16 @@ Built from scratch, with more flexible interface specifications and an open ecos
 
 ## Features:
 
-| Feature                                           | Description                                                                                                                               | 
-|---------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------| 
-| Better cost performance for computing resources   | 700% higher concurrency([techempower](https://www.techempower.com/benchmarks/#hw=ph&test=plaintext&section=data-r23)), 50% memory savings |
-| Faster development productivity                   | Less code; Easy to get started; 10x faster startup (faster debugging)                                                                     |
-| Better production and deployment experience       | Pack 90% smaller                                                                                                                          |
-| Greater range of compatibility                    | Non-java-ee architecture; It also supports java8 ~ java24, graalvm native image                                                           |
+| Feature                                            | Description                                                                                                                               | 
+|----------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------| 
+| Better cost performance for computing resources    | 700% higher concurrency([techempower](https://www.techempower.com/benchmarks/#hw=ph&test=plaintext&section=data-r23)), 50% memory savings |
+| Faster development productivity                    | Less code; Easy to get started; 10x faster startup (faster debugging)                                                                     |
+| Better production and deployment experience        | Pack 90% smaller                                                                                                                          |
+| Greater range of compatibility                     | Non-java-ee architecture; It also supports java8 ~ java24, graalvm native image                                                           |
 
 
 ## Main code repository
+
 
 
 | Code repository                                                   | Description                                               | 
@@ -91,6 +92,8 @@ Built from scratch, with more flexible interface specifications and an open ecos
 | [/opensolon/solon-gradle-plugin](../../../../opensolon/solon-gradle-plugin)  | Solon Gradle ,Plugin code repository                      | 
 | [/opensolon/solon-idea-plugin](../../../../opensolon/solon-idea-plugin)      | Solon Idea ,Plugin code repository                        | 
 | [/opensolon/solon-vscode-plugin](../../../../opensolon/solon-vscode-plugin)  | Solon VsCode ,Plugin code repository                      | 
+
+
 
 
 ## Ecosystem Architecture Diagram:
