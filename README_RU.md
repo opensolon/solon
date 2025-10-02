@@ -34,8 +34,8 @@ Solon
     <a target="_blank" href="https://www.oracle.com/java/technologies/javase/jdk21-archive-downloads.html">
 		<img src="https://img.shields.io/badge/JDK-21-green.svg" alt="jdk-21" />
 	</a>
-    <a target="_blank" href="https://www.oracle.com/java/technologies/javase/jdk24-archive-downloads.html">
-		<img src="https://img.shields.io/badge/JDK-24-green.svg" alt="jdk-24" />
+    <a target="_blank" href="https://www.oracle.com/java/technologies/downloads/">
+		<img src="https://img.shields.io/badge/JDK-25-green.svg" alt="jdk-25" />
 	</a>
     <br />
     <a target="_blank" href='https://gitee.com/opensolon/solon/stargazers'>
