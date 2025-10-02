@@ -1,7 +1,7 @@
 package demo.solon;
 
 import org.noear.solon.annotation.Managed;
-import org.noear.solon.core.handle.ActionArgumentResolver;
+import org.noear.solon.core.handle.MethodArgumentResolver;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.util.LazyReference;
 import org.noear.solon.core.wrap.MethodWrap;
@@ -16,7 +16,7 @@ import java.lang.annotation.Target;
  * @author noear 2025/7/15 created
  */
 @Managed
-public class ActionArgumentResolverImpl implements ActionArgumentResolver {
+public class MethodArgumentResolverImpl implements MethodArgumentResolver {
     @Override
     public boolean matched(Context ctx, ParamWrap pWrap) {
         return pWrap.getParameter().isAnnotationPresent(Argument.class);

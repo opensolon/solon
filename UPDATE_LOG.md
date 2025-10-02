@@ -26,6 +26,9 @@
 * 调整 Plugin 统一交给 AppContext 管理（之前由 SolonApp 或 PluginPackage 管理）？？
 * 使用 solon-expression 替代其它临时的表达式处理 //ok
 
+### 3.6.1
+
+* 添加 `solon` MethodArgumentResolver 接口，替代 ActionArgumentResolver （标为弃用）。语义更合理
 
 ### 3.6.0
 

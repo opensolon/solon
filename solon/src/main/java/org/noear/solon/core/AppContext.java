@@ -525,10 +525,10 @@ public class AppContext extends BeanContainer {
             singletonHint = "ReturnValueHandler";
         }
 
-        //ActionArgumentResolver
-        if (bw.raw() instanceof ActionArgumentResolver) {
+        //MethodArgumentResolver
+        if (bw.raw() instanceof MethodArgumentResolver) {
             app().chains().addArgumentResolver(bw.raw(), bw.index());
-            singletonHint = "ActionArgumentResolver";
+            singletonHint = "MethodArgumentResolver";
         }
 
         //Converter

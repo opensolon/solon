@@ -27,7 +27,6 @@ import org.noear.solon.lang.Nullable;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.function.Predicate;
 
 /**
  * 请求链管理
@@ -266,12 +265,12 @@ public class ChainManager {
 
     /// /////////////////////
 
-    private List<RankEntity<ActionArgumentResolver>> argumentResolvers = new ArrayList<>();
+    private List<RankEntity<MethodArgumentResolver>> argumentResolvers = new ArrayList<>();
 
     /**
      * 添加 Action 参数分析器
      */
-    public void addArgumentResolver(ActionArgumentResolver e) {
+    public void addArgumentResolver(MethodArgumentResolver e) {
         addArgumentResolver(e, 0);
     }
 
@@ -280,7 +279,7 @@ public class ChainManager {
      *
      * @param index 顺序位
      */
-    public void addArgumentResolver(ActionArgumentResolver e, int index) {
+    public void addArgumentResolver(MethodArgumentResolver e, int index) {
         if (e != null) {
             argumentResolvers.add(new RankEntity<>(e, index));
             Collections.sort(argumentResolvers);
@@ -297,8 +296,8 @@ public class ChainManager {
     /**
      * 获取参数分析器
      */
-    public ActionArgumentResolver getArgumentResolver(Context ctx, ParamWrap pWrap) {
-        for (RankEntity<ActionArgumentResolver> me : argumentResolvers) {
+    public MethodArgumentResolver getArgumentResolver(Context ctx, ParamWrap pWrap) {
+        for (RankEntity<MethodArgumentResolver> me : argumentResolvers) {
             if (me.target.matched(ctx, pWrap)) {
                 return me.target;
             }

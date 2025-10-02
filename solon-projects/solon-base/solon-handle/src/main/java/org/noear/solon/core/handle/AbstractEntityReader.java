@@ -121,7 +121,7 @@ public abstract class AbstractEntityReader {
 
         if (tv == null) {
             if (Solon.app() != null) {
-                ActionArgumentResolver argumentResolver = Solon.app().chains().getArgumentResolver(ctx, pWrap);
+                MethodArgumentResolver argumentResolver = Solon.app().chains().getArgumentResolver(ctx, pWrap);
                 if (argumentResolver != null) {
                     tv = argumentResolver.resolveArgument(ctx, target, mWrap, pWrap, pIndex, bodyRef);
                 }
