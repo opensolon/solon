@@ -23,11 +23,9 @@ import org.noear.solon.core.wrap.ParamWrap;
  * 方法参数分析器
  *
  * @author noear
- * @since 3.4
- * @deprecated 3.6 {@link MethodArgumentResolver}
+ * @since 3.6
  */
-@Deprecated
-public interface ActionArgumentResolver extends MethodArgumentResolver {
+public interface MethodArgumentResolver {
     /**
      * 是否匹配
      *
