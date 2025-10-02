@@ -475,7 +475,7 @@ public class AppContext extends BeanContainer {
             }
         }
 
-        //Render
+        //Serializer
         if (bw.raw() instanceof Serializer) {
             app().serializers().register(bw.name(), bw.raw());
             singletonHint = "Serializer";
