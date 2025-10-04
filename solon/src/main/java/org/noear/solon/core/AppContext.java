@@ -483,7 +483,14 @@ public class AppContext extends BeanContainer {
 
         //Render
         if (bw.raw() instanceof Render) {
-            app().renders().register(bw.name(), (Render) bw.raw());
+            //指定 mapping
+            if (Assert.isNotEmpty(bw.name())) {
+                app().renders().register(bw.name(), (Render) bw.raw());
+            }
+
+            //接口 mapping
+            app().renders().register((Render) bw.raw());
+
             singletonHint = "Render";
         }
 
@@ -495,7 +502,7 @@ public class AppContext extends BeanContainer {
 
         //RenderFactory //将弃用 v3.6
         if (bw.raw() instanceof RenderFactory) {
-            app().renders().register(bw.raw());
+            app().renders().register((RenderFactory) bw.raw());
             singletonHint = "RenderFactory";
         }
 

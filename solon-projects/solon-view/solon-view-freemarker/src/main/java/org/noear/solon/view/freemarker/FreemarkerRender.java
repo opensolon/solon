@@ -47,14 +47,14 @@ public class FreemarkerRender implements Render {
 
     /**
      * 引擎提供者
-     * */
+     */
     public Configuration getProvider() {
         return provider;
     }
 
     /**
      * 引擎提供者（调试模式）
-     * */
+     */
     public Configuration getProviderOfDebug() {
         return providerOfDebug;
     }
@@ -71,9 +71,9 @@ public class FreemarkerRender implements Render {
 
     public FreemarkerRender(ClassLoader classLoader, String viewPrefix) {
         this.classLoader = classLoader;
-        if(viewPrefix == null){
+        if (viewPrefix == null) {
             this.viewPrefix = ViewConfig.getViewPrefix();
-        }else {
+        } else {
             this.viewPrefix = viewPrefix;
         }
 
@@ -83,7 +83,7 @@ public class FreemarkerRender implements Render {
 
     //尝试 调试模式 进行实始化
     private void forDebug() {
-        if(Solon.cfg().isDebugMode() == false) {
+        if (Solon.cfg().isDebugMode() == false) {
             return;
         }
 
@@ -102,7 +102,7 @@ public class FreemarkerRender implements Render {
         //添加调试模式
         File dir = DebugUtils.getDebugLocation(classLoader, viewPrefix);
 
-        if(dir == null){
+        if (dir == null) {
             return;
         }
 
@@ -146,14 +146,14 @@ public class FreemarkerRender implements Render {
 
     /**
      * 添加共享指令（自定义标签）
-     * */
+     */
     public <T extends TemplateDirectiveModel> void putDirective(String name, T obj) {
         putVariable(name, obj);
     }
 
     /**
      * 添加共享变量
-     * */
+     */
     public void putVariable(String name, Object value) {
         try {
             provider.setSharedVariable(name, value);
@@ -167,13 +167,18 @@ public class FreemarkerRender implements Render {
     }
 
     @Override
+    public String[] mappings() {
+        return new String[]{".ftl", this.getClass().getSimpleName(), this.getClass().getName()};
+    }
+
+    @Override
     public void render(Object obj, Context ctx) throws Throwable {
         if (obj == null) {
             return;
         }
 
         if (obj instanceof ModelAndView) {
-            render_mav((ModelAndView) obj, ctx, () -> ctx.outputStream());
+            doRender((ModelAndView) obj, ctx, () -> ctx.outputStream());
         } else {
             ctx.output(obj.toString());
         }
@@ -187,7 +192,7 @@ public class FreemarkerRender implements Render {
 
         if (obj instanceof ModelAndView) {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            render_mav((ModelAndView) obj, ctx, () -> outputStream);
+            doRender((ModelAndView) obj, ctx, () -> outputStream);
 
             return outputStream.toString();
         } else {
@@ -195,7 +200,7 @@ public class FreemarkerRender implements Render {
         }
     }
 
-    public void render_mav(ModelAndView mv, Context ctx, SupplierEx<OutputStream> outputStream) throws Throwable {
+    protected void doRender(ModelAndView mv, Context ctx, SupplierEx<OutputStream> outputStream) throws Throwable {
         if (ctx.contentTypeNew() == null) {
             ctx.contentType(MimeType.TEXT_HTML_UTF8_VALUE);
         }

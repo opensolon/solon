@@ -53,14 +53,14 @@ public class EnjoyRender implements Render {
 
     /**
      * 引擎提供者
-     * */
+     */
     public Engine getProvider() {
         return provider;
     }
 
     /**
      * 引擎提供者（调试模式）
-     * */
+     */
     public Engine getProviderOfDebug() {
         return providerOfDebug;
     }
@@ -77,9 +77,9 @@ public class EnjoyRender implements Render {
 
     public EnjoyRender(ClassLoader classLoader, String viewPrefix) {
         this.classLoader = classLoader;
-        if(viewPrefix == null){
+        if (viewPrefix == null) {
             this.viewPrefix = ViewConfig.getViewPrefix();
-        }else {
+        } else {
             this.viewPrefix = viewPrefix;
         }
 
@@ -111,7 +111,7 @@ public class EnjoyRender implements Render {
         //添加调试模式
         File dir = DebugUtils.getDebugLocation(classLoader, viewPrefix);
 
-        if(dir == null){
+        if (dir == null) {
             return;
         }
 
@@ -142,7 +142,7 @@ public class EnjoyRender implements Render {
                 URL dir = ResourceUtil.findResource(classLoader, viewPrefix, false);
                 provider.setBaseTemplatePath(dir.getFile());
                 provider.setSourceFactory(new FileSourceFactory());
-            }else {
+            } else {
                 provider.setBaseTemplatePath(viewPrefix);
                 provider.setSourceFactory(new ClassPathSourceFactory2(classLoader));
             }
@@ -212,13 +212,18 @@ public class EnjoyRender implements Render {
     }
 
     @Override
+    public String[] mappings() {
+        return new String[]{".shtm", this.getClass().getSimpleName(), this.getClass().getName()};
+    }
+
+    @Override
     public void render(Object obj, Context ctx) throws Throwable {
         if (obj == null) {
             return;
         }
 
         if (obj instanceof ModelAndView) {
-            render_mav((ModelAndView) obj, ctx, () -> ctx.outputStream());
+            doRender((ModelAndView) obj, ctx, () -> ctx.outputStream());
         } else {
             ctx.output(obj.toString());
         }
@@ -232,7 +237,7 @@ public class EnjoyRender implements Render {
 
         if (obj instanceof ModelAndView) {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            render_mav((ModelAndView) obj, ctx, () -> outputStream);
+            doRender((ModelAndView) obj, ctx, () -> outputStream);
 
             return outputStream.toString();
         } else {
@@ -240,7 +245,7 @@ public class EnjoyRender implements Render {
         }
     }
 
-    public void render_mav(ModelAndView mv, Context ctx, SupplierEx<OutputStream> outputStream) throws Throwable {
+    protected void doRender(ModelAndView mv, Context ctx, SupplierEx<OutputStream> outputStream) throws Throwable {
         if (ctx.contentTypeNew() == null) {
             ctx.contentType(MimeType.TEXT_HTML_UTF8_VALUE);
         }

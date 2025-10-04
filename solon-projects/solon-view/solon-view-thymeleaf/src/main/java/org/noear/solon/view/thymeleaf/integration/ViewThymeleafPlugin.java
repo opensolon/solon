@@ -55,8 +55,7 @@ public class ViewThymeleafPlugin implements Plugin {
             });
         });
 
-        context.app().renders().register(null, render);
-        context.app().renders().register(".html", render);
+        context.app().renders().register(render);
         context.wrapAndPut(ThymeleafRender.class, render); //用于扩展
 
         if (ClassUtil.hasClass(() -> AuthUtil.class)) {

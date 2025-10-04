@@ -32,6 +32,15 @@ public interface Render {
     }
 
     /**
+     * 映射
+     *
+     * @since 3.6
+     */
+    default String[] mappings() {
+        return null;
+    }
+
+    /**
      * 是否匹配
      *
      * @param ctx  上下文

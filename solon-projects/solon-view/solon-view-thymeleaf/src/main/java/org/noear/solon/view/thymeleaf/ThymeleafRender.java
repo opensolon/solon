@@ -179,6 +179,12 @@ public class ThymeleafRender implements Render {
         sharedVariables.put(name, obj);
     }
 
+
+    @Override
+    public String[] mappings() {
+        return new String[]{".html", this.getClass().getSimpleName(), this.getClass().getName()};
+    }
+
     @Override
     public void render(Object obj, Context ctx) throws Throwable {
         if (obj == null) {
@@ -186,7 +192,7 @@ public class ThymeleafRender implements Render {
         }
 
         if (obj instanceof ModelAndView) {
-            render_mav((ModelAndView) obj, ctx, () -> ctx.outputStream());
+            doRender((ModelAndView) obj, ctx, () -> ctx.outputStream());
         } else {
             ctx.output(obj.toString());
         }
@@ -200,7 +206,7 @@ public class ThymeleafRender implements Render {
 
         if (obj instanceof ModelAndView) {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            render_mav((ModelAndView) obj, ctx, () -> outputStream);
+            doRender((ModelAndView) obj, ctx, () -> outputStream);
 
             return outputStream.toString();
         } else {
@@ -208,7 +214,7 @@ public class ThymeleafRender implements Render {
         }
     }
 
-    public void render_mav(ModelAndView mv, Context ctx, SupplierEx<OutputStream> outputStream) throws Throwable {
+    protected void doRender(ModelAndView mv, Context ctx, SupplierEx<OutputStream> outputStream) throws Throwable {
         if (ctx.contentTypeNew() == null) {
             ctx.contentType(MimeType.TEXT_HTML_UTF8_VALUE);
         }

@@ -76,6 +76,16 @@ public class RenderManager implements Render {
         }
     }
 
+    public void register(Render render) {
+        String[] mappings = render.mappings();
+
+        if (mappings != null) {
+            for (String mapping : mappings) {
+                register(mapping, render);
+            }
+        }
+    }
+
     /**
      * 登记渲染器（并映射关系）
      *
@@ -133,7 +143,10 @@ public class RenderManager implements Render {
 
     /**
      * 渲染并返回
+     *
+     * @deprecated 3.6 {@link org.noear.solon.core.serialize.Serializer#serialize(Object)}
      */
+    @Deprecated
     public String renderAndReturn(ModelAndView modelAndView) {
         try {
             return renderAndReturn(modelAndView, Context.current());
@@ -149,7 +162,10 @@ public class RenderManager implements Render {
 
     /**
      * 渲染并返回
+     *
+     * @deprecated 3.6 {@link org.noear.solon.core.serialize.Serializer#serialize(Object)}
      */
+    @Deprecated
     @Override
     public String renderAndReturn(Object data, Context ctx) throws Throwable {
         //如果是实体
