@@ -387,11 +387,9 @@ public class ChainManager {
             Collections.sort(entityConverters);
 
             //renderer
-            if (e.mappings() != null) {
-                Render render = new EntityConverterToRenderer(e);
-                for (String mapping : e.mappings()) {
-                    app.renders().register(mapping, render);
-                }
+            if (e.allowWrite()) {
+                Render render = new EntityConverterToRender(e);
+                app.renders().register(render);
             }
         }
     }

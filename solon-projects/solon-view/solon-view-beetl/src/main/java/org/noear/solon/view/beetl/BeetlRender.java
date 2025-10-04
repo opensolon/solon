@@ -212,13 +212,18 @@ public class BeetlRender implements Render {
     }
 
     @Override
+    public String[] mappings() {
+        return new String[]{".htm", ".btl", this.getClass().getSimpleName(), this.getClass().getName()};
+    }
+
+    @Override
     public void render(Object obj, Context ctx) throws Throwable {
         if (obj == null) {
             return;
         }
 
         if (obj instanceof ModelAndView) {
-            render_mav((ModelAndView) obj, ctx, () -> ctx.outputStream());
+            doRender((ModelAndView) obj, ctx, () -> ctx.outputStream());
         } else {
             ctx.output(obj.toString());
         }
@@ -232,7 +237,7 @@ public class BeetlRender implements Render {
 
         if (obj instanceof ModelAndView) {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            render_mav((ModelAndView) obj, ctx, () -> outputStream);
+            doRender((ModelAndView) obj, ctx, () -> outputStream);
 
             return outputStream.toString();
         } else {
@@ -240,7 +245,7 @@ public class BeetlRender implements Render {
         }
     }
 
-    private void render_mav(ModelAndView mv, Context ctx, SupplierEx<OutputStream> outputStream) throws Throwable {
+    protected void doRender(ModelAndView mv, Context ctx, SupplierEx<OutputStream> outputStream) throws Throwable {
         if (ctx.contentTypeNew() == null) {
             ctx.contentType(MimeType.TEXT_HTML_UTF8_VALUE);
         }

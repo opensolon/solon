@@ -29,6 +29,7 @@
 ### 3.6.1
 
 * 添加 `solon` MethodArgumentResolver 接口，替代 ActionArgumentResolver （标为弃用）。语义更合理
+* 添加 `solon` Render:mappings 方法（支持自动映射效果）
 
 ### 3.6.0
 

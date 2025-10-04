@@ -56,8 +56,7 @@ public class ViewEnjoyPlugin implements Plugin {
             });
         });
 
-        context.app().renders().register(null, render);
-        context.app().renders().register(".shtm", render);
+        context.app().renders().register(render);
         context.wrapAndPut(EnjoyRender.class, render); //用于扩展
 
         if (ClassUtil.hasClass(() -> AuthUtil.class)) {

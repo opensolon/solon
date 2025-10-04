@@ -21,20 +21,25 @@ package org.noear.solon.core.handle;
  * @author noear
  * @since 3.6
  */
-public class EntityConverterToRenderer implements Render {
+public class EntityConverterToRender implements Render {
     private final EntityConverter entityConverter;
 
     public EntityConverter getEntityConverter() {
         return entityConverter;
     }
 
-    public EntityConverterToRenderer(EntityConverter entityConverter) {
+    public EntityConverterToRender(EntityConverter entityConverter) {
         this.entityConverter = entityConverter;
     }
 
     @Override
     public String name() {
         return entityConverter.name();
+    }
+
+    @Override
+    public String[] mappings() {
+        return entityConverter.mappings();
     }
 
     @Override

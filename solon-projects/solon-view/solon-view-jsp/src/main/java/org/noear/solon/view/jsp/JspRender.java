@@ -26,20 +26,25 @@ import javax.servlet.http.HttpServletResponse;
 
 public class JspRender implements Render {
     @Override
+    public String[] mappings() {
+        return new String[]{".jsp", this.getClass().getSimpleName(), this.getClass().getName()};
+    }
+
+    @Override
     public void render(Object obj, Context ctx) throws Throwable {
-        if(obj == null){
+        if (obj == null) {
             return;
         }
 
         if (obj instanceof ModelAndView) {
-            render_mav((ModelAndView) obj, ctx);
-        }else{
+            doRender((ModelAndView) obj, ctx);
+        } else {
             ctx.output(obj.toString());
         }
     }
 
-    public void render_mav(ModelAndView mv, Context ctx) throws Throwable {
-        if(ctx.contentTypeNew() == null) {
+    protected void doRender(ModelAndView mv, Context ctx) throws Throwable {
+        if (ctx.contentTypeNew() == null) {
             ctx.contentType(MimeType.TEXT_HTML_UTF8_VALUE);
         }
 
@@ -50,8 +55,8 @@ public class JspRender implements Render {
         //添加 context 变量
         mv.putIfAbsent("context", ctx);
 
-        HttpServletResponse response = (HttpServletResponse)ctx.response();
-        HttpServletRequest request = (HttpServletRequest)ctx.request();
+        HttpServletResponse response = (HttpServletResponse) ctx.response();
+        HttpServletRequest request = (HttpServletRequest) ctx.request();
 
         mv.model().forEach(request::setAttribute);
 
@@ -68,7 +73,7 @@ public class JspRender implements Render {
         }
 
         request.getServletContext()
-               .getRequestDispatcher(view)
-               .forward(request, response);
+                .getRequestDispatcher(view)
+                .forward(request, response);
     }
 }

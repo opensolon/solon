@@ -37,7 +37,6 @@ public class ViewJspPlugin implements Plugin {
 
         JspRender render = new JspRender();
 
-        context.app().renders().register(null, render);
-        context.app().renders().register(".jsp", render);
+        context.app().renders().register(render);
     }
 }

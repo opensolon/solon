@@ -28,7 +28,7 @@ import org.noear.solon.lang.Preview;
 public interface EntityConverter {
     /**
      * 实例检测（移除时用）
-     * */
+     */
     default boolean isInstance(Class<?> clz) {
         return clz.isInstance(this);
     }
@@ -64,7 +64,7 @@ public interface EntityConverter {
     String writeAndReturn(Object data, Context ctx) throws Throwable;
 
     /**
-     * 写入（渲染）
+     * 写入
      *
      * @param data 数据
      * @param ctx  上下文
