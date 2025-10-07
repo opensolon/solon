@@ -283,9 +283,18 @@ public class GenericUtil {
             } else {
                return type;
             }
-        } else {
-            return type;
+        } else if (type instanceof GenericArrayType) {
+            GenericArrayType typeTmp = (GenericArrayType) type;
+
+            if (typeTmp.getGenericComponentType() instanceof Class == false) {
+                Type typCom = reviewType(typeTmp.getGenericComponentType(), genericInfo);
+                return new GenericArrayTypeImpl(typCom);
+            } else {
+                return typeTmp;
+            }
         }
+
+        return type;
     }
 
     /// ////////////////
