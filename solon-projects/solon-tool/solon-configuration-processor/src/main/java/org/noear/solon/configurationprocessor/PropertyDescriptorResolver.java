@@ -23,10 +23,7 @@ import org.noear.snack.core.utils.StringUtil;
 import javax.lang.model.element.*;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Stream;
 
 /**
@@ -100,7 +97,10 @@ class PropertyDescriptorResolver {
         if (StringUtil.isEmpty(fallback)) {
             return fallback;
         }
-        return parameter.getSimpleName().toString();
+        if (Objects.nonNull(parameter)) {
+            return parameter.getSimpleName().toString();
+        }
+        return null;
     }
 
     private Stream<PropertyDescriptor> resolveJavaBeanProperties(TypeElement declaringElement,
