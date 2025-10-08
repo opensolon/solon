@@ -523,6 +523,13 @@
             <version>2.2</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>com.google.testing.compile</groupId>
+            <artifactId>compile-testing</artifactId>
+            <version>0.21.0</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <!-- 主菜是这里： -->
@@ -536,6 +543,19 @@
                 <configuration>
                     <!-- 指定启动主类 -->
                     <mainClass>webapp.App</mainClass>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </path>
+                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
         </plugins>
