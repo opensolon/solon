@@ -18,8 +18,6 @@
 
 package org.noear.solon.configurationprocessor;
 
-import org.noear.solon.configurationprocessor.support.NestedConfigurationProperty;
-
 import javax.lang.model.element.*;
 import javax.lang.model.type.TypeMirror;
 import java.util.Arrays;
@@ -60,11 +58,6 @@ class LombokPropertyDescriptor extends PropertyDescriptor {
 
     VariableElement getField() {
         return this.field;
-    }
-
-    @Override
-    protected boolean isMarkedAsNested(MetadataGenerationEnvironment environment) {
-        return environment.hasAnnotation(this.field, NestedConfigurationProperty.class.getCanonicalName());
     }
 
     @Override

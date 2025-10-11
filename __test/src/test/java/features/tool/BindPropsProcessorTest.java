@@ -7,6 +7,9 @@ import org.noear.solon.configurationprocessor.ConfigurationMetadataAnnotationPro
 import org.noear.solon.configurationprocessor.json.JSONArray;
 import org.noear.solon.configurationprocessor.json.JSONException;
 import org.noear.solon.configurationprocessor.json.JSONObject;
+import webapp.demoz_tool.DemoEnum;
+import webapp.demoz_tool.DemoEnumWithValue;
+import webapp.demoz_tool.DemoProps;
 
 import javax.tools.JavaFileObject;
 import javax.tools.StandardLocation;
@@ -28,11 +31,11 @@ public class BindPropsProcessorTest {
     public void test_metadata_generate() throws IOException, JSONException {
         Path basePath = Paths.get("src/main/java");
 
-        JavaFileObject demoProps = JavaFileObjects.forSourceLines("webapp.demoz_tool.DemoProps",
+        JavaFileObject demoProps = JavaFileObjects.forSourceLines(DemoProps.class.getCanonicalName(),
                 Files.readAllLines(basePath.resolve("webapp/demoz_tool/DemoProps.java")));
-        JavaFileObject demoEnum = JavaFileObjects.forSourceLines("webapp.demoz_tool.DemoEnum",
+        JavaFileObject demoEnum = JavaFileObjects.forSourceLines(DemoEnum.class.getCanonicalName(),
                 Files.readAllLines(basePath.resolve("webapp/demoz_tool/DemoEnum.java")));
-        JavaFileObject demoEnumWithValue = JavaFileObjects.forSourceLines("webapp.demoz_tool.DemoEnumWithValue",
+        JavaFileObject demoEnumWithValue = JavaFileObjects.forSourceLines(DemoEnumWithValue.class.getCanonicalName(),
                 Files.readAllLines(basePath.resolve("webapp/demoz_tool/DemoEnumWithValue.java")));
 
         Compilation compilation = javac()
