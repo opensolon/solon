@@ -10,6 +10,8 @@ import java.util.List;
 @BindProps(prefix = "demo")
 public class DemoProps {
 
+    private int port;
+
     private Integer intValue;
 
     private Long longValue;
