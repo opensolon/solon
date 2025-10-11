@@ -9,6 +9,7 @@ import org.noear.solon.configurationprocessor.ConfigurationMetadataAnnotationPro
 import org.noear.solon.configurationprocessor.json.JSONArray;
 import org.noear.solon.configurationprocessor.json.JSONObject;
 import webapp.demoz_tool.AConfig;
+import webapp.demoz_tool.BConfig;
 import webapp.demoz_tool.ComplexDemoProp;
 
 import javax.tools.JavaFileObject;
@@ -64,8 +65,19 @@ public class ComplexBindPropsProcessorTest {
         checkProperty(ctx, "cdemo.aConfig.defaultValue", "java.lang.Boolean", AConfig.class.getCanonicalName(), v -> assertEquals(true, v));
         checkProperty(ctx, "cdemo.aConfig.ids", "java.util.List<java.lang.Long>", AConfig.class.getCanonicalName());
         checkProperty(ctx, "cdemo.aConfig.name", "java.lang.String", AConfig.class.getCanonicalName());
+
         checkProperty(ctx, "cdemo.aConfigMap", "java.util.Map<java.lang.String,webapp.demoz_tool.AConfig>", canonicalName);
+        checkProperty(ctx, "cdemo.aConfigMap.*.arrays", "java.lang.String[]", AConfig.class.getCanonicalName());
+        checkProperty(ctx, "cdemo.aConfigMap.*.defaultValue", "java.lang.Boolean", AConfig.class.getCanonicalName(), v -> assertEquals(true, v));
+        checkProperty(ctx, "cdemo.aConfigMap.*.ids", "java.util.List<java.lang.Long>", AConfig.class.getCanonicalName());
+        checkProperty(ctx, "cdemo.aConfigMap.*.name", "java.lang.String", AConfig.class.getCanonicalName());
+
         checkProperty(ctx, "cdemo.bConfigs", "java.util.List<webapp.demoz_tool.BConfig>", canonicalName);
+        checkProperty(ctx, "cdemo.bConfigs[*].arrays", "java.lang.String[]", BConfig.class.getCanonicalName());
+        checkProperty(ctx, "cdemo.bConfigs[*].defaultValue", "java.lang.Boolean", BConfig.class.getCanonicalName(), v -> assertEquals(true, v));
+        checkProperty(ctx, "cdemo.bConfigs[*].ids", "java.util.List<java.lang.Long>", BConfig.class.getCanonicalName());
+        checkProperty(ctx, "cdemo.bConfigs[*].name", "java.lang.String", BConfig.class.getCanonicalName());
+
         checkProperty(ctx, "cdemo.name", "java.lang.String", canonicalName);
 
     }
