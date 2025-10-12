@@ -25,6 +25,8 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import java.util.List;
 
@@ -121,25 +123,48 @@ abstract class PropertyDescriptor {
      */
     boolean isNested(MetadataGenerationEnvironment environment) {
         Element typeElement = environment.getTypeUtils().asElement(getType());
+
+        // 如果不是TypeElement或者是枚举类型，或者是配置属性注解标记的，则不是嵌套属性
         if (!(typeElement instanceof TypeElement) || typeElement.getKind() == ElementKind.ENUM
                 || environment.getConfigurationPropertiesAnnotation(getGetter()) != null) {
             return false;
         }
-        if (isMarkedAsNested(environment)) {
+
+        // 检查是否是基本类型或被排除的类型
+        if (isPrimitiveOrWrapper(getType()) || environment.isExcluded(getType())) {
+            return false;
+        }
+
+        // 如果是集合或Map类型，则不是嵌套属性
+        if (environment.getTypeUtils().isCollectionOrMap(getType())) {
+            return false;
+        }
+
+        // 检查循环引用
+        if (isCyclePresent(typeElement, getDeclaringElement())) {
+            return false;
+        }
+
+        // 检查是否为父类相同的类型
+        if (isParentTheSame(environment, typeElement, getDeclaringElement())) {
             return true;
         }
-        return !isCyclePresent(typeElement, getDeclaringElement())
-                && isParentTheSame(environment, typeElement, getDeclaringElement());
+
+        return true;
     }
 
     /**
-     * Return if this property has been explicitly marked as nested (for example using an
-     * annotation}.
+     * 检查类型是否是基本类型或其包装类
      *
-     * @param environment the metadata generation environment
-     * @return if the property has been marked as nested
+     * @param type 类型
+     * @return 是否是基本类型或包装类
      */
-    protected abstract boolean isMarkedAsNested(MetadataGenerationEnvironment environment);
+    private boolean isPrimitiveOrWrapper(TypeMirror type) {
+        return type.getKind().isPrimitive() ||
+                type.getKind() == TypeKind.DECLARED &&
+                        ((TypeElement) ((DeclaredType) type).asElement()).getQualifiedName().toString().startsWith("java.lang.");
+    }
+
 
     private boolean isCyclePresent(Element returnType, Element element) {
         if (!(element.getEnclosingElement() instanceof TypeElement)) {

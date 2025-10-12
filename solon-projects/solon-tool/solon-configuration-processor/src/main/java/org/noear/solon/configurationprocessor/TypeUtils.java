@@ -26,7 +26,6 @@ import javax.lang.model.util.SimpleTypeVisitor8;
 import javax.lang.model.util.Types;
 import java.util.*;
 import java.util.Map.Entry;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -140,7 +139,44 @@ class TypeUtils {
 		return getCollectionElementType(type);
 	}
 
-	private TypeMirror getCollectionElementType(TypeMirror type) {
+    // 新增：获取 Map 的元素类型（返回值类型）
+    public static TypeMirror getMapValueType(TypeMirror type) {
+        if (!isMap(type)) {
+            return null;
+        }
+
+        List<? extends TypeMirror> typeArguments = ((DeclaredType) type).getTypeArguments();
+        if (typeArguments.size() == 2) {
+            return typeArguments.get(1);
+        }
+
+        return null;
+    }
+
+    // 新增：获取 Map 的键类型
+    public static TypeMirror getMapKeyType(TypeMirror type) {
+        if (!isMap(type)) {
+            return null;
+        }
+
+        List<? extends TypeMirror> typeArguments = ((DeclaredType) type).getTypeArguments();
+        if (typeArguments.size() == 2) {
+            return typeArguments.get(0);
+        }
+
+        return null;
+    }
+
+    // 判断是否是 Map 类型
+    public static boolean isMap(TypeMirror type) {
+        if (type.getKind() == TypeKind.DECLARED) {
+            TypeElement typeElement = (TypeElement) ((DeclaredType) type).asElement();
+            return typeElement.getQualifiedName().toString().equals("java.util.Map");
+        }
+        return false;
+    }
+
+    public TypeMirror getCollectionElementType(TypeMirror type) {
 		if (((TypeElement) this.types.asElement(type)).getQualifiedName().contentEquals(Collection.class.getName())) {
 			DeclaredType declaredType = (DeclaredType) type;
 			// raw type, just "Collection"
