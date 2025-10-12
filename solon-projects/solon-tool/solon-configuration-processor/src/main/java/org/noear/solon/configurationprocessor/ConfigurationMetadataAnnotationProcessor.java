@@ -26,6 +26,7 @@ import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.*;
 import javax.lang.model.type.TypeKind;
+import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -73,6 +74,7 @@ public class ConfigurationMetadataAnnotationProcessor extends AbstractProcessor 
     @Override
     public synchronized void init(ProcessingEnvironment env) {
         super.init(env);
+        System.out.println(1);
         this.metadataStore = new MetadataStore(env);
         this.metadataCollector = new MetadataCollector(env, this.metadataStore.readMetadata());
         this.metadataEnv = new MetadataGenerationEnvironment(env, configurationPropertiesAnnotation(), autowiredAnnotation());
@@ -155,8 +157,37 @@ public class ConfigurationMetadataAnnotationProcessor extends AbstractProcessor 
                     String nestedPrefix = ConfigurationMetadata.nestedPrefix(prefix, descriptor.getName());
                     processTypeElement(nestedPrefix, nestedTypeElement, source, seen);
                 }
+                // Handle Map and List collections
+                if (this.metadataEnv.getTypeUtils().isCollectionOrMap(descriptor.getType())) {
+                    processCollectionOrMapType(prefix, descriptor, source, seen);
+                }
             });
             seen.pop();
+        }
+    }
+
+    private void processCollectionOrMapType(String prefix, PropertyDescriptor descriptor,
+                                            ExecutableElement source, Deque<TypeElement> seen) {
+        TypeMirror type = descriptor.getType();
+        if (TypeUtils.isMap(type)) {
+            Element elementTypeElement = this.metadataEnv.getTypeUtils().asElement(type);
+            if (elementTypeElement instanceof TypeElement) {
+                // Use * as wildcard for list indices and map keys
+                String wildcardPrefix = ConfigurationMetadata.nestedPrefix(prefix, descriptor.getName() + ".*");
+                TypeMirror mapValueType = TypeUtils.getMapValueType(type);
+                Element element = this.metadataEnv.getTypeUtils().asElement(mapValueType);
+                processTypeElement(wildcardPrefix, (TypeElement) element, source, seen);
+            }
+        } else {
+            TypeMirror elementType = this.metadataEnv.getTypeUtils().getCollectionElementType(descriptor.getType());
+            if (elementType != null) {
+                Element elementTypeElement = this.metadataEnv.getTypeUtils().asElement(elementType);
+                if (elementTypeElement instanceof TypeElement) {
+                    // Use * as wildcard for list indices and map keys
+                    String wildcardPrefix = ConfigurationMetadata.nestedPrefix(prefix, descriptor.getName() + "[*]");
+                    processTypeElement(wildcardPrefix, (TypeElement) elementTypeElement, source, seen);
+                }
+            }
         }
     }
 

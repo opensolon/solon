@@ -53,11 +53,6 @@ class JavaBeanPropertyDescriptor extends PropertyDescriptor {
     }
 
     @Override
-    protected boolean isMarkedAsNested(MetadataGenerationEnvironment environment) {
-        return false;
-    }
-
-    @Override
     protected String resolveDescription(MetadataGenerationEnvironment environment) {
         return environment.getTypeUtils().getJavaDoc(this.field);
     }
