@@ -60,6 +60,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
+                <version>3.1.0</version>
                 <executions>
                     <execution>
                         <id>copy-processor-service</id>
@@ -68,14 +69,14 @@
                             <goal>run</goal>
                         </goals>
                         <configuration>
-                            <tasks>
+                            <target>
                                 <mkdir dir="${project.build.outputDirectory}/META-INF/services"/>
                                 <mkdir dir="${project.build.outputDirectory}/META-INF/gradle"/>
                                 <copy file="src/main/META-INF/services/javax.annotation.processing.Processor"
                                       tofile="${project.build.outputDirectory}/META-INF/services/javax.annotation.processing.Processor"/>
                                 <copy file="src/main/META-INF/gradle/incremental.annotation.processors"
                                       tofile="${project.build.outputDirectory}/META-INF/gradle/incremental.annotation.processors"/>
-                            </tasks>
+                            </target>
                         </configuration>
                     </execution>
                 </executions>
