@@ -201,12 +201,13 @@ public class Snack4StringSerializer implements EntityStringSerializer {
     @Override
     public <T> void addEncoder(Class<T> clz, Converter<T, Object> converter) {
         addEncoder(clz, (ctx, value, target) -> {
-            if (value == null) {
+            Object val = converter.convert(value);
+            if (val == null) {
                 return target.setValue(null);
-            } else if (value instanceof String) {
-                return target.setValue(value);
-            } else if (value instanceof Number) {
-                return target.setValue(value);
+            } else if (val instanceof String) {
+                return target.setValue(val);
+            } else if (val instanceof Number) {
+                return target.setValue(val);
             } else {
                 throw new IllegalArgumentException("The result type of the converter is not supported: " + clz.getName());
             }

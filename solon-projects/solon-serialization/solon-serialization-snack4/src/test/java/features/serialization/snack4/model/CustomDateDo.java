@@ -2,7 +2,7 @@ package features.serialization.snack4.model;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.noear.snack.annotation.ONodeAttr;
+import org.noear.snack4.annotation.ONodeAttr;
 
 import java.util.Date;
 
