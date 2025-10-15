@@ -25,7 +25,7 @@
         
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>snack4-json</artifactId>
+            <artifactId>snack4</artifactId>
             <version>${snack4.version}</version>
         </dependency>
 
