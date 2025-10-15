@@ -192,18 +192,18 @@ public class RenderManager implements Render {
             //如果未明确？
             if (data instanceof String) {
                 return ((String) data);
-            }
-
-            if (render == null) {
-                render = _mapping.get(Constants.AT_JSON);
-            }
-
-            if (render != null) {
-                return render.renderAndReturn(data, ctx);
             } else {
-                //最后只有 def
-                //
-                return _def.renderAndReturn(data, ctx);
+                if (render == null) {
+                    render = _mapping.get(Constants.AT_JSON);
+                }
+
+                if (render != null) {
+                    return render.renderAndReturn(data, ctx);
+                } else {
+                    //最后只有 def
+                    //
+                    return _def.renderAndReturn(data, ctx);
+                }
             }
         }
     }
@@ -286,18 +286,18 @@ public class RenderManager implements Render {
             //如果未明确？
             if (data instanceof String) {
                 ctx.output((String) data);
-            }
-
-            if (render == null) {
-                render = _mapping.get(Constants.AT_JSON);
-            }
-
-            if (render != null) {
-                render.render(data, ctx);
             } else {
-                //最后只有 def
-                //
-                _def.render(data, ctx);
+                if (render == null) {
+                    render = _mapping.get(Constants.AT_JSON);
+                }
+
+                if (render != null) {
+                    render.render(data, ctx);
+                } else {
+                    //最后只有 def
+                    //
+                    _def.render(data, ctx);
+                }
             }
         }
     }
