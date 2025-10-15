@@ -316,6 +316,7 @@ public class HttpParam4Test extends HttpTester {
     public void test2() throws IOException {
         String body2 = path("/demo2/param4/test2?id=3&aaa[0]=1&aaa[1]=2").get();
 
+        System.out.println(body2);
         ONode oNode = ONode.ofJson(body2);
 
         assert oNode.get("id").getInt() == 3;

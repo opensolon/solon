@@ -17,7 +17,7 @@ package features.core;
 
 import org.junit.jupiter.api.Test;
 import org.noear.snack4.ONode;
-import org.noear.snack4.core.Feature;
+import org.noear.snack4.Feature;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
