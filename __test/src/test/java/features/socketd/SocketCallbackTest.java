@@ -17,7 +17,7 @@ package features.socketd;
 
 import org.junit.jupiter.api.Test;
 import org.noear.nami.channel.socketd.SocketdProxy;
-import org.noear.snack.ONode;
+import org.noear.snack4.ONode;
 import org.noear.socketd.SocketD;
 import org.noear.socketd.transport.client.ClientSession;
 import org.noear.socketd.transport.core.Entity;
@@ -52,7 +52,7 @@ public class SocketCallbackTest {
         String root = "tcp://localhost:" + _port;
         Map<String, Object> map = new HashMap<>();
         map.put("name", "noear");
-        String map_josn = ONode.stringify(map);
+        String map_josn = ONode.ofBean(map).toJson();
 
         Entity message = new StringEntity(map_josn)
                 .metaPut("Content-Type", "application/json");
@@ -60,7 +60,7 @@ public class SocketCallbackTest {
 
         CompletableFuture<Boolean> check = new CompletableFuture<>();
         session.sendAndSubscribe(root + "/demoh/rpc/hello", message).thenReply(r -> {
-            String rst_str = ONode.deserialize(r.dataAsString());
+            String rst_str = ONode.ofJson(r.dataAsString()).toBean();
 
             System.out.println("收到："+rst_str);
 

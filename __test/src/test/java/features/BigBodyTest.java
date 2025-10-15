@@ -17,7 +17,7 @@ package features;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.noear.snack.ONode;
+import org.noear.snack4.ONode;
 import org.noear.solon.net.http.HttpResponse;
 import org.noear.solon.test.HttpTester;
 import org.noear.solon.test.SolonTest;

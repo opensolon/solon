@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.noear.nami.coder.hessian.HessianDecoder;
 import org.noear.nami.coder.hessian.HessianEncoder;
 import org.noear.nami.Result;
-import org.noear.snack.ONode;
+import org.noear.snack4.ONode;
 
 import java.util.List;
 
@@ -37,7 +37,7 @@ public class NamiCoderTest_hessian {
 //    @Test
 //    public void test_hessian_err() throws Throwable{
 //        //err
-//        IllegalArgumentException err = ONode.deserialize(json_err);
+//        IllegalArgumentException err = ONode.ofJson(json_err).toBean();
 //        Result err_rst = new Result(200, HessianEncoder.instance.encode(err));
 //        try {
 //            Object rst = HessianDecoder.instance.decode(err_rst, UserModel.class);
@@ -57,7 +57,7 @@ public class NamiCoderTest_hessian {
     @Test
     public void test_hessian_bean() throws Throwable{
         //bean
-        UserModel usr = ONode.deserialize(json_usr, UserModel.class);
+        UserModel usr = ONode.ofJson(json_usr).toBean(UserModel.class);
 
         Result usr_rst = new Result(200, HessianEncoder.instance.encode(usr));
         Object usr_obj = HessianDecoder.instance.decode(usr_rst, UserModel.class);
@@ -66,7 +66,7 @@ public class NamiCoderTest_hessian {
         assert ((UserModel) usr_obj).id == 1;
 
         //bean list
-        List<UserModel> usr_ary = ONode.deserialize(json_usr_ary);
+        List<UserModel> usr_ary = ONode.ofJson(json_usr_ary).toBean();
         Result usr_rst_ary = new Result(200, HessianEncoder.instance.encode(usr_ary));
         Object usr_obj_ary = HessianDecoder.instance.decode(usr_rst_ary, List.class);
 

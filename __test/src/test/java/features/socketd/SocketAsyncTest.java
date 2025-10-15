@@ -18,7 +18,7 @@ package features.socketd;
 import org.java_websocket.client.WebSocketClient;
 import org.junit.jupiter.api.Test;
 import org.noear.java_websocket.client.SimpleWebSocketClient;
-import org.noear.snack.ONode;
+import org.noear.snack4.ONode;
 import org.noear.socketd.SocketD;
 import org.noear.socketd.transport.client.ClientSession;
 import org.noear.socketd.transport.core.Message;
@@ -60,7 +60,7 @@ public class SocketAsyncTest {
         String root = "tcp://localhost:" + _port;
         Map<String, Object> map = new HashMap<>();
         map.put("name", "noear");
-        String map_josn = ONode.stringify(map);
+        String map_josn = ONode.ofBean(map).toJson();
 
         //异步发
         session.send(root + "/demoh/rpc/hello", new StringEntity(map_josn)

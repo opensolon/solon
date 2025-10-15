@@ -15,7 +15,7 @@
  */
 package labs.test4;
 
-import org.noear.snack.ONode;
+import org.noear.snack4.ONode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +39,7 @@ public abstract class AbstractProxyService {
             @Override
             public void run() {
                 while (true) {
-                    System.out.println(ONode.stringify(innerList));
+                    System.out.println(ONode.ofBean(innerList).toJson());
                     try {
                         Thread.sleep(100);
                     } catch (InterruptedException e) {
@@ -61,6 +61,6 @@ public abstract class AbstractProxyService {
 
 
     public void print() {
-        System.out.println(ONode.stringify(innerList));
+        System.out.println(ONode.ofBean(innerList).toJson());
     }
 }

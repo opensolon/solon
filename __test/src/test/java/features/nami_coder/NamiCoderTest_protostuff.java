@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.noear.nami.coder.protostuff.ProtostuffDeoder;
 import org.noear.nami.coder.protostuff.ProtostuffEncoder;
 import org.noear.nami.Result;
-import org.noear.snack.ONode;
+import org.noear.snack4.ONode;
 
 import java.util.List;
 
@@ -37,7 +37,7 @@ public class NamiCoderTest_protostuff {
 //    @Test
 //    public void test_protostuff_err() throws Throwable{
 //        //err
-//        IllegalArgumentException err = ONode.deserialize(json_err);
+//        IllegalArgumentException err = ONode.ofJson(json_err).toBean();
 //        Result err_rst = new Result(200, ProtostuffEncoder.instance.encode(err));
 //        try {
 //            Object rst = ProtostuffDeoder.instance.decode(err_rst, UserModel.class);
@@ -56,7 +56,7 @@ public class NamiCoderTest_protostuff {
     @Test
     public void test_protostuff_bean() throws Throwable{
         //bean
-        UserModel usr = ONode.deserialize(json_usr, UserModel.class);
+        UserModel usr = ONode.ofJson(json_usr).toBean(UserModel.class);
 
         Result usr_rst = new Result(200, ProtostuffEncoder.instance.encode(usr));
         Object usr_obj = ProtostuffDeoder.instance.decode(usr_rst, UserModel.class);

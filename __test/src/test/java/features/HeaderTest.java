@@ -17,7 +17,7 @@ package features;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.noear.snack.ONode;
+import org.noear.snack4.ONode;
 import org.noear.solon.server.handle.HeaderNames;
 import org.noear.solon.net.http.HttpResponse;
 import org.noear.solon.test.HttpTester;
@@ -66,9 +66,9 @@ public class HeaderTest extends HttpTester {
         String json = path("/demo2/remote/").get();
 
         assert json.length() > 0;
-        ONode oNode = ONode.load(json);
+        ONode oNode = ONode.ofJson(json);
         assert oNode.isArray();
-        assert oNode.get(1).val().getRaw() instanceof Number;
+        assert oNode.get(1).getValue() instanceof Number;
         assert oNode.get(1).getInt() > 80;
     }
 

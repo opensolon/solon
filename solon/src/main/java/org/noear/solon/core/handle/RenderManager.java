@@ -190,7 +190,7 @@ public class RenderManager implements Render {
             return render.renderAndReturn(data, ctx);
         } else {
             //如果未明确？
-            if (data instanceof String) {
+            if (ctx.remoting() == false && data instanceof String) {
                 return ((String) data);
             } else {
                 if (render == null) {
@@ -284,7 +284,7 @@ public class RenderManager implements Render {
             render.render(data, ctx);
         } else {
             //如果未明确？
-            if (data instanceof String) {
+            if (ctx.remoting() == false && data instanceof String) {
                 ctx.output((String) data);
             } else {
                 if (render == null) {

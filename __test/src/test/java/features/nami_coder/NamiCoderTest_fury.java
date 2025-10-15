@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.noear.nami.Result;
 import org.noear.nami.coder.fury.FuryDecoder;
 import org.noear.nami.coder.fury.FuryEncoder;
-import org.noear.snack.ONode;
+import org.noear.snack4.ONode;
 
 import java.util.List;
 
@@ -37,7 +37,7 @@ public class NamiCoderTest_fury {
 //    @Test
 //    public void test_fury_err() {
 //        //err
-//        IllegalArgumentException err = ONode.deserialize(json_err);
+//        IllegalArgumentException err = ONode.ofJson(json_err).toBean();
 //        Result err_rst = new Result(200, FuryEncoder.instance.encode(err));
 //        try {
 //            Object rst = FuryDecoder.instance.decode(err_rst, UserModel.class);
@@ -57,7 +57,7 @@ public class NamiCoderTest_fury {
     @Test
     public void test_fury_bean() {
         //bean
-        UserModel usr = ONode.deserialize(json_usr, UserModel.class);
+        UserModel usr = ONode.ofJson(json_usr).toBean(UserModel.class);
 
         Result usr_rst = new Result(200, FuryEncoder.instance.encode(usr));
         Object usr_obj = FuryDecoder.instance.decode(usr_rst, UserModel.class);
@@ -66,7 +66,7 @@ public class NamiCoderTest_fury {
         assert ((UserModel) usr_obj).id == 1;
 
         //bean list
-        List<UserModel> usr_ary = ONode.deserialize(json_usr_ary);
+        List<UserModel> usr_ary = ONode.ofJson(json_usr_ary).toBean();
         Result usr_rst_ary = new Result(200, FuryEncoder.instance.encode(usr_ary));
         Object usr_obj_ary = FuryDecoder.instance.decode(usr_rst_ary, List.class);
 

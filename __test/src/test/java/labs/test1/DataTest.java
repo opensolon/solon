@@ -16,7 +16,7 @@
 package labs.test1;
 
 import org.junit.jupiter.api.Test;
-import org.noear.snack.ONode;
+import org.noear.snack4.ONode;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;

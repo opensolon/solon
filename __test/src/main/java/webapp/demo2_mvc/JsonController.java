@@ -15,7 +15,7 @@
  */
 package webapp.demo2_mvc;
 
-import org.noear.snack.ONode;
+import org.noear.snack4.ONode;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.handle.Context;
@@ -78,7 +78,7 @@ public class JsonController {
 
     @Mapping("/bean_map")
     public String bean_map(@Body Map<String, Object> user) {
-        return ONode.stringify(user);
+        return ONode.ofBean(user).toJson();
     }
 
     @Mapping("/body")

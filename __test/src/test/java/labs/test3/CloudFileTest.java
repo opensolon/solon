@@ -17,7 +17,7 @@ package labs.test3;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.noear.snack.ONode;
+import org.noear.snack4.ONode;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.model.Media;
@@ -46,7 +46,7 @@ public class CloudFileTest {
         String val = "Hello world!";
 
         Result result = CloudClient.file().put(key, new Media(val));
-        System.out.println(ONode.stringify(result));
+        System.out.println(ONode.ofBean(result).toJson());
         assert result.getCode() == Result.SUCCEED_CODE;
 
 
@@ -66,7 +66,7 @@ public class CloudFileTest {
         String valMime = Utils.mime(val.getName());
 
         Result result = CloudClient.file().put(key, new Media(new FileInputStream(val), valMime));
-        System.out.println(ONode.stringify(result));
+        System.out.println(ONode.ofBean(result).toJson());
         assert result.getCode() == Result.SUCCEED_CODE;
     }
 
@@ -84,7 +84,7 @@ public class CloudFileTest {
         byte[] image_btys = Base64.getDecoder().decode(image_base64);
 
         Result result = CloudClient.file().put(key, new Media(image_btys, "image/jpeg"));
-        System.out.println(ONode.stringify(result));
+        System.out.println(ONode.ofBean(result).toJson());
         assert result.getCode() == Result.SUCCEED_CODE;
     }
 }

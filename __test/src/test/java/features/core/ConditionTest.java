@@ -16,8 +16,8 @@
 package features.core;
 
 import org.junit.jupiter.api.Test;
-import org.noear.snack.ONode;
-import org.noear.snack.core.Feature;
+import org.noear.snack4.ONode;
+import org.noear.snack4.core.Feature;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
@@ -63,10 +63,10 @@ public class ConditionTest {
         assert "noear".equals(config.getUsername21());
         assert config.getUsername22() == null;
 
-        System.out.println(ONode.load(config, Feature.SerializeNulls));
+        System.out.println(ONode.ofBean(config, Feature.Write_Nulls).toJson());
 
         assert baseRequest != null;
-        System.out.println(ONode.stringify(baseRequest));
+        System.out.println(ONode.ofBean(baseRequest).toJson());
     }
 
     @Test

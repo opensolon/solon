@@ -16,7 +16,7 @@
 package webapp.nami;
 
 import lombok.extern.slf4j.Slf4j;
-import org.noear.snack.ONode;
+import org.noear.snack4.ONode;
 import org.noear.solon.annotation.*;
 
 /**
@@ -39,7 +39,7 @@ public class ComplexModelService1Impl implements ComplexModelService1 {
     @Post
     @Override
     public String save2(String name1, @Body ComplexModel model) {
-        return name1 + ONode.stringify(model);
+        return name1 + ONode.ofBean(model).toJson();
     }
 
     @Mapping("read")

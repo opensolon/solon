@@ -61,6 +61,10 @@ public class App {
     AppContext appContext;
 
     public static void main(String[] args) throws Exception {
+        if (Solon.app() != null) {
+            return;
+        }
+
         System.out.println("Default Charset=" + Charset.defaultCharset());
         System.out.println("Default Charset=" + Charset.defaultCharset());
         System.out.println("Default Charset in Use=" + getDefaultCharSet());
@@ -77,10 +81,6 @@ public class App {
         //简化方式
         //SolonApp app = Solon.start(TestApp.class, args, x -> x.enableSocketD(true).enableWebSocket(true));
 
-
-        if (Solon.app() != null) {
-            return;
-        }
 
         Locale.setDefault(Locale.SIMPLIFIED_CHINESE);
 
@@ -136,7 +136,7 @@ public class App {
         initApp(Solon.app());
     }
 
-    static void initApp(SolonApp app){
+    static void initApp(SolonApp app) {
 
 
 //        SaManager.getConfig();
@@ -153,7 +153,7 @@ public class App {
         System.out.println("生在ID = " + CloudClient.id().generate());
 
         Properties testP = Utils.loadProperties("test.properties");
-        if(testP == null){
+        if (testP == null) {
 
         }
 

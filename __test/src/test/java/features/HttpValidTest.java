@@ -16,7 +16,7 @@
 package features;
 
 import org.junit.jupiter.api.Test;
-import org.noear.snack.ONode;
+import org.noear.snack4.ONode;
 import org.noear.solon.test.HttpTester;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
@@ -248,9 +248,9 @@ public class HttpValidTest extends HttpTester {
 
     @Test
     public void test2v_beanlist() throws IOException {
-        ONode node = ONode.loadStr("{list:[{mobile:'x',password:'x'},{mobile:'y',password:'y'}]}");
+        ONode node = ONode.ofJson("{list:[{mobile:'x',password:'x'},{mobile:'y',password:'y'}]}");
 
-        ONode node2 = ONode.loadStr("{list:[{mobile:'x'},{mobile:'y',password:'y'}]}");
+        ONode node2 = ONode.ofJson("{list:[{mobile:'x'},{mobile:'y',password:'y'}]}");
 
 
         assert path("/demo2/valid/beanlist").bodyOfJson(node.toJson()).post().equals("OK");
@@ -259,9 +259,9 @@ public class HttpValidTest extends HttpTester {
 
     @Test
     public void test2v_beanlist2() throws IOException {
-        ONode node = ONode.loadStr("{list:[{mobile:'x',password:'x'},{mobile:'y',password:'y'}]}");
+        ONode node = ONode.ofJson("{list:[{mobile:'x',password:'x'},{mobile:'y',password:'y'}]}");
 
-        ONode node2 = ONode.loadStr("{list:[{mobile:'x'},{mobile:'y',password:'y'}]}");
+        ONode node2 = ONode.ofJson("{list:[{mobile:'x'},{mobile:'y',password:'y'}]}");
 
 
         assert path("/demo2/valid/beanlist2").bodyOfJson(node.toJson()).post().equals("OK");
@@ -277,9 +277,9 @@ public class HttpValidTest extends HttpTester {
 
     @Test
     public void test2v_map() throws IOException {
-        ONode node = ONode.loadStr("{a:{mobile:'x',password:'x'},b:{mobile:'y',password:'y'}}");
+        ONode node = ONode.ofJson("{a:{mobile:'x',password:'x'},b:{mobile:'y',password:'y'}}");
 
-        ONode node2 = ONode.loadStr("{a:{mobile:'x'},b:{mobile:'y'}}");
+        ONode node2 = ONode.ofJson("{a:{mobile:'x'},b:{mobile:'y'}}");
 
 
         assert path("/demo2/valid/map").bodyOfJson(node.toJson()).post().equals("OK");

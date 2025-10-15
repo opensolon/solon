@@ -17,7 +17,7 @@ package features;
 
 import features._model.UserModel;
 import org.junit.jupiter.api.Test;
-import org.noear.snack.ONode;
+import org.noear.snack4.ONode;
 import org.noear.solon.test.HttpTester;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
@@ -36,7 +36,7 @@ public class HttpJsonTest extends HttpTester {
 
         UserModel userModel = new UserModel();
         userModel.id = 12;
-        oNode.set("1", ONode.loadObj(userModel));
+        oNode.set("1", ONode.ofBean(userModel));
 
         assert path("/demo2/json/map").bodyOfJson(oNode.toJson()).post().equals("12");
     }
@@ -47,7 +47,7 @@ public class HttpJsonTest extends HttpTester {
 
         UserModel userModel = new UserModel();
         userModel.id = 12;
-        oNode.set("1", ONode.loadObj(userModel));
+        oNode.set("1", ONode.ofBean(userModel));
 
         ONode oNode1 = new ONode();
         oNode1.set("userMap", oNode);
@@ -69,7 +69,7 @@ public class HttpJsonTest extends HttpTester {
 
         list.add(userModel);
 
-        assert path("/demo2/json/list").bodyOfJson(ONode.stringify(list)).post().equals("12");
+        assert path("/demo2/json/list").bodyOfJson(ONode.ofBean(list).toJson()).post().equals("12");
     }
 
     @Test
@@ -86,7 +86,7 @@ public class HttpJsonTest extends HttpTester {
 
         list.add(userModel);
 
-        assert path("/demo2/json/list_query1?query1=a").bodyOfJson(ONode.stringify(list)).post().equals("a:query1=a");
+        assert path("/demo2/json/list_query1?query1=a").bodyOfJson(ONode.ofBean(list).toJson()).post().equals("a:query1=a");
     }
 
     @Test
@@ -95,7 +95,7 @@ public class HttpJsonTest extends HttpTester {
 
         UserModel userModel = new UserModel();
         userModel.id = 12;
-        oNode.set("1", ONode.loadObj(userModel));
+        oNode.set("1", ONode.ofBean(userModel));
 
         String rst = path("/demo2/json/map_r")
                 .header("Accept", "application/xml")
@@ -111,7 +111,7 @@ public class HttpJsonTest extends HttpTester {
 
         UserModel userModel = new UserModel();
         userModel.id = 12;
-        oNode.set("1", ONode.loadObj(userModel));
+        oNode.set("1", ONode.ofBean(userModel));
 
         String rst = path("/demo2/json/map_xml")
                 .bodyOfJson(oNode.toJson()).post();

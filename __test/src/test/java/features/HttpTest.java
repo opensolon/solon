@@ -17,7 +17,7 @@ package features;
 
 import org.junit.jupiter.api.Test;
 import org.noear.nami.Nami;
-import org.noear.snack.ONode;
+import org.noear.snack4.ONode;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.test.HttpTester;
@@ -243,13 +243,13 @@ public class HttpTest extends HttpTester {
         String json = path("/demo2/param/array_str?aaa=1&aaa=2&aaa=中文")
                 .get();
 
-        assert ONode.load(json).toJson().equals("[\"1\",\"2\",\"中文\"]");
+        assert ONode.ofJson(json).toJson().equals("[\"1\",\"2\",\"中文\"]");
     }
 
     @Test
     public void test2g_2() throws IOException {
         String json = path("/demo2/param/array_str?aaa=1,2,中文").get();
-        assert ONode.load(json).toJson().equals("[\"1\",\"2\",\"中文\"]");
+        assert ONode.ofJson(json).toJson().equals("[\"1\",\"2\",\"中文\"]");
     }
 
     @Test
@@ -258,7 +258,7 @@ public class HttpTest extends HttpTester {
                 .data("aaa", "1,2,中文")
                 .post();
 
-        assert ONode.load(json).toJson().equals("[\"1\",\"2\",\"中文\"]");
+        assert ONode.ofJson(json).toJson().equals("[\"1\",\"2\",\"中文\"]");
     }
 
 
@@ -268,13 +268,13 @@ public class HttpTest extends HttpTester {
         String json = path("/demo2/param/array_str2?aaa=1&aaa=2&aaa=中文")
                 .get();
 
-        assert ONode.load(json).toJson().equals("[\"1\",\"2\",\"中文\"]");
+        assert ONode.ofJson(json).toJson().equals("[\"1\",\"2\",\"中文\"]");
     }
 
     @Test
     public void test2g2_2() throws IOException {
         String json = path("/demo2/param/array_str2?aaa=1,2,中文").get();
-        assert ONode.load(json).toJson().equals("[\"1\",\"2\",\"中文\"]");
+        assert ONode.ofJson(json).toJson().equals("[\"1\",\"2\",\"中文\"]");
     }
 
     @Test
@@ -283,7 +283,7 @@ public class HttpTest extends HttpTester {
                 .data("aaa", "1,2,中文")
                 .post();
 
-        assert ONode.load(json).toJson().equals("[\"1\",\"2\",\"中文\"]");
+        assert ONode.ofJson(json).toJson().equals("[\"1\",\"2\",\"中文\"]");
     }
 
 
@@ -350,10 +350,10 @@ public class HttpTest extends HttpTester {
 
         //assert .equals("{\"id\":1,\"name\":\"xxx\",\"sex\":2,\"date\":1575129600000,\"aaa\":[1,2]}");
 
-        ONode oNode = ONode.load(json);
+        ONode oNode = ONode.ofJson(json);
 
         assert oNode.get("id").getInt() == 1;
-        assert oNode.get("aaa").count() == 2;
+        assert oNode.get("aaa").size() == 2;
         assert oNode.get("sex").getInt() == 2;
     }
 
@@ -364,10 +364,10 @@ public class HttpTest extends HttpTester {
         String json2 = path("/demo2/param/model").body(json, "application/json")
                 .post();
 
-        ONode oNode = ONode.load(json2);
+        ONode oNode = ONode.ofJson(json2);
 
         assert oNode.get("id").getInt() == 1;
-        assert oNode.get("aaa").count() == 2;
+        assert oNode.get("aaa").size() == 2;
         assert oNode.get("sex").getInt() == 2;
     }
 
@@ -392,8 +392,8 @@ public class HttpTest extends HttpTester {
 
     @Test
     public void test2p() throws IOException {
-        ONode n = ONode.loadStr(path("/demo2/json").get());
-        assert n.contains("@type") == false;
+        ONode n = ONode.ofJson(path("/demo2/json").get());
+        assert n.hasKey("@type") == false;
         assert n.get("msg").getString().indexOf("你好") >= 0;
     }
 
@@ -421,7 +421,7 @@ public class HttpTest extends HttpTester {
     public void test61() throws IOException {
         String json = path("/demo6/aop").get();
 
-        assert ONode.load(json).toJson().equals("{\"rockapi12\":\"我是：Rockservice1\",\"rockapi11\":\"我是：Rockservice1\",\"rockapi2\":\"我是：Rockservice2\",\"rockapi132\":\"我是：Rockservice3\"}");
+        assert ONode.ofJson(json).toJson().equals("{\"rockapi12\":\"我是：Rockservice1\",\"rockapi11\":\"我是：Rockservice1\",\"rockapi2\":\"我是：Rockservice2\",\"rockapi132\":\"我是：Rockservice3\"}");
     }
 
     @Test
@@ -446,20 +446,20 @@ public class HttpTest extends HttpTester {
 
         System.out.println(json1);
 
-        System.out.println("json0:: " + ONode.loadStr(json0).toJson());
-        System.out.println("json1:: " + ONode.loadStr(json1).toJson());
-        assert ONode.loadStr(json0).toJson().length() == ONode.loadStr(json1).toJson().length();
+        System.out.println("json0:: " + ONode.ofJson(json0).toJson());
+        System.out.println("json1:: " + ONode.ofJson(json1).toJson());
+        assert ONode.ofJson(json0).toJson().length() == ONode.ofJson(json1).toJson().length();
     }
 
     @Test
     public void test82() throws IOException {
-        assert ONode.loadStr(path("/demo8/config_all").get()).get("username").getString().equals("noear");
+        assert ONode.ofJson(path("/demo8/config_all").get()).get("username").getString().equals("noear");
     }
 
     @Test
     public void test83() throws IOException {
         String json = path("/demo8/config_system").get();
-        String val = ONode.loadStr(json).get("file.separator").getString();
+        String val = ONode.ofJson(json).get("file.separator").getString();
 
         System.out.println(val);
         assert val.equals("/") || val.equals("\\/") || val.equals(File.separator);
@@ -467,7 +467,7 @@ public class HttpTest extends HttpTester {
 
     @Test
     public void test84() throws IOException {
-        assert ONode.loadStr(path("/demo8/user").get()).get("name").getString().equals("noear");
+        assert ONode.ofJson(path("/demo8/user").get()).get("name").getString().equals("noear");
     }
 
 

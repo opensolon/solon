@@ -20,7 +20,7 @@ import org.noear.nami.Nami;
 import org.noear.nami.channel.socketd.SocketdProxy;
 import org.noear.nami.coder.snack4.Snack4Decoder;
 import org.noear.nami.coder.snack4.Snack4Encoder;
-import org.noear.snack.ONode;
+import org.noear.snack4.ONode;
 import org.noear.socketd.SocketD;
 import org.noear.socketd.transport.client.ClientSession;
 import org.noear.socketd.transport.core.Entity;
@@ -66,12 +66,12 @@ public class SocketResponseTest {
         String root = "tcp://localhost:" + _port;
         Map<String, Object> map = new HashMap<>();
         map.put("name", "noear");
-        String map_josn = ONode.stringify(map);
+        String map_josn = ONode.ofBean(map).toJson();
 
 
         Entity rst = session.sendAndRequest(root + "/demoh/rpc/hello",
                 new StringEntity(map_josn).metaStringSet(ContentTypes.JSON)).await();
-        String rst_str = ONode.deserialize(rst.dataAsString());
+        String rst_str = ONode.ofJson(rst.dataAsString()).toBean();
 
         System.out.println("收到:" + rst_str);
 

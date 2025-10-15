@@ -15,7 +15,7 @@
  */
 package webapp.demo2_mvc;
 
-import org.noear.snack.ONode;
+import org.noear.snack4.ONode;
 import org.noear.solon.annotation.*;
 import webapp.models.UserModel;
 
@@ -35,6 +35,6 @@ public class PropsController {
 
     @Mapping("/bean_map")
     public Object bean_map(@Body Map<String, Object> body) {
-        return ONode.stringify(body);
+        return ONode.ofBean(body).toJson();
     }
 }

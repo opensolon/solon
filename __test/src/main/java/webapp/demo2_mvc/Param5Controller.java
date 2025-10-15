@@ -15,7 +15,7 @@
  */
 package webapp.demo2_mvc;
 
-import org.noear.snack.ONode;
+import org.noear.snack4.ONode;
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.handle.Context;
 import webapp.models.CatType;
@@ -45,7 +45,7 @@ public class Param5Controller {
 
     @Mapping("test4")
     public String test4(Context ctx) {
-        return ONode.stringify(ctx.paramMap().toValuesMap());
+        return ONode.ofBean(ctx.paramMap().toValuesMap()).toJson();
     }
 
     @Mapping("test5")

@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.noear.nami.coder.jackson.JacksonDecoder;
 import org.noear.nami.coder.jackson.JacksonEncoder;
 import org.noear.nami.Result;
-import org.noear.snack.ONode;
+import org.noear.snack4.ONode;
 
 import java.nio.charset.StandardCharsets;
 
@@ -36,7 +36,7 @@ public class NamiCoderTest_jackjson {
 //    @Test
 //    public void test_jackjson_err() throws Throwable{
 //        //err
-//        IllegalArgumentException err = ONode.deserialize(json_err);
+//        IllegalArgumentException err = ONode.ofJson(json_err).toBean();
 //        Result err_rst = new Result(200, JacksonEncoder.instance.encode(err));
 //        try {
 //            Object rst = JacksonDecoder.instance.decode(err_rst, UserModel.class);
@@ -78,7 +78,7 @@ public class NamiCoderTest_jackjson {
 //    @Test
 //    public void test_jackjson_bean_list() {
 //        //bean list //不支持
-//        List<UserModel> usr_ary = ONode.deserialize(json_usr_ary);
+//        List<UserModel> usr_ary = ONode.ofJson(json_usr_ary).toBean();
 //
 //        byte[] usr_bytes = JacksonEncoder.instance.encode(usr_ary);
 //        System.out.println(new String(usr_bytes));

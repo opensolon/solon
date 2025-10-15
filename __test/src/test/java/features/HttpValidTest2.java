@@ -16,7 +16,7 @@
 package features;
 
 import org.junit.jupiter.api.Test;
-import org.noear.snack.ONode;
+import org.noear.snack4.ONode;
 import org.noear.solon.test.HttpTester;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
@@ -331,7 +331,7 @@ public class HttpValidTest2 extends HttpTester {
         data.put("field16", "1");
         data.put("field17", "1xxxx");
 
-        ONode node = ONode.load(data);
+        ONode node = ONode.ofBean(data);
         node.getOrNew("field18").add("1").add("2");
 
         assert path("/demo2/valid/bean2").bodyOfJson(node.toJson()).post().contains("OK");
