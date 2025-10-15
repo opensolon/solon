@@ -15,8 +15,8 @@
  */
 package org.noear.solon.serialization.snack4;
 
-import org.noear.snack4.core.Feature;
-import org.noear.snack4.core.Options;
+import org.noear.snack4.Feature;
+import org.noear.snack4.Options;
 import org.noear.solon.core.util.Assert;
 
 /**

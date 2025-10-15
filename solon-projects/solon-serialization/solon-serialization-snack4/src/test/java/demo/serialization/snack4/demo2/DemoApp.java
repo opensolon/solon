@@ -15,7 +15,7 @@
  */
 package demo.serialization.snack4.demo2;
 
-import org.noear.snack4.core.Feature;
+import org.noear.snack4.Feature;
 import org.noear.solon.Solon;
 import org.noear.solon.serialization.snack4.Snack4StringSerializer;
 
