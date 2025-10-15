@@ -186,11 +186,25 @@ public class RenderManager implements Render {
         Render render = resolveRander(ctx);
 
         if (render != null) {
+            //明确有渲染器
             return render.renderAndReturn(data, ctx);
         } else {
-            //最后只有 def
-            //
-            return _def.renderAndReturn(data, ctx);
+            //如果未明确？
+            if (data instanceof String) {
+                return ((String) data);
+            }
+
+            if (render == null) {
+                render = _mapping.get(Constants.AT_JSON);
+            }
+
+            if (render != null) {
+                return render.renderAndReturn(data, ctx);
+            } else {
+                //最后只有 def
+                //
+                return _def.renderAndReturn(data, ctx);
+            }
         }
     }
 
@@ -266,11 +280,25 @@ public class RenderManager implements Render {
         Render render = resolveRander(ctx);
 
         if (render != null) {
+            //明确有渲染器
             render.render(data, ctx);
         } else {
-            //最后只有 def
-            //
-            _def.render(data, ctx);
+            //如果未明确？
+            if (data instanceof String) {
+                ctx.output((String) data);
+            }
+
+            if (render == null) {
+                render = _mapping.get(Constants.AT_JSON);
+            }
+
+            if (render != null) {
+                render.render(data, ctx);
+            } else {
+                //最后只有 def
+                //
+                _def.render(data, ctx);
+            }
         }
     }
 
@@ -355,15 +383,6 @@ public class RenderManager implements Render {
                     }
                 }
             }
-        }
-
-        if (render == null) {
-//            if (ctx.remoting()) {
-//                render = _mapping.get(Constants.RENDER_TYPE_JSON);
-//            } else {
-//                render = _mapping.get(Constants.RENDER_JSON);
-//            }
-            render = _mapping.get(Constants.AT_JSON);
         }
 
         return render;

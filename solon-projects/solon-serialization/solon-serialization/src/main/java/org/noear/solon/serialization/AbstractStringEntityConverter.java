@@ -79,11 +79,7 @@ public abstract class AbstractStringEntityConverter<T extends EntitySerializer<S
                 throw (Throwable) data;
             }
 
-            if (data instanceof String) {
-                text = (String) data;
-            } else {
-                text = serializer.serialize(data);
-            }
+            text = serializer.serialize(data);
         }
 
         ctx.attrSet("output", text);
