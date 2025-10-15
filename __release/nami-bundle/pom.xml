@@ -27,6 +27,7 @@
         <module>../../solon-projects/nami/nami-channel-socketd</module>
 
         <module>../../solon-projects/nami/nami-coder-snack3</module>
+        <module>../../solon-projects/nami/nami-coder-snack4</module>
         <module>../../solon-projects/nami/nami-coder-fastjson</module>
         <module>../../solon-projects/nami/nami-coder-fastjson2</module>
         <module>../../solon-projects/nami/nami-coder-jackson</module>

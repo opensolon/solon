@@ -16,14 +16,12 @@
 package features;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.noear.nami.Nami;
 import org.noear.nami.annotation.NamiClient;
 import org.noear.nami.coder.hessian.HessianDecoder;
 import org.noear.nami.coder.hessian.HessianEncoder;
-import org.noear.nami.coder.snack3.SnackDecoder;
-import org.noear.nami.coder.snack3.SnackEncoder;
-import org.noear.nami.coder.snack3.SnackTypeEncoder;
+import org.noear.nami.coder.snack4.Snack4Decoder;
+import org.noear.nami.coder.snack4.Snack4Encoder;
 import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.core.util.MimeType;
 import org.noear.solon.test.SolonTest;
@@ -163,8 +161,8 @@ public class NamiAndRpcTest {
     public void test6_throw() {
         UserService userService5 = Nami.builder()
                 .url("http://localhost:8080/demo5/user/")
-                .decoder(SnackDecoder.instance)
-                .encoder(SnackTypeEncoder.instance)
+                .decoder(Snack4Decoder.instance)
+                .encoder(Snack4Encoder.instance)
                 .create(UserService.class);
 
         try {

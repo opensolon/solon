@@ -20,7 +20,7 @@ import features.nami.GitHub;
 import features.nami.Issue;
 import org.junit.jupiter.api.Test;
 import org.noear.nami.Nami;
-import org.noear.nami.coder.snack3.SnackDecoder;
+import org.noear.nami.coder.snack4.Snack4Decoder;
 import org.noear.solon.test.SolonTest;
 
 import java.util.List;
@@ -33,7 +33,7 @@ public class NamiTest {
     @Test
     public void test() {
         GitHub github = Nami.builder()
-                .decoder(SnackDecoder.instance)
+                .decoder(Snack4Decoder.instance)
                 .upstream(() -> "https://api.github.com")
                 .create(GitHub.class);
 
@@ -49,7 +49,7 @@ public class NamiTest {
     @Test
     public void test2() {
         GitHub github = Nami.builder()
-                .decoder(SnackDecoder.instance)
+                .decoder(Snack4Decoder.instance)
                 .upstream(() -> "https://api.github.com")
                 .create(GitHub.class);
 

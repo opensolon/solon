@@ -19,7 +19,7 @@ import org.junit.jupiter.api.Test;
 import org.noear.nami.Nami;
 import org.noear.nami.annotation.NamiBody;
 import org.noear.nami.annotation.NamiClient;
-import org.noear.nami.coder.snack3.SnackDecoder;
+import org.noear.nami.coder.snack4.Snack4Decoder;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
 import webapp.models.UserModel;
@@ -32,7 +32,7 @@ public class HttpParam3Test {
     @Test
     public void nami() {
         ParamService paramService = Nami.builder()
-                .decoder(SnackDecoder.instance)
+                .decoder(Snack4Decoder.instance)
                 .create(ParamService.class);
 
         UserModel userModel = new UserModel();

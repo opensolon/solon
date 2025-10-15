@@ -18,8 +18,8 @@ package features.socketd;
 import org.junit.jupiter.api.Test;
 import org.noear.nami.Nami;
 import org.noear.nami.channel.socketd.SocketdProxy;
-import org.noear.nami.coder.snack3.SnackDecoder;
-import org.noear.nami.coder.snack3.SnackEncoder;
+import org.noear.nami.coder.snack4.Snack4Decoder;
+import org.noear.nami.coder.snack4.Snack4Encoder;
 import org.noear.snack.ONode;
 import org.noear.socketd.SocketD;
 import org.noear.socketd.transport.client.ClientSession;
@@ -83,8 +83,8 @@ public class SocketResponseTest {
         int _port = 8080 + 20000;
 
         HelloRpcService rpc = Nami.builder()
-                .encoder(SnackEncoder.instance)
-                .decoder(SnackDecoder.instance)
+                .encoder(Snack4Encoder.instance)
+                .decoder(Snack4Decoder.instance)
                 .upstream(() -> "tcp://localhost:" + _port)
                 .create(HelloRpcService.class);
 

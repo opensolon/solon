@@ -17,7 +17,7 @@ package webapp.demo5_rpc;
 
 import org.noear.nami.Nami;
 import org.noear.nami.NamiAttachment;
-import org.noear.nami.coder.snack3.SnackDecoder;
+import org.noear.nami.coder.snack4.Snack4Decoder;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
@@ -46,7 +46,7 @@ public class RpcTest implements Handler {
         String root = "http://localhost:" + Solon.cfg().serverPort();
 
         RockApi client = Nami.builder()
-                .decoder(SnackDecoder.instance)
+                .decoder(Snack4Decoder.instance)
                 .upstream(() -> root)
                 .create(RockApi.class);
 
@@ -57,7 +57,7 @@ public class RpcTest implements Handler {
         int _port = 20000 + Solon.cfg().serverPort();
 
         RockApi client = Nami.builder().upstream(() -> "tcp://localhost:" + _port)
-                .decoder(SnackDecoder.instance)
+                .decoder(Snack4Decoder.instance)
                 .create(RockApi.class);
 
         return client.test1(12);

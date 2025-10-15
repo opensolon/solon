@@ -16,7 +16,7 @@
 package org.noear.solon.serialization.snack4;
 
 import org.noear.snack4.ONode;
-import org.noear.snack4.Feature;
+import org.noear.snack4.core.Feature;
 import org.noear.snack4.codec.ObjectEncoder;
 import org.noear.solon.Utils;
 import org.noear.solon.core.convert.Converter;
@@ -128,7 +128,7 @@ public class Snack4StringSerializer implements EntityStringSerializer {
      */
     @Override
     public String serialize(Object obj) throws IOException {
-        return ONode.serialize(obj, getSerializeConfig().getOptions());
+        return ONode.ofBean(obj, getSerializeConfig().getOptions()).toJson();
     }
 
     /**
@@ -140,9 +140,9 @@ public class Snack4StringSerializer implements EntityStringSerializer {
     @Override
     public Object deserialize(String data, Type toType) throws IOException {
         if (toType == null) {
-            return ONode.deserialize(data, getDeserializeConfig().getOptions());
+            return ONode.ofJson(data, getDeserializeConfig().getOptions()).toBean();
         } else {
-            return ONode.deserialize(data, toType, getDeserializeConfig().getOptions());
+            return ONode.ofJson(data, getDeserializeConfig().getOptions()).toBean(toType);
         }
     }
 

@@ -125,7 +125,7 @@
         </dependency>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>nami-coder-snack3</artifactId>
+            <artifactId>nami-coder-snack4</artifactId>
         </dependency>
         <dependency>
             <groupId>org.noear</groupId>
@@ -389,7 +389,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-serialization-snack3</artifactId>
+            <artifactId>solon-serialization-snack4</artifactId>
         </dependency>
 
         <dependency>
@@ -457,15 +457,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>snack3</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
         </dependency>
-
 
         <dependency>
             <groupId>mysql</groupId>

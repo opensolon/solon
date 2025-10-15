@@ -938,6 +938,11 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon-serialization-snack4</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon-serialization-properties</artifactId>
                 <version>${solon.version}</version>
             </dependency>
@@ -1081,6 +1086,12 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>nami-coder-snack3</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>nami-coder-snack4</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 

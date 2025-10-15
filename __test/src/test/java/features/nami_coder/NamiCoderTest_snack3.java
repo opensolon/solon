@@ -17,8 +17,8 @@ package features.nami_coder;
 
 import features._model.UserModel;
 import org.junit.jupiter.api.Test;
-import org.noear.nami.coder.snack3.SnackDecoder;
-import org.noear.nami.coder.snack3.SnackEncoder;
+import org.noear.nami.coder.snack4.Snack4Decoder;
+import org.noear.nami.coder.snack4.Snack4Encoder;
 import org.noear.nami.Result;
 
 import java.nio.charset.StandardCharsets;
@@ -38,7 +38,7 @@ public class NamiCoderTest_snack3 {
 //        //err
 //        Result err_rst = new Result(200, json_err.getBytes(StandardCharsets.UTF_8));
 //        try {
-//            Object rst = SnackDecoder.instance.decode(err_rst, UserModel.class);
+//            Object rst = Snack4Decoder.instance.decode(err_rst, UserModel.class);
 //            if (rst instanceof IllegalArgumentException) {
 //                assert true;
 //                System.out.println("test_snack3::ok");
@@ -57,7 +57,7 @@ public class NamiCoderTest_snack3 {
 
         //bean
         Result usr_rst = new Result(200, json_usr.getBytes(StandardCharsets.UTF_8));
-        Object usr_obj = SnackDecoder.instance.decode(usr_rst, UserModel.class);
+        Object usr_obj = Snack4Decoder.instance.decode(usr_rst, UserModel.class);
 
         assert usr_obj instanceof UserModel;
         assert ((UserModel) usr_obj).id == 1;
@@ -65,15 +65,15 @@ public class NamiCoderTest_snack3 {
 
         //bean list
         Result usr_rst_ary = new Result(200, json_usr_ary.getBytes(StandardCharsets.UTF_8));
-        Object usr_obj_ary = SnackDecoder.instance.decode(usr_rst_ary, List.class);
+        Object usr_obj_ary = Snack4Decoder.instance.decode(usr_rst_ary, List.class);
 
         assert usr_obj_ary instanceof List;
         assert ((List<?>) usr_obj_ary).size() == 1;
 
 
         //null
-        usr_rst = new Result(200, SnackEncoder.instance.encode(null));
-        usr_obj = SnackDecoder.instance.decode(usr_rst, UserModel.class);
+        usr_rst = new Result(200, Snack4Encoder.instance.encode(null));
+        usr_obj = Snack4Decoder.instance.decode(usr_rst, UserModel.class);
 
         assert usr_obj == null;
     }
@@ -82,7 +82,7 @@ public class NamiCoderTest_snack3 {
     public void test_snack3_bean2() {
         //bean
         Result usr_rst = new Result(200, json_usr2.getBytes(StandardCharsets.UTF_8));
-        Object usr_obj = SnackDecoder.instance.decode(usr_rst, UserModel.class);
+        Object usr_obj = Snack4Decoder.instance.decode(usr_rst, UserModel.class);
 
         assert usr_obj instanceof UserModel;
         assert ((UserModel) usr_obj).id == 1;

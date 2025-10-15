@@ -11,34 +11,25 @@
         <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon-serialization-snack4</artifactId>
+    <artifactId>nami-coder-snack4</artifactId>
     <name>${project.artifactId}</name>
     <packaging>jar</packaging>
 
-
     <dependencies>
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-serialization</artifactId>
+            <artifactId>nami</artifactId>
         </dependency>
-        
+
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>snack4-json</artifactId>
             <version>${snack4.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-test</artifactId>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 

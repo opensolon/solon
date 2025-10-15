@@ -28,7 +28,9 @@
 
 ### 3.6.1
 
+* 新增 `nami-coder-snack4` 插件
 * 新增 `solon-serialization-snack4` 插件
+* 新增 `nami-coder-snack4` 插件
 * 添加 `solon` MethodArgumentResolver 接口，替代 ActionArgumentResolver （标为弃用）。语义更合理
 * 添加 `solon` Render:mappings 方法（支持自动映射效果）
 

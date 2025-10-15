@@ -22,8 +22,8 @@ import org.noear.nami.Result;
 import org.noear.nami.annotation.NamiBody;
 import org.noear.nami.annotation.NamiMapping;
 import org.noear.nami.annotation.NamiClient;
-import org.noear.nami.coder.snack3.SnackDecoder;
-import org.noear.nami.coder.snack3.SnackEncoder;
+import org.noear.nami.coder.snack4.Snack4Decoder;
+import org.noear.nami.coder.snack4.Snack4Encoder;
 import org.noear.solon.Utils;
 
 /**
@@ -41,8 +41,8 @@ public interface ComplexModelService3 extends Filter {
     default Result doFilter(Invocation inv) throws Throwable{
         inv.headers.put("Token", "Xxx");
         inv.headers.put("TraceId", Utils.guid());
-        inv.config.setDecoder(SnackDecoder.instance);
-        inv.config.setEncoder(SnackEncoder.instance);
+        inv.config.setDecoder(Snack4Decoder.instance);
+        inv.config.setEncoder(Snack4Encoder.instance);
 
         return inv.invoke();
     }

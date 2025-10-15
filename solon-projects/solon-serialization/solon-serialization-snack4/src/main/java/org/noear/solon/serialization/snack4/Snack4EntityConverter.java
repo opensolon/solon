@@ -16,7 +16,7 @@
 package org.noear.solon.serialization.snack4;
 
 import org.noear.snack4.ONode;
-import org.noear.snack4.Feature;
+import org.noear.snack4.core.Feature;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.util.LazyReference;
 import org.noear.solon.core.wrap.MethodWrap;

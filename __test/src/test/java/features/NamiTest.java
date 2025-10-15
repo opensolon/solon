@@ -18,7 +18,7 @@ package features;
 import org.junit.jupiter.api.Test;
 import org.noear.nami.Nami;
 import org.noear.nami.annotation.NamiClient;
-import org.noear.nami.coder.snack3.SnackEncoder;
+import org.noear.nami.coder.snack4.Snack4Encoder;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
 import webapp.nami.ComplexModel;
@@ -63,7 +63,7 @@ public class NamiTest {
         ComplexModelService1 service1_2 = Nami.builder()
                 .name("local")
                 .path("/nami/ComplexModelService1/")
-                .encoder(SnackEncoder.instance)
+                .encoder(Snack4Encoder.instance)
                 .create(ComplexModelService1.class);
 
         assert service1_2.read(12).getModelId() == 12;
