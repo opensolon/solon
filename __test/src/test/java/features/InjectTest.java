@@ -88,6 +88,8 @@ public class InjectTest {
 
         assert "xxx".equals(username);
 
+        Solon.cfg().setProperty("username", "noear"); //测好后，改回去。。。避免影响其它测试
+
         assert map != null;
         assert map.get("1").equals(1);
     }
