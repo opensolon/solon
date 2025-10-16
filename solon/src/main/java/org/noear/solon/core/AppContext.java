@@ -964,7 +964,7 @@ public class AppContext extends BeanContainer {
         if (raw instanceof BeanWrap) {
             m_bw = (BeanWrap) raw;
         } else {
-            if (anno.injected()) {
+            if (anno.autoInject() || anno.injected()) {
                 //执行注入
                 beanInject(raw);
             }
@@ -985,6 +985,11 @@ public class AppContext extends BeanContainer {
         //确定顺序位
         m_bw.indexSet(anno.index());
         m_bw.done();
+
+        //尝试提取函数并确定自动代理
+        if(anno.autoProxy()) {
+            beanExtractOrProxy(m_bw);
+        }
 
         //特定能力接口交付
         if (anno.delivered()) {

@@ -77,7 +77,6 @@ public @interface Managed {
 
     /// ///////////////
 
-
     /**
      * 初始化方法（用于托管方法时）
      */
@@ -95,4 +94,12 @@ public @interface Managed {
      */
     @Preview("3.5")
     boolean autoInject() default false;
+
+    /**
+     * 自动代理（用于托管方法时）
+     *
+     * @since 3.5
+     */
+    @Preview("3.6")
+    boolean autoProxy() default false;
 }

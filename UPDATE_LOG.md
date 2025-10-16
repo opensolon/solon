@@ -33,6 +33,7 @@
 * 新增 `nami-coder-snack4` 插件
 * 添加 `solon` MethodArgumentResolver 接口，替代 ActionArgumentResolver （标为弃用）。语义更合理
 * 添加 `solon` Render:mappings 方法（支持自动映射效果）
+* 添加 `solon` `Bean:autoInject`（替代 injected）,`Bean:autoProxy`,`Managed:autoProxy` 方法
 * 优化 `solon` 渲染体系对返回 string 的处理
 * 优化 `solon-config-yaml` 对 'solon.env.on' 的分片处理（避免转 yaml 时与 'solon.evn' 冲突）
 

@@ -15,6 +15,8 @@
  */
 package org.noear.solon.annotation;
 
+import org.noear.solon.lang.Preview;
+
 import java.lang.annotation.*;
 
 /**
@@ -67,15 +69,12 @@ public @interface Bean {
     @Deprecated
     int priority() default 0;
 
+    /// ///////////////
+
     /**
      * 要交付的（特定能力接口交付）
      */
     boolean delivered() default true;
-
-    /**
-     * 要注入的
-     */
-    boolean injected() default false;
 
     /**
      * 初始化方法
@@ -86,4 +85,28 @@ public @interface Bean {
      * 注销方法
      */
     String destroyMethod() default "";
+
+    /**
+     * 要注入的
+     *
+     * @deprecated 3.6 {@link #autoInject()}
+     */
+    @Deprecated
+    boolean injected() default false;
+
+    /**
+     * 自动注入
+     *
+     * @since 3.5
+     */
+    @Preview("3.5")
+    boolean autoInject() default false;
+
+    /**
+     * 自动代理
+     *
+     * @since 3.5
+     */
+    @Preview("3.6")
+    boolean autoProxy() default false;
 }

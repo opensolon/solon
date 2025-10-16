@@ -86,4 +86,14 @@ public class ManagedToBeanAnno implements Bean {
     public boolean injected() {
         return anno.autoInject();
     }
+
+    @Override
+    public boolean autoInject() {
+        return anno.autoInject();
+    }
+
+    @Override
+    public boolean autoProxy() {
+        return anno.autoProxy();
+    }
 }
