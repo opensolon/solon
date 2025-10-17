@@ -129,6 +129,17 @@ public class PropUtil {
      * @param useDef 是否使用默认值
      */
     public static String getByTml(Properties main, Properties target, String tml, String refKey, boolean useDef) {
+        // 调用私有实现，并传入初始深度 0
+        return getByTmlCheckDepth(main, target, tml, refKey, useDef, 0);
+    }
+
+    /**
+     * 根据模板获取配置值 (增加递归深度检查，防止死循环)
+     *
+     * @param tml    模板： ${key} 或 aaa${key}bbb 或 ${key:def}/ccc
+     * @param useDef 是否使用默认值
+     */
+    private static String getByTmlCheckDepth(Properties main, Properties target, String tml, String refKey, boolean useDef, int depth) {
         if (Assert.isEmpty(tml)) {
             return tml;
         }
@@ -149,6 +160,24 @@ public class PropUtil {
                 String valueExp = tml.substring(start + 2, end); //key:def
                 //支持默认值表达式 ${key:def}
                 String value = getByExp(main, target, valueExp, refKey, useDef);
+
+                //增加递归深度检测
+                if (value != null && value.contains("${")) {
+                    // 如果获取到的值本身还是一个模板，则需要递归解析
+                    int nextDepth = depth + 1;
+                    // 检查深度是否超过10层，超过则报错
+                    if (nextDepth > 10) {
+                        throw new IllegalStateException("Circular reference detected or nesting is too deep (over 10 levels) for: " + valueExp);
+                    }
+                    // 检查深度是否超过3层，超过则打印警告 (Solon有自己的日志系统，这里用System.err示意)
+                    if (nextDepth > 3) {
+                        System.err.println("Solon-Warning: Configuration property nesting is deep ("
+                                + nextDepth + " levels). Check for potential circular references: " + valueExp);
+                    }
+
+                    // 递归调用，并传入递增后的深度
+                    value = getByTmlCheckDepth(main, target, value, refKey, useDef, nextDepth);
+                }
 
                 if (value == null) {
                     return null;
