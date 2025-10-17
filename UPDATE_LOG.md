@@ -38,6 +38,7 @@
 * 优化 `solon` Utils.appFolder 支持中文路径
 * 优化 `solon-config-yaml` 对 'solon.env.on' 的分片处理（避免转 yaml 时与 'solon.evn' 冲突）
 
+
 ### 3.6.0
 
 * 新增 `solon-server-grizzly` 插件
