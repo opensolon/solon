@@ -28,6 +28,7 @@ import java.lang.management.RuntimeMXBean;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.net.*;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.*;
 import java.util.concurrent.Future;
@@ -628,7 +629,16 @@ public class Utils {
         if (_appFolder == null) {
             _appFolder = new AtomicReference<>();
 
-            String uri = Solon.location().getPath();
+            // 修复 solon 运行目录如果存在中文，会导致无法加载外部配置文件的问题【Issue 337】
+            String encodedUri = Solon.location().getPath();
+            String uri;
+            try {
+                // 使用UTF-8解码路径，解决中文乱码问题，理论上UTF-8总是支持的
+                uri = URLDecoder.decode(encodedUri, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                uri = encodedUri; // 解码失败，使用原路径
+            }
+
             int endIdx;
 
             if (uri.endsWith("/classes/")) {
