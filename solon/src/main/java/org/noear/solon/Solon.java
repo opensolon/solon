@@ -51,7 +51,7 @@ public class Solon {
     //全局主实例
     private static SolonApp appMain;
     //全局默认编码
-    private static String encoding = "utf-8";
+    private static String encoding = "UTF-8";
     //应用源码位置
     private static URL location;
 

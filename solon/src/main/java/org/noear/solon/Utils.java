@@ -634,7 +634,7 @@ public class Utils {
             String uri;
             try {
                 // 使用UTF-8解码路径，解决中文乱码问题，理论上UTF-8总是支持的
-                uri = URLDecoder.decode(encodedUri, "UTF-8");
+                uri = URLDecoder.decode(encodedUri, Solon.encoding());
             } catch (UnsupportedEncodingException e) {
                 uri = encodedUri; // 解码失败，使用原路径
             }
