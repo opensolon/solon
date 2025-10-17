@@ -23,15 +23,24 @@ public class Case1AppTest extends HttpTester {
 
     @Test
     public void test3() throws Exception {
-        assert path("/case1/f1?name=d").header("accept", MimeType.APPLICATION_X_NDJSON_VALUE).get().equals("Hello d\n" +
-                "hello2 d\n");
+        String rst = path("/case1/f1?name=d").header("accept", MimeType.APPLICATION_X_NDJSON_VALUE).get();
+        assert rst.equals("\"Hello d\"\n" +
+                "\"hello2 d\"\n");
+
+    }
+
+    @Test
+    public void test3_2() throws Exception {
+        String rst = path("/case1/f1?name=d").get();
+        assert rst.equals("[\"Hello d\",\"hello2 d\"]");
 
     }
 
     @Test
     public void test4() throws Exception {
-        assert path("/case1/f2?name=d").get().equals("Hello d\n" +
-                "hello2 d\n");
+        String rst = path("/case1/f2?name=d").get();
+        assert rst.equals("\"Hello d\"\n" +
+                "\"hello2 d\"\n");
     }
 
     @Test
