@@ -9,7 +9,7 @@
     <version>dev</version>
     <packaging>pom</packaging>
 
-    <name>_root</name>
+    <name>solon-framework</name>
     <description>Java project for solon</description>
 
     <properties>
