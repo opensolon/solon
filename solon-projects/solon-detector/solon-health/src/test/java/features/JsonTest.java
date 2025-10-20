@@ -16,9 +16,9 @@
 package features;
 
 import org.junit.jupiter.api.Test;
-import org.noear.snack.ONode;
-import org.noear.snack.core.Feature;
-import org.noear.snack.core.Options;
+import org.noear.snack4.ONode;
+import org.noear.snack4.Feature;
+import org.noear.snack4.Options;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,10 +32,10 @@ public class JsonTest {
         Map<String,Object> data = new HashMap<>();
         data.put("c:\\","c:\\");
 
-        System.out.println(ONode.stringify(data, options));
+        System.out.println(ONode.serialize(data, options));
     }
 
-    private static final Options options = Options.def()
-            .add(Feature.EnumUsingName);
+    private static final Options options = Options.of()
+            .addFeatures(Feature.Write_EnumUsingName);
 
 }

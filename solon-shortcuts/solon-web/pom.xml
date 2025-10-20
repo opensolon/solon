@@ -30,7 +30,7 @@
         <!-- Json序列化支持插件 -->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-serialization-snack3</artifactId>
+            <artifactId>solon-serialization-snack4</artifactId>
         </dependency>
 
         <!-- 本地SessionSate支持插件 -->

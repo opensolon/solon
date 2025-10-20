@@ -15,7 +15,7 @@
  */
 package com.swagger.demo.model;
 
-import org.noear.snack.annotation.ONodeAttr;
+import org.noear.snack4.annotation.ONodeAttr;
 
 /**
  * @author noear 2023/9/3 created
