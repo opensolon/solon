@@ -15,7 +15,7 @@
  */
 package org.noear.solon.serialization.properties;
 
-import org.noear.snack.core.Options;
+import org.noear.snack4.Options;
 import org.noear.solon.core.handle.ActionExecuteHandler;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.wrap.MethodWrap;

@@ -15,10 +15,9 @@
  */
 package org.noear.solon.aot;
 
-import org.noear.snack.ONode;
-import org.noear.snack.core.Feature;
-import org.noear.snack.core.Options;
-import org.noear.snack.core.utils.StringUtil;
+import org.noear.snack4.Feature;
+import org.noear.snack4.ONode;
+import org.noear.snack4.Options;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.aot.graalvm.GraalvmUtil;
@@ -53,7 +52,7 @@ import org.slf4j.LoggerFactory;
 public class SolonAotProcessor {
     static final Logger log = LoggerFactory.getLogger(SolonAotProcessor.class);
 
-    private final Options jsonOptions = Options.def().add(Feature.PrettyFormat).add(Feature.OrderedField);
+    private final Options jsonOptions = Options.of().addFeatures(Feature.Write_PrettyFormat);
 
     private Settings settings;
 
@@ -191,7 +190,7 @@ public class SolonAotProcessor {
         try {
             Set<String> args = getDefaultNativeImageArguments(metadata.getApplicationClassName());
             args.addAll(metadata.getArgs());
-            if (!StringUtil.isEmpty(settings.getNativeBuildArgs())) {
+            if (!Utils.isEmpty(settings.getNativeBuildArgs())) {
                 args.add(settings.getNativeBuildArgs());
             }
 
@@ -242,7 +241,7 @@ public class SolonAotProcessor {
             }
 
             FileWriter solonResourceFile = getFileWriter(GraalvmUtil.SOLON_RESOURCE_NAME);
-            solonResourceFile.write(ONode.load(allResources, jsonOptions).toJson());
+            solonResourceFile.write(ONode.ofBean(allResources, jsonOptions).toJson());
             solonResourceFile.close();
 
             FileWriter fileWriter = getFileWriter("resource-config.json");

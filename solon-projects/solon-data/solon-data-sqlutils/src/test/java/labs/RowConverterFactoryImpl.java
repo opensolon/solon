@@ -1,6 +1,6 @@
 package labs;
 
-import org.noear.snack.ONode;
+import org.noear.snack4.ONode;
 import org.noear.solon.annotation.Managed;
 import org.noear.solon.data.sql.bound.RowConverter;
 import org.noear.solon.data.sql.bound.RowConverterFactory;
@@ -45,7 +45,7 @@ public class RowConverterFactoryImpl implements RowConverterFactory<Object> {
             if (Map.class == tClass) {
                 return map;
             } else {
-                return ONode.load(map).toObject(tClass);
+                return ONode.ofBean(map).toBean(tClass);
             }
         }
     }

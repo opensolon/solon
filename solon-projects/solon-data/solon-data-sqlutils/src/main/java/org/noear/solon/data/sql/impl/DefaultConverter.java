@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sql.impl;
 
-import org.noear.snack.ONode;
+import org.noear.snack4.ONode;
 import org.noear.solon.data.sql.bound.RowConverter;
 import org.noear.solon.data.sql.bound.RowConverterFactory;
 
@@ -61,7 +61,7 @@ public class DefaultConverter implements RowConverterFactory<Object> {
             if (Map.class == tClass) {
                 return map;
             } else {
-                return ONode.load(map).toObject(tClass);
+                return ONode.ofBean(map).toBean(tClass);
             }
         }
     }

@@ -15,9 +15,9 @@
  */
 package org.noear.solon.aot;
 
-import org.noear.snack.ONode;
-import org.noear.snack.core.Feature;
-import org.noear.snack.core.Options;
+import org.noear.snack4.Feature;
+import org.noear.snack4.ONode;
+import org.noear.snack4.Options;
 import org.noear.solon.Utils;
 import org.noear.solon.aot.hint.ExecutableHint;
 import org.noear.solon.aot.hint.ExecutableMode;
@@ -54,7 +54,7 @@ import java.util.stream.Stream;
  */
 public class RuntimeNativeMetadata {
 
-    private final Options jsonOptions = Options.def().add(Feature.PrettyFormat).add(Feature.OrderedField);
+    private final Options jsonOptions = Options.of().addFeatures(Feature.Write_PrettyFormat);
 
     private final Map<String, ReflectionHints> reflection = new LinkedHashMap<>();
     private final Set<String> args = new TreeSet<>();

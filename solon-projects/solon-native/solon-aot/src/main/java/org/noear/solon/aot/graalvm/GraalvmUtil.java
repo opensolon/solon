@@ -15,7 +15,7 @@
  */
 package org.noear.solon.aot.graalvm;
 
-import org.noear.snack.ONode;
+import org.noear.snack4.ONode;
 import org.noear.solon.Solon;
 import org.noear.solon.aot.hint.ExecutableHint;
 import org.noear.solon.core.ExtendLoader;
@@ -209,15 +209,15 @@ public class GraalvmUtil {
 
                 while (rs.hasMoreElements()) {
                     String s = readFileByLines(rs.nextElement());
-                    ONode o = ONode.loadStr(s);
-                    o.forEach(on -> {
+                    ONode o = ONode.ofJson(s);
+                    o.getArray().forEach(on -> {
                         String className = on.get("name").getString();
                         String name = className.replaceAll("\\.", "/") + ".class";
                         resources.add(name);
 
                         // fields
                         Set<String> fields = new LinkedHashSet<>();
-                        on.get("fields").forEach(f -> {
+                        on.get("fields").getArray().forEach(f -> {
                             String fieldName = f.get("name").getString();
                             fields.add(fieldName);
                         });
@@ -225,10 +225,10 @@ public class GraalvmUtil {
 
                         // methods
                         Set<ExecutableHint> executableHints = new LinkedHashSet<>();
-                        on.get("methods").forEach(f -> {
+                        on.get("methods").getArray().forEach(f -> {
                             String methodName = f.get("name").getString();
                             List<String> parameterTypes = new ArrayList<>();
-                            f.get("parameterTypes").asArray().forEach(p -> {
+                            f.get("parameterTypes").getArray().forEach(p -> {
                                 String parameterType = p.getString();
                                 parameterTypes.add(parameterType);
                             });
@@ -261,8 +261,8 @@ public class GraalvmUtil {
 
                 while (rs.hasMoreElements()) {
                     String s = readFileByLines(rs.nextElement());
-                    ONode o = ONode.loadStr(s);
-                    o.forEach(on -> {
+                    ONode o = ONode.ofJson(s);
+                    o.getArray().forEach(on -> {
                         String name = on.getString();
                         resources.add(name);
                     });

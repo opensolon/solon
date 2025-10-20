@@ -15,8 +15,8 @@
  */
 package org.noear.solon.extend.impl;
 
-import org.noear.snack.ONode;
-import org.noear.snack.core.Feature;
+import org.noear.snack4.Feature;
+import org.noear.snack4.ONode;
 import org.noear.solon.Utils;
 import org.noear.solon.core.PropsConverter;
 
@@ -55,11 +55,11 @@ public class PropsConverterExt extends PropsConverter {
                 targetType = targetClz;
             }
 
-            return ONode.loadObj(props, Feature.UseSetter).toObject(targetType);
+            return ONode.ofBean(props, Feature.Write_AllowUseSetter).toBean(targetType);
         } else {
             //bindTo 可能会返回为 null
             if (props != null && props.size() > 0) {
-                ONode.loadObj(props, Feature.UseSetter).bindTo(target);
+                ONode.ofBean(props, Feature.Write_AllowUseSetter).bindTo(target);
             }
 
             return target;

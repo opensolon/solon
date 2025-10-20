@@ -17,7 +17,7 @@ package org.noear.solon.data.rx.sql.impl;
 
 import io.r2dbc.spi.Row;
 import io.r2dbc.spi.RowMetadata;
-import org.noear.snack.ONode;
+import org.noear.snack4.ONode;
 import org.noear.solon.Solon;
 import org.noear.solon.data.rx.sql.bound.RxRowConverter;
 import org.noear.solon.data.rx.sql.bound.RxRowConverterFactory;
@@ -83,7 +83,7 @@ public class DefaultRxConverter implements RxRowConverterFactory<Object> {
             if (Map.class == tClass) {
                 return map;
             } else {
-                return ONode.load(map).toObject(tClass);
+                return ONode.ofBean(map).toBean(tClass);
             }
         }
     }

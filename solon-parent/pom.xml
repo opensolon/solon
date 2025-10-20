@@ -277,6 +277,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>snack4</artifactId>
+                <version>${snack4.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>redisx</artifactId>
                 <version>${redisx.version}</version>
             </dependency>

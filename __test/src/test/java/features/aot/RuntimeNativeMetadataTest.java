@@ -16,6 +16,7 @@
 package features.aot;
 
 import org.junit.jupiter.api.Test;
+import org.noear.snack4.ONode;
 import org.noear.solon.Solon;
 import org.noear.solon.aot.RuntimeNativeMetadata;
 import org.noear.solon.aot.hint.ExecutableMode;
@@ -36,7 +37,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SolonTest(App.class)
 public class RuntimeNativeMetadataTest {
 
-
     @Test
     public void testReflectionJson() throws NoSuchMethodException, NoSuchFieldException, IOException {
         RuntimeNativeMetadata metadata = new RuntimeNativeMetadata();
@@ -54,11 +54,11 @@ public class RuntimeNativeMetadataTest {
         }
         metadata.registerField(NativeDTO.NativeDTO2.class.getDeclaredField("subName"));
 
-        String reflectionJson = metadata.toReflectionJson();
-        System.out.println(reflectionJson);
+        String resourcesJson = metadata.toReflectionJson();
+        System.out.println(resourcesJson);
         String resourceAsString = ResourceUtil.getResourceAsString("test-reflect-config.json");
 
-        assertEquals(reflectionJson, resourceAsString);
+        assertEquals(ONode.ofJson(resourcesJson).toJson(), ONode.ofJson(resourceAsString).toJson());
     }
 
     @Test
@@ -78,7 +78,7 @@ public class RuntimeNativeMetadataTest {
 
         String resourceAsString = ResourceUtil.getResourceAsString("test-resource-config.json");
 
-        assertEquals(resourcesJson, resourceAsString);
+        assertEquals(ONode.ofJson(resourcesJson).toJson(), ONode.ofJson(resourceAsString).toJson());
     }
 
     @Test
@@ -94,6 +94,6 @@ public class RuntimeNativeMetadataTest {
         String resourceAsString = ResourceUtil.getResourceAsString("test-serialization-config.json");
         System.out.println(resourceAsString);
 
-        assertEquals(resourcesJson, resourceAsString);
+        assertEquals(ONode.ofJson(resourcesJson).toJson(), ONode.ofJson(resourceAsString).toJson());
     }
 }

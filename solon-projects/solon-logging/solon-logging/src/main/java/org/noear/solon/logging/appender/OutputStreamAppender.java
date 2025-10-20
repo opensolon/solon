@@ -15,7 +15,7 @@
  */
 package org.noear.solon.logging.appender;
 
-import org.noear.snack.ONode;
+import org.noear.snack4.ONode;
 import org.noear.solon.core.util.JavaUtil;
 import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.logging.event.Level;
@@ -91,7 +91,7 @@ public abstract class OutputStreamAppender extends AppenderSimple {
             if (content instanceof String) {
                 out.println(content);
             } else {
-                out.println(ONode.stringify(content));
+                out.println(ONode.serialize(content));
             }
         } finally {
             SYNC_LOCK.unlock();

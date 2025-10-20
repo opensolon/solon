@@ -17,7 +17,7 @@ package features.serialization.fastjson.test1;
 
 import features.serialization.fastjson.model.UserDo;
 import org.junit.jupiter.api.Test;
-import org.noear.snack.ONode;
+import org.noear.snack4.ONode;
 import org.noear.solon.annotation.Import;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.handle.ContextEmpty;
@@ -55,7 +55,7 @@ public class TestQuickConfig2 {
 
         System.out.println(output);
 
-        assert ONode.load(output).count() == 5;
+        assert ONode.ofJson(output).size() == 5;
 
         //完美
         assert "{\"b1\":true,\"d1\":1.0,\"map1\":{\"time\":1673861993477,\"long\":12,\"int\":12},\"n1\":1,\"s1\":\"noear\"}".equals(output);

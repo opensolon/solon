@@ -17,7 +17,7 @@ package features.serialization.gson.test1;
 
 import features.serialization.gson.model.UserDo;
 import org.junit.jupiter.api.Test;
-import org.noear.snack.ONode;
+import org.noear.snack4.ONode;
 import org.noear.solon.annotation.Import;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.handle.ContextEmpty;
@@ -55,7 +55,7 @@ public class TestQuickConfig {
 
         System.out.println(output);
 
-        assert ONode.load(output).count() == 5;
+        assert ONode.ofJson(output).size() == 5;
 
         //完美
         assert "{\"s1\":\"noear\",\"b1\":true,\"n1\":1,\"d1\":1.0,\"map1\":{\"time\":\"2023-01-16 17:39:53\",\"long\":12,\"int\":12}}".equals(output);

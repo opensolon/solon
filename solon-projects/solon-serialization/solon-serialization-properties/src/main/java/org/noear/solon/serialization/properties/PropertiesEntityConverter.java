@@ -15,8 +15,8 @@
  */
 package org.noear.solon.serialization.properties;
 
-import org.noear.snack.ONode;
-import org.noear.snack.core.Feature;
+import org.noear.snack4.Feature;
+import org.noear.snack4.ONode;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.util.LazyReference;
@@ -38,7 +38,7 @@ public class PropertiesEntityConverter extends AbstractStringEntityConverter<Pro
     public PropertiesEntityConverter(PropertiesStringSerializer serializer) {
         super(serializer);
 
-        serializer.getConfig().add(Feature.DisableClassNameRead);
+        //serializer.getConfig().addFeatures(Feature.Read_AutoType);
     }
 
     /**
@@ -110,12 +110,12 @@ public class PropertiesEntityConverter extends AbstractStringEntityConverter<Pro
                 //
                 //如果没有 body 要求；尝试找按属性找
                 //
-                if (tmp.contains(p.spec().getName())) {
+                if (tmp.hasKey(p.spec().getName())) {
                     //支持泛型的转换
                     if (p.spec().isGenericType()) {
-                        return tmp.get(p.spec().getName()).toObject(p.getGenericType());
+                        return tmp.get(p.spec().getName()).toBean(p.getGenericType());
                     } else {
-                        return tmp.get(p.spec().getName()).toObject(pt);
+                        return tmp.get(p.spec().getName()).toBean(pt);
                     }
                 }
             }
@@ -135,9 +135,9 @@ public class PropertiesEntityConverter extends AbstractStringEntityConverter<Pro
 
                 //支持泛型的转换 如：Map<T>
                 if (p.spec().isGenericType()) {
-                    return tmp.toObject(p.getGenericType());
+                    return tmp.toBean(p.getGenericType());
                 } else {
-                    return tmp.toObject(pt);
+                    return tmp.toBean(pt);
                 }
             }
         }
@@ -151,13 +151,13 @@ public class PropertiesEntityConverter extends AbstractStringEntityConverter<Pro
             //集合类型转换
             if (p.spec().isGenericType()) {
                 //转换带泛型的集合
-                return tmp.toObject(p.getGenericType());
+                return tmp.toBean(p.getGenericType());
             } else {
                 //不仅可以转换为List 还可以转换成Set
-                return tmp.toObject(pt);
+                return tmp.toBean(pt);
             }
         }
 
-        return tmp.val().getRaw();
+        return tmp.getValue();
     }
 }

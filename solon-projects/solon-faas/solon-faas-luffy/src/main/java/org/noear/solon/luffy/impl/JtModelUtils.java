@@ -16,7 +16,7 @@
 package org.noear.solon.luffy.impl;
 
 import org.noear.luffy.model.AFileModel;
-import org.noear.snack.ONode;
+import org.noear.snack4.ONode;
 
 /**
  * 模型工具
@@ -48,11 +48,11 @@ public class JtModelUtils {
             String headLine = fileModel.content.substring(0, headIdx);
             if (headLine.startsWith("//@{")) { //经典注释风格
                 String metaJson = headLine.substring(3);
-                ONode metaNode = ONode.loadStr(metaJson);
+                ONode metaNode = ONode.ofJson(metaJson);
                 fileModel.method = metaNode.get("method").getString();
             } else if (headLine.startsWith("#@{")) { //像 py、rb 注释风格
                 String metaJson = headLine.substring(2);
-                ONode metaNode = ONode.loadStr(metaJson);
+                ONode metaNode = ONode.ofJson(metaJson);
                 fileModel.method = metaNode.get("method").getString();
             }
         }

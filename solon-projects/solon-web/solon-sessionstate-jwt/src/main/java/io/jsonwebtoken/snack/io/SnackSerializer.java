@@ -17,9 +17,9 @@ package io.jsonwebtoken.snack.io;
 
 import io.jsonwebtoken.io.SerializationException;
 import io.jsonwebtoken.io.Serializer;
-import org.noear.snack.ONode;
-import org.noear.snack.core.Feature;
-import org.noear.snack.core.Options;
+import org.noear.snack4.Feature;
+import org.noear.snack4.ONode;
+import org.noear.snack4.Options;
 
 import java.nio.charset.StandardCharsets;
 
@@ -30,10 +30,10 @@ import java.nio.charset.StandardCharsets;
  * @since 1.10
  */
 public class SnackSerializer<T> implements Serializer<T> {
-    Options options = Options.serialize().add(Feature.EnumUsingName);
+    Options options = Options.of().addFeatures(Feature.Write_EnumUsingName, Feature.Write_ClassName, Feature.Read_AutoType);
     @Override
     public byte[] serialize(T t) throws SerializationException {
-        ONode oNode = ONode.loadObj(t, options);
+        ONode oNode = ONode.ofBean(t, options);
         oNode.remove(options.getTypePropertyName());
 
         String json = oNode.toJson();

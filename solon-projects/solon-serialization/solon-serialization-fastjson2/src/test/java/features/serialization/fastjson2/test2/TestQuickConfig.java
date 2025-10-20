@@ -18,7 +18,7 @@ package features.serialization.fastjson2.test2;
 import features.serialization.fastjson2.model.OrderDo;
 import features.serialization.fastjson2.model.UserDo;
 import org.junit.jupiter.api.Test;
-import org.noear.snack.ONode;
+import org.noear.snack4.ONode;
 import org.noear.solon.annotation.Import;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.handle.ContextEmpty;
@@ -57,7 +57,7 @@ public class TestQuickConfig {
 
         System.out.println(output);
 
-        assert ONode.load(output).count() == 5;
+        assert ONode.ofJson(output).size() == 5;
 
         //error: int 没转为 string
         assert "{\"b1\":1,\"d1\":1.0,\"map1\":{\"time\":\"2023-01-16 17:39:53\",\"long\":\"12\",\"int\":12},\"n1\":\"1\",\"s1\":\"noear\"}".equals(output);

@@ -15,9 +15,9 @@
  */
 package org.noear.solon.serialization.properties;
 
-import org.noear.snack.ONode;
-import org.noear.snack.core.NameValues;
-import org.noear.snack.core.Options;
+import org.noear.snack4.ONode;
+import org.noear.snack4.Options;
+import org.noear.snack4.codec.KeyValueList;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
@@ -84,7 +84,7 @@ public class PropertiesStringSerializer implements EntitySerializer<String> {
      */
     public Options getConfig() {
         if (config == null) {
-            config = Options.def();
+            config = Options.of();
         }
 
         return config;
@@ -141,8 +141,8 @@ public class PropertiesStringSerializer implements EntitySerializer<String> {
      */
     @Override
     public String serialize(Object obj) throws IOException {
-        ONode oNode = ONode.loadObj(obj, getConfig());
-        Properties oProperties = oNode.toObject(Properties.class);
+        ONode oNode = ONode.ofBean(obj, getConfig());
+        Properties oProperties = oNode.toBean(Properties.class);
 
         StringBuilder buf = new StringBuilder();
         List<String> bufKeys = new ArrayList<>(oProperties.stringPropertyNames());
@@ -168,8 +168,8 @@ public class PropertiesStringSerializer implements EntitySerializer<String> {
         if (toType == null) {
             return prop;
         } else {
-            ONode oNode = ONode.loadObj(prop, getConfig());
-            return oNode.toObject(toType);
+            ONode oNode = ONode.ofBean(prop, getConfig());
+            return oNode.toBean(toType);
         }
     }
 
@@ -200,13 +200,13 @@ public class PropertiesStringSerializer implements EntitySerializer<String> {
      */
     @Override
     public Object deserializeFromBody(Context ctx, @Nullable Type bodyType) throws IOException {
-        NameValues nameValues = new NameValues();
+        KeyValueList nameValues = new KeyValueList();
         for (KeyValues<String> kv : ctx.paramMap()) {
             for (String val : kv.getValues()) {
                 nameValues.add(kv.getKey(), val);
             }
         }
 
-        return ONode.loadObj(nameValues, getConfig());
+        return ONode.ofBean(nameValues, getConfig());
     }
 }

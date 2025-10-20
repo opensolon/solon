@@ -15,8 +15,8 @@
  */
 package features;
 
-import org.noear.snack.ONode;
-import org.noear.snack.core.Feature;
+import org.noear.snack4.Feature;
+import org.noear.snack4.ONode;
 import org.noear.solon.logging.event.AppenderBase;
 import org.noear.solon.logging.event.LogEvent;
 
@@ -27,6 +27,6 @@ public class AppenderImpl extends AppenderBase {
 
     @Override
     public void append(LogEvent logEvent) {
-        System.err.println(ONode.load(logEvent, Feature.EnumUsingName).toJson());
+        System.err.println(ONode.ofBean(logEvent, Feature.Write_EnumUsingName).toJson());
     }
 }

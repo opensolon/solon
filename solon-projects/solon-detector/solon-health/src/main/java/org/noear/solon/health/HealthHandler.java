@@ -15,9 +15,9 @@
  */
 package org.noear.solon.health;
 
-import org.noear.snack.ONode;
-import org.noear.snack.core.Feature;
-import org.noear.snack.core.Options;
+import org.noear.snack4.Feature;
+import org.noear.snack4.ONode;
+import org.noear.snack4.Options;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
 
@@ -45,7 +45,7 @@ public class HealthHandler implements Handler {
     }
 
 
-    private static final Options options = Options.def().add(Feature.EnumUsingName);
+    private static final Options options = Options.of().addFeatures(Feature.Write_EnumUsingName);
 
     @Override
     public void handle(Context ctx) throws Throwable {
@@ -62,6 +62,6 @@ public class HealthHandler implements Handler {
                 ctx.status(200);
         }
 
-        ctx.outputAsJson(ONode.stringify(result, options));
+        ctx.outputAsJson(ONode.serialize(result, options));
     }
 }

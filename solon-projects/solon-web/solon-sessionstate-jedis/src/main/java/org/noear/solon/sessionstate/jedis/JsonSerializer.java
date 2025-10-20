@@ -15,8 +15,9 @@
  */
 package org.noear.solon.sessionstate.jedis;
 
-import org.noear.snack.ONode;
-import org.noear.snack.core.Options;
+import org.noear.snack4.Feature;
+import org.noear.snack4.ONode;
+import org.noear.snack4.Options;
 import org.noear.solon.core.serialize.Serializer;
 import org.noear.solon.core.util.ClassUtil;
 
@@ -53,19 +54,23 @@ public class JsonSerializer implements Serializer<String> {
     @Override
     public String serialize(Object fromObj) {
         if (typed) {
-            return ONode.serialize(fromObj);
+            return ONode.serialize(fromObj, Feature.Write_ClassName);
         } else {
-            return ONode.stringify(fromObj);
+            return ONode.serialize(fromObj);
         }
     }
 
     @Override
     public Object deserialize(String dta, Type toType) {
-        Options options = Options.serialize();
+        Options options = Options.of();
+
+        if(typed) {
+            options.addFeatures(Feature.Read_AutoType);
+        }
 
         //分析类加载器
-        options.setClassLoader(ClassUtil.resolveClassLoader(toType));
+        options.classLoader(ClassUtil.resolveClassLoader(toType));
 
-        return ONode.load(dta, options).toObject(toType);
+        return ONode.deserialize(dta, toType, options);
     }
 }

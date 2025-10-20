@@ -16,7 +16,7 @@
 package labs.serialization.snack4;
 
 import org.junit.jupiter.api.Test;
-import org.noear.snack.ONode;
+import org.noear.snack4.ONode;
 import org.noear.solon.test.HttpTester;
 import org.noear.solon.test.SolonTest;
 
@@ -29,7 +29,7 @@ public class TestDemo extends HttpTester {
     @Test
     public void test0() throws Exception{
         String json = path("/t1").get();
-        ONode oNode = ONode.loadStr(json);
+        ONode oNode = ONode.ofJson(json);
 
         assert  oNode.get("time1").getString().length() == 16;
         assert  oNode.get("time2").getString().length() == 10;

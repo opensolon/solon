@@ -17,9 +17,9 @@ package io.jsonwebtoken.snack.io;
 
 import io.jsonwebtoken.io.DeserializationException;
 import io.jsonwebtoken.io.Deserializer;
-import org.noear.snack.ONode;
-import org.noear.snack.core.Feature;
-import org.noear.snack.core.Options;
+import org.noear.snack4.Feature;
+import org.noear.snack4.ONode;
+import org.noear.snack4.Options;
 
 /**
  * Snack3 的 Deserializer 实现
@@ -28,14 +28,14 @@ import org.noear.snack.core.Options;
  * @since 1.10
  */
 public class SnackDeserializer<T> implements Deserializer<T> {
-    Options options = Options.serialize().add(Feature.EnumUsingName);
+    Options options = Options.of().addFeatures(Feature.Write_EnumUsingName, Feature.Write_ClassName, Feature.Read_AutoType);
 
     @Override
     public T deserialize(byte[] bytes) throws DeserializationException {
         String json = new String(bytes);
-        ONode oNode = ONode.loadStr(json, options);
+        ONode oNode = ONode.ofJson(json, options);
         oNode.remove(options.getTypePropertyName());
 
-        return oNode.toObject(Object.class);
+        return oNode.toBean();
     }
 }
