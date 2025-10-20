@@ -16,10 +16,10 @@ This project includes:
   Caffeine cache under Apache License, Version 2.0
   Checker Qual under The MIT License
   error-prone annotations under Apache 2.0
-  SLF4J API Module under MIT License
+  SLF4J API Module under MIT
   solon under The Apache Software License, Version 2.0
+  solon-cache under The Apache Software License, Version 2.0
   solon-cache-caffeine under The Apache Software License, Version 2.0
-  solon-data under The Apache Software License, Version 2.0
-  solon-security-vault under The Apache Software License, Version 2.0
+  solon-expression under The Apache Software License, Version 2.0
   solon.cache.caffeine under The Apache Software License, Version 2.0
 

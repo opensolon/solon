@@ -19,6 +19,7 @@ This project includes:
   nami-coder-kryo under The Apache Software License, Version 2.0
   Objenesis under Apache License, Version 2.0
   ReflectASM under 3-Clause BSD License
-  SLF4J API Module under MIT License
+  SLF4J API Module under MIT
   solon under The Apache Software License, Version 2.0
+  solon-expression under The Apache Software License, Version 2.0
 

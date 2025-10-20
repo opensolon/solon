@@ -17,6 +17,7 @@ This project includes:
   hutool-http under Mulan Permissive Software License，Version 2
   nami under The Apache Software License, Version 2.0
   nami-channel-http-hutool under The Apache Software License, Version 2.0
-  SLF4J API Module under MIT License
+  SLF4J API Module under MIT
   solon under The Apache Software License, Version 2.0
+  solon-expression under The Apache Software License, Version 2.0
 

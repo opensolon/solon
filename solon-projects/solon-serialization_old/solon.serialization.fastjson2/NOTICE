@@ -14,9 +14,10 @@ limitations under the License.
 
 This project includes:
   fastjson2 under Apache 2
-  SLF4J API Module under MIT License
+  SLF4J API Module under MIT
   solon under The Apache Software License, Version 2.0
-  solon-mvc under The Apache Software License, Version 2.0
+  solon-expression under The Apache Software License, Version 2.0
+  solon-handle under The Apache Software License, Version 2.0
   solon-serialization under The Apache Software License, Version 2.0
   solon-serialization-fastjson2 under The Apache Software License, Version 2.0
   solon.serialization.fastjson2 under The Apache Software License, Version 2.0

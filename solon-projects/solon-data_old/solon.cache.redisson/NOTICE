@@ -14,6 +14,7 @@ limitations under the License.
 
 This project includes:
   Byte Buddy (without dependencies) under Apache License, Version 2.0
+  Jackson datatype: JSR310 under The Apache Software License, Version 2.0
   Jackson-annotations under The Apache Software License, Version 2.0
   Jackson-core under The Apache Software License, Version 2.0
   jackson-databind under The Apache Software License, Version 2.0
@@ -37,10 +38,10 @@ This project includes:
   Redisson under Apache v2
   ReflectASM under 3-Clause BSD License
   RxJava under The Apache Software License, Version 2.0
-  SLF4J API Module under MIT License
+  SLF4J API Module under MIT
   solon under The Apache Software License, Version 2.0
+  solon-cache under The Apache Software License, Version 2.0
   solon-cache-redisson under The Apache Software License, Version 2.0
-  solon-data under The Apache Software License, Version 2.0
-  solon-security-vault under The Apache Software License, Version 2.0
+  solon-expression under The Apache Software License, Version 2.0
   solon.cache.redisson under The Apache Software License, Version 2.0
 

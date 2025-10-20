@@ -16,6 +16,7 @@ This project includes:
   asm under BSD-3-Clause
   Byte Buddy (without dependencies) under Apache License, Version 2.0
   Byte Buddy agent under Apache License, Version 2.0
+  Jackson datatype: JSR310 under The Apache Software License, Version 2.0
   Jackson-annotations under The Apache Software License, Version 2.0
   Jackson-core under The Apache Software License, Version 2.0
   jackson-databind under The Apache Software License, Version 2.0
@@ -50,16 +51,18 @@ This project includes:
   Redisson under Apache v2
   ReflectASM under 3-Clause BSD License
   RxJava under The Apache Software License, Version 2.0
-  SLF4J API Module under MIT License
-  snack3 under The Apache Software License, Version 2.0
+  SLF4J API Module under MIT
+  snack4 under The Apache Software License, Version 2.0
   SnakeYAML under Apache License, Version 2.0
   solon under The Apache Software License, Version 2.0
   solon-aot under The Apache Software License, Version 2.0
+  solon-cache under The Apache Software License, Version 2.0
   solon-cache-redisson under The Apache Software License, Version 2.0
   solon-config-plus under The Apache Software License, Version 2.0
   solon-config-yaml under The Apache Software License, Version 2.0
   solon-data under The Apache Software License, Version 2.0
-  solon-mvc under The Apache Software License, Version 2.0
+  solon-expression under The Apache Software License, Version 2.0
+  solon-handle under The Apache Software License, Version 2.0
   solon-net-httputils under The Apache Software License, Version 2.0
   solon-proxy under The Apache Software License, Version 2.0
   solon-rx under The Apache Software License, Version 2.0

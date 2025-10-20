@@ -17,17 +17,17 @@ This project includes:
   asm under BSD-3-Clause
   Byte Buddy (without dependencies) under Apache License, Version 2.0
   Byte Buddy agent under Apache License, Version 2.0
-  Checker Qual under The MIT License
   error-prone annotations under Apache 2.0
   fastjson under Apache 2
   fastjson2 under Apache 2
-  FindBugs-jsr305 under The Apache Software License, Version 2.0
   fury-core under The Apache License, Version 2.0
   Gson under Apache-2.0
-  Guava InternalFutureFailureAccess and InternalFutures under The Apache Software License, Version 2.0
+  Guava InternalFutureFailureAccess and InternalFutures under Apache License, Version 2.0
   Guava ListenableFuture only under The Apache Software License, Version 2.0
   Guava: Google Core Libraries for Java under Apache License, Version 2.0
+  Hamcrest Core under New BSD License
   Hessian Lite (Dubbo embed version) under Apache License, Version 2.0
+  IntelliJ IDEA Annotations under The Apache Software License, Version 2.0
   J2ObjC Annotations under Apache License, Version 2.0
   Jackson datatype: JSR310 under The Apache Software License, Version 2.0
   Jackson-annotations under The Apache Software License, Version 2.0
@@ -42,17 +42,26 @@ This project includes:
   jnr-constants under The Apache Software License, Version 2.0
   jnr-ffi under The Apache Software License, Version 2.0
   jnr-x86asm under MIT License
+  JSpecify annotations under The Apache License, Version 2.0
+  JUnit under Eclipse Public License 1.0
   JUnit Jupiter (Aggregator) under Eclipse Public License v2.0
   JUnit Jupiter API under Eclipse Public License v2.0
   JUnit Jupiter Engine under Eclipse Public License v2.0
   JUnit Jupiter Params under Eclipse Public License v2.0
   JUnit Platform Commons under Eclipse Public License v2.0
   JUnit Platform Engine API under Eclipse Public License v2.0
+  Kotlin Stdlib under The Apache License, Version 2.0
+  Kotlin Stdlib Common under The Apache License, Version 2.0
+  Kotlin Stdlib Jdk7 under The Apache License, Version 2.0
+  Kotlin Stdlib Jdk8 under The Apache License, Version 2.0
   Kryo under 3-Clause BSD License
   MinLog under 3-Clause BSD License
   mockito-core under The MIT License
   mockito-junit-jupiter under The MIT License
+  mockwebserver under The Apache Software License, Version 2.0
   Objenesis under Apache License, Version 2.0
+  okhttp under The Apache Software License, Version 2.0
+  okio under The Apache Software License, Version 2.0
   OpenHFT/Chronicle Bytes under Apache License, Version 2.0
   OpenHFT/Chronicle Core under Apache License, Version 2.0
   OpenHFT/Chronicle-Analytics under Apache License, Version 2.0
@@ -66,17 +75,19 @@ This project includes:
   protostuff :: runtime under The Apache Software License, Version 2.0
   reactive-streams under MIT-0
   ReflectASM under 3-Clause BSD License
-  SLF4J API Module under MIT License
+  SLF4J API Module under MIT
   snack3 under The Apache Software License, Version 2.0
+  snack4 under The Apache Software License, Version 2.0
   SnakeYAML under Apache License, Version 2.0
   solon under The Apache Software License, Version 2.0
   solon-aot under The Apache Software License, Version 2.0
   solon-base-bundle5 under The Apache Software License, Version 2.0
-  solon-boot under The Apache Software License, Version 2.0
+  solon-cache under The Apache Software License, Version 2.0
   solon-config-plus under The Apache Software License, Version 2.0
   solon-config-yaml under The Apache Software License, Version 2.0
   solon-data under The Apache Software License, Version 2.0
-  solon-mvc under The Apache Software License, Version 2.0
+  solon-expression under The Apache Software License, Version 2.0
+  solon-handle under The Apache Software License, Version 2.0
   solon-net under The Apache Software License, Version 2.0
   solon-net-httputils under The Apache Software License, Version 2.0
   solon-proxy under The Apache Software License, Version 2.0
@@ -95,7 +106,11 @@ This project includes:
   solon-serialization-properties under The Apache Software License, Version 2.0
   solon-serialization-protostuff under The Apache Software License, Version 2.0
   solon-serialization-snack3 under The Apache Software License, Version 2.0
+  solon-serialization-snack4 under The Apache Software License, Version 2.0
+  solon-server under The Apache Software License, Version 2.0
   solon-test under The Apache Software License, Version 2.0
+  solon-test-junit4 under The Apache Software License, Version 2.0
+  solon-test-junit5 under The Apache Software License, Version 2.0
   solon.net under The Apache Software License, Version 2.0
   solon.net.httputils under The Apache Software License, Version 2.0
   solon.serialization under The Apache Software License, Version 2.0

@@ -14,14 +14,16 @@ limitations under the License.
 
 This project includes:
   Apache Commons Pool under Apache-2.0
+  error-prone annotations under Apache 2.0
   Gson under Apache-2.0
   Jedis under MIT
   JSON in Java under Public Domain
+  redis-authx-core under MIT
   redisx under The Apache Software License, Version 2.0
-  SLF4J API Module under MIT License
+  SLF4J API Module under MIT
   solon under The Apache Software License, Version 2.0
+  solon-cache under The Apache Software License, Version 2.0
   solon-cache-jedis under The Apache Software License, Version 2.0
-  solon-data under The Apache Software License, Version 2.0
-  solon-security-vault under The Apache Software License, Version 2.0
+  solon-expression under The Apache Software License, Version 2.0
   solon.cache.jedis under The Apache Software License, Version 2.0
 

@@ -16,9 +16,11 @@ This project includes:
   Jackson-annotations under The Apache Software License, Version 2.0
   Jackson-core under The Apache Software License, Version 2.0
   jackson-databind under The Apache Software License, Version 2.0
+  SLF4J API Module under MIT
   solon under The Apache Software License, Version 2.0
   solon-docs under The Apache Software License, Version 2.0
   solon-docs-openapi2 under The Apache Software License, Version 2.0
+  solon-expression under The Apache Software License, Version 2.0
   solon.docs.openapi2 under The Apache Software License, Version 2.0
   swagger-annotations under Apache License 2.0
   swagger-models under Apache License 2.0

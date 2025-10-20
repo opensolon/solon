@@ -38,12 +38,13 @@ This project includes:
   Jetty :: Servlet Handling under Apache Software License - Version 2.0 or Eclipse Public License - Version 1.0
   Jetty :: Utilities under Apache Software License - Version 2.0 or Eclipse Public License - Version 1.0
   Jetty :: Utilities :: Ajax(JSON) under Apache Software License - Version 2.0 or Eclipse Public License - Version 1.0
-  SLF4J API Module under MIT License
+  SLF4J API Module under MIT
   solon under The Apache Software License, Version 2.0
-  solon-boot under The Apache Software License, Version 2.0
-  solon-boot-jetty under The Apache Software License, Version 2.0
-  solon-mvc under The Apache Software License, Version 2.0
+  solon-expression under The Apache Software License, Version 2.0
+  solon-handle under The Apache Software License, Version 2.0
   solon-net under The Apache Software License, Version 2.0
+  solon-server under The Apache Software License, Version 2.0
+  solon-server-jetty under The Apache Software License, Version 2.0
   solon-web-servlet under The Apache Software License, Version 2.0
   solon-web-webservices under The Apache Software License, Version 2.0
   Stax2 API under The BSD License

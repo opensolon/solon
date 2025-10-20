@@ -16,9 +16,10 @@ This project includes:
   nami under The Apache Software License, Version 2.0
   nami-channel-http under The Apache Software License, Version 2.0
   reactive-streams under MIT-0
-  SLF4J API Module under MIT License
+  SLF4J API Module under MIT
   solon under The Apache Software License, Version 2.0
-  solon-mvc under The Apache Software License, Version 2.0
+  solon-expression under The Apache Software License, Version 2.0
+  solon-handle under The Apache Software License, Version 2.0
   solon-net-httputils under The Apache Software License, Version 2.0
   solon-rx under The Apache Software License, Version 2.0
   solon-serialization under The Apache Software License, Version 2.0

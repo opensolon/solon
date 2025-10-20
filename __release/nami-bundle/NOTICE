@@ -16,13 +16,11 @@ This project includes:
   asm under BSD-3-Clause
   Byte Buddy (without dependencies) under Apache License, Version 2.0
   Byte Buddy agent under Apache License, Version 2.0
-  Checker Qual under The MIT License
   error-prone annotations under Apache 2.0
   fastjson under Apache 2
   fastjson2 under Apache 2
-  FindBugs-jsr305 under The Apache Software License, Version 2.0
   fury-core under The Apache License, Version 2.0
-  Guava InternalFutureFailureAccess and InternalFutures under The Apache Software License, Version 2.0
+  Guava InternalFutureFailureAccess and InternalFutures under Apache License, Version 2.0
   Guava ListenableFuture only under The Apache Software License, Version 2.0
   Guava: Google Core Libraries for Java under Apache License, Version 2.0
   Hessian Lite (Dubbo embed version) under Apache License, Version 2.0
@@ -35,6 +33,7 @@ This project includes:
   Jackson-core under The Apache Software License, Version 2.0
   jackson-databind under The Apache Software License, Version 2.0
   JavaPoet under Apache 2.0
+  JSpecify annotations under The Apache License, Version 2.0
   JUnit Jupiter (Aggregator) under Eclipse Public License v2.0
   JUnit Jupiter API under Eclipse Public License v2.0
   JUnit Jupiter Engine under Eclipse Public License v2.0
@@ -64,6 +63,7 @@ This project includes:
   nami-coder-kryo under The Apache Software License, Version 2.0
   nami-coder-protostuff under The Apache Software License, Version 2.0
   nami-coder-snack3 under The Apache Software License, Version 2.0
+  nami-coder-snack4 under The Apache Software License, Version 2.0
   nami.channel.http.hutool under The Apache Software License, Version 2.0
   nami.channel.http.okhttp under The Apache Software License, Version 2.0
   nami.channel.socketd under The Apache Software License, Version 2.0
@@ -85,17 +85,19 @@ This project includes:
   protostuff :: runtime under The Apache Software License, Version 2.0
   reactive-streams under MIT-0
   ReflectASM under 3-Clause BSD License
-  SLF4J API Module under MIT License
+  SLF4J API Module under MIT
   snack3 under The Apache Software License, Version 2.0
+  snack4 under The Apache Software License, Version 2.0
   SnakeYAML under Apache License, Version 2.0
   socketd under The Apache Software License, Version 2.0
   solon under The Apache Software License, Version 2.0
   solon-aot under The Apache Software License, Version 2.0
-  solon-boot under The Apache Software License, Version 2.0
+  solon-cache under The Apache Software License, Version 2.0
   solon-config-plus under The Apache Software License, Version 2.0
   solon-config-yaml under The Apache Software License, Version 2.0
   solon-data under The Apache Software License, Version 2.0
-  solon-mvc under The Apache Software License, Version 2.0
+  solon-expression under The Apache Software License, Version 2.0
+  solon-handle under The Apache Software License, Version 2.0
   solon-net under The Apache Software License, Version 2.0
   solon-net-httputils under The Apache Software License, Version 2.0
   solon-proxy under The Apache Software License, Version 2.0
@@ -104,5 +106,6 @@ This project includes:
   solon-serialization under The Apache Software License, Version 2.0
   solon-serialization-abc under The Apache Software License, Version 2.0
   solon-serialization-protostuff under The Apache Software License, Version 2.0
+  solon-server under The Apache Software License, Version 2.0
   solon-test under The Apache Software License, Version 2.0
 

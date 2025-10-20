@@ -15,13 +15,14 @@ limitations under the License.
 This project includes:
   aio-core under The Apache License, Version 2.0
   aio-pro under The Apache License, Version 2.0
-  SLF4J API Module under MIT License
+  SLF4J API Module under MIT
   smart-http-common under The Apache License, Version 2.0
   smart-http-server under The Apache License, Version 2.0
   solon under The Apache Software License, Version 2.0
-  solon-boot under The Apache Software License, Version 2.0
-  solon-boot-smarthttp under The Apache Software License, Version 2.0
-  solon-mvc under The Apache Software License, Version 2.0
+  solon-expression under The Apache Software License, Version 2.0
+  solon-handle under The Apache Software License, Version 2.0
   solon-net under The Apache Software License, Version 2.0
+  solon-server under The Apache Software License, Version 2.0
+  solon-server-smarthttp under The Apache Software License, Version 2.0
   solon-web-cors under The Apache Software License, Version 2.0
 

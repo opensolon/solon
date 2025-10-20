@@ -13,7 +13,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 This project includes:
-  snack3 under The Apache Software License, Version 2.0
+  SLF4J API Module under MIT
+  snack4 under The Apache Software License, Version 2.0
   solon under The Apache Software License, Version 2.0
   solon-config-plus under The Apache Software License, Version 2.0
+  solon-expression under The Apache Software License, Version 2.0
 

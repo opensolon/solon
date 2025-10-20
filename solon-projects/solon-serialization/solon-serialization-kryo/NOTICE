@@ -33,15 +33,17 @@ This project includes:
   Project Lombok under The MIT License
   reactive-streams under MIT-0
   ReflectASM under 3-Clause BSD License
-  SLF4J API Module under MIT License
-  snack3 under The Apache Software License, Version 2.0
+  SLF4J API Module under MIT
+  snack4 under The Apache Software License, Version 2.0
   SnakeYAML under Apache License, Version 2.0
   solon under The Apache Software License, Version 2.0
   solon-aot under The Apache Software License, Version 2.0
+  solon-cache under The Apache Software License, Version 2.0
   solon-config-plus under The Apache Software License, Version 2.0
   solon-config-yaml under The Apache Software License, Version 2.0
   solon-data under The Apache Software License, Version 2.0
-  solon-mvc under The Apache Software License, Version 2.0
+  solon-expression under The Apache Software License, Version 2.0
+  solon-handle under The Apache Software License, Version 2.0
   solon-net-httputils under The Apache Software License, Version 2.0
   solon-proxy under The Apache Software License, Version 2.0
   solon-rx under The Apache Software License, Version 2.0

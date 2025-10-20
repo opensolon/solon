@@ -14,11 +14,12 @@ limitations under the License.
 
 This project includes:
   Java Servlet API under CDDL + GPLv2 with classpath exception
-  SLF4J API Module under MIT License
+  SLF4J API Module under MIT
   solon under The Apache Software License, Version 2.0
-  solon-boot under The Apache Software License, Version 2.0
-  solon-mvc under The Apache Software License, Version 2.0
+  solon-expression under The Apache Software License, Version 2.0
+  solon-handle under The Apache Software License, Version 2.0
   solon-net under The Apache Software License, Version 2.0
+  solon-server under The Apache Software License, Version 2.0
   solon-web-servlet under The Apache Software License, Version 2.0
   WebSocket server API under Dual license consisting of the CDDL v1.1 and GPL v2
 

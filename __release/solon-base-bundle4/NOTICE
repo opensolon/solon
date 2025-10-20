@@ -29,8 +29,6 @@ This project includes:
   Byte Buddy agent under Apache License, Version 2.0
   c3p0 under GNU Lesser General Public License, Version 2.1 or Eclipse Public License, Version 1.0
   enjoy under The Apache Software License, Version 2.0
-  Jakarta Server Pages API under Eclipse Public License v. 2.0 or GNU General Public License, version 2 with the GNU Classpath Exception
-  Jakarta Servlet under EPL 2.0 or GPL2 w/ CPE
   Java Servlet API under CDDL + GPLv2 with classpath exception
   java-cron under The Apache Software License, Version 2.0
   JavaPoet under Apache 2.0
@@ -56,26 +54,26 @@ This project includes:
   qps-helper under The Apache License, Version 2.0
   quartz under The Apache Software License, Version 2.0
   reactive-streams under MIT-0
-  SLF4J API Module under MIT License
+  SLF4J API Module under MIT
   smart-http-common under The Apache License, Version 2.0
   smart-http-server under The Apache License, Version 2.0
-  snack3 under The Apache Software License, Version 2.0
+  snack4 under The Apache Software License, Version 2.0
   SnakeYAML under Apache License, Version 2.0
   solon under The Apache Software License, Version 2.0
   solon-aot under The Apache Software License, Version 2.0
   solon-base-bundle4 under The Apache Software License, Version 2.0
-  solon-boot under The Apache Software License, Version 2.0
-  solon-boot-smarthttp under The Apache Software License, Version 2.0
+  solon-cache under The Apache Software License, Version 2.0
   solon-config-plus under The Apache Software License, Version 2.0
   solon-config-yaml under The Apache Software License, Version 2.0
   solon-data under The Apache Software License, Version 2.0
+  solon-expression under The Apache Software License, Version 2.0
   solon-faas-luffy under The Apache Software License, Version 2.0
+  solon-handle under The Apache Software License, Version 2.0
   solon-health under The Apache Software License, Version 2.0
   solon-health-detector under The Apache Software License, Version 2.0
   solon-lib under The Apache Software License, Version 2.0
   solon-logging under The Apache Software License, Version 2.0
   solon-logging-simple under The Apache Software License, Version 2.0
-  solon-mvc under The Apache Software License, Version 2.0
   solon-net under The Apache Software License, Version 2.0
   solon-net-httputils under The Apache Software License, Version 2.0
   solon-proxy under The Apache Software License, Version 2.0
@@ -87,7 +85,9 @@ This project includes:
   solon-security-validation under The Apache Software License, Version 2.0
   solon-security-vault under The Apache Software License, Version 2.0
   solon-serialization under The Apache Software License, Version 2.0
-  solon-serialization-snack3 under The Apache Software License, Version 2.0
+  solon-serialization-snack4 under The Apache Software License, Version 2.0
+  solon-server under The Apache Software License, Version 2.0
+  solon-server-smarthttp under The Apache Software License, Version 2.0
   solon-sessionstate-local under The Apache Software License, Version 2.0
   solon-test under The Apache Software License, Version 2.0
   solon-view under The Apache Software License, Version 2.0
@@ -95,12 +95,12 @@ This project includes:
   solon-view-enjoy under The Apache Software License, Version 2.0
   solon-view-freemarker under The Apache Software License, Version 2.0
   solon-view-jsp under The Apache Software License, Version 2.0
-  solon-view-jsp-jakarta under The Apache Software License, Version 2.0
   solon-view-thymeleaf under The Apache Software License, Version 2.0
   solon-view-velocity under The Apache Software License, Version 2.0
   solon-web under The Apache Software License, Version 2.0
   solon-web-cors under The Apache Software License, Version 2.0
   solon-web-staticfiles under The Apache Software License, Version 2.0
+  solon-web-version under The Apache Software License, Version 2.0
   solon.health under The Apache Software License, Version 2.0
   solon.health.detector under The Apache Software License, Version 2.0
   solon.luffy under The Apache Software License, Version 2.0

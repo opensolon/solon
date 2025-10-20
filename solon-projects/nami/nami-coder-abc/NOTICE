@@ -15,9 +15,10 @@ limitations under the License.
 This project includes:
   nami under The Apache Software License, Version 2.0
   nami-coder-abc under The Apache Software License, Version 2.0
-  SLF4J API Module under MIT License
+  SLF4J API Module under MIT
   solon under The Apache Software License, Version 2.0
-  solon-mvc under The Apache Software License, Version 2.0
+  solon-expression under The Apache Software License, Version 2.0
+  solon-handle under The Apache Software License, Version 2.0
   solon-serialization under The Apache Software License, Version 2.0
   solon-serialization-abc under The Apache Software License, Version 2.0
 

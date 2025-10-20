@@ -16,8 +16,10 @@ This project includes:
   c3p0 under GNU Lesser General Public License, Version 2.1 or Eclipse Public License, Version 1.0
   mchange-commons-java under GNU Lesser General Public License, Version 2.1 or Eclipse Public License, Version 1.0
   quartz under The Apache Software License, Version 2.0
-  SLF4J API Module under MIT License
+  SLF4J API Module under MIT
   solon under The Apache Software License, Version 2.0
+  solon-expression under The Apache Software License, Version 2.0
+  solon-handle under The Apache Software License, Version 2.0
   solon-scheduling under The Apache Software License, Version 2.0
   solon-scheduling-quartz under The Apache Software License, Version 2.0
   solon.scheduling.quartz under The Apache Software License, Version 2.0

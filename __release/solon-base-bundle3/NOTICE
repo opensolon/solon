@@ -30,18 +30,18 @@ This project includes:
   asm under BSD-3-Clause
   Byte Buddy (without dependencies) under Apache License, Version 2.0
   Byte Buddy agent under Apache License, Version 2.0
+  error-prone annotations under Apache 2.0
   Gson under Apache-2.0
-  HdrHistogram under Public Domain, per Creative Commons CC0 or BSD-2-Clause
   hutool-core under Mulan Permissive Software License，Version 2
+  IntelliJ IDEA Annotations under The Apache Software License, Version 2.0
   istack common utility code runtime under Eclipse Distribution License - v 1.0
+  Jackson datatype: JSR310 under The Apache Software License, Version 2.0
   Jackson-annotations under The Apache Software License, Version 2.0
   Jackson-core under The Apache Software License, Version 2.0
   jackson-databind under The Apache Software License, Version 2.0
   Jackson-dataformat-YAML under The Apache Software License, Version 2.0
   Jakarta Activation under EDL 1.0
   Jakarta Activation API jar under EDL 1.0
-  Jakarta Servlet under EPL 2.0 or GPL2 w/ CPE
-  Jakarta WebSocket - Server API under Eclipse Public License v. 2.0 or GNU General Public License, version 2 with the GNU Classpath Exception
   Jakarta XML Binding API under Eclipse Distribution License - v 1.0
   Java Servlet API under CDDL + GPLv2 with classpath exception
   JavaPoet under Apache 2.0
@@ -65,16 +65,14 @@ This project includes:
   JUnit Jupiter Params under Eclipse Public License v2.0
   JUnit Platform Commons under Eclipse Public License v2.0
   JUnit Platform Engine API under Eclipse Public License v2.0
+  Kotlin Stdlib under The Apache License, Version 2.0
+  Kotlin Stdlib Common under The Apache License, Version 2.0
+  Kotlin Stdlib Jdk7 under The Apache License, Version 2.0
+  Kotlin Stdlib Jdk8 under The Apache License, Version 2.0
   Kryo under 3-Clause BSD License
-  LatencyUtils under Public Domain, per Creative Commons CC0
-  micrometer-commons under The Apache Software License, Version 2.0
-  micrometer-core under The Apache Software License, Version 2.0
-  micrometer-observation under The Apache Software License, Version 2.0
-  micrometer-registry-prometheus under The Apache Software License, Version 2.0
   MinLog under 3-Clause BSD License
   mockito-core under The MIT License
   mockito-junit-jupiter under The MIT License
-  nami under The Apache Software License, Version 2.0
   Netty/Buffer under Apache License, Version 2.0
   Netty/Codec under Apache License, Version 2.0
   Netty/Codec/DNS under Apache License, Version 2.0
@@ -90,58 +88,49 @@ This project includes:
   Netty/Transport/Native/Unix/Common under Apache License, Version 2.0
   Non-Blocking Reactive Foundation for the JVM under Apache License, Version 2.0
   Objenesis under Apache License, Version 2.0
-  OpenTelemetry Java under The Apache License, Version 2.0
-  OpenTracing API under The Apache Software License, Version 2.0
+  okhttp under The Apache Software License, Version 2.0
+  okio under The Apache Software License, Version 2.0
   org.apiguardian:apiguardian-api under The Apache License, Version 2.0
   org.opentest4j:opentest4j under The Apache License, Version 2.0
-  Prometheus Java Simpleclient under The Apache Software License, Version 2.0
-  Prometheus Java Simpleclient Common under The Apache Software License, Version 2.0
-  Prometheus Java Span Context Supplier - Common under The Apache Software License, Version 2.0
-  Prometheus Java Span Context Supplier - OpenTelemetry under The Apache Software License, Version 2.0
-  Prometheus Java Span Context Supplier - OpenTelemetry Agent under The Apache Software License, Version 2.0
   reactive-streams under MIT-0
+  redis-authx-core under MIT
   Redisson under Apache v2
   redisx under The Apache Software License, Version 2.0
   ReflectASM under 3-Clause BSD License
   RxJava under The Apache Software License, Version 2.0
-  SLF4J API Module under MIT License
-  SmallRye Common: Annotations under Apache License, Version 2.0
-  SmallRye Mutiny - Core library under Apache License, Version 2.0
+  SLF4J API Module under MIT
   smart-http-common under The Apache License, Version 2.0
   smart-http-server under The Apache License, Version 2.0
-  snack3 under The Apache Software License, Version 2.0
+  snack4 under The Apache Software License, Version 2.0
   SnakeYAML under Apache License, Version 2.0
   solon under The Apache Software License, Version 2.0
   solon-aot under The Apache Software License, Version 2.0
   solon-base-bundle3 under The Apache Software License, Version 2.0
-  solon-boot under The Apache Software License, Version 2.0
-  solon-boot-jdkhttp under The Apache Software License, Version 2.0
-  solon-boot-jetty under The Apache Software License, Version 2.0
-  solon-boot-smarthttp under The Apache Software License, Version 2.0
-  solon-boot-vertx under The Apache Software License, Version 2.0
-  solon-cloud under The Apache Software License, Version 2.0
-  solon-cloud-eventplus under The Apache Software License, Version 2.0
-  solon-cloud-gateway under The Apache Software License, Version 2.0
-  solon-cloud-metrics under The Apache Software License, Version 2.0
-  solon-cloud-telemetry under The Apache Software License, Version 2.0
-  solon-cloud-tracing under The Apache Software License, Version 2.0
+  solon-cache under The Apache Software License, Version 2.0
+  solon-config-banner under The Apache Software License, Version 2.0
   solon-config-plus under The Apache Software License, Version 2.0
   solon-config-yaml under The Apache Software License, Version 2.0
   solon-data under The Apache Software License, Version 2.0
-  solon-health under The Apache Software License, Version 2.0
+  solon-expression under The Apache Software License, Version 2.0
+  solon-handle under The Apache Software License, Version 2.0
+  solon-hotplug under The Apache Software License, Version 2.0
   solon-i18n under The Apache Software License, Version 2.0
   solon-lib under The Apache Software License, Version 2.0
   solon-logging under The Apache Software License, Version 2.0
   solon-logging-simple under The Apache Software License, Version 2.0
-  solon-mvc under The Apache Software License, Version 2.0
   solon-net under The Apache Software License, Version 2.0
   solon-net-httputils under The Apache Software License, Version 2.0
   solon-proxy under The Apache Software License, Version 2.0
   solon-rx under The Apache Software License, Version 2.0
+  solon-security-auth under The Apache Software License, Version 2.0
   solon-security-validation under The Apache Software License, Version 2.0
   solon-security-vault under The Apache Software License, Version 2.0
   solon-serialization under The Apache Software License, Version 2.0
-  solon-serialization-snack3 under The Apache Software License, Version 2.0
+  solon-serialization-snack4 under The Apache Software License, Version 2.0
+  solon-server under The Apache Software License, Version 2.0
+  solon-server-jdkhttp under The Apache Software License, Version 2.0
+  solon-server-jetty under The Apache Software License, Version 2.0
+  solon-server-smarthttp under The Apache Software License, Version 2.0
   solon-sessionstate-jedis under The Apache Software License, Version 2.0
   solon-sessionstate-jwt under The Apache Software License, Version 2.0
   solon-sessionstate-local under The Apache Software License, Version 2.0
@@ -152,25 +141,25 @@ This project includes:
   solon-web-rx under The Apache Software License, Version 2.0
   solon-web-sdl under The Apache Software License, Version 2.0
   solon-web-servlet under The Apache Software License, Version 2.0
-  solon-web-servlet-jakarta under The Apache Software License, Version 2.0
   solon-web-sse under The Apache Software License, Version 2.0
   solon-web-staticfiles under The Apache Software License, Version 2.0
   solon-web-stop under The Apache Software License, Version 2.0
+  solon-web-version under The Apache Software License, Version 2.0
   solon-web-vertx under The Apache Software License, Version 2.0
   solon-web-webdav under The Apache Software License, Version 2.0
   solon-web-webservices under The Apache Software License, Version 2.0
-  solon.cloud under The Apache Software License, Version 2.0
-  solon.cloud.eventplus under The Apache Software License, Version 2.0
-  solon.cloud.gateway under The Apache Software License, Version 2.0
-  solon.cloud.metrics under The Apache Software License, Version 2.0
-  solon.cloud.tracing under The Apache Software License, Version 2.0
+  solon.auth under The Apache Software License, Version 2.0
+  solon.banner under The Apache Software License, Version 2.0
+  solon.config.yaml under The Apache Software License, Version 2.0
+  solon.hotplug under The Apache Software License, Version 2.0
+  solon.i18n under The Apache Software License, Version 2.0
+  solon.mvc under The Apache Software License, Version 2.0
+  solon.proxy under The Apache Software License, Version 2.0
+  solon.validation under The Apache Software License, Version 2.0
+  solon.vault under The Apache Software License, Version 2.0
   Stax2 API under The BSD License
   TXW2 Runtime under Eclipse Distribution License - v 1.0
   Vert.x Core under The Apache Software License, Version 2.0 or Eclipse Public License - v 2.0
-  Vert.x URI Template under The Apache Software License, Version 2.0 or Eclipse Public License - v 1.0
-  vertx-auth-common under The Apache Software License, Version 2.0 or Eclipse Public License - v 1.0
-  vertx-web-client under The Apache Software License, Version 2.0 or Eclipse Public License - v 1.0
-  vertx-web-common under The Apache Software License, Version 2.0 or Eclipse Public License - v 1.0
   WebSocket server API under Dual license consisting of the CDDL v1.1 and GPL v2
   Woodstox under The Apache License, Version 2.0
   WSDL4J under CPL

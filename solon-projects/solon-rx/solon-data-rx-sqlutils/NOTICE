@@ -18,11 +18,13 @@ This project includes:
   Reactive Relational Database Connectivity - SPI under Apache License 2.0
   reactive-streams under MIT-0
   Reactor Pool under The Apache Software License, Version 2.0
-  SLF4J API Module under MIT License
-  snack3 under The Apache Software License, Version 2.0
+  SLF4J API Module under MIT
+  snack4 under The Apache Software License, Version 2.0
   solon under The Apache Software License, Version 2.0
+  solon-cache under The Apache Software License, Version 2.0
   solon-data under The Apache Software License, Version 2.0
   solon-data-rx-sqlutils under The Apache Software License, Version 2.0
+  solon-expression under The Apache Software License, Version 2.0
   solon-rx under The Apache Software License, Version 2.0
   solon-security-vault under The Apache Software License, Version 2.0
 

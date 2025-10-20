@@ -13,7 +13,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 This project includes:
+  SLF4J API Module under MIT
   solon under The Apache Software License, Version 2.0
+  solon-expression under The Apache Software License, Version 2.0
   solon-security-vault under The Apache Software License, Version 2.0
   solon.vault under The Apache Software License, Version 2.0
 

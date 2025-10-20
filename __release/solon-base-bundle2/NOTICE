@@ -78,6 +78,7 @@ This project includes:
   H2 Database Engine under MPL 2.0 or EPL 1.0
   HikariCP under The Apache Software License, Version 2.0
   hutool-core under Mulan Permissive Software License，Version 2
+  Jackson datatype: JSR310 under The Apache Software License, Version 2.0
   Jackson-annotations under The Apache Software License, Version 2.0
   Jackson-core under The Apache Software License, Version 2.0
   jackson-databind under The Apache Software License, Version 2.0
@@ -129,10 +130,9 @@ This project includes:
   Project Lombok under The MIT License
   Protocol Buffers [Core] under 3-Clause BSD License
   quartz under The Apache Software License, Version 2.0
-  Reactive Relational Database Connectivity - Connection Pooling under Apache License 2.0
   Reactive Relational Database Connectivity - SPI under Apache License 2.0
   reactive-streams under CC0
-  Reactor Pool under The Apache Software License, Version 2.0
+  redis-authx-core under MIT
   Redisson under Apache v2
   redisx under The Apache Software License, Version 2.0
   ReflectASM under 3-Clause BSD License
@@ -215,16 +215,15 @@ This project includes:
   shardingsphere-transaction-api under Apache License 2.0
   shardingsphere-transaction-core under Apache License 2.0
   SLF4J 2 Provider for Log4j API under Apache-2.0
-  SLF4J API Module under MIT License
+  SLF4J API Module under MIT
   smart-http-common under The Apache License, Version 2.0
   smart-http-server under The Apache License, Version 2.0
-  snack3 under The Apache Software License, Version 2.0
+  snack4 under The Apache Software License, Version 2.0
   SnakeYAML under Apache License, Version 2.0
   solon under The Apache Software License, Version 2.0
   solon-aot under The Apache Software License, Version 2.0
   solon-base-bundle2 under The Apache Software License, Version 2.0
-  solon-boot under The Apache Software License, Version 2.0
-  solon-boot-smarthttp under The Apache Software License, Version 2.0
+  solon-cache under The Apache Software License, Version 2.0
   solon-cache-caffeine under The Apache Software License, Version 2.0
   solon-cache-jedis under The Apache Software License, Version 2.0
   solon-cache-redisson under The Apache Software License, Version 2.0
@@ -234,19 +233,19 @@ This project includes:
   solon-config-yaml under The Apache Software License, Version 2.0
   solon-data under The Apache Software License, Version 2.0
   solon-data-dynamicds under The Apache Software License, Version 2.0
-  solon-data-rx-sqlutils under The Apache Software License, Version 2.0
   solon-data-shardingds under The Apache Software License, Version 2.0
   solon-data-sqlutils under The Apache Software License, Version 2.0
   solon-docs under The Apache Software License, Version 2.0
   solon-docs-openapi2 under The Apache Software License, Version 2.0
   solon-docs-openapi2-javadoc under The Apache Software License, Version 2.0
+  solon-expression under The Apache Software License, Version 2.0
+  solon-handle under The Apache Software License, Version 2.0
   solon-health under The Apache Software License, Version 2.0
   solon-lib under The Apache Software License, Version 2.0
   solon-logging under The Apache Software License, Version 2.0
   solon-logging-log4j2 under The Apache Software License, Version 2.0
   solon-logging-logback under The Apache Software License, Version 2.0
   solon-logging-simple under The Apache Software License, Version 2.0
-  solon-mvc under The Apache Software License, Version 2.0
   solon-net under The Apache Software License, Version 2.0
   solon-net-httputils under The Apache Software License, Version 2.0
   solon-openapi2-knife4j under The Apache Software License, Version 2.0
@@ -255,13 +254,16 @@ This project includes:
   solon-security-validation under The Apache Software License, Version 2.0
   solon-security-vault under The Apache Software License, Version 2.0
   solon-serialization under The Apache Software License, Version 2.0
-  solon-serialization-snack3 under The Apache Software License, Version 2.0
+  solon-serialization-snack4 under The Apache Software License, Version 2.0
+  solon-server under The Apache Software License, Version 2.0
+  solon-server-smarthttp under The Apache Software License, Version 2.0
   solon-sessionstate-local under The Apache Software License, Version 2.0
   solon-swagger2-knife4j under The Apache Software License, Version 2.0
   solon-test under The Apache Software License, Version 2.0
   solon-web under The Apache Software License, Version 2.0
   solon-web-cors under The Apache Software License, Version 2.0
   solon-web-staticfiles under The Apache Software License, Version 2.0
+  solon-web-version under The Apache Software License, Version 2.0
   solon.cache.caffeine under The Apache Software License, Version 2.0
   solon.cache.jedis under The Apache Software License, Version 2.0
   solon.cache.redisson under The Apache Software License, Version 2.0

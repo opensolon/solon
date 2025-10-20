@@ -16,10 +16,11 @@ This project includes:
   attoparser under The Apache Software License, Version 2.0
   Javassist under MPL 1.1 or LGPL 2.1 or Apache License 2.0
   OGNL - Object Graph Navigation Library under The Apache Software License, Version 2.0
-  SLF4J API Module under MIT License
+  SLF4J API Module under MIT
   solon under The Apache Software License, Version 2.0
-  solon-boot under The Apache Software License, Version 2.0
-  solon-mvc under The Apache Software License, Version 2.0
+  solon-expression under The Apache Software License, Version 2.0
+  solon-handle under The Apache Software License, Version 2.0
+  solon-server under The Apache Software License, Version 2.0
   solon-view under The Apache Software License, Version 2.0
   solon-view-thymeleaf under The Apache Software License, Version 2.0
   solon.view.thymeleaf under The Apache Software License, Version 2.0

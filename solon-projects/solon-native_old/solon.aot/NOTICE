@@ -14,9 +14,10 @@ limitations under the License.
 
 This project includes:
   JavaPoet under Apache 2.0
-  SLF4J API Module under MIT License
-  snack3 under The Apache Software License, Version 2.0
+  SLF4J API Module under MIT
+  snack4 under The Apache Software License, Version 2.0
   solon under The Apache Software License, Version 2.0
   solon-aot under The Apache Software License, Version 2.0
+  solon-expression under The Apache Software License, Version 2.0
   solon.aot under The Apache Software License, Version 2.0
 

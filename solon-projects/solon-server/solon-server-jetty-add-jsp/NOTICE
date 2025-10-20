@@ -38,5 +38,5 @@ This project includes:
   Jetty :: XML utilities under Apache Software License - Version 2.0 or Eclipse Public License - Version 1.0
   MortBay :: Apache EL :: API and Implementation under Apache License Version 2.0
   MortBay :: Apache Jasper :: JSP Implementation under Apache License Version 2.0
-  solon-boot-jetty-add-jsp under The Apache Software License, Version 2.0
+  solon-server-jetty-add-jsp under The Apache Software License, Version 2.0
 

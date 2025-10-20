@@ -48,7 +48,7 @@ This project includes:
   Plexus Interpolation API under Apache License, Version 2.0
   Plexus Security Dispatcher Component under Apache License, Version 2.0
   Plexus XML Utilities under Apache License, Version 2.0
-  SLF4J API Module under MIT License
+  SLF4J API Module under MIT
   solon-loader under The Apache Software License, Version 2.0
   solon-maven-plugin under The Apache Software License, Version 2.0
 

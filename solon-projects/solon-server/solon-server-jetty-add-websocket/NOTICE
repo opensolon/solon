@@ -27,5 +27,5 @@ This project includes:
   Jetty :: Websocket :: Common under Apache Software License - Version 2.0 or Eclipse Public License - Version 1.0
   Jetty :: Websocket :: Server under Apache Software License - Version 2.0 or Eclipse Public License - Version 1.0
   Jetty :: Websocket :: Servlet Interface under Apache Software License - Version 2.0 or Eclipse Public License - Version 1.0
-  solon-boot-jetty-add-websocket under The Apache Software License, Version 2.0
+  solon-server-jetty-add-websocket under The Apache Software License, Version 2.0
 

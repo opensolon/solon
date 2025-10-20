@@ -16,13 +16,14 @@ This project includes:
   luffy.base under The Apache Software License, Version 2.0
   luffy.executor.s.javascript under The Apache Software License, Version 2.0
   okldap under The Apache Software License, Version 2.0
-  SLF4J API Module under MIT License
-  snack3 under The Apache Software License, Version 2.0
+  SLF4J API Module under MIT
+  snack4 under The Apache Software License, Version 2.0
   solon under The Apache Software License, Version 2.0
-  solon-boot under The Apache Software License, Version 2.0
+  solon-expression under The Apache Software License, Version 2.0
   solon-faas-luffy under The Apache Software License, Version 2.0
+  solon-handle under The Apache Software License, Version 2.0
   solon-logging under The Apache Software License, Version 2.0
-  solon-mvc under The Apache Software License, Version 2.0
+  solon-server under The Apache Software License, Version 2.0
   solon.luffy under The Apache Software License, Version 2.0
   wood under The Apache Software License, Version 2.0
 

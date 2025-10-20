@@ -15,10 +15,11 @@ limitations under the License.
 This project includes:
   nami under The Apache Software License, Version 2.0
   nami-channel-socketd under The Apache Software License, Version 2.0
-  SLF4J API Module under MIT License
+  SLF4J API Module under MIT
   socketd under The Apache Software License, Version 2.0
   solon under The Apache Software License, Version 2.0
-  solon-boot under The Apache Software License, Version 2.0
-  solon-mvc under The Apache Software License, Version 2.0
+  solon-expression under The Apache Software License, Version 2.0
+  solon-handle under The Apache Software License, Version 2.0
   solon-net under The Apache Software License, Version 2.0
+  solon-server under The Apache Software License, Version 2.0
 

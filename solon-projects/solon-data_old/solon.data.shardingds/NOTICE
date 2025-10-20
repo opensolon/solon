@@ -173,14 +173,16 @@ This project includes:
   shardingsphere-traffic-core under Apache License 2.0
   shardingsphere-transaction-api under Apache License 2.0
   shardingsphere-transaction-core under Apache License 2.0
-  SLF4J API Module under MIT License
-  snack3 under The Apache Software License, Version 2.0
+  SLF4J API Module under MIT
+  snack4 under The Apache Software License, Version 2.0
   SnakeYAML under Apache License, Version 2.0
   solon under The Apache Software License, Version 2.0
+  solon-cache under The Apache Software License, Version 2.0
   solon-config-plus under The Apache Software License, Version 2.0
   solon-config-yaml under The Apache Software License, Version 2.0
   solon-data under The Apache Software License, Version 2.0
   solon-data-shardingds under The Apache Software License, Version 2.0
+  solon-expression under The Apache Software License, Version 2.0
   solon-security-vault under The Apache Software License, Version 2.0
   solon.data.shardingds under The Apache Software License, Version 2.0
   TransmittableThreadLocal(TTL) under Apache 2

@@ -14,8 +14,9 @@ limitations under the License.
 
 This project includes:
   asm under BSD-3-Clause
-  SLF4J API Module under MIT License
+  SLF4J API Module under MIT
   solon under The Apache Software License, Version 2.0
+  solon-expression under The Apache Software License, Version 2.0
   solon-proxy under The Apache Software License, Version 2.0
   solon.proxy under The Apache Software License, Version 2.0
 

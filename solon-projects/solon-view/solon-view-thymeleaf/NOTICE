@@ -24,11 +24,12 @@ This project includes:
   OGNL - Object Graph Navigation Library under The Apache Software License, Version 2.0
   org.apiguardian:apiguardian-api under The Apache License, Version 2.0
   org.opentest4j:opentest4j under The Apache License, Version 2.0
-  SLF4J API Module under MIT License
+  SLF4J API Module under MIT
   solon under The Apache Software License, Version 2.0
-  solon-boot under The Apache Software License, Version 2.0
-  solon-mvc under The Apache Software License, Version 2.0
+  solon-expression under The Apache Software License, Version 2.0
+  solon-handle under The Apache Software License, Version 2.0
   solon-security-auth under The Apache Software License, Version 2.0
+  solon-server under The Apache Software License, Version 2.0
   solon-view under The Apache Software License, Version 2.0
   solon-view-thymeleaf under The Apache Software License, Version 2.0
   thymeleaf under The Apache Software License, Version 2.0
