@@ -37,6 +37,7 @@
 * 优化 `solon` 渲染体系对返回 string 的处理
 * 优化 `solon` Utils.appFolder 支持中文路径
 * 优化 `solon-config-yaml` 对 'solon.env.on' 的分片处理（避免转 yaml 时与 'solon.evn' 冲突）
+* 优化 `solon` Entity if string 的输出
 
 
 ### 3.6.0

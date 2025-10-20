@@ -171,6 +171,10 @@ public class RenderManager implements Render {
         //如果是实体
         if (data instanceof Entity) {
             data = ((Entity) data).body();
+
+            if (data instanceof String) {
+                return (String) data;
+            }
         }
 
         if (data instanceof ModelAndView) {
@@ -246,6 +250,11 @@ public class RenderManager implements Render {
                         }
                     }
                 }
+            }
+
+            if (data instanceof String) {
+                ctx.output((String) data);
+                return;
             }
         }
 
