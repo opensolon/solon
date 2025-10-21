@@ -26,6 +26,13 @@
 * 调整 Plugin 统一交给 AppContext 管理（之前由 SolonApp 或 PluginPackage 管理）？？
 * 使用 solon-expression 替代其它临时的表达式处理 //ok
 
+### 3.7.0
+
+* 调整 snack3 切换为 snack4
+* 启用 新的范型识别机制？？？
+* 升级 mcp-java-sdk 为 0.14.x？？？
+
+
 ### 3.6.1
 
 * 新增 `nami-coder-snack4` 插件
