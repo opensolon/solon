@@ -24,6 +24,12 @@
 
         <dependency>
             <groupId>org.noear</groupId>
+            <artifactId>eggg</artifactId>
+            <version>${eggg.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
             <artifactId>solon-expression</artifactId>
         </dependency>
 
