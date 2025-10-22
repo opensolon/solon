@@ -41,8 +41,6 @@ public class RenderManager implements Render {
     static final Logger log = LoggerFactory.getLogger(RenderManager.class);
 
     private final Map<String, Render> _mapping = new HashMap<>();
-    private final Map<String, Render> _lib = new HashMap<>();
-
 
     //默认渲染器
     private Render _def = (d, c) -> {
@@ -51,17 +49,11 @@ public class RenderManager implements Render {
         }
     };
 
-
     /**
      * 获取渲染器
      */
     public Render get(String name) {
-        Render tmp = _lib.get(name);
-        if (tmp == null) {
-            tmp = _mapping.get(name);
-        }
-
-        return tmp;
+        return _mapping.get(name);
     }
 
     /**
@@ -100,13 +92,15 @@ public class RenderManager implements Render {
         if (Utils.isEmpty(mapping)) {
             //def | class
             _def = render;
-            _lib.put(render.getClass().getSimpleName(), render);
-            _lib.put(render.getClass().getName(), render);
 
             log.debug("View: load: " + render.getClass().getSimpleName());
             log.debug("View: load: " + render.getClass().getName());
         } else {
             //mapping=.ftl | @json
+            if (_def == null && mapping.indexOf('.') >= 0) {
+                _def = render;
+            }
+
             _mapping.put(mapping, render);
 
             log.debug("Render mapping: " + mapping + "=" + render.name());
@@ -124,7 +118,7 @@ public class RenderManager implements Render {
             return;
         }
 
-        Render render = _lib.get(clzName);
+        Render render = _mapping.get(clzName);
 
         if (render == null && clzName.indexOf('.') > 0) {
             //如果是全类名
