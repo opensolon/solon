@@ -40,6 +40,7 @@
 * 优化 `solon` RenderManager 内部基于 _mapping 的单线管理管理
 * 优化 `solon-config-yaml` 对 'solon.env.on' 的分片处理（避免转 yaml 时与 'solon.evn' 冲突）
 * 修复 `solon-rx` SimpleSubscriber 长流输出可能出错的问题
+* liquor 升为 1.6.3
 
 
 ### 3.6.0
