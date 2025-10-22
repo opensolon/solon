@@ -14,12 +14,16 @@ import java.lang.reflect.*;
  */
 public class EgggUtil {
     private static final Eggg eggg = new Eggg()
-            .<VarSpec>withAliasHandler(x -> x.getName())
-            .<VarSpec>withDigestHandler(EgggUtil::doDigestHandle)
+            .withAliasHandler(EgggUtil::doAliasHandle)
+            .withDigestHandler(EgggUtil::doDigestHandle)
             .withReflectHandler(new EgggReflectHandler());
 
+    private static String doAliasHandle(ClassWrap cw, Object h, Object digest, String ref) {
+        return ref;
+    }
+
     private static VarSpec doDigestHandle(ClassWrap cw, Object h, AnnotatedElement e, VarSpec ref) {
-        return null;
+        return ref;
     }
 
     public static TypeWrap getTypeWrap(Type type) {
