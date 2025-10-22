@@ -38,6 +38,7 @@
 * 优化 `solon` Entity if string 的渲染输出
 * 优化 `solon` Utils.appFolder 支持中文路径
 * 优化 `solon-config-yaml` 对 'solon.env.on' 的分片处理（避免转 yaml 时与 'solon.evn' 冲突）
+* 修复 `solon-rx` SimpleSubscriber 长流输出可能出错的问题
 
 
 ### 3.6.0
