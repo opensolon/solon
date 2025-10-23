@@ -28,6 +28,10 @@
 * 把 Plugin 统一交给 AppContext 管理（之前由 SolonApp 或 PluginPackage 管理）
 * Plugin 添加 postStart 事件
 
+### 3.4.7
+
+* 修复 `solon-rx` SimpleSubscriber 长流输出可能出错的问题
+
 ### 3.4.6
 
 * 优化 `solon-test` `@SolonTest` 支持非 solon 的 main 程序单测启动
