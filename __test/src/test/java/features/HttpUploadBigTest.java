@@ -15,7 +15,9 @@
  */
 package features;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.noear.snack4.ONode;
 import org.noear.solon.test.HttpTester;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
@@ -39,8 +41,13 @@ public class HttpUploadBigTest extends HttpTester {
 
         InputStream inputStream = new ByteArrayInputStream(buf.toString().getBytes(StandardCharsets.UTF_8));
 
-        assert path("/demo3/upload/f1")
+        String json = path("/demo3/upload/f1")
                 .data("file", "装修-水电-视频.mp4", inputStream, "video/mp4")
-                .post().contains("成功：装修-水电-视频.mp4");
+                .post();
+
+        assert json.contains("装修-水电-视频.mp4");
+
+        ONode oNode = ONode.ofJson(json);
+        Assertions.assertEquals(buf.length(), oNode.get("file").get("size").getLong());
     }
 }
