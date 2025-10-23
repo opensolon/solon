@@ -97,7 +97,7 @@ public class RenderManager implements Render {
             log.debug("View: load: " + render.getClass().getName());
         } else {
             //mapping=.ftl | @json
-            if (_def == null && mapping.indexOf('.') >= 0) {
+            if (mapping.charAt(0) == '.') {
                 _def = render;
             }
 

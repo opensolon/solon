@@ -28,6 +28,7 @@
 
 ### 3.6.2
 
+* 修复 solon 默认渲染器没有生效的问题
 * 修复 solon-server-smarthttp 适配文件上传数据暴涨的问题
 * smart-http 升为 2.5.14
 
