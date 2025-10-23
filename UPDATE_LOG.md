@@ -26,6 +26,12 @@
 * 调整 Plugin 统一交给 AppContext 管理（之前由 SolonApp 或 PluginPackage 管理）？？
 * 使用 solon-expression 替代其它临时的表达式处理 //ok
 
+### 3.6.2
+
+* 修复 solon-server-smarthttp 适配文件上传数据暴涨的问题
+* smart-http 升为 2.5.14
+
+
 ### 3.6.1
 
 * 新增 `nami-coder-snack4` 插件
