@@ -97,13 +97,13 @@ public class RenderManager implements Render {
             log.debug("View: load: " + render.getClass().getName());
         } else {
             //mapping=.ftl | @json
-            if (_def == null && mapping.indexOf('.') >= 0) {
+            if (mapping.charAt(0) == '.') {
                 _def = render;
             }
 
             _mapping.put(mapping, render);
 
-            log.debug("Render mapping: " + mapping + "=" + render.name());
+            log.debug("Render mapping: '" + mapping + "'=" + render.name());
         }
     }
 
