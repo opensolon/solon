@@ -15,6 +15,7 @@
  */
 package webapp.demo3_upload;
 
+import org.noear.snack4.ONode;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.annotation.Post;
@@ -32,22 +33,31 @@ public class UploadController {
     @Post
     @Mapping("f1")
     public String test_f1(Context ctx, UploadedFile file, UploadedFile file2) throws Throwable {
-        String hint = null;
+        ONode oNode = new ONode();
+
         if (file != null) {
-            if (file2 == null) {
-                hint = "成功：" + file.getName() + ": " + file.getContentSize() + "; null";
-            } else {
-                hint = "成功：" + file.getName() + ": " + file.getContentSize() + "; " + file2.getName() + ": " + file2.getContentSize();
+            oNode.getOrNew("state").setValue("成功");
+
+            oNode.getOrNew("file").then(n -> {
+                n.set("name", file.getName());
+                n.set("size", file.getContentSize());
+            });
+
+            if (file2 != null) {
+                oNode.getOrNew("file2").then(n -> {
+                    n.set("name", file2.getName());
+                    n.set("size", file2.getContentSize());
+                });
             }
         } else {
-            hint = "失败：" + ctx.path();
+            oNode.getOrNew("state").setValue("失败");
         }
 
         if (file != null) {
             file.delete();
         }
 
-        return hint;
+        return oNode.toJson();
     }
 
     @Post
