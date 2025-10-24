@@ -15,10 +15,9 @@
  */
 package org.noear.solon.core;
 
-import org.noear.solon.lang.Nullable;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.function.Supplier;
 
 /**
@@ -58,8 +57,14 @@ public interface VarHolder {
     /**
      * 获取泛型（可能为 null）
      */
-    @Nullable
-    ParameterizedType getGenericType();
+    Type getGenericType();
+
+    /**
+     * 是否为泛型
+     * */
+    default boolean isParameterizedType(){
+        return getGenericType() instanceof ParameterizedType;
+    }
 
     /**
      * 获取类型

@@ -1,5 +1,6 @@
 package features.solon.injectcoll;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.annotation.Managed;
 import org.noear.solon.annotation.Configuration;
@@ -22,8 +23,8 @@ public class AppTest {
         appContext.start();
 
         //校验集合注入时，只运行一次
-        assert count_l == 1;
-        assert count_m == 1;
+        Assertions.assertEquals(1, count_l);
+        Assertions.assertEquals(1, count_m);
     }
 
     @Configuration

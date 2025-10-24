@@ -48,14 +48,15 @@ public class AotCollector {
     /**
      * 注册实体类型
      */
-    public void registerEntityType(Class<?> type, ParameterizedType genericType) {
+    public void registerEntityType(Class<?> type, Type genericType) {
         if (NativeDetector.isAotRuntime()) {
             if (type.getName().startsWith("java.") == false) {
                 entityTypes.add(type);
             }
 
-            if (genericType != null) {
-                for (Type type1 : genericType.getActualTypeArguments()) {
+            if (genericType instanceof ParameterizedType) {
+                ParameterizedType genericType1 = (ParameterizedType) genericType;
+                for (Type type1 : genericType1.getActualTypeArguments()) {
                     if (type1 instanceof Class) {
                         if (type1.getTypeName().startsWith("java.") == false) {
                             entityTypes.add((Class<?>) type1);

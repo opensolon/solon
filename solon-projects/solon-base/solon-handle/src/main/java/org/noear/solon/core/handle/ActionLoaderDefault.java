@@ -15,13 +15,15 @@
  */
 package org.noear.solon.core.handle;
 
+import org.noear.eggg.ClassEggg;
+import org.noear.eggg.MethodEggg;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Addition;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.FactoryManager;
-import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.ConsumerEx;
+import org.noear.solon.core.util.EgggUtil;
 import org.noear.solon.core.util.ProxyBinder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -160,14 +162,15 @@ public class ActionLoaderDefault extends HandlerAide implements ActionLoader {
         }
 
         boolean enableProxy = false;
+        ClassEggg classEggg = EgggUtil.getClassEggg(bw.clz());
 
         //只支持 public 函数为 Action
-        for (Method method : ClassUtil.findPublicMethods(bw.clz())) {
-            loadActionItem(slots, all, method, b_limitMethodSet, b_addinMethodSet);
+        for (MethodEggg m1 : classEggg.getMethodEgggs()) {
+            loadActionItem(slots, all, m1.getMethod(), b_limitMethodSet, b_addinMethodSet);
 
             //是否需要自动代理 //只支持 public
-            if (Modifier.isPublic(method.getModifiers())) {
-                enableProxy = enableProxy || bw.context().beanInterceptorHas(method);
+            if (m1.isPublic()) {
+                enableProxy = enableProxy || bw.context().beanInterceptorHas(m1.getMethod());
             }
         }
 

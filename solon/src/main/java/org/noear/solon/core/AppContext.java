@@ -15,6 +15,10 @@
  */
 package org.noear.solon.core;
 
+import org.noear.eggg.ClassEggg;
+import org.noear.eggg.FieldEggg;
+import org.noear.eggg.MethodEggg;
+import org.noear.eggg.TypeEggg;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
@@ -359,10 +363,11 @@ public class AppContext extends BeanContainer {
         }
 
         try {
-            if (Utils.isEmpty(name) && vh.getGenericType() != null) {
+            if (Utils.isEmpty(name) && vh.isParameterizedType()) {
+                TypeEggg typeEggg = EgggUtil.getTypeEggg(vh.getGenericType());
                 if (List.class == vh.getType()) {
                     //支持 List<Bean> 注入 //@since 3.0
-                    Type tmp = vh.getGenericType().getActualTypeArguments()[0];
+                    Type tmp = typeEggg.getActualTypeArguments()[0];
 
                     final ParameterizedType genericType; //过滤泛型
                     final Type type;
@@ -384,28 +389,17 @@ public class AppContext extends BeanContainer {
                     }
                 } else if (Map.class == vh.getType()) {
                     //支持 Map<String,Bean> 注入 //@since 3.0
-                    Type valTmp = vh.getGenericType().getActualTypeArguments()[1];
 
-                    Type keyType = vh.getGenericType().getActualTypeArguments()[0];
-                    Type valType;
-                    ParameterizedType valGenericType;
+                    Type keyType = typeEggg.getActualTypeArguments()[0];
+                    TypeEggg valType = EgggUtil.getTypeEggg(typeEggg.getActualTypeArguments()[1]);
 
-                    if (valTmp instanceof ParameterizedType) {
-                        valGenericType = ((ParameterizedType) valTmp);
-                        valType = valGenericType.getRawType();
-                    } else {
-                        valGenericType = null;
-                        valType = valTmp;
-                    }
-
-
-                    if (String.class == keyType && valType instanceof Class) {
+                    if (String.class == keyType) {
                         if (vh.isField() == false) {
-                            vh.setDependencyType((Class<?>) valType);
+                            vh.setDependencyType(valType.getType());
                         }
                         vh.required(required);
                         //设置默认值（放下面）
-                        vh.setValueDefault(() -> this.getBeansMapOfType((Class<?>) valType, valGenericType));
+                        vh.setValueDefault(() -> this.getBeansMapOfType(valType.getType(), valType.getGenericType()));
                     }
                 }
             }
@@ -592,14 +586,14 @@ public class AppContext extends BeanContainer {
         List<Map.Entry<Method, Annotation>> extraList = new ArrayList<>();
 
         if (beanExtractors.size() > 0 || beanInterceptors.size() > 0) {
-            ClassWrap clzWrap = ClassWrap.get(bw.clz());
+            ClassEggg classEggg = EgggUtil.getClassEggg(bw.clz());
 
-            for (Method m : clzWrap.findPublicMethods()) { //只支持公有或自有函数检查
+            for(MethodEggg m : classEggg.getMethodEgggs()){ //只支持公有或自有函数检查
                 for (Annotation a : m.getAnnotations()) {
                     if (tryExtract) {
                         if (beanExtractors.containsKey(a.annotationType())) {
                             //有提取处理
-                            extraList.add(new AbstractMap.SimpleEntry<>(m, a));
+                            extraList.add(new AbstractMap.SimpleEntry<>(m.getMethod(), a));
                         }
                     }
 
@@ -658,36 +652,30 @@ public class AppContext extends BeanContainer {
             return;
         }
 
-        ClassWrap clzWrap = ClassWrap.get(obj.getClass());
-        List<FieldWrap> fwList = new ArrayList<>();
+        ClassEggg clzEggg = EgggUtil.getClassEggg(obj.getClass());
+        List<FieldEggg> fgList = new ArrayList<>();
 
         //支持父类注入(找到有注解的字段)
-        for (FieldWrap fw : clzWrap.getAllFieldWraps()) { //非静态
-            if (fw.getAnnoS().length > 0) {
-                fwList.add(fw);
+        for (FieldEggg fg : clzEggg.getFieldEgggs()) { //非静态 和 静态
+            if (fg.getAnnotations().length > 0) {
+                fgList.add(fg);
             }
         }
 
-        for (FieldWrap fw : clzWrap.getStaticFieldWraps()) { //静态
-            if (fw.getAnnoS().length > 0) {
-                fwList.add(fw);
-            }
-        }
-
-        if (fwList.size() == 0) {
+        if (fgList.size() == 0) {
             //略过
         } else {
             //需要注入（可能）
-            InjectGather gather = new InjectGather(0, clzWrap.clz(), true, fwList.size(), null);
+            InjectGather gather = new InjectGather(0, clzEggg.getType(), true, fgList.size(), null);
 
             //添加到集合
             gatherSet.add(gather);
 
             //添加要收集的字段
-            for (FieldWrap fw : fwList) {
-                VarHolder vh = fw.holder(this, obj, gather);
+            for (FieldEggg fw : fgList) {
+                VarHolder vh = new VarHolderOfFieldEggg(this, fw, obj, gather);
                 gather.add(vh);
-                tryInject(vh, fw.getAnnoS());
+                tryInject(vh, fw.getAnnotations());
             }
         }
     }

@@ -15,14 +15,15 @@
  */
 package org.noear.solon.aot;
 
+import org.noear.eggg.ClassEggg;
+import org.noear.eggg.FieldEggg;
 import org.noear.solon.aot.hint.ExecutableHint;
 import org.noear.solon.aot.hint.ExecutableMode;
 import org.noear.solon.aot.hint.MemberCategory;
 import org.noear.solon.aot.proxy.ProxyClassGenerator;
 import org.noear.solon.core.AppContext;
+import org.noear.solon.core.util.EgggUtil;
 import org.noear.solon.core.util.ReflectUtil;
-import org.noear.solon.core.wrap.ClassWrap;
-import org.noear.solon.core.wrap.FieldWrap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -173,11 +174,11 @@ public class AppContextNativeProcessorDefault implements AppContextNativeProcess
     }
 
     protected void processBeanFieldsDo(RuntimeNativeMetadata nativeMetadata, Class<?> clazz) {
-        ClassWrap clzWrap = ClassWrap.get(clazz);
+        ClassEggg clzEggg = EgggUtil.getClassEggg(clazz);
 
         // 处理字段
-        for (FieldWrap fieldWrap : clzWrap.getAllFieldWraps()) {
-            processFieldDo(nativeMetadata, fieldWrap.getField());
+        for (FieldEggg f1 : clzEggg.getFieldEgggs()) {
+            processFieldDo(nativeMetadata, f1.getField());
         }
     }
 

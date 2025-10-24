@@ -736,7 +736,7 @@ public abstract class BeanContainer {
      * @param baseType    基类
      * @param genericType 泛型
      */
-    public <T> Map<String, T> getBeansMapOfType(Class<T> baseType, ParameterizedType genericType) {
+    public <T> Map<String, T> getBeansMapOfType(Class<T> baseType, Type genericType) {
         Map<String, T> beanMap = new HashMap<>();
 
         beanForeach(bw -> {
@@ -1056,7 +1056,7 @@ public abstract class BeanContainer {
                 return;
             }
 
-            if (vh.getGenericType() != null) {
+            if (vh.isParameterizedType()) {
                 //如果是泛型
                 getWrapAsync(vh.getGenericType().getTypeName(), (bw) -> {
                     vh.setValue(bw.get());

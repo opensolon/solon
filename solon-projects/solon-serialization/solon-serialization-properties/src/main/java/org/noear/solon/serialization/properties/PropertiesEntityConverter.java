@@ -15,7 +15,6 @@
  */
 package org.noear.solon.serialization.properties;
 
-import org.noear.snack4.Feature;
 import org.noear.snack4.ONode;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.MethodType;

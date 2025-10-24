@@ -52,7 +52,7 @@
 
         <folkmq.version>1.7.11</folkmq.version>
         <water.version>2.18.0</water.version>
-        <luffy.version>1.9.5</luffy.version>
+        <luffy.version>1.11.0</luffy.version>
 
         <java-cron.version>1.0.3</java-cron.version>
 

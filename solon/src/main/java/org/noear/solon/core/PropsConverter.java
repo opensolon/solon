@@ -16,7 +16,6 @@
 package org.noear.solon.core;
 
 import org.noear.solon.core.util.ClassUtil;
-import org.noear.solon.core.wrap.ClassWrap;
 
 import java.lang.reflect.Type;
 import java.util.Properties;
@@ -60,10 +59,10 @@ public class PropsConverter {
      */
     public <T> T convert(Properties props, T target, Class<T> targetClz, Type targetType) {
         if (target == null) {
-            return ClassWrap.get(targetClz).newBy(props);
+            return ClassUtil.makeObject(targetClz, props);
         } else {
             if (props != null && props.size() > 0) {
-                ClassWrap.get(target.getClass()).fill(target, props::getProperty);
+                ClassUtil.fillObject(target, props::getProperty);
             }
             return target;
         }

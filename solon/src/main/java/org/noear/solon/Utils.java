@@ -19,7 +19,6 @@ import org.noear.solon.core.Props;
 import org.noear.solon.core.PropsConverter;
 import org.noear.solon.core.PropsLoader;
 import org.noear.solon.core.util.*;
-import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.lang.Nullable;
 
 import java.io.*;
@@ -28,7 +27,6 @@ import java.lang.management.RuntimeMXBean;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.net.*;
-import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.*;
 import java.util.concurrent.Future;
@@ -738,7 +736,7 @@ public class Utils {
             return;
         }
 
-        ClassWrap.get(target.getClass()).fill(target, source);
+        ClassUtil.fillObject(target, source);
     }
 
     /**

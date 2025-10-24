@@ -15,15 +15,19 @@
  */
 package org.noear.solon.core.util;
 
+import org.noear.eggg.*;
 import org.noear.solon.core.AppClassLoader;
 import org.noear.solon.core.exception.ConstructionException;
-import org.noear.solon.core.wrap.ClassWrap;
+import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.handle.UploadedFile;
+import org.noear.solon.core.runtime.NativeDetector;
+import org.noear.solon.core.wrap.VarSpec;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
@@ -34,6 +38,8 @@ import java.util.function.Predicate;
  * @since 3.0
  */
 public class ClassUtil {
+    static Logger log = LoggerFactory.getLogger(ClassUtil.class);
+
     /**
      * 是否为数字类型
      */
@@ -224,7 +230,7 @@ public class ClassUtil {
     }
 
 
-    /////////////////
+    /// //////////////
 
     private static final ClassLoader systemClassLoader = ClassLoader.getSystemClassLoader();
 
@@ -279,9 +285,13 @@ public class ClassUtil {
 
     /**
      * 查找 method
+     *
+     * @deprecated 3.7
      */
+    @Deprecated
     public static Collection<Method> findPublicMethods(Class<?> clz) {
-        return ClassWrap.get(clz).findPublicMethods();
+        throw new UnsupportedOperationException();
+        //return ClassWrap.get(clz).findPublicMethods();
     }
 
     //A.class
@@ -397,5 +407,130 @@ public class ClassUtil {
         });
 
         return clzList;
+    }
+
+    /**
+     * 为实例填充数据
+     *
+     * @param data 填充数据
+     */
+    public static void fillObject(Object bean, Function<String, String> data) {
+        try {
+            doFillObject(EgggUtil.getTypeEggg(bean.getClass()), bean, data, null);
+        } catch (RuntimeException ex) {
+            throw ex;
+        } catch (Throwable ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    /**
+     * 为实例填充数据
+     *
+     * @param data 填充数据
+     * @param ctx  上下文
+     */
+    private static void doFillObject(TypeEggg typeEggg, Object bean, Function<String, String> data, Context ctx) throws Exception {
+        ClassEggg classEggg = typeEggg.getClassEggg();
+
+        if (classEggg.getFieldEgggs().isEmpty() && NativeDetector.inNativeImage()) {
+            log.warn(String.format("Class: %s don't have any field, can't fill data. you should use: nativeMetadata.registerField(field) at aot runtime.", typeEggg.getType().getName()));
+        }
+        for (FieldEggg fe : classEggg.getFieldEgggs()) {
+            String key = fe.getAlias();
+            String val0 = data.apply(key);
+
+            if (val0 != null) {
+                //将 string 转为目标 type，并为字段赋值
+                Object val = ConvertUtil.to(fe.<VarSpec>getDigest(), val0, ctx);
+                fe.setValue(bean, val);
+            } else {
+                if (ctx != null) {
+                    if (fe.getType() == UploadedFile.class) {
+                        UploadedFile file1 = ctx.file(key);
+                        if (file1 != null) {
+                            fe.setValue(bean, file1);
+                        }
+                    } else if (fe.getType() == UploadedFile[].class) {
+                        UploadedFile[] files1 = ctx.fileValues(key);
+                        if (files1 != null) {
+                            fe.setValue(bean, files1);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * 新建实例
+     *
+     * @param data 填充数据
+     */
+    public static <T> T makeObject(Class<?> clz, Properties data) {
+        try {
+            ConstrEggg constrEggg = EgggUtil.getClassEggg(clz).findConstrEgggOrNull(Properties.class);
+            if (constrEggg != null) {
+                return (T) constrEggg.newInstance(data);
+            }
+        } catch (Throwable e) {
+        }
+
+        return makeObject(clz, data::getProperty);
+    }
+
+
+    public static <T> T makeObject(Class<?> clz, Function<String, String> data) {
+        try {
+            return makeObject(clz, data, null);
+        } catch (RuntimeException ex) {
+            throw ex;
+        } catch (Throwable ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+
+    /**
+     * 新建实例
+     *
+     * @param data 填充数据
+     * @param ctx  上下文
+     */
+    public static <T> T makeObject(Class<?> clz, Function<String, String> data, Context ctx) throws Exception {
+        ClassEggg classEggg = EgggUtil.getClassEggg(clz);
+
+        if (classEggg.isRealRecordClass() || classEggg.isLikeRecordClass()) {
+            //for record
+            List<ParamEggg> argsP = classEggg.getCreator().getParamEgggAry();
+            Object[] argsV = new Object[argsP.size()];
+
+            for (int i = 0; i < argsP.size(); i++) {
+                ParamEggg p = argsP.get(i);
+                String key = p.<VarSpec>getDigest().getName();
+                String val0 = data.apply(key);
+
+                if (val0 != null) {
+                    //将 string 转为目标 type，并为字段赋值
+                    Object val = ConvertUtil.to(p.<VarSpec>getDigest(), val0, ctx);
+                    argsV[i] = val;
+                } else {
+                    if (p.getType() == UploadedFile.class) {
+                        argsV[i] = ctx.file(key);//如果是 UploadedFile
+                    } else {
+                        argsV[i] = null;
+                    }
+                }
+            }
+
+            Object obj = classEggg.getCreator().newInstance(argsV);
+            return (T) obj;
+        } else {
+            Object obj = classEggg.getCreator().newInstance();
+
+            doFillObject(classEggg.getTypeEggg(), obj, data, ctx);
+
+            return (T) obj;
+        }
     }
 }

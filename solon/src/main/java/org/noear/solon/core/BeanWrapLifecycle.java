@@ -15,13 +15,15 @@
  */
 package org.noear.solon.core;
 
+import org.noear.eggg.ClassEggg;
+import org.noear.eggg.MethodEggg;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Destroy;
 import org.noear.solon.annotation.Init;
 import org.noear.solon.core.bean.LifecycleBean;
 import org.noear.solon.core.util.ClassUtil;
+import org.noear.solon.core.util.EgggUtil;
 import org.noear.solon.core.util.IndexUtil;
-import org.noear.solon.core.wrap.ClassWrap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,10 +40,10 @@ class BeanWrapLifecycle implements LifecycleBean {
     static final Logger log = LoggerFactory.getLogger(BeanWrapLifecycle.class);
 
     private BeanWrap bw;
-    private Method initMethod;
+    private MethodEggg initMethod;
     private String initMethodName;
     private int initIndex;
-    private Method destroyMethod;
+    private MethodEggg destroyMethod;
     private String destroyMethodName;
 
     public BeanWrapLifecycle(BeanWrap bw, String initMethodName, String destroyMethodName) {
@@ -54,14 +56,14 @@ class BeanWrapLifecycle implements LifecycleBean {
      * 初始化方法
      */
     public Method initMethod() {
-        return initMethod;
+        return initMethod.getMethod();
     }
 
     /**
      * 注解方法
      */
     public Method destroyMethod() {
-        return destroyMethod;
+        return destroyMethod.getMethod();
     }
 
     /**
@@ -72,16 +74,16 @@ class BeanWrapLifecycle implements LifecycleBean {
             return false;
         }
 
-        ClassWrap clzWrap = ClassWrap.get(bw.rawClz());
+        ClassEggg clzEggg = EgggUtil.getClassEggg(bw.rawClz());
 
         //按名字找（优先）
         try {
             if (Utils.isNotEmpty(initMethodName)) {
-                initMethod = clzWrap.findPublicMethod(initMethodName);
+                initMethod = clzEggg.findMethodEggg(initMethodName);
             }
 
             if (Utils.isNotEmpty(destroyMethodName)) {
-                destroyMethod = clzWrap.findPublicMethod(destroyMethodName);
+                destroyMethod = clzEggg.findMethodEggg(destroyMethodName);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -93,21 +95,21 @@ class BeanWrapLifecycle implements LifecycleBean {
             //如果不是 jdk 的类（否则没必要）
             if (bw.rawClz().getName().startsWith("java.") == false) {
                 //找查注解函数
-                for (Method m : clzWrap.findPublicMethods()) {
-                    Init initAnno = m.getAnnotation(Init.class);
+                for (MethodEggg m : clzEggg.getMethodEgggs()) {
+                    Init initAnno = m.getMethod().getAnnotation(Init.class);
                     if (initAnno != null) {
-                        if (m.getParameters().length == 0) {
+                        if (m.getParamCount() == 0) {
                             //只接收没有参数的，支持非公有函数
                             initMethod = m;
-                            ClassUtil.accessibleAsTrue(initMethod);
+                            ClassUtil.accessibleAsTrue(initMethod.getMethod());
                             initIndex = initAnno.index();
                         }
                     } else {
-                        Destroy destroyAnno = m.getAnnotation(Destroy.class);
+                        Destroy destroyAnno = m.getMethod().getAnnotation(Destroy.class);
                         if (destroyAnno != null) {
-                            if (m.getParameters().length == 0) {
+                            if (m.getParamCount() == 0) {
                                 destroyMethod = m;
-                                ClassUtil.accessibleAsTrue(destroyMethod);
+                                ClassUtil.accessibleAsTrue(destroyMethod.getMethod());
                             }
                         }
                     }

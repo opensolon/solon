@@ -16,9 +16,9 @@
 package org.noear.solon.core.wrap;
 
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.lang.Nullable;
 
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 
 /**
  * 变量说明
@@ -75,13 +75,23 @@ public interface VarSpec {
     /**
      * 获取泛型
      * */
-    @Nullable
-    ParameterizedType getGenericType();
+    Type getGenericType();
 
     /**
      * 是否为泛型
+     *
+     * @deprecated 3.7 {@link #isParameterizedType()}
      * */
+    @Deprecated
     default boolean isGenericType(){
+        return getGenericType() instanceof ParameterizedType;
+    }
+
+
+    /**
+     * 是否为参数化类型
+     * */
+    default boolean isParameterizedType(){
         return getGenericType() instanceof ParameterizedType;
     }
 

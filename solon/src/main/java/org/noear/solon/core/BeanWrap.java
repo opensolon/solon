@@ -82,8 +82,8 @@ public class BeanWrap {
     /**
      * 是否为Null或者自来泛型
      */
-    protected boolean isNullOrGenericFrom(ParameterizedType checkType) {
-        if (checkType == null) {
+    protected boolean isNullOrGenericFrom(Type checkType) {
+        if (checkType == null || checkType instanceof ParameterizedType == false) {
             return true;
         } else {
             if (Utils.isEmpty(genericList)) {
@@ -91,7 +91,7 @@ public class BeanWrap {
             }
 
             for (ParameterizedType pt : genericList) {
-                if (GenericUtil.genericMatched(checkType, pt)) {
+                if (GenericUtil.genericMatched((ParameterizedType) checkType, pt)) {
                     return true;
                 }
             }

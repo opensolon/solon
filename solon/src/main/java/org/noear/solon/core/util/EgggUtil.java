@@ -1,8 +1,8 @@
 package org.noear.solon.core.util;
 
-import org.noear.eggg.ClassWrap;
-import org.noear.eggg.Eggg;
-import org.noear.eggg.TypeWrap;
+import org.noear.eggg.*;
+import org.noear.solon.core.wrap.FieldEgggSpec;
+import org.noear.solon.core.wrap.ParamEgggSpec;
 import org.noear.solon.core.wrap.VarSpec;
 
 import java.lang.reflect.*;
@@ -18,15 +18,29 @@ public class EgggUtil {
             .withDigestHandler(EgggUtil::doDigestHandle)
             .withReflectHandler(new EgggReflectHandler());
 
-    private static String doAliasHandle(ClassWrap cw, Object h, Object digest, String ref) {
+    private static String doAliasHandle(ClassEggg cw, Object h, Object digest, String ref) {
+        if (digest instanceof VarSpec) {
+            return ((VarSpec) digest).getName();
+        }
+
         return ref;
     }
 
-    private static VarSpec doDigestHandle(ClassWrap cw, Object h, AnnotatedElement e, VarSpec ref) {
+    private static VarSpec doDigestHandle(ClassEggg cw, Object h, AnnotatedElement e, VarSpec ref) {
+        if (h instanceof FieldEggg) {
+            return new FieldEgggSpec((FieldEggg) h);
+        } else if (h instanceof ParamEggg) {
+            return new ParamEgggSpec((ParamEggg) h);
+        }
+
         return ref;
     }
 
-    public static TypeWrap getTypeWrap(Type type) {
-        return eggg.getTypeWrap(type);
+    public static TypeEggg getTypeEggg(Type type) {
+        return eggg.getTypeEggg(type);
+    }
+
+    public static ClassEggg getClassEggg(Type type) {
+        return getTypeEggg(type).getClassEggg();
     }
 }

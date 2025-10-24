@@ -15,9 +15,8 @@
  */
 package org.noear.solon.core.util;
 
+import org.noear.eggg.FieldEggg;
 import org.noear.solon.core.aspect.Invocation;
-import org.noear.solon.core.wrap.ClassWrap;
-import org.noear.solon.core.wrap.FieldWrap;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -151,7 +150,7 @@ public class TmplUtil {
                     if (obj instanceof Map) {
                         valTmp = ((Map) obj).get(fieldKey);
                     } else {
-                        FieldWrap fw = ClassWrap.get(obj.getClass()).getFieldWrap(fieldKey);
+                        FieldEggg fw = EgggUtil.getClassEggg(obj.getClass()).getFieldEgggByName(fieldKey);
                         if (fw == null) {
                             throw new IllegalArgumentException("Missing tmpl parameter (result field): " + name);
                         }
