@@ -33,6 +33,14 @@
 * 升级 mcp-java-sdk 为 0.14.x？？？
 
 
+
+### 3.6.2
+
+* 修复 solon 默认渲染器没有生效的问题
+* 修复 solon-server-smarthttp 适配文件上传数据暴涨的问题（3.6.0 出现的）
+* smart-http 升为 2.5.14
+
+
 ### 3.6.1
 
 * 新增 `nami-coder-snack4` 插件
@@ -48,6 +56,7 @@
 * 优化 `solon-config-yaml` 对 'solon.env.on' 的分片处理（避免转 yaml 时与 'solon.evn' 冲突）
 * 修复 `solon-rx` SimpleSubscriber 长流输出可能出错的问题
 * liquor 升为 1.6.3
+
 
 
 
