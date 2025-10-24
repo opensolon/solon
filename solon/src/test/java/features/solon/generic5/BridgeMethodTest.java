@@ -1,10 +1,11 @@
 package features.solon.generic5;
 
 import org.junit.jupiter.api.Test;
-import org.noear.solon.core.wrap.ClassWrap;
+import org.noear.eggg.ClassEggg;
+import org.noear.eggg.MethodEggg;
+import org.noear.solon.core.util.EgggUtil;
 
 import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.TypeVariable;
 import java.util.Arrays;
 import java.util.List;
 
@@ -14,14 +15,15 @@ import java.util.List;
 public class BridgeMethodTest {
     @Test
     public void case1() {
-        ClassWrap classWrap = ClassWrap.get(SysResourcePermissionController.class);
+        ClassEggg classWrap = EgggUtil.getClassEggg(SysResourcePermissionController.class);
 
-        assert classWrap.getDeclaredMethods().length == 0;
+        assert classWrap.getDeclaredMethodEgggs().size() == 0;
 
-        assert classWrap.getMethods()[0].getName().equals("saveAll");
-        assert classWrap.getMethods()[0].getGenericReturnType() instanceof ParameterizedType;
-        assert classWrap.getMethods()[1].getName().equals("saveOne");
-        assert classWrap.getMethods()[1].getGenericReturnType() instanceof TypeVariable;
+        MethodEggg[] methodEgggs = classWrap.getPublicMethodEgggs().toArray(new MethodEggg[0]);
+        assert methodEgggs[0].getName().equals("saveAll");
+        assert methodEgggs[0].getReturnTypeEggg().getGenericType() instanceof ParameterizedType;
+        assert methodEgggs[1].getName().equals("saveOne");
+        assert methodEgggs[1].getReturnTypeEggg().getGenericType().equals(SysResourcePermission.class);
 
         System.out.println(Arrays.toString(SysResourcePermissionController.class.getDeclaredMethods()));
         //=> [public java.util.List com.example.demo.App$SysResourcePermissionController.saveAll(java.util.List)]

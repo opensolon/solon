@@ -1,6 +1,6 @@
 package labs;
 
-import org.noear.solon.core.wrap.ClassWrap;
+import org.noear.solon.core.util.EgggUtil;
 
 import java.util.HashMap;
 
@@ -9,10 +9,6 @@ import java.util.HashMap;
  */
 public class GenericsUtilsTest {
     public static void main(String[] args) {
-        try {
-            ClassWrap.get(HashMap.class);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        EgggUtil.getClassEggg(HashMap.class);
     }
 }
