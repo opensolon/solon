@@ -16,6 +16,7 @@
 package org.noear.solon.core.wrap;
 
 import org.noear.eggg.ParamEggg;
+import org.noear.eggg.TypeEggg;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.InjectGather;
 import org.noear.solon.core.VarHolder;
@@ -68,6 +69,27 @@ public class VarHolderOfParam implements VarHolder {
         return false;
     }
 
+    @Override
+    public TypeEggg getTypeEggg() {
+        return pw.getTypeEggg();
+    }
+
+    /**
+     * 类型
+     */
+    @Override
+    public Class<?> getType() {
+        return pw.getType();
+    }
+
+    /**
+     * 泛型（可能为 null）
+     */
+    @Override
+    public Type getGenericType() {
+        return pw.getGenericType();
+    }
+
 
     /**
      * 获取依赖类型
@@ -89,21 +111,6 @@ public class VarHolderOfParam implements VarHolder {
         this.dependencyType = dependencyType;
     }
 
-    /**
-     * 类型
-     */
-    @Override
-    public Class<?> getType() {
-        return pw.getType();
-    }
-
-    /**
-     * 泛型（可能为 null）
-     */
-    @Override
-    public Type getGenericType() {
-        return pw.getGenericType();
-    }
 
     /**
      * 注解
@@ -122,7 +129,7 @@ public class VarHolderOfParam implements VarHolder {
 
         Class<?> declClz = e.getDeclaringClass();
         Class<?> fileClz = declClz;
-        if(declClz.isMemberClass()){
+        if (declClz.isMemberClass()) {
             fileClz = declClz.getEnclosingClass();
         }
 

@@ -16,6 +16,7 @@
 package org.noear.solon.core.wrap;
 
 import org.noear.eggg.MethodEggg;
+import org.noear.eggg.TypeEggg;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.AppContext;
@@ -189,6 +190,11 @@ public class MethodWrap implements MethodInterceptor, MethodHolder {
      */
     public Method getMethod() {
         return methodEggg.getMethod();
+    }
+
+    @Override
+    public TypeEggg getReturnTypeEggg() {
+        return methodEggg.getReturnTypeEggg();
     }
 
     /**

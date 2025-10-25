@@ -15,6 +15,8 @@
  */
 package org.noear.solon.core;
 
+import org.noear.eggg.TypeEggg;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -55,21 +57,28 @@ public interface VarHolder {
     void setDependencyType(Class<?> dependencyType);
 
     /**
+     * 获取类型
+     *
+     * @since 3.7
+     */
+    TypeEggg getTypeEggg();
+
+    /**
+     * 获取类型
+     */
+    Class<?> getType();
+
+    /**
      * 获取泛型（可能为 null）
      */
     Type getGenericType();
 
     /**
      * 是否为泛型
-     * */
-    default boolean isParameterizedType(){
+     */
+    default boolean isParameterizedType() {
         return getGenericType() instanceof ParameterizedType;
     }
-
-    /**
-     * 获取类型
-     */
-    Class<?> getType();
 
     /**
      * 获取注解集合

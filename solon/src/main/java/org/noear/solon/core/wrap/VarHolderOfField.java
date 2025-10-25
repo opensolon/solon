@@ -16,6 +16,7 @@
 package org.noear.solon.core.wrap;
 
 import org.noear.eggg.FieldEggg;
+import org.noear.eggg.TypeEggg;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.InjectGather;
 import org.noear.solon.core.VarHolder;
@@ -68,6 +69,19 @@ public class VarHolderOfField implements VarHolder {
         return true;
     }
 
+    @Override
+    public TypeEggg getTypeEggg() {
+        return fw.getTypeEggg();
+    }
+
+    /**
+     * 获取字段类型
+     */
+    @Override
+    public Class<?> getType() {
+        return fw.getTypeEggg().getType();
+    }
+
     /**
      * 泛型（可能为null）
      */
@@ -92,14 +106,6 @@ public class VarHolderOfField implements VarHolder {
     }
 
     /**
-     * 获取字段类型
-     */
-    @Override
-    public Class<?> getType() {
-        return fw.getTypeEggg().getType();
-    }
-
-    /**
      * 获取所有注解
      */
     @Override
@@ -114,7 +120,7 @@ public class VarHolderOfField implements VarHolder {
     public String getFullName() {
         Class<?> declClz = fw.getField().getDeclaringClass();
         Class<?> fileClz = declClz;
-        if(declClz.isMemberClass()){
+        if (declClz.isMemberClass()) {
             fileClz = declClz.getEnclosingClass();
         }
 

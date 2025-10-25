@@ -15,12 +15,11 @@
  */
 package org.noear.solon.core.wrap;
 
+import org.noear.eggg.TypeEggg;
 import org.noear.solon.core.aspect.InterceptorEntity;
-import org.noear.solon.lang.Nullable;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
 
@@ -41,6 +40,11 @@ public interface MethodHolder {
      * 获取函数参数
      */
     ParamWrap[] getParamWraps();
+
+    /**
+     * 获取函数反回类型
+     */
+    TypeEggg getReturnTypeEggg();
 
     /**
      * 获取函数反回类型
