@@ -15,6 +15,8 @@
  */
 package org.noear.solon.core.handle;
 
+import org.noear.eggg.MethodEggg;
+import org.noear.eggg.ParamEggg;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Consumes;
 import org.noear.solon.annotation.Mapping;
@@ -72,22 +74,22 @@ public class ActionDefault extends HandlerAide implements Action {
     //path key 列表
     private List<String> pathKeys;
 
-    public ActionDefault(BeanWrap bWrap, Method method) {
-        this(bWrap, null, null, method, null, null, false, null);
+    public ActionDefault(BeanWrap bWrap, MethodEggg mE) {
+        this(bWrap, null, null, mE, null, null, false, null);
     }
 
-    public ActionDefault(BeanWrap bWrap, HandlerAide bAide, String bVersion, Method method, Mapping mapping, String path, boolean remoting, Render render) {
+    public ActionDefault(BeanWrap bWrap, HandlerAide bAide, String bVersion, MethodEggg mE, Mapping mapping, String path, boolean remoting, Render render) {
         this.bWrap = bWrap;
         this.bAide = bAide;
 
-        ClassUtil.accessibleAsTrue(method);
+        ClassUtil.accessibleAsTrue(mE.getMethod());
 
         if (NativeDetector.isAotRuntime()) {
-            bWrap.context().methodGet(bWrap.rawClz(), method);
+            bWrap.context().methodGet(bWrap.rawClz(), mE);
         }
 
         //@since 3.0
-        mWrap = new MethodWrap(bWrap.context(), bWrap.rawClz(), method).ofHandler();
+        mWrap = new MethodWrap(bWrap.context(), bWrap.rawClz(), mE).ofHandler();
         mRemoting = remoting;
         mMapping = mapping;
         bRender = render;
@@ -100,13 +102,13 @@ public class ActionDefault extends HandlerAide implements Action {
         }
 
         if (mapping == null) {
-            mName = method.getName();
+            mName = mE.getName();
             mVersion = bVersion;
         } else {
             //of method
-            Produces producesAnno = method.getAnnotation(Produces.class);
-            Consumes consumesAnno = method.getAnnotation(Consumes.class);
-            Multipart multipartAnno = method.getAnnotation(Multipart.class);
+            Produces producesAnno = mE.getMethod().getAnnotation(Produces.class);
+            Consumes consumesAnno = mE.getMethod().getAnnotation(Consumes.class);
+            Multipart multipartAnno = mE.getMethod().getAnnotation(Multipart.class);
 
             if (producesAnno == null) {
                 mProduces = mapping.produces();
@@ -163,8 +165,8 @@ public class ActionDefault extends HandlerAide implements Action {
 
         //支持多分片申明
         if (mMultipart == false) {
-            for (Class<?> clz : method.getParameterTypes()) {
-                if (UploadedFile.class.isAssignableFrom(clz)) {
+            for (ParamEggg p1 : mE.getParamEgggAry()) {
+                if (UploadedFile.class.isAssignableFrom(p1.getType())) {
                     mMultipart = true;
                     break;
                 }

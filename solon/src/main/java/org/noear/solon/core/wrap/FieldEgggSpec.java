@@ -29,7 +29,7 @@ public class FieldEgggSpec extends VarSpecBase {
     private final FieldEggg fieldEggg;
 
     public FieldEgggSpec(FieldEggg fieldEggg) {
-        super(fieldEggg.getField(), fieldEggg.getField().getName());
+        super(fieldEggg.getField(), fieldEggg.getName());
         this.fieldEggg = fieldEggg;
     }
 

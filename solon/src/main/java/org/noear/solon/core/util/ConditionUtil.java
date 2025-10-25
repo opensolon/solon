@@ -17,7 +17,6 @@ package org.noear.solon.core.util;
 
 import org.noear.solon.annotation.Condition;
 import org.noear.solon.core.AppContext;
-import org.noear.solon.expression.snel.SnEL;
 
 import java.lang.reflect.AnnotatedElement;
 

@@ -15,10 +15,12 @@
  */
 package org.noear.solon.extend.impl;
 
+import org.noear.eggg.ClassEggg;
+import org.noear.eggg.MethodEggg;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.runtime.NativeDetector;
+import org.noear.solon.core.util.EgggUtil;
 import org.noear.solon.core.util.ProxyBinder;
-import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.proxy.BeanProxy;
 
 import java.lang.reflect.Method;
@@ -50,8 +52,8 @@ public class ProxyBinderExt extends ProxyBinder {
 
         if (NativeDetector.isAotRuntime()) {
             //如果是 aot 则注册函数
-            ClassWrap clzWrap = ClassWrap.get(bw.clz());
-            for (Method m : clzWrap.getMethods()) {
+            ClassEggg clzWrap = EgggUtil.getClassEggg(bw.clz());
+            for (MethodEggg m : clzWrap.getMethodEgggs()) {
                 bw.context().methodGet(bw.rawClz(), m);
             }
         }

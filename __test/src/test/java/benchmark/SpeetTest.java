@@ -17,7 +17,8 @@ package benchmark;
 
 import features._model.UserModel;
 import org.junit.jupiter.api.Test;
-import org.noear.solon.core.wrap.ClassWrap;
+import org.noear.eggg.MethodEggg;
+import org.noear.solon.core.util.EgggUtil;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -45,7 +46,7 @@ public class SpeetTest {
         long start = System.currentTimeMillis();
 
         for (int i = 0; i < 100000; i++) {
-            for(Method m: ClassWrap.get(UserModel.class).getDeclaredMethods()){
+            for(MethodEggg m: EgggUtil.getClassEggg(UserModel.class).getDeclaredMethodEgggs()){
                 for(Parameter p : m.getParameters()){
 
                 }

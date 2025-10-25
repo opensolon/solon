@@ -15,10 +15,7 @@
  */
 package org.noear.solon.core;
 
-import org.noear.eggg.ClassEggg;
-import org.noear.eggg.FieldEggg;
-import org.noear.eggg.MethodEggg;
-import org.noear.eggg.TypeEggg;
+import org.noear.eggg.*;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
@@ -132,7 +129,28 @@ public class AppContext extends BeanContainer {
             try {
                 mw = methodCached.get(methodKey);
                 if (mw == null) {
-                    mw = new MethodWrap(this, clz, method);
+                    mw = new MethodWrap(this, clz, EgggUtil.getClassEggg(clz).findMethodEgggOrNew(method));
+                    methodCached.put(methodKey, mw);
+                }
+            } finally {
+                SYNC_LOCK.unlock();
+            }
+        }
+
+        return mw;
+    }
+
+    public MethodWrap methodGet(Class<?> clz, MethodEggg methodEggg) {
+        MethodKey methodKey = new MethodKey(methodEggg.getMethod(), clz);
+
+        MethodWrap mw = methodCached.get(methodKey);
+        if (mw == null) {
+            SYNC_LOCK.lock();
+
+            try {
+                mw = methodCached.get(methodKey);
+                if (mw == null) {
+                    mw = new MethodWrap(this, clz, methodEggg);
                     methodCached.put(methodKey, mw);
                 }
             } finally {
@@ -875,11 +893,15 @@ public class AppContext extends BeanContainer {
     }
 
     private void tryBuildBeanOfMethod1(MethodWrap mWrap, BeanWrap bw, BiConsumerEx<MethodWrap, Object> completionConsumer) throws Throwable {
-        if (mWrap.getParamWraps().length == 0) {
+        if (mWrap.getMethodEggg().getParamCount() == 0) {
             //0.没有参数
             tryBuildBeanOfMethod2(mWrap, bw, new Object[]{}, completionConsumer);
         } else {
-            tryBuildArgsOfMethod(bw.context(), 1, mWrap.getReturnType(), mWrap.getParamWraps(), (args2) -> {
+            if (mWrap.getMethodEggg().getReturnTypeEggg() == null) {
+                log.error("{}", mWrap.getMethodEggg().getMethod());
+            }
+
+            tryBuildArgsOfMethod(bw.context(), 1, mWrap.getMethodEggg().getReturnTypeEggg().getType(), mWrap.getMethodEggg().getParamEgggAry(), (args2) -> {
                 RunUtil.runOrThrow(() -> tryBuildBeanOfMethod2(mWrap, bw, args2, completionConsumer));
             });
         }
@@ -888,9 +910,9 @@ public class AppContext extends BeanContainer {
     /**
      * 尝试托管方法参数收集
      */
-    protected void tryBuildArgsOfMethod(AppContext context, int label, Class<?> outType, ParamWrap[] paramAry, ConsumerEx<Object[]> completionConsumer) {
+    protected void tryBuildArgsOfMethod(AppContext context, int label, Class<?> outType, List<ParamEggg> paramAry, ConsumerEx<Object[]> completionConsumer) {
         //1.构建参数 (requireRun=false => true) //运行条件已经确认过，且必须已异常
-        InjectGather gather = new InjectGather(label, outType, true, paramAry.length, (args2) -> {
+        InjectGather gather = new InjectGather(label, outType, true, paramAry.size(), (args2) -> {
             //变量收集完成后，会回调此处
             completionConsumer.accept(args2);
         });
@@ -899,15 +921,15 @@ public class AppContext extends BeanContainer {
         gatherSet.add(gather);
 
         //1.2.添加要收集的参数；并为参数注入（注入是异步的；全部完成后，VarGather 会回调）
-        for (ParamWrap pw1 : paramAry) {
-            VarHolder vh = new VarHolderOfParam(context, pw1, gather);
+        for (ParamEggg pw1 : paramAry) {
+            VarHolder vh = new VarHolderOfParamEggg(context, pw1, gather);
             gather.add(vh);
 
-            if (pw1.getAnnoS().length == 0) {
+            if (pw1.getAnnotations().length == 0) {
                 //没带注解的，算必须
                 beanInject(vh, null, true, false);
             } else {
-                tryInject(vh, pw1.getAnnoS());
+                tryInject(vh, pw1.getAnnotations());
             }
         }
     }
@@ -1069,29 +1091,22 @@ public class AppContext extends BeanContainer {
     }
 
     private void tryBuildBeanOfClass2(Class<?> clz, BeanBuilder builder, Annotation anno) throws Throwable {
-        final Constructor c1;
-        if (clz.isInterface() == false) {
-            c1 = clz.getDeclaredConstructors()[0]; //组件只允许有一个构造函数
-        } else {
-            c1 = null;
-        }
+        ClassEggg clzEggg = EgggUtil.getClassEggg(clz);
 
-        if (c1 == null || c1.getParameterCount() == 0) {
-            tryBuildBeanOfClass3(clz, builder, anno, null, null);
+        if (clzEggg.getCreator().getParamCount() == 0) {
+            tryBuildBeanOfClass3(clz, builder, anno, clzEggg.getCreator(), new Object[0]);
         } else {
             //包装（处理泛型参数）
-            ConstructorWrap cw = new ConstructorWrap(clz, c1);
-
-            tryBuildArgsOfMethod(this, 2, clz, cw.getParamWraps(), (args2) -> {
-                tryBuildBeanOfClass3(clz, builder, anno, c1, args2);
+            tryBuildArgsOfMethod(this, 2, clz, clzEggg.getCreator().getParamEgggAry(), (args2) -> {
+                tryBuildBeanOfClass3(clz, builder, anno, clzEggg.getCreator(), args2);
             });
         }
     }
 
 
-    private void tryBuildBeanOfClass3(Class<?> clz, BeanBuilder builder, Annotation anno, Constructor rawCon, Object[] rawConArgs) throws Throwable {
+    private void tryBuildBeanOfClass3(Class<?> clz, BeanBuilder builder, Annotation anno, ConstrEggg rawCon, Object[] rawConArgs) throws Throwable {
         //包装
-        BeanWrap bw = new BeanWrap(this, clz, rawCon, rawConArgs);
+        BeanWrap bw = new BeanWrap(this, clz, (Constructor) rawCon.getConstr(), rawConArgs);
         //执行构建
         builder.doBuild(clz, bw, anno);
         //尝试入库

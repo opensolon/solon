@@ -15,6 +15,7 @@
  */
 package org.noear.solon.core.wrap;
 
+import org.noear.eggg.MethodEggg;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.AppContext;
@@ -22,7 +23,6 @@ import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.InterceptorEntity;
 import org.noear.solon.core.aspect.Invocation;
 import org.noear.solon.core.aspect.MethodInterceptor;
-import org.noear.solon.lang.Nullable;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
@@ -36,6 +36,7 @@ import java.util.*;
  * @author noear
  * @since 1.0
  * @since 3.0
+ * @since 3.7
  * */
 public class MethodWrap implements MethodInterceptor, MethodHolder {
     private final AppContext context;
@@ -45,8 +46,8 @@ public class MethodWrap implements MethodInterceptor, MethodHolder {
     //申明类型
     private final Class<?> declaringClz;
     //函数
-    private final Method method;
-    //函数原始参数
+    private final MethodEggg methodEggg;
+    //参数
     private final Parameter[] parameters;
     //函数注解
     private final Annotation[] annotations;
@@ -55,13 +56,13 @@ public class MethodWrap implements MethodInterceptor, MethodHolder {
     //函数拦截索引
     private final Set<Interceptor> interceptorsIdx;
 
-    public MethodWrap(AppContext ctx, Class<?> clz, Method m) {
+    public MethodWrap(AppContext ctx, Class<?> clz, MethodEggg m) {
         context = ctx;
 
         ownerClz = clz;
-        declaringClz = m.getDeclaringClass();
+        declaringClz = m.getMethod().getDeclaringClass();
 
-        method = m;
+        methodEggg = m;
         parameters = m.getParameters();
         annotations = m.getAnnotations();
         interceptors = new ArrayList<>();
@@ -105,18 +106,12 @@ public class MethodWrap implements MethodInterceptor, MethodHolder {
         interceptors.add(new InterceptorEntity(0, this));
     }
 
-    //函数返回类型（懒加载）
-    private TypeWrap __returnTypeWrap;
+    public MethodEggg getMethodEggg() {
+        return methodEggg;
+    }
+
     //函数参数（懒加载）
     private ParamWrap[] __paramWraps;
-
-    private TypeWrap returnTypeWrap() {
-        if (__returnTypeWrap == null) {
-            __returnTypeWrap = new TypeWrap(ownerClz, method.getReturnType(), method.getGenericReturnType());
-        }
-
-        return __returnTypeWrap;
-    }
 
     public ParamWrap[] paramWraps() {
         if (__paramWraps == null) {
@@ -127,10 +122,10 @@ public class MethodWrap implements MethodInterceptor, MethodHolder {
     }
 
     private ParamWrap[] buildParamWraps() {
-        ParamWrap[] tmp = new ParamWrap[parameters.length];
-        for (int i = 0, len = parameters.length; i < len; i++) {
+        ParamWrap[] tmp = new ParamWrap[methodEggg.getParamCount()];
+        for (int i = 0, len = methodEggg.getParamCount(); i < len; i++) {
             //@since 3.0
-            tmp[i] = new ParamWrap(parameters[i], method, ownerClz);
+            tmp[i] = new ParamWrap(methodEggg.getParamEgggAry().get(i));
         }
         return tmp;
     }
@@ -170,7 +165,7 @@ public class MethodWrap implements MethodInterceptor, MethodHolder {
      * 获取函数名
      */
     public String getName() {
-        return method.getName();
+        return methodEggg.getName();
     }
 
 
@@ -193,21 +188,21 @@ public class MethodWrap implements MethodInterceptor, MethodHolder {
      * 获取函数本身
      */
     public Method getMethod() {
-        return method;
+        return methodEggg.getMethod();
     }
 
     /**
      * 获取函数反回类型
      */
     public Class<?> getReturnType() {
-        return returnTypeWrap().getType();
+        return methodEggg.getReturnTypeEggg().getType();
     }
 
     /**
      * 获取函数泛型类型
      */
-    public @Nullable ParameterizedType getGenericReturnType() {
-        return returnTypeWrap().getGenericType();
+    public Type getGenericReturnType() {
+        return methodEggg.getReturnTypeEggg().getGenericType();
     }
 
     /**
@@ -235,7 +230,7 @@ public class MethodWrap implements MethodInterceptor, MethodHolder {
      * 获取函数某种注解
      */
     public <T extends Annotation> T getAnnotation(Class<T> type) {
-        return method.getAnnotation(type);
+        return methodEggg.getMethod().getAnnotation(type);
     }
 
 
@@ -243,7 +238,7 @@ public class MethodWrap implements MethodInterceptor, MethodHolder {
      * 检测是否存在注解
      */
     public boolean isAnnotationPresent(Class<? extends Annotation> annotationClass) {
-        return method.isAnnotationPresent(annotationClass);
+        return methodEggg.getMethod().isAnnotationPresent(annotationClass);
     }
 
     /**
@@ -269,7 +264,7 @@ public class MethodWrap implements MethodInterceptor, MethodHolder {
      */
     public Object invoke(Object obj, Object[] args) throws Throwable {
         try {
-            return method.invoke(obj, args);
+            return methodEggg.invoke(obj, args);
         } catch (InvocationTargetException e) {
             Throwable e2 = e.getTargetException();
             throw Utils.throwableUnwrap(e2);

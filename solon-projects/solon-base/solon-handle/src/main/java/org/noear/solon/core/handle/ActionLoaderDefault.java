@@ -166,7 +166,7 @@ public class ActionLoaderDefault extends HandlerAide implements ActionLoader {
 
         //只支持 public 函数为 Action
         for (MethodEggg m1 : classEggg.getMethodEgggs()) {
-            loadActionItem(slots, all, m1.getMethod(), b_limitMethodSet, b_addinMethodSet);
+            loadActionItem(slots, all, m1, b_limitMethodSet, b_addinMethodSet);
 
             //是否需要自动代理 //只支持 public
             if (m1.isPublic()) {
@@ -186,19 +186,19 @@ public class ActionLoaderDefault extends HandlerAide implements ActionLoader {
     /**
      * 加载 Action item 处理
      */
-    protected void loadActionItem(HandlerSlots slots, boolean all, Method method, Set<MethodType> b_limitMethodSet, Set<MethodType> b_addinMethodSet) {
-        Mapping m_map = method.getAnnotation(Mapping.class);
+    protected void loadActionItem(HandlerSlots slots, boolean all, MethodEggg mE, Set<MethodType> b_limitMethodSet, Set<MethodType> b_addinMethodSet) {
+        Mapping m_map = mE.getMethod().getAnnotation(Mapping.class);
 
         //检测注解和限制
         if (m_map == null) {
             //如果没有注解，则只允许 public
-            if (Modifier.isPublic(method.getModifiers()) == false) {
+            if (mE.isPublic() == false) {
                 return;
             }
         } else {
             //如果有注解，不是 public 时，则告警提醒（以后改为异常）//v2.5
-            if (Modifier.isPublic(method.getModifiers()) == false) {
-                log.warn("This @Mapping method is not public: " + method.getDeclaringClass().getName() + ":" + method.getName());
+            if (mE.isPublic() == false) {
+                log.warn("This @Mapping method is not public: " + mE.getMethod().getDeclaringClass().getName() + ":" + mE.getName());
             }
         }
 
@@ -207,7 +207,7 @@ public class ActionLoaderDefault extends HandlerAide implements ActionLoader {
         Set<MethodType> m_addinMethodSet = new HashSet<>(b_addinMethodSet);
 
         //获取 action 的 methodTypes
-        FactoryManager.getGlobal().actionLoaderFactory().findMethodTypes(m_limitMethodSet, t -> method.getAnnotation(t) != null);
+        FactoryManager.getGlobal().actionLoaderFactory().findMethodTypes(m_limitMethodSet, t -> mE.getMethod().getAnnotation(t) != null);
 
         //构建 path and method
         if (m_map != null) {
@@ -218,7 +218,7 @@ public class ActionLoaderDefault extends HandlerAide implements ActionLoader {
                 m_limitMethodSet.addAll(Arrays.asList(m_map.method()));
             }
         } else {
-            m_path = method.getName();
+            m_path = mE.getName();
 
             if (m_limitMethodSet.size() == 0) {
                 //如果没有找到，则用Mapping上自带的；或默认
@@ -232,12 +232,12 @@ public class ActionLoaderDefault extends HandlerAide implements ActionLoader {
 
         //如果是service，method 就不需要map
         if (m_map != null || all) {
-            String newPath = postActionPath(bw, bPath, method, m_path);
+            String newPath = postActionPath(bw, bPath, mE, m_path);
 
-            ActionDefault action = createAction(bw, method, m_map, newPath, bRemoting);
+            ActionDefault action = createAction(bw, mE, m_map, newPath, bRemoting);
 
             //m_method 必须之前已准备好，不再动  //用于支持 Cors
-            loadActionAide(method, action, m_addinMethodSet);
+            loadActionAide(mE, action, m_addinMethodSet);
 
             if (m_limitMethodSet.size() > 0 &&
                     m_limitMethodSet.contains(MethodType.HTTP) == false &&
@@ -296,8 +296,8 @@ public class ActionLoaderDefault extends HandlerAide implements ActionLoader {
     /**
      * 加载动作附件
      */
-    protected void loadActionAide(Method method, ActionDefault action, Set<MethodType> addinMethodSet) {
-        for (Annotation anno : method.getAnnotations()) {
+    protected void loadActionAide(MethodEggg mE, ActionDefault action, Set<MethodType> addinMethodSet) {
+        for (Annotation anno : mE.getAnnotations()) {
             if (loadActionAideAdd(anno, action, addinMethodSet)) {
                 continue;
             }
@@ -336,18 +336,20 @@ public class ActionLoaderDefault extends HandlerAide implements ActionLoader {
     /**
      * 确认 Action 路径
      */
-    protected String postActionPath(BeanWrap bw, String bPath, Method method, String mPath) {
-        return FactoryManager.getGlobal().actionLoaderFactory().postActionPath(bw, bPath, method, mPath);
+    protected String postActionPath(BeanWrap bw, String bPath, MethodEggg mE, String mPath) {
+        return FactoryManager.getGlobal()
+                .actionLoaderFactory()
+                .postActionPath(bw, bPath, mE, mPath);
     }
 
     /**
      * 构建 Action
      */
-    protected ActionDefault createAction(BeanWrap bw, Method method, Mapping mp, String path, boolean remoting) {
+    protected ActionDefault createAction(BeanWrap bw, MethodEggg mE, Mapping mp, String path, boolean remoting) {
         if (allowMapping) {
-            return new ActionDefault(bw, this, bVersion, method, mp, path, remoting, bRender);
+            return new ActionDefault(bw, this, bVersion, mE, mp, path, remoting, bRender);
         } else {
-            return new ActionDefault(bw, this, bVersion, method, null, path, remoting, bRender);
+            return new ActionDefault(bw, this, bVersion, mE, null, path, remoting, bRender);
         }
     }
 

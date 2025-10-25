@@ -18,10 +18,10 @@ package org.noear.solon.core.handle;
 import org.noear.solon.Solon;
 import org.noear.solon.core.exception.ConstructionException;
 import org.noear.solon.core.exception.StatusException;
+import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.ConvertUtil;
 import org.noear.solon.core.util.LazyReference;
 import org.noear.solon.core.util.MultiMap;
-import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.core.wrap.MethodWrap;
 import org.noear.solon.core.wrap.ParamWrap;
 
@@ -216,8 +216,8 @@ public abstract class AbstractEntityReader {
                 //2.如果是 UploadedFile[] 类型
                 return ctx.fileValues(pn);
             } else {
-                if (p.getGenericType() != null && List.class.isAssignableFrom(pt)) {
-                    Type pta0 = p.getGenericType().getActualTypeArguments()[0];
+                if (p.isParameterizedType() && List.class.isAssignableFrom(pt)) {
+                    Type pta0 = p.getParamEggg().getTypeEggg().getActualTypeArguments()[0];
                     if (UploadedFile.class.equals(pta0)) {
                         return Arrays.asList(ctx.fileValues(pn));
                     }
@@ -264,9 +264,8 @@ public abstract class AbstractEntityReader {
      * @param type 数据类型
      */
     protected Object changeEntityDo(Context ctx, ParamWrap p, String name, Class<?> type) throws Exception {
-        ClassWrap clzW = ClassWrap.get(type);
         MultiMap<String> map = ctx.paramMap();
 
-        return clzW.newBy(map::get, ctx);
+        return ClassUtil.makeObject(type, map::get, ctx);
     }
 }

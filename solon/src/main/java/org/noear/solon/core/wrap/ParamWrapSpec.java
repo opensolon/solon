@@ -15,9 +15,7 @@
  */
 package org.noear.solon.core.wrap;
 
-import org.noear.solon.lang.Nullable;
-
-import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 
 /**
  * 字段 变量描述符
@@ -29,7 +27,7 @@ public class ParamWrapSpec extends VarSpecBase {
     private final ParamWrap paramWrap;
 
     public ParamWrapSpec(ParamWrap paramWrap) {
-        super(paramWrap.getParameter(), paramWrap.getParameter().getName());
+        super(paramWrap.getParameter(), paramWrap.getName());
         this.paramWrap = paramWrap;
 
         initAction();
@@ -37,7 +35,7 @@ public class ParamWrapSpec extends VarSpecBase {
 
 
     @Override
-    public @Nullable ParameterizedType getGenericType() {
+    public Type getGenericType() {
         return paramWrap.getGenericType();
     }
 

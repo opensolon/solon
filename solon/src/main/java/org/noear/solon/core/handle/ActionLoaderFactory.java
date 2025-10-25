@@ -15,10 +15,10 @@
  */
 package org.noear.solon.core.handle;
 
+import org.noear.eggg.MethodEggg;
 import org.noear.solon.core.BeanWrap;
 
 import java.lang.reflect.AnnotatedElement;
-import java.lang.reflect.Method;
 import java.util.Set;
 import java.util.function.Predicate;
 
@@ -62,7 +62,7 @@ public interface ActionLoaderFactory {
      *
      * @since 2.7
      */
-    String postActionPath(BeanWrap bw, String bPath, Method method, String mPath);
+    String postActionPath(BeanWrap bw, String bPath, MethodEggg me, String mPath);
 
     /**
      * 获取动作默认执行器

@@ -15,13 +15,14 @@
  */
 package org.noear.solon.validation;
 
+import org.noear.eggg.ClassEggg;
+import org.noear.eggg.PropertyEggg;
 import org.noear.solon.Utils;
 import org.noear.solon.core.aspect.Invocation;
 import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
-import org.noear.solon.core.wrap.ClassWrap;
-import org.noear.solon.core.wrap.FieldWrap;
+import org.noear.solon.core.util.EgggUtil;
 import org.noear.solon.core.wrap.ParamWrap;
 import org.noear.solon.core.util.DataThrowable;
 import org.noear.solon.validation.annotation.*;
@@ -343,13 +344,17 @@ public class ValidatorManager {
             return Result.succeed();
         }
 
-        ClassWrap cw = ClassWrap.get(obj.getClass());
+        ClassEggg ce = EgggUtil.getClassEggg(obj.getClass());
         StringBuilder tmp = new StringBuilder();
 
         Result result = Result.succeed();
         List<BeanValidateInfo> list = new ArrayList<>();
-        for (FieldWrap fw : cw.getAllFieldWraps()) {
-            for (Annotation anno : fw.getAnnoS()) {
+        for (PropertyEggg pe : ce.getPropertyEgggs()) {
+            if(pe.getFieldEggg() == null){
+                continue;
+            }
+
+            for (Annotation anno : pe.getFieldEggg().getAnnotations()) {
                 Validator valid = ValidatorManager.get(anno.annotationType());
 
                 if (valid != null) {
@@ -358,16 +363,16 @@ public class ValidatorManager {
                         continue;
                     }
 
-                    if (valid.isSupportValueType(fw.getType()) == false) {
-                        throw new IllegalStateException("@" + anno.annotationType().getSimpleName() + " not support the '" + fw.getName() + "' field as " + fw.getType().getSimpleName() + " type: " + cw.clz());
+                    if (valid.isSupportValueType(pe.getFieldEggg().getType()) == false) {
+                        throw new IllegalStateException("@" + anno.annotationType().getSimpleName() + " not support the '" + pe.getName() + "' field as " + pe.getFieldEggg().getType().getSimpleName() + " type: " + ce.getType());
                     }
 
                     tmp.setLength(0);
-                    Result rst = valid.validateOfValue(anno, fw.getValue(obj, true), tmp);
+                    Result rst = valid.validateOfValue(anno, pe.getValue(obj, true), tmp);
 
                     if (rst.getCode() != Result.SUCCEED_CODE) {
                         if (Utils.isEmpty(rst.getDescription())) {
-                            rst.setDescription(cw.clz().getSimpleName() + "." + fw.getName());
+                            rst.setDescription(ce.getType().getSimpleName() + "." + pe.getName());
                         }
 
                         if (VALIDATE_ALL) {
@@ -378,12 +383,12 @@ public class ValidatorManager {
                                 List<BeanValidateInfo> list2 = (List<BeanValidateInfo>) rst.getData();
                                 list.addAll(list2);
                             } else {
-                                rst.setData(new BeanValidateInfo(fw.getName(), anno, valid.message(anno)));
+                                rst.setData(new BeanValidateInfo(pe.getName(), anno, valid.message(anno)));
                                 list.add((BeanValidateInfo) rst.getData());
                             }
                         } else {
                             if (rst.getData() instanceof BeanValidateInfo == false) {
-                                rst.setData(new BeanValidateInfo(fw.getName(), anno, valid.message(anno)));
+                                rst.setData(new BeanValidateInfo(pe.getName(), anno, valid.message(anno)));
                             }
                             return rst;
                         }

@@ -15,6 +15,7 @@
  */
 package org.noear.solon.extend.impl;
 
+import org.noear.eggg.MethodEggg;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.handle.ActionLoaderDefault;
@@ -23,7 +24,6 @@ import org.noear.solon.core.handle.MethodTypeResolver;
 import org.noear.solon.core.util.PathUtil;
 
 import java.lang.reflect.AnnotatedElement;
-import java.lang.reflect.Method;
 import java.util.Set;
 import java.util.function.Predicate;
 
@@ -70,7 +70,7 @@ public class ActionLoaderFactoryExt implements ActionLoaderFactory {
      * 确认动作路径
      */
     @Override
-    public String postActionPath(BeanWrap bw, String bPath, Method method, String mPath) {
+    public String postActionPath(BeanWrap bw, String bPath, MethodEggg me, String mPath) {
         return PathUtil.mergePath(bPath, mPath);
     }
 

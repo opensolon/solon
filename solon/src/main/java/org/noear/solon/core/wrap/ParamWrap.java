@@ -15,7 +15,8 @@
  */
 package org.noear.solon.core.wrap;
 
-import org.noear.solon.lang.Nullable;
+import org.noear.eggg.ParamEggg;
+import org.noear.eggg.TypeEggg;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
@@ -28,27 +29,22 @@ import java.lang.reflect.*;
  * @since 1.6
  * @since 2.4
  * @since 3.0
+ * @since 3.7
  */
 public class ParamWrap {
-    private final Parameter parameter;
-    private final TypeWrap typeWrap;
+    private final ParamEggg paramEggg;
+    private final TypeEggg typeEggg;
 
     //自己申明的注解（懒加载）
     private Annotation[] annoS;
 
-    /**
-     * @param executable 可执行的（构造函数，或方法）
-     */
-    public ParamWrap(Parameter parameter, Executable executable, Class<?> clz) {
-        this.parameter = parameter;
+    public ParamWrap(ParamEggg paramEggg) {
+        this.paramEggg = paramEggg;
+        this.typeEggg = paramEggg.getTypeEggg();
+    }
 
-        this.typeWrap = new TypeWrap(clz, parameter.getType(), parameter.getParameterizedType());
-        if (typeWrap.isInvalid()) {
-            throw new IllegalStateException("Method parameter generic analysis failed: "
-                    + executable.getDeclaringClass().getName()
-                    + "."
-                    + executable.getName());
-        }
+    public ParamEggg getParamEggg() {
+        return paramEggg;
     }
 
     //变量申明（懒加载）
@@ -67,44 +63,49 @@ public class ParamWrap {
     }
 
     public String getName() {
-        return parameter.getName();//spec().getName();
+        return paramEggg.getName();//spec().getName();
     }
 
     /**
      * 获取原始参数
      */
     public Parameter getParameter() {
-        return parameter;
+        return paramEggg.getParam();
     }
 
     /**
      * 获取参数注解
      */
     public <T extends Annotation> T getAnnotation(Class<T> annotationClass) {
-        return parameter.getAnnotation(annotationClass);
+        return paramEggg.getParam().getAnnotation(annotationClass);
     }
 
     /**
      * 获取所有注解
      */
     public Annotation[] getAnnoS() {
-        if (annoS == null) {
-            annoS = parameter.getAnnotations();
-        }
-        return annoS;
+        return paramEggg.getAnnotations();
     }
 
     /**
      * 获取类型
      */
     public Class<?> getType() {
-        return typeWrap.getType();
+        return typeEggg.getType();
     }
 
     /**
      * 获取泛型
      */
-    public @Nullable ParameterizedType getGenericType() {
-        return typeWrap.getGenericType();
+    public Type getGenericType() {
+        return typeEggg.getGenericType();
     }
+
+    /**
+     * 是否为泛型
+     * */
+    public boolean isParameterizedType(){
+        return getGenericType() instanceof ParameterizedType;
+    }
+
 }

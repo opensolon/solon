@@ -15,15 +15,15 @@
  */
 package org.noear.solon.core.wrap;
 
+import org.noear.eggg.ParamEggg;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.InjectGather;
 import org.noear.solon.core.VarHolder;
-import org.noear.solon.lang.Nullable;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Executable;
 import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.function.Supplier;
 
 /**
@@ -35,7 +35,7 @@ import java.util.function.Supplier;
  * @since 1.0
  * */
 public class VarHolderOfParamEggg implements VarHolder {
-    private final ParamWrap pw;
+    private final ParamEggg pw;
     private final AppContext ctx;
     private Class<?> dependencyType;
 
@@ -46,7 +46,7 @@ public class VarHolderOfParamEggg implements VarHolder {
 
     private InjectGather gather;
 
-    public VarHolderOfParamEggg(AppContext ctx, ParamWrap pw, InjectGather gather) {
+    public VarHolderOfParamEggg(AppContext ctx, ParamEggg pw, InjectGather gather) {
         this.ctx = ctx;
         this.pw = pw;
         this.gather = gather;
@@ -101,7 +101,7 @@ public class VarHolderOfParamEggg implements VarHolder {
      * 泛型（可能为 null）
      */
     @Override
-    public @Nullable ParameterizedType getGenericType() {
+    public Type getGenericType() {
         return pw.getGenericType();
     }
 
@@ -110,7 +110,7 @@ public class VarHolderOfParamEggg implements VarHolder {
      */
     @Override
     public Annotation[] getAnnoS() {
-        return pw.getParameter().getAnnotations();
+        return pw.getAnnotations();
     }
 
     /**
@@ -118,7 +118,7 @@ public class VarHolderOfParamEggg implements VarHolder {
      */
     @Override
     public String getFullName() {
-        Executable e = pw.getParameter().getDeclaringExecutable();
+        Executable e = pw.getParam().getDeclaringExecutable();
 
         Class<?> declClz = e.getDeclaringClass();
         Class<?> fileClz = declClz;
@@ -128,9 +128,9 @@ public class VarHolderOfParamEggg implements VarHolder {
 
         if (e instanceof Method) {
             Method m = (Method) e;
-            return "'" + pw.getParameter().getName() + "'" + "\r\n\tat " + declClz.getName() + "." + m.getName() + "(" + fileClz.getSimpleName() + ".java:0)";
+            return "'" + pw.getParam().getName() + "'" + "\r\n\tat " + declClz.getName() + "." + m.getName() + "(" + fileClz.getSimpleName() + ".java:0)";
         } else {
-            return "'" + pw.getParameter().getName() + "'" + "\r\n\tat " + declClz.getName() + "(" + fileClz.getSimpleName() + ".java:10)";
+            return "'" + pw.getParam().getName() + "'" + "\r\n\tat " + declClz.getName() + "(" + fileClz.getSimpleName() + ".java:10)";
         }
     }
 

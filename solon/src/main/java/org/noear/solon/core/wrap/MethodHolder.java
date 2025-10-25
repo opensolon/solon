@@ -50,8 +50,7 @@ public interface MethodHolder {
     /**
      * 获取函数泛型反回类型
      */
-    @Nullable
-    ParameterizedType getGenericReturnType();
+    Type getGenericReturnType();
 
     /**
      * 获取函数所有注解

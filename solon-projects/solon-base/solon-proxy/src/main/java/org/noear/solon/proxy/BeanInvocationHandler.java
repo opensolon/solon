@@ -15,10 +15,12 @@
  */
 package org.noear.solon.proxy;
 
+import org.noear.eggg.ClassEggg;
 import org.noear.solon.Solon;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.ClassUtil;
+import org.noear.solon.core.util.EgggUtil;
 import org.noear.solon.proxy.aot.AotProxy;
 import org.noear.solon.proxy.asm.AsmProxy;
 import org.slf4j.Logger;

@@ -36,7 +36,7 @@
 
         <module>../../solon-projects/solon-docs/solon-docs</module>
         <module>../../solon-projects/solon-docs/solon-docs-openapi2</module>
-        <module>../../solon-projects/solon-docs/solon-docs-openapi2-javadoc</module>
+<!--        <module>../../solon-projects/solon-docs/solon-docs-openapi2-javadoc</module>-->
         <!--        <module>../../solon-projects/solon-docs/solon-docs-openapi3</module>-->
         <module>../../solon-projects/solon-docs/solon-openapi2-knife4j</module>
         <module>../../solon-projects/solon-docs/solon-swagger2-knife4j</module>
