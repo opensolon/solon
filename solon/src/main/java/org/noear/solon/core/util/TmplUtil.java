@@ -150,12 +150,12 @@ public class TmplUtil {
                     if (obj instanceof Map) {
                         valTmp = ((Map) obj).get(fieldKey);
                     } else {
-                        FieldEggg fw = EgggUtil.getClassEggg(obj.getClass()).getFieldEgggByName(fieldKey);
-                        if (fw == null) {
+                        FieldEggg fe = EgggUtil.getClassEggg(obj.getClass()).getFieldEgggByName(fieldKey);
+                        if (fe == null) {
                             throw new IllegalArgumentException("Missing tmpl parameter (result field): " + name);
                         }
 
-                        valTmp = fw.getValue(obj);
+                        valTmp = fe.getValue(obj, true);
                     }
 
                     if (valTmp != null) {

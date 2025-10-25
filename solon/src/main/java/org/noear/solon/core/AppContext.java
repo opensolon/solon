@@ -691,7 +691,7 @@ public class AppContext extends BeanContainer {
 
             //添加要收集的字段
             for (FieldEggg fw : fgList) {
-                VarHolder vh = new VarHolderOfFieldEggg(this, fw, obj, gather);
+                VarHolder vh = new VarHolderOfField(this, fw, obj, gather);
                 gather.add(vh);
                 tryInject(vh, fw.getAnnotations());
             }
@@ -922,7 +922,7 @@ public class AppContext extends BeanContainer {
 
         //1.2.添加要收集的参数；并为参数注入（注入是异步的；全部完成后，VarGather 会回调）
         for (ParamEggg pw1 : paramAry) {
-            VarHolder vh = new VarHolderOfParamEggg(context, pw1, gather);
+            VarHolder vh = new VarHolderOfParam(context, pw1, gather);
             gather.add(vh);
 
             if (pw1.getAnnotations().length == 0) {

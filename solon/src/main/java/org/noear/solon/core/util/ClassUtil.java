@@ -443,18 +443,18 @@ public class ClassUtil {
             if (val0 != null) {
                 //将 string 转为目标 type，并为字段赋值
                 Object val = ConvertUtil.to(fe.<VarSpec>getDigest(), val0, ctx);
-                fe.setValue(bean, val);
+                fe.setValue(bean, val, true);
             } else {
                 if (ctx != null) {
                     if (fe.getType() == UploadedFile.class) {
                         UploadedFile file1 = ctx.file(key);
                         if (file1 != null) {
-                            fe.setValue(bean, file1);
+                            fe.setValue(bean, file1, true);
                         }
                     } else if (fe.getType() == UploadedFile[].class) {
                         UploadedFile[] files1 = ctx.fileValues(key);
                         if (files1 != null) {
-                            fe.setValue(bean, files1);
+                            fe.setValue(bean, files1, true);
                         }
                     }
                 }

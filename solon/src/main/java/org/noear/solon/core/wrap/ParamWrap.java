@@ -57,7 +57,7 @@ public class ParamWrap {
      */
     public VarSpec spec() {
         if (__spec == null) {
-            __spec = new ParamWrapSpec(this);
+            __spec = new ParamSpec(this.paramEggg);
         }
         return __spec;
     }

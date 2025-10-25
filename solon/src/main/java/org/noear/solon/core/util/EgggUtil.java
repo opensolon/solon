@@ -1,8 +1,8 @@
 package org.noear.solon.core.util;
 
 import org.noear.eggg.*;
-import org.noear.solon.core.wrap.FieldEgggSpec;
-import org.noear.solon.core.wrap.ParamEgggSpec;
+import org.noear.solon.core.wrap.FieldSpec;
+import org.noear.solon.core.wrap.ParamSpec;
 import org.noear.solon.core.wrap.VarSpec;
 
 import java.lang.reflect.*;
@@ -28,9 +28,9 @@ public class EgggUtil {
 
     private static VarSpec doDigestHandle(ClassEggg cw, Object h, AnnotatedElement e, VarSpec ref) {
         if (h instanceof FieldEggg) {
-            return new FieldEgggSpec((FieldEggg) h);
+            return new FieldSpec((FieldEggg) h);
         } else if (h instanceof ParamEggg) {
-            return new ParamEgggSpec((ParamEggg) h);
+            return new ParamSpec((ParamEggg) h);
         }
 
         return ref;

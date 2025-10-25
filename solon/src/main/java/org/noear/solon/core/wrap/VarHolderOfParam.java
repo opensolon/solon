@@ -15,40 +15,40 @@
  */
 package org.noear.solon.core.wrap;
 
-import org.noear.eggg.FieldEggg;
+import org.noear.eggg.ParamEggg;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.InjectGather;
 import org.noear.solon.core.VarHolder;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Executable;
+import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.function.Supplier;
 
 /**
- * 字段变量容器 临时对象
+ * 参数变量容器 临时对象
  *
- * 为了稳藏 FieldWrap 的一些特性，并统一对外接口
+ * 为了稳藏 Parameter 的一些特性，并统一对外接口
  *
  * @author noear
  * @since 1.0
  * */
-public class VarHolderOfFieldEggg implements VarHolder {
-    private final FieldEggg fw;
-    private final Object obj;
+public class VarHolderOfParam implements VarHolder {
+    private final ParamEggg pw;
     private final AppContext ctx;
     private Class<?> dependencyType;
 
     private Object val;
     private Supplier valDef;
-    private boolean required = false;
     private boolean done;
+    private boolean required = false;
+
     private InjectGather gather;
 
-    public VarHolderOfFieldEggg(AppContext ctx, FieldEggg fw, Object obj, InjectGather gather) {
+    public VarHolderOfParam(AppContext ctx, ParamEggg pw, InjectGather gather) {
         this.ctx = ctx;
-        this.fw = fw;
-        this.obj = obj;
-
+        this.pw = pw;
         this.gather = gather;
     }
 
@@ -65,18 +65,13 @@ public class VarHolderOfFieldEggg implements VarHolder {
      */
     @Override
     public boolean isField() {
-        return true;
+        return false;
     }
+
 
     /**
-     * 泛型（可能为null）
+     * 获取依赖类型
      */
-    @Override
-    public Type getGenericType() {
-        return fw.getTypeEggg().getGenericType();
-    }
-
-
     @Override
     public Class<?> getDependencyType() {
         if (dependencyType == null) {
@@ -86,25 +81,36 @@ public class VarHolderOfFieldEggg implements VarHolder {
         }
     }
 
+    /**
+     * 配置依赖类型
+     */
     @Override
     public void setDependencyType(Class<?> dependencyType) {
         this.dependencyType = dependencyType;
     }
 
     /**
-     * 获取字段类型
+     * 类型
      */
     @Override
     public Class<?> getType() {
-        return fw.getTypeEggg().getType();
+        return pw.getType();
     }
 
     /**
-     * 获取所有注解
+     * 泛型（可能为 null）
+     */
+    @Override
+    public Type getGenericType() {
+        return pw.getGenericType();
+    }
+
+    /**
+     * 注解
      */
     @Override
     public Annotation[] getAnnoS() {
-        return fw.getAnnotations();
+        return pw.getAnnotations();
     }
 
     /**
@@ -112,40 +118,27 @@ public class VarHolderOfFieldEggg implements VarHolder {
      */
     @Override
     public String getFullName() {
-        Class<?> declClz = fw.getField().getDeclaringClass();
+        Executable e = pw.getParam().getDeclaringExecutable();
+
+        Class<?> declClz = e.getDeclaringClass();
         Class<?> fileClz = declClz;
         if(declClz.isMemberClass()){
             fileClz = declClz.getEnclosingClass();
         }
 
-        StringBuilder buf = new StringBuilder();
-        buf.append("'").append(fw.getName()).append("'");
-
-
-        buf.append("\r\n\tat ").append(declClz.getName())
-                .append(".").append(fw.getName())
-                .append("(").append(fileClz.getSimpleName()).append(".java:0)");
-
-
-        if (declClz != fw.getOwnerEggg().getType()) {
-            buf.append("\r\n\tat ").append(fw.getOwnerEggg().getType().getName());
+        if (e instanceof Method) {
+            Method m = (Method) e;
+            return "'" + pw.getParam().getName() + "'" + "\r\n\tat " + declClz.getName() + "." + m.getName() + "(" + fileClz.getSimpleName() + ".java:0)";
+        } else {
+            return "'" + pw.getParam().getName() + "'" + "\r\n\tat " + declClz.getName() + "(" + fileClz.getSimpleName() + ".java:10)";
         }
-
-        return buf.toString();
     }
-
 
     /**
      * 设置值
      */
     @Override
     public void setValue(Object val) {
-        if (val != null) {
-            fw.setValue(obj, val);
-
-            ctx.aot().registerJdkProxyType(getType(), val);
-        }
-
         this.val = val;
         this.done = true;
 
@@ -162,7 +155,6 @@ public class VarHolderOfFieldEggg implements VarHolder {
     /**
      * 获取值
      */
-    @Override
     public Object getValue() {
         if (val == null) {
             if (valDef != null) {
@@ -184,7 +176,6 @@ public class VarHolderOfFieldEggg implements VarHolder {
             }
         }
     }
-
 
     /**
      * 是否为完成的（设置值后即为完成态）
@@ -211,10 +202,10 @@ public class VarHolderOfFieldEggg implements VarHolder {
 
     @Override
     public String toString() {
-        if (fw.getGenericType() == null) {
-            return fw.getName() + ":" + fw.getType().getTypeName();
+        if (pw.getGenericType() == null) {
+            return pw.getName() + ":" + pw.getType().getTypeName();
         } else {
-            return fw.getName() + ":" + fw.getGenericType().getTypeName();
+            return pw.getName() + ":" + pw.getGenericType().getTypeName();
         }
     }
 }

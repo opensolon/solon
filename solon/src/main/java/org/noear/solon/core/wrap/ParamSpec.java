@@ -15,7 +15,7 @@
  */
 package org.noear.solon.core.wrap;
 
-import org.noear.eggg.FieldEggg;
+import org.noear.eggg.ParamEggg;
 
 import java.lang.reflect.Type;
 
@@ -25,22 +25,24 @@ import java.lang.reflect.Type;
  * @author noear
  * @since 3.7
  */
-public class FieldEgggSpec extends VarSpecBase {
-    private final FieldEggg fieldEggg;
+public class ParamSpec extends VarSpecBase {
+    private final ParamEggg pe;
 
-    public FieldEgggSpec(FieldEggg fieldEggg) {
-        super(fieldEggg.getField(), fieldEggg.getName());
-        this.fieldEggg = fieldEggg;
+    public ParamSpec(ParamEggg pe) {
+        super(pe.getParam(), pe.getName());
+        this.pe = pe;
+
+        initAction();
     }
 
 
     @Override
     public Type getGenericType() {
-        return fieldEggg.getTypeEggg().getGenericType();
+        return pe.getTypeEggg().getGenericType();
     }
 
     @Override
     public Class<?> getType() {
-        return fieldEggg.getType();
+        return pe.getType();
     }
 }

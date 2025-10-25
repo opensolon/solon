@@ -16,7 +16,7 @@
 package org.noear.solon.validation;
 
 import org.noear.eggg.ClassEggg;
-import org.noear.eggg.PropertyEggg;
+import org.noear.eggg.FieldEggg;
 import org.noear.solon.Utils;
 import org.noear.solon.core.aspect.Invocation;
 import org.noear.solon.core.handle.Action;
@@ -349,12 +349,8 @@ public class ValidatorManager {
 
         Result result = Result.succeed();
         List<BeanValidateInfo> list = new ArrayList<>();
-        for (PropertyEggg pe : ce.getPropertyEgggs()) {
-            if(pe.getFieldEggg() == null){
-                continue;
-            }
-
-            for (Annotation anno : pe.getFieldEggg().getAnnotations()) {
+        for (FieldEggg fe : ce.getFieldEgggs()) {
+            for (Annotation anno : fe.getAnnotations()) {
                 Validator valid = ValidatorManager.get(anno.annotationType());
 
                 if (valid != null) {
@@ -363,16 +359,16 @@ public class ValidatorManager {
                         continue;
                     }
 
-                    if (valid.isSupportValueType(pe.getFieldEggg().getType()) == false) {
-                        throw new IllegalStateException("@" + anno.annotationType().getSimpleName() + " not support the '" + pe.getName() + "' field as " + pe.getFieldEggg().getType().getSimpleName() + " type: " + ce.getType());
+                    if (valid.isSupportValueType(fe.getType()) == false) {
+                        throw new IllegalStateException("@" + anno.annotationType().getSimpleName() + " not support the '" + fe.getName() + "' field as " + fe.getType().getSimpleName() + " type: " + ce.getType());
                     }
 
                     tmp.setLength(0);
-                    Result rst = valid.validateOfValue(anno, pe.getValue(obj, true), tmp);
+                    Result rst = valid.validateOfValue(anno, fe.getValue(obj, false), tmp);
 
                     if (rst.getCode() != Result.SUCCEED_CODE) {
                         if (Utils.isEmpty(rst.getDescription())) {
-                            rst.setDescription(ce.getType().getSimpleName() + "." + pe.getName());
+                            rst.setDescription(ce.getType().getSimpleName() + "." + fe.getName());
                         }
 
                         if (VALIDATE_ALL) {
@@ -383,12 +379,12 @@ public class ValidatorManager {
                                 List<BeanValidateInfo> list2 = (List<BeanValidateInfo>) rst.getData();
                                 list.addAll(list2);
                             } else {
-                                rst.setData(new BeanValidateInfo(pe.getName(), anno, valid.message(anno)));
+                                rst.setData(new BeanValidateInfo(fe.getName(), anno, valid.message(anno)));
                                 list.add((BeanValidateInfo) rst.getData());
                             }
                         } else {
                             if (rst.getData() instanceof BeanValidateInfo == false) {
-                                rst.setData(new BeanValidateInfo(pe.getName(), anno, valid.message(anno)));
+                                rst.setData(new BeanValidateInfo(fe.getName(), anno, valid.message(anno)));
                             }
                             return rst;
                         }

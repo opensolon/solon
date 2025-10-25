@@ -15,32 +15,32 @@
  */
 package org.noear.solon.core.wrap;
 
+import org.noear.eggg.FieldEggg;
+
 import java.lang.reflect.Type;
 
 /**
  * 字段 变量描述符
  *
  * @author noear
- * @since 2.4
+ * @since 3.7
  */
-public class ParamWrapSpec extends VarSpecBase {
-    private final ParamWrap paramWrap;
+public class FieldSpec extends VarSpecBase {
+    private final FieldEggg fe;
 
-    public ParamWrapSpec(ParamWrap paramWrap) {
-        super(paramWrap.getParameter(), paramWrap.getName());
-        this.paramWrap = paramWrap;
-
-        initAction();
+    public FieldSpec(FieldEggg fe) {
+        super(fe.getField(), fe.getName());
+        this.fe = fe;
     }
 
 
     @Override
     public Type getGenericType() {
-        return paramWrap.getGenericType();
+        return fe.getTypeEggg().getGenericType();
     }
 
     @Override
     public Class<?> getType() {
-        return paramWrap.getType();
+        return fe.getType();
     }
 }
