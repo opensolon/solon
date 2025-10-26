@@ -584,7 +584,7 @@ public class OpenApi2Builder {
     private void parseActionParametersByFields(ParamHolder paramHolder, List<Parameter> paramList) {
         //做为 字段
         ClassEggg ce = paramHolder.getParam().getParamEggg().getTypeEggg().getClassEggg();
-        for (FieldEggg fe : ce.getFieldEgggs()) {
+        for (FieldEggg fe : ce.getAllFieldEgggs()) {
             if (fe.isTransient()) {
                 continue;
             }
@@ -767,7 +767,7 @@ public class OpenApi2Builder {
         // 3.完成模型解析
         ClassEggg ce = EgggUtil.getClassEggg(clazz);
         if (clazz.isInterface()) {
-            for (MethodEggg me : ce.getMethodEgggs()) {
+            for (MethodEggg me : ce.getOwnMethodEgggs()) {
                 if (me.getParamCount() == 0 && me.getName().startsWith("get")) {
                     if (me.isStatic()) {
                         //静态的跳过
@@ -785,7 +785,7 @@ public class OpenApi2Builder {
                 }
             }
         } else {
-            for (FieldEggg fe : ce.getFieldEgggs()) {
+            for (FieldEggg fe : ce.getAllFieldEgggs()) {
                 if (Modifier.isStatic(fe.getField().getModifiers())) {
                     //静态的跳过
                     continue;

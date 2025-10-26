@@ -51,7 +51,7 @@ public class ProxyBinderExt extends ProxyBinder {
         if (NativeDetector.isAotRuntime()) {
             //如果是 aot 则注册函数
             ClassEggg rawEggg = bw.rawEggg();
-            for (MethodEggg me : rawEggg.getMethodEgggs()) {
+            for (MethodEggg me : rawEggg.getOwnMethodEgggs()) {
                 bw.context().methodWrap(rawEggg, me);
             }
         }

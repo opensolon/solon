@@ -94,7 +94,7 @@ class BeanWrapLifecycle implements LifecycleBean {
             //如果不是 jdk 的类（否则没必要）
             if (bw.rawClz().getName().startsWith("java.") == false) {
                 //找查注解函数
-                for (MethodEggg m : clzEggg.getMethodEgggs()) {
+                for (MethodEggg m : clzEggg.getOwnMethodEgggs()) {
                     Init initAnno = m.getMethod().getAnnotation(Init.class);
                     if (initAnno != null) {
                         if (m.getParamCount() == 0) {

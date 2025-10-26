@@ -588,7 +588,7 @@ public class AppContext extends BeanContainer {
         if (beanExtractors.size() > 0 || beanInterceptors.size() > 0) {
             ClassEggg classEggg = bw.rawEggg();
 
-            for (MethodEggg me : classEggg.getMethodEgggs()) { //只支持公有或自有函数检查
+            for (MethodEggg me : classEggg.getOwnMethodEgggs()) { //只支持公有或自有函数检查
                 for (Annotation a : me.getAnnotations()) {
                     if (tryExtract) {
                         if (beanExtractors.containsKey(a.annotationType())) {
@@ -655,7 +655,7 @@ public class AppContext extends BeanContainer {
         List<FieldEggg> fgList = new ArrayList<>();
 
         //支持父类注入(找到有注解的字段)
-        for (FieldEggg fg : clzEggg.getFieldEgggs()) { //非静态 和 静态
+        for (FieldEggg fg : clzEggg.getAllFieldEgggs()) { //非静态 和 静态
             if (fg.getAnnotations().length > 0) {
                 fgList.add(fg);
             }

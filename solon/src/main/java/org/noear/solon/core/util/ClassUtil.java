@@ -433,10 +433,11 @@ public class ClassUtil {
     private static void doFillObject(TypeEggg typeEggg, Object bean, Function<String, String> data, Context ctx) throws Exception {
         ClassEggg classEggg = typeEggg.getClassEggg();
 
-        if (classEggg.getFieldEgggs().isEmpty() && NativeDetector.inNativeImage()) {
+        if (classEggg.getAllFieldEgggs().isEmpty() && NativeDetector.inNativeImage()) {
             log.warn(String.format("Class: %s don't have any field, can't fill data. you should use: nativeMetadata.registerField(field) at aot runtime.", typeEggg.getType().getName()));
         }
-        for (FieldEggg fe : classEggg.getFieldEgggs()) {
+
+        for (FieldEggg fe : classEggg.getAllFieldEgggs()) {
             String key = fe.getAlias();
             String val0 = data.apply(key);
 

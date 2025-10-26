@@ -177,7 +177,7 @@ public class AppContextNativeProcessorDefault implements AppContextNativeProcess
         ClassEggg clzEggg = EgggUtil.getClassEggg(clazz);
 
         // 处理字段
-        for (FieldEggg f1 : clzEggg.getFieldEgggs()) {
+        for (FieldEggg f1 : clzEggg.getAllFieldEgggs()) {
             processFieldDo(nativeMetadata, f1.getField());
         }
     }

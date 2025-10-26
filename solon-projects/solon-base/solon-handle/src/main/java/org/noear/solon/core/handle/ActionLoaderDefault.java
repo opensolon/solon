@@ -162,7 +162,7 @@ public class ActionLoaderDefault extends HandlerAide implements ActionLoader {
         ClassEggg classEggg = bw.rawEggg();
 
         //只支持 public 函数为 Action
-        for (MethodEggg m1 : classEggg.getMethodEgggs()) {
+        for (MethodEggg m1 : classEggg.getOwnMethodEgggs()) {
             loadActionItem(slots, all, m1, b_limitMethodSet, b_addinMethodSet);
 
             //是否需要自动代理 //只支持 public

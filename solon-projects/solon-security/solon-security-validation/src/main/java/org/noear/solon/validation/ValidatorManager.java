@@ -349,7 +349,7 @@ public class ValidatorManager {
 
         Result result = Result.succeed();
         List<BeanValidateInfo> list = new ArrayList<>();
-        for (FieldEggg fe : ce.getFieldEgggs()) {
+        for (FieldEggg fe : ce.getAllFieldEgggs()) {
             for (Annotation anno : fe.getAnnotations()) {
                 Validator valid = ValidatorManager.get(anno.annotationType());
 
