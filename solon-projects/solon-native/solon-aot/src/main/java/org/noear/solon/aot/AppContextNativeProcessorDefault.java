@@ -104,6 +104,8 @@ public class AppContextNativeProcessorDefault implements AppContextNativeProcess
 
         //for methodWrap
         context.methodForeach(methodWrap -> NativeMetadataUtils.registerMethodAndParamAndReturnType(metadata, methodWrap.getMethodEggg()));
+        context.aot().getMethodEgggs().forEach(me -> NativeMetadataUtils.registerMethodAndParamAndReturnType(metadata, me));
+
 
         //for @Inject(${..}) clz (entity)
         for (Class<?> clz : context.aot().getEntityTypes()) {

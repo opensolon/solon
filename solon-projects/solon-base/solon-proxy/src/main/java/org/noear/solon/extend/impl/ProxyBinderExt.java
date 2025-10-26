@@ -52,7 +52,7 @@ public class ProxyBinderExt extends ProxyBinder {
             //如果是 aot 则注册函数
             ClassEggg rawEggg = bw.rawEggg();
             for (MethodEggg me : rawEggg.getOwnMethodEgggs()) {
-                bw.context().methodWrap(rawEggg, me);
+                bw.context().aot().registerMethodEggg(me);
             }
         }
 

@@ -583,7 +583,7 @@ public class AppContext extends BeanContainer {
         }
 
         boolean enableProxy = false;
-        List<Map.Entry<MethodEggg, Annotation>> extraList = new ArrayList<>();
+        List<Map.Entry<MethodEggg, Map.Entry<Annotation, BeanExtractor>>> extraList = new ArrayList<>();
 
         if (beanExtractors.size() > 0 || beanInterceptors.size() > 0) {
             ClassEggg classEggg = bw.rawEggg();
@@ -591,9 +591,10 @@ public class AppContext extends BeanContainer {
             for (MethodEggg me : classEggg.getOwnMethodEgggs()) { //只支持公有或自有函数检查
                 for (Annotation a : me.getAnnotations()) {
                     if (tryExtract) {
-                        if (beanExtractors.containsKey(a.annotationType())) {
+                        BeanExtractor extr = beanExtractors.get(a.annotationType());
+                        if (extr != null) {
                             //有提取处理
-                            extraList.add(new AbstractMap.SimpleEntry<>(me, a));
+                            extraList.add(new AbstractMap.SimpleEntry<>(me, new AbstractMap.SimpleEntry<>(a, extr)));
                         }
                     }
 
@@ -617,24 +618,23 @@ public class AppContext extends BeanContainer {
         }
 
         //再尝试提取
-        for (Map.Entry<MethodEggg, Annotation> ma : extraList) {
+        for (Map.Entry<MethodEggg, Map.Entry<Annotation, BeanExtractor>> ma : extraList) {
             MethodEggg me = ma.getKey();
-            Annotation a = ma.getValue();
-            BeanExtractor be = beanExtractors.get(a.annotationType());
+            Annotation a = ma.getValue().getKey();
+            BeanExtractor be = ma.getValue().getValue();
 
-            //是否需要提取
-            if (be != null) {
-                try {
-                    //起到 aot 注册效果
-                    methodWrap(bw.rawEggg(), me);
-                    be.doExtract(bw, me.getMethod(), a);
-                } catch (Throwable e) {
-                    e = Utils.throwableUnwrap(e);
-                    if (e instanceof RuntimeException) {
-                        throw (RuntimeException) e;
-                    } else {
-                        throw new RuntimeException(e);
-                    }
+            try {
+                //起到 aot 注册效果
+                if (NativeDetector.isAotRuntime()) {
+                    aot().registerMethodEggg(me);
+                }
+                be.doExtract(bw, me.getMethod(), a);
+            } catch (Throwable e) {
+                e = Utils.throwableUnwrap(e);
+                if (e instanceof RuntimeException) {
+                    throw (RuntimeException) e;
+                } else {
+                    throw new RuntimeException(e);
                 }
             }
         }
@@ -829,17 +829,17 @@ public class AppContext extends BeanContainer {
     /**
      * 尝试托管方法调用
      */
-    public void tryBuildBeanOfMethod(Method m, BeanWrap bw, BiConsumerEx<MethodWrap, Object> completionConsumer) throws Throwable {
+    public void tryBuildBeanOfMethod(Method m, BeanWrap bw, BiConsumerEx<MethodEggg, Object> completionConsumer) throws Throwable {
         tryBuildBeanOfMethod(m, bw, 0, completionConsumer);
     }
 
     /**
      * 尝试托管方法调用
      */
-    private void tryBuildBeanOfMethod(Method m, BeanWrap bw, int priority, BiConsumerEx<MethodWrap, Object> completionConsumer) throws Throwable {
+    private void tryBuildBeanOfMethod(Method m, BeanWrap bw, int priority, BiConsumerEx<MethodEggg, Object> completionConsumer) throws Throwable {
         if (NativeDetector.isAotRuntime()) {
             //如果是 aot 则注册函数
-            methodWrap(bw.rawEggg(), m);
+            aot().registerMethodEggg(bw.rawEggg().findMethodEgggOrNew(m));
         }
 
         Condition mc = m.getAnnotation(Condition.class);
@@ -852,7 +852,7 @@ public class AppContext extends BeanContainer {
         }
     }
 
-    private void tryBuildBeanOfMethod0(BeanWrap bw, Method m, Condition mc, BiConsumerEx<MethodWrap, Object> completionConsumer) throws Throwable {
+    private void tryBuildBeanOfMethod0(BeanWrap bw, Method m, Condition mc, BiConsumerEx<MethodEggg, Object> completionConsumer) throws Throwable {
         //增加条件检测
         if (ConditionUtil.test(this, mc) == false) {
             return;
@@ -861,29 +861,32 @@ public class AppContext extends BeanContainer {
         //支持非公有函数
         ClassUtil.accessibleAsTrue(m);
 
-        MethodWrap mWrap = methodWrap(bw.rawEggg(), m);
+        MethodEggg me = bw.rawEggg().findMethodEgggOrNew(m);
+        if (NativeDetector.isAotRuntime()) {
+            aot().registerMethodEggg(me);
+        }
 
         //开始执行
         if (ConditionUtil.ifBean(mc)) {
             //如果有 onBean 条件
-            ConditionUtil.onBeanRun(mc, this, () -> tryBuildBeanOfMethod1(mWrap, bw, completionConsumer));
+            ConditionUtil.onBeanRun(mc, this, () -> tryBuildBeanOfMethod1(me, bw, completionConsumer));
         } else {
             //没有 onBean 条件
-            tryBuildBeanOfMethod1(mWrap, bw, completionConsumer);
+            tryBuildBeanOfMethod1(me, bw, completionConsumer);
         }
     }
 
-    private void tryBuildBeanOfMethod1(MethodWrap mWrap, BeanWrap bw, BiConsumerEx<MethodWrap, Object> completionConsumer) throws Throwable {
-        if (mWrap.getMethodEggg().getParamCount() == 0) {
+    private void tryBuildBeanOfMethod1(MethodEggg me, BeanWrap bw, BiConsumerEx<MethodEggg, Object> completionConsumer) throws Throwable {
+        if (me.getParamCount() == 0) {
             //0.没有参数
-            tryBuildBeanOfMethod2(mWrap, bw, new Object[]{}, completionConsumer);
+            tryBuildBeanOfMethod2(me, bw, new Object[]{}, completionConsumer);
         } else {
-            if (mWrap.getMethodEggg().getReturnTypeEggg() == null) {
-                log.error("{}", mWrap.getMethodEggg().getMethod());
+            if (me.getMethod().getReturnType() == void.class) {
+                log.error("{}", me.getMethod());
             }
 
-            tryBuildArgsOfMethod(bw.context(), 1, mWrap.getMethodEggg().getReturnTypeEggg().getType(), mWrap.getMethodEggg().getParamEgggAry(), (args2) -> {
-                RunUtil.runOrThrow(() -> tryBuildBeanOfMethod2(mWrap, bw, args2, completionConsumer));
+            tryBuildArgsOfMethod(bw.context(), 1, me.getReturnTypeEggg().getType(), me.getParamEgggAry(), (args2) -> {
+                RunUtil.runOrThrow(() -> tryBuildBeanOfMethod2(me, bw, args2, completionConsumer));
             });
         }
     }
@@ -915,18 +918,18 @@ public class AppContext extends BeanContainer {
         }
     }
 
-    private void tryBuildBeanOfMethod2(MethodWrap mWrap, BeanWrap bw, Object[] args, BiConsumerEx<MethodWrap, Object> completionConsumer) {
+    private void tryBuildBeanOfMethod2(MethodEggg me, BeanWrap bw, Object[] args, BiConsumerEx<MethodEggg, Object> completionConsumer) {
         try {
-            Object raw = mWrap.invoke(bw.raw(), args);
+            Object raw = me.invoke(bw.raw(), args);
 
             if (raw != null) {
                 //尝试填充属性 //v3.1
-                tryFill(raw, mWrap.getAnnotations());
+                tryFill(raw, me.getAnnotations());
 
-                completionConsumer.accept(mWrap, raw);
+                completionConsumer.accept(me, raw);
             }
         } catch (Throwable ex) {
-            Class<?> declClz = mWrap.getDeclaringClz();
+            Class<?> declClz = me.getMethod().getDeclaringClass();
             Class<?> fileClz = declClz;
             if (declClz.isMemberClass()) {
                 fileClz = declClz.getEnclosingClass();
@@ -935,7 +938,7 @@ public class AppContext extends BeanContainer {
             StringBuilder buf = new StringBuilder();
             buf.append("Build bean of method failed: \r\n\tat ");
             buf.append(declClz.getName()).append(".");
-            buf.append(mWrap.getName()).append("(").append(fileClz.getSimpleName()).append(".java:0)");
+            buf.append(me.getName()).append("(").append(fileClz.getSimpleName()).append(".java:0)");
 
             throw new IllegalStateException(buf.toString(), ex);
         }
@@ -945,9 +948,9 @@ public class AppContext extends BeanContainer {
      * 尝试托管方法 bean 注册
      *
      */
-    protected void tryBuildBeanOfMethod3(MethodWrap mWrap, BeanWrap bw, Object raw, Bean anno) {
-        Class<?> beanClz = mWrap.getReturnType();
-        Type beanGtp = mWrap.getGenericReturnType();
+    protected void tryBuildBeanOfMethod3(MethodEggg me, BeanWrap bw, Object raw, Bean anno) {
+        Class<?> beanClz = me.getReturnTypeEggg().getType();
+        Type beanGtp = me.getReturnTypeEggg().getGenericType();
 
         //产生的bean，不再支持二次注入
 
@@ -978,7 +981,7 @@ public class AppContext extends BeanContainer {
         m_bw.done();
 
         //尝试提取函数并确定自动代理
-        if(anno.autoProxy()) {
+        if (anno.autoProxy()) {
             beanExtractOrProxy(m_bw);
         }
 

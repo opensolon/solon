@@ -84,7 +84,7 @@ public class ActionDefault extends HandlerAide implements Action {
         ClassUtil.accessibleAsTrue(mE.getMethod());
 
         if (NativeDetector.isAotRuntime()) {
-            bWrap.context().methodWrap(bWrap.rawEggg(), mE);
+            bWrap.context().aot().registerMethodEggg(mE);
         }
 
         //@since 3.0

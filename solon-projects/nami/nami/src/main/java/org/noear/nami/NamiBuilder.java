@@ -179,7 +179,7 @@ public class NamiBuilder {
             if (Solon.app() != null) {
                 ClassEggg classEggg = EgggUtil.getClassEggg(clz);
                 for (MethodEggg me : classEggg.getPublicMethodEgggs()) {
-                    Solon.context().methodWrap(classEggg, me);
+                    Solon.context().aot().registerMethodEggg(me);
                 }
             }
         }

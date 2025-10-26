@@ -15,6 +15,8 @@
  */
 package org.noear.solon.core.runtime;
 
+import org.noear.eggg.MethodEggg;
+
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
@@ -30,6 +32,7 @@ import java.util.Set;
 public class AotCollector {
     private final Set<Class<?>> entityTypes = new LinkedHashSet<>();
     private final Set<Class<?>> jdkProxyTypes = new LinkedHashSet<>();
+    private final Set<MethodEggg> methodEgggs = new LinkedHashSet<>();
 
     /**
      * 获取实体类型
@@ -43,6 +46,10 @@ public class AotCollector {
      */
     public Set<Class<?>> getJdkProxyTypes() {
         return jdkProxyTypes;
+    }
+
+    public Set<MethodEggg> getMethodEgggs() {
+        return methodEgggs;
     }
 
     /**
@@ -78,6 +85,10 @@ public class AotCollector {
                 }
             }
         }
+    }
+
+    public void registerMethodEggg(MethodEggg methodEggg) {
+        methodEgggs.add(methodEggg);
     }
 
     /**
