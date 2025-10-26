@@ -57,7 +57,7 @@ public interface VarHolder {
     void setDependencyType(Class<?> dependencyType);
 
     /**
-     * 获取类型
+     * 获取类型（替代 getType + getGenericType）
      *
      * @since 3.7
      */

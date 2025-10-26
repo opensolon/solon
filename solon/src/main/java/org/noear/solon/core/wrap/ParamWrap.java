@@ -17,6 +17,7 @@ package org.noear.solon.core.wrap;
 
 import org.noear.eggg.ParamEggg;
 import org.noear.eggg.TypeEggg;
+import org.noear.solon.lang.Nullable;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
@@ -32,19 +33,21 @@ import java.lang.reflect.*;
  * @since 3.7
  */
 public class ParamWrap {
-    private final ParamEggg paramEggg;
-    private final TypeEggg typeEggg;
+    private final ParamEggg pe;
+    private final ParameterizedType pType;
 
-    //自己申明的注解（懒加载）
-    private Annotation[] annoS;
+    public ParamWrap(ParamEggg pe) {
+        this.pe = pe;
 
-    public ParamWrap(ParamEggg paramEggg) {
-        this.paramEggg = paramEggg;
-        this.typeEggg = paramEggg.getTypeEggg();
+        if (pe.getTypeEggg().isParameterizedType()) {
+            pType = pe.getTypeEggg().getParameterizedType();
+        } else {
+            pType = null;
+        }
     }
 
     public ParamEggg getParamEggg() {
-        return paramEggg;
+        return pe;
     }
 
     //变量申明（懒加载）
@@ -57,48 +60,58 @@ public class ParamWrap {
      */
     public VarSpec spec() {
         if (__spec == null) {
-            __spec = new ParamSpec(this.paramEggg);
+            __spec = new ParamSpec(this.pe);
         }
         return __spec;
     }
 
     public String getName() {
-        return paramEggg.getName();//spec().getName();
+        return pe.getName();//spec().getName();
     }
 
     /**
      * 获取原始参数
      */
     public Parameter getParameter() {
-        return paramEggg.getParam();
+        return pe.getParam();
     }
 
     /**
      * 获取参数注解
      */
     public <T extends Annotation> T getAnnotation(Class<T> annotationClass) {
-        return paramEggg.getParam().getAnnotation(annotationClass);
+        return pe.getParam().getAnnotation(annotationClass);
     }
 
     /**
      * 获取所有注解
      */
     public Annotation[] getAnnoS() {
-        return paramEggg.getAnnotations();
+        return pe.getAnnotations();
+    }
+
+    /**
+     * 获取类型（替代 getType + getGenericType）
+     *
+     * @since 3.7
+     */
+    public TypeEggg getTypeEggg() {
+        return pe.getTypeEggg();
     }
 
     /**
      * 获取类型
      */
     public Class<?> getType() {
-        return typeEggg.getType();
+        return pe.getTypeEggg().getType();
     }
 
     /**
      * 获取泛型
      */
-    public Type getGenericType() {
-        return typeEggg.getGenericType();
+    @Nullable
+    public ParameterizedType getGenericType() {
+        return pType;
     }
 
     /**

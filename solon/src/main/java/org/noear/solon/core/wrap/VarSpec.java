@@ -69,7 +69,7 @@ public interface VarSpec {
     String getDefaultValue();
 
     /**
-     * 获取类型
+     * 获取类型（替代 getType + getGenericType）
      *
      * @since 3.7
      */
@@ -90,7 +90,7 @@ public interface VarSpec {
      * 是否为泛型
      * */
     default boolean isGenericType(){
-        return getGenericType() instanceof ParameterizedType;
+        return getTypeEggg().isParameterizedType();
     }
 
     /**
