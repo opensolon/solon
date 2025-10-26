@@ -31,7 +31,6 @@ import org.noear.solon.core.wrap.MethodWrap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -85,7 +84,7 @@ public class ActionDefault extends HandlerAide implements Action {
         ClassUtil.accessibleAsTrue(mE.getMethod());
 
         if (NativeDetector.isAotRuntime()) {
-            bWrap.context().methodGet(bWrap.rawClz(), mE);
+            bWrap.context().methodWrap(bWrap.rawEggg(), mE);
         }
 
         //@since 3.0

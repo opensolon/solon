@@ -38,6 +38,7 @@ import org.slf4j.LoggerFactory;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -99,7 +100,7 @@ public class AppContext extends BeanContainer {
 
     private final Set<RankEntity<Lifecycle>> lifecycleBeans = new HashSet<>();
 
-    private final Map<MethodKey, MethodWrap> methodCached = new HashMap<>();
+    private final Map<MethodKey, MethodWrap> methodCached = new ConcurrentHashMap<>();
     private final Set<Class<?>> beanBuildedCached = new HashSet<>();
 
     private final Set<InjectGather> gatherSet = new HashSet<>();
@@ -108,7 +109,9 @@ public class AppContext extends BeanContainer {
      * 获取方法包装（方便 aot 收集）
      *
      * @param method 方法
+     * @deprecated 3.7 {@link #methodWrap(ClassEggg, Method)}
      */
+    @Deprecated
     public MethodWrap methodGet(Method method) {
         return methodGet(method.getDeclaringClass(), method);
     }
@@ -118,47 +121,25 @@ public class AppContext extends BeanContainer {
      * 获取方法包装（方便 aot 收集）
      *
      * @param method 方法
+     * @deprecated 3.7 {@link #methodWrap(ClassEggg, Method)}
      */
+    @Deprecated
     public MethodWrap methodGet(Class<?> clz, Method method) {
         MethodKey methodKey = new MethodKey(method, clz);
 
-        MethodWrap mw = methodCached.get(methodKey);
-        if (mw == null) {
-            SYNC_LOCK.lock();
-
-            try {
-                mw = methodCached.get(methodKey);
-                if (mw == null) {
-                    mw = new MethodWrap(this, clz, EgggUtil.getClassEggg(clz).findMethodEgggOrNew(method));
-                    methodCached.put(methodKey, mw);
-                }
-            } finally {
-                SYNC_LOCK.unlock();
-            }
-        }
-
-        return mw;
+        return methodCached.computeIfAbsent(methodKey, k -> new MethodWrap(this, clz, EgggUtil.getClassEggg(clz).findMethodEgggOrNew(method)));
     }
 
-    public MethodWrap methodGet(Class<?> clz, MethodEggg methodEggg) {
-        MethodKey methodKey = new MethodKey(methodEggg.getMethod(), clz);
+    public MethodWrap methodWrap(ClassEggg ce, Method m) {
+        MethodKey methodKey = new MethodKey(m, ce.getType());
 
-        MethodWrap mw = methodCached.get(methodKey);
-        if (mw == null) {
-            SYNC_LOCK.lock();
+        return methodCached.computeIfAbsent(methodKey, k -> new MethodWrap(this, ce.getType(), ce.findMethodEgggOrNew(m)));
+    }
 
-            try {
-                mw = methodCached.get(methodKey);
-                if (mw == null) {
-                    mw = new MethodWrap(this, clz, methodEggg);
-                    methodCached.put(methodKey, mw);
-                }
-            } finally {
-                SYNC_LOCK.unlock();
-            }
-        }
+    public MethodWrap methodWrap(ClassEggg ce, MethodEggg me) {
+        MethodKey methodKey = new MethodKey(me.getMethod(), ce.getType());
 
-        return mw;
+        return methodCached.computeIfAbsent(methodKey, k -> new MethodWrap(this, ce.getType(), me));
     }
 
     /**
@@ -383,6 +364,7 @@ public class AppContext extends BeanContainer {
         try {
             if (Utils.isEmpty(name) && vh.isParameterizedType()) {
                 TypeEggg typeEggg = EgggUtil.getTypeEggg(vh.getGenericType());
+
                 if (List.class == vh.getType()) {
                     //支持 List<Bean> 注入 //@since 3.0
                     Type tmp = typeEggg.getActualTypeArguments()[0];
@@ -601,17 +583,17 @@ public class AppContext extends BeanContainer {
         }
 
         boolean enableProxy = false;
-        List<Map.Entry<Method, Annotation>> extraList = new ArrayList<>();
+        List<Map.Entry<MethodEggg, Annotation>> extraList = new ArrayList<>();
 
         if (beanExtractors.size() > 0 || beanInterceptors.size() > 0) {
-            ClassEggg classEggg = EgggUtil.getClassEggg(bw.clz());
+            ClassEggg classEggg = bw.rawEggg();
 
-            for(MethodEggg m : classEggg.getMethodEgggs()){ //只支持公有或自有函数检查
-                for (Annotation a : m.getAnnotations()) {
+            for (MethodEggg me : classEggg.getMethodEgggs()) { //只支持公有或自有函数检查
+                for (Annotation a : me.getAnnotations()) {
                     if (tryExtract) {
                         if (beanExtractors.containsKey(a.annotationType())) {
                             //有提取处理
-                            extraList.add(new AbstractMap.SimpleEntry<>(m.getMethod(), a));
+                            extraList.add(new AbstractMap.SimpleEntry<>(me, a));
                         }
                     }
 
@@ -635,8 +617,8 @@ public class AppContext extends BeanContainer {
         }
 
         //再尝试提取
-        for (Map.Entry<Method, Annotation> ma : extraList) {
-            Method m = ma.getKey();
+        for (Map.Entry<MethodEggg, Annotation> ma : extraList) {
+            MethodEggg me = ma.getKey();
             Annotation a = ma.getValue();
             BeanExtractor be = beanExtractors.get(a.annotationType());
 
@@ -644,9 +626,8 @@ public class AppContext extends BeanContainer {
             if (be != null) {
                 try {
                     //起到 aot 注册效果
-                    methodGet(m);
-
-                    be.doExtract(bw, m, a);
+                    methodWrap(bw.rawEggg(), me);
+                    be.doExtract(bw, me.getMethod(), a);
                 } catch (Throwable e) {
                     e = Utils.throwableUnwrap(e);
                     if (e instanceof RuntimeException) {
@@ -858,7 +839,7 @@ public class AppContext extends BeanContainer {
     private void tryBuildBeanOfMethod(Method m, BeanWrap bw, int priority, BiConsumerEx<MethodWrap, Object> completionConsumer) throws Throwable {
         if (NativeDetector.isAotRuntime()) {
             //如果是 aot 则注册函数
-            methodGet(bw.rawClz(), m);
+            methodWrap(bw.rawEggg(), m);
         }
 
         Condition mc = m.getAnnotation(Condition.class);
@@ -880,7 +861,7 @@ public class AppContext extends BeanContainer {
         //支持非公有函数
         ClassUtil.accessibleAsTrue(m);
 
-        MethodWrap mWrap = methodGet(bw.rawClz(), m);
+        MethodWrap mWrap = methodWrap(bw.rawEggg(), m);
 
         //开始执行
         if (ConditionUtil.ifBean(mc)) {

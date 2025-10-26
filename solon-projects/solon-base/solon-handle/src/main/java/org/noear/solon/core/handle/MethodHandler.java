@@ -16,7 +16,6 @@
 package org.noear.solon.core.handle;
 
 import org.noear.solon.core.BeanWrap;
-import org.noear.solon.core.util.EgggUtil;
 import org.noear.solon.core.wrap.MethodWrap;
 
 import java.lang.reflect.Method;
@@ -39,7 +38,7 @@ public class MethodHandler extends AbstractEntityReader implements Handler {
      */
     public MethodHandler(BeanWrap beanWrap, Method method, boolean allowResult) {
         this.bw = beanWrap;
-        this.mw = new MethodWrap(beanWrap.context(), beanWrap.rawClz(), EgggUtil.getClassEggg(beanWrap.rawClz()).findMethodEgggOrNew(method)).ofHandler();
+        this.mw = new MethodWrap(beanWrap.context(), beanWrap.rawClz(), beanWrap.rawEggg().findMethodEgggOrNew(method)).ofHandler();
         this.allowResult = allowResult;
     }
 

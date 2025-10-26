@@ -22,7 +22,6 @@ import org.noear.solon.annotation.Destroy;
 import org.noear.solon.annotation.Init;
 import org.noear.solon.core.bean.LifecycleBean;
 import org.noear.solon.core.util.ClassUtil;
-import org.noear.solon.core.util.EgggUtil;
 import org.noear.solon.core.util.IndexUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,7 +73,7 @@ class BeanWrapLifecycle implements LifecycleBean {
             return false;
         }
 
-        ClassEggg clzEggg = EgggUtil.getClassEggg(bw.rawClz());
+        ClassEggg clzEggg = bw.rawEggg();
 
         //按名字找（优先）
         try {

@@ -15,11 +15,13 @@
  */
 package org.noear.nami;
 
+import org.noear.eggg.ClassEggg;
+import org.noear.eggg.MethodEggg;
 import org.noear.nami.annotation.NamiClient;
 import org.noear.solon.Solon;
 import org.noear.solon.core.runtime.NativeDetector;
+import org.noear.solon.core.util.EgggUtil;
 
-import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.function.Supplier;
 
@@ -175,8 +177,9 @@ public class NamiBuilder {
         if (NativeDetector.isAotRuntime()) {
             //如果是 aot 则注册函数
             if (Solon.app() != null) {
-                for (Method m : clz.getMethods()) {
-                    Solon.context().methodGet(m);
+                ClassEggg classEggg = EgggUtil.getClassEggg(clz);
+                for (MethodEggg me : classEggg.getPublicMethodEgggs()) {
+                    Solon.context().methodWrap(classEggg, me);
                 }
             }
         }

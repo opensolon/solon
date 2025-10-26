@@ -20,10 +20,12 @@ import java.lang.reflect.*;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.noear.eggg.ClassEggg;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Singleton;
 import org.noear.solon.core.exception.ConstructionException;
 import org.noear.solon.core.util.ClassUtil;
+import org.noear.solon.core.util.EgggUtil;
 import org.noear.solon.core.util.GenericUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,6 +52,7 @@ public class BeanWrap {
     private Object raw;
     private Object rawUnproxied;
     private Class<?> rawClz;
+    private ClassEggg rawEggg;
 
     // 是否为单例
     private boolean singleton;
@@ -292,6 +295,14 @@ public class BeanWrap {
         } else {
             return rawClz;
         }
+    }
+
+    public ClassEggg rawEggg() {
+        if(rawEggg == null) {
+            rawEggg = EgggUtil.getClassEggg(rawClz());
+        }
+
+        return rawEggg;
     }
 
     /**

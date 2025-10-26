@@ -36,6 +36,14 @@ public class MethodKey implements Comparable<MethodKey> {
         this.targetClass = targetClass;
     }
 
+    public Method getMethod() {
+        return method;
+    }
+
+    public Class<?> getTargetClass() {
+        return targetClass;
+    }
+
     @Override
     public boolean equals(@Nullable Object o) {
         if (this == o) {

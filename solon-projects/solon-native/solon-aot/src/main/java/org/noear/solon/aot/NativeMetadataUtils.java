@@ -15,11 +15,12 @@
  */
 package org.noear.solon.aot;
 
+import org.noear.eggg.MethodEggg;
+import org.noear.eggg.ParamEggg;
+import org.noear.eggg.TypeEggg;
 import org.noear.solon.aot.hint.ExecutableMode;
 import org.noear.solon.aot.hint.MemberCategory;
 import org.noear.solon.core.util.GenericUtil;
-import org.noear.solon.core.wrap.MethodWrap;
-import org.noear.solon.core.wrap.ParamWrap;
 
 import java.io.Serializable;
 import java.lang.reflect.Type;
@@ -34,34 +35,34 @@ public class NativeMetadataUtils {
     /**
      * 将方法设置为可执行，同时注册方法参数、参数泛型和返回值、返回值泛型
      */
-    public static void registerMethodAndParamAndReturnType(RuntimeNativeMetadata metadata, MethodWrap methodWrap) {
+    public static void registerMethodAndParamAndReturnType(RuntimeNativeMetadata metadata, MethodEggg methodEggg) {
         try {
-            metadata.registerMethod(methodWrap.getMethod(), ExecutableMode.INVOKE);
+            metadata.registerMethod(methodEggg.getMethod(), ExecutableMode.INVOKE);
 
-            ParamWrap[] paramWraps = methodWrap.getParamWraps();
-            for (ParamWrap paramWrap : paramWraps) {
-                Class<?> paramType = paramWrap.getType();
+            for (ParamEggg paramEggg : methodEggg.getParamEgggAry()) {
+                Class<?> paramType = paramEggg.getType();
                 metadata.registerReflection(paramType, MemberCategory.PUBLIC_FIELDS, MemberCategory.DECLARED_FIELDS, MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS, MemberCategory.INVOKE_DECLARED_METHODS);
                 if (!paramType.getName().startsWith("java.") && Serializable.class.isAssignableFrom(paramType)) {
                     metadata.registerSerialization(paramType);
                 }
 
                 // 参数的泛型
-                Type genericType = paramWrap.getGenericType();
+                Type genericType = paramEggg.getGenericType();
                 processGenericType(metadata, genericType);
             }
 
-            Class<?> returnType = methodWrap.getReturnType();
-            metadata.registerReflection(returnType, MemberCategory.DECLARED_FIELDS, MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS, MemberCategory.INVOKE_DECLARED_METHODS);
-            if (!returnType.getName().startsWith("java.") && Serializable.class.isAssignableFrom(returnType)) {
-                metadata.registerSerialization(returnType);
+            TypeEggg returnTypeEggg = methodEggg.getReturnTypeEggg();
+
+            metadata.registerReflection(returnTypeEggg.getType(), MemberCategory.DECLARED_FIELDS, MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS, MemberCategory.INVOKE_DECLARED_METHODS);
+            if (!returnTypeEggg.getType().getName().startsWith("java.") && Serializable.class.isAssignableFrom(returnTypeEggg.getType())) {
+                metadata.registerSerialization(returnTypeEggg.getType());
             }
 
             // 返回值的泛型
-            Type genericReturnType = methodWrap.getGenericReturnType();
+            Type genericReturnType = returnTypeEggg.getGenericType();
             processGenericType(metadata, genericReturnType);
         } catch (RuntimeException ex) {
-            throw new IllegalStateException("Can't register method: " + methodWrap.getMethod(), ex);
+            throw new IllegalStateException("Can't register method: " + methodEggg.getMethod(), ex);
         }
     }
 

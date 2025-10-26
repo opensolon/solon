@@ -23,14 +23,11 @@ import org.noear.solon.annotation.Mapping;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.FactoryManager;
 import org.noear.solon.core.util.ConsumerEx;
-import org.noear.solon.core.util.EgggUtil;
 import org.noear.solon.core.util.ProxyBinder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -162,7 +159,7 @@ public class ActionLoaderDefault extends HandlerAide implements ActionLoader {
         }
 
         boolean enableProxy = false;
-        ClassEggg classEggg = EgggUtil.getClassEggg(bw.clz());
+        ClassEggg classEggg = bw.rawEggg();
 
         //只支持 public 函数为 Action
         for (MethodEggg m1 : classEggg.getMethodEgggs()) {
