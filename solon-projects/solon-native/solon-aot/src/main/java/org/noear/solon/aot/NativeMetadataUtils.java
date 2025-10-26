@@ -20,9 +20,12 @@ import org.noear.eggg.ParamEggg;
 import org.noear.eggg.TypeEggg;
 import org.noear.solon.aot.hint.ExecutableMode;
 import org.noear.solon.aot.hint.MemberCategory;
+import org.noear.solon.core.util.EgggUtil;
 import org.noear.solon.core.util.GenericUtil;
+import org.noear.solon.core.wrap.MethodWrap;
 
 import java.io.Serializable;
+import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.Map;
 
@@ -31,6 +34,20 @@ import java.util.Map;
  * @since 2023/10/22 20:33
  */
 public class NativeMetadataUtils {
+    /**
+     * 将方法设置为可执行，同时注册方法参数、参数泛型和返回值、返回值泛型
+     */
+    public static void registerMethodAndParamAndReturnType(RuntimeNativeMetadata metadata, Method method, Class<?> implementationClass) {
+        MethodEggg methodEggg = EgggUtil.getClassEggg(implementationClass).findMethodEgggOrNew(method);
+        registerMethodAndParamAndReturnType(metadata, methodEggg);
+    }
+
+    /**
+     * 将方法设置为可执行，同时注册方法参数、参数泛型和返回值、返回值泛型
+     */
+    public static void registerMethodAndParamAndReturnType(RuntimeNativeMetadata metadata, MethodWrap methodWrap) {
+        registerMethodAndParamAndReturnType(metadata, methodWrap.getMethodEggg());
+    }
 
     /**
      * 将方法设置为可执行，同时注册方法参数、参数泛型和返回值、返回值泛型
