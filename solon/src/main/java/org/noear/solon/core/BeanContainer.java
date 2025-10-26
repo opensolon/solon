@@ -1056,7 +1056,7 @@ public abstract class BeanContainer {
                 return;
             }
 
-            if (vh.isParameterizedType()) {
+            if (vh.getTypeEggg().isParameterizedType()) {
                 //如果是泛型
                 getWrapAsync(vh.getGenericType().getTypeName(), (bw) -> {
                     vh.setValue(bw.get());

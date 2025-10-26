@@ -16,6 +16,7 @@
 package org.noear.solon.core.wrap;
 
 import org.noear.eggg.FieldEggg;
+import org.noear.eggg.TypeEggg;
 
 import java.lang.reflect.Type;
 
@@ -33,6 +34,10 @@ public class FieldSpec extends VarSpecBase {
         this.fe = fe;
     }
 
+    @Override
+    public TypeEggg getTypeEggg() {
+        return fe.getTypeEggg();
+    }
 
     @Override
     public Type getGenericType() {

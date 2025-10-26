@@ -16,6 +16,7 @@
 package org.noear.solon.core.wrap;
 
 import org.noear.eggg.ParamEggg;
+import org.noear.eggg.TypeEggg;
 
 import java.lang.reflect.Type;
 
@@ -35,6 +36,10 @@ public class ParamSpec extends VarSpecBase {
         initAction();
     }
 
+    @Override
+    public TypeEggg getTypeEggg() {
+        return pe.getTypeEggg();
+    }
 
     @Override
     public Type getGenericType() {

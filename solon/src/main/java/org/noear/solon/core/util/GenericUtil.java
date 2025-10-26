@@ -16,7 +16,6 @@
 package org.noear.solon.core.util;
 
 import org.noear.eggg.GenericResolver;
-import org.noear.eggg.ParameterizedTypeImpl;
 
 import java.lang.reflect.*;
 import java.util.*;
@@ -113,7 +112,7 @@ public class GenericUtil {
                 }
 
                 if (typeArgsChanged) {
-                    result = new ParameterizedTypeImpl(rawClz, typeArgs, result.getOwnerType());
+                    result = new GenericResolver.ParameterizedTypeImpl(rawClz, typeArgs, result.getOwnerType());
                 }
             }
         } else if (type instanceof Class) {

@@ -15,6 +15,7 @@
  */
 package org.noear.solon.core.util;
 
+import org.noear.eggg.TypeEggg;
 import org.noear.solon.Solon;
 import org.noear.solon.core.convert.Converter;
 import org.noear.solon.core.exception.ConvertException;
@@ -87,10 +88,10 @@ public class ConvertUtil {
                 }
             }
 
-            Type gType = spec.getGenericType();
+            TypeEggg gType = spec.getTypeEggg();
 
-            if (gType instanceof ParameterizedType) {
-                Type gTypeA = ((ParameterizedType) gType).getActualTypeArguments()[0];
+            if (gType.isParameterizedType()) {
+                Type gTypeA = gType.getActualTypeArguments()[0];
                 if (gTypeA instanceof Class) {
                     List ary2 = new ArrayList(ary.length);
                     for (int i = 0; i < ary.length; i++) {

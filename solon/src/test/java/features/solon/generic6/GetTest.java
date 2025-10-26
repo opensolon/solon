@@ -1,7 +1,7 @@
 package features.solon.generic6;
 
 import org.junit.jupiter.api.Test;
-import org.noear.eggg.ParameterizedTypeImpl;
+import org.noear.eggg.GenericResolver;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.util.TypeReference;
@@ -18,7 +18,7 @@ public class GetTest {
 
         BeanWrap bw = context.wrap(UserDataService.class);
         context.beanRegister(bw, null, true);
-        DataService<User> bean = context.getBean(new ParameterizedTypeImpl(DataService.class, new Class[]{User.class}));
+        DataService<User> bean = context.getBean(new GenericResolver.ParameterizedTypeImpl(DataService.class, new Class[]{User.class}));
 
         assert bean != null;
         assert bean instanceof UserDataService;

@@ -25,7 +25,6 @@ import java.util.List;
 /**
  * 注入收集器，收集完成后会进行回调（主要为 Configuration 构建 method bean 时服务）
  *
- * @see AppContext#tryBuildBeanOfMethod
  * @author noear
  * @since 1.0
  * */

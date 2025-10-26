@@ -362,8 +362,8 @@ public class AppContext extends BeanContainer {
         }
 
         try {
-            if (Utils.isEmpty(name) && vh.isParameterizedType()) {
-                TypeEggg typeEggg = EgggUtil.getTypeEggg(vh.getGenericType());
+            if (Utils.isEmpty(name) && vh.getTypeEggg().isParameterizedType()) {
+                TypeEggg typeEggg = vh.getTypeEggg();
 
                 if (List.class == vh.getType()) {
                     //支持 List<Bean> 注入 //@since 3.0

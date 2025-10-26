@@ -74,13 +74,6 @@ public interface VarHolder {
     Type getGenericType();
 
     /**
-     * 是否为泛型
-     */
-    default boolean isParameterizedType() {
-        return getGenericType() instanceof ParameterizedType;
-    }
-
-    /**
      * 获取注解集合
      */
     Annotation[] getAnnoS();
