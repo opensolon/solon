@@ -17,8 +17,9 @@ package org.noear.solon.core.wrap;
 
 import org.noear.eggg.TypeEggg;
 import org.noear.solon.core.handle.Context;
+import org.noear.solon.lang.Nullable;
 
-import java.lang.reflect.Type;
+import java.lang.reflect.ParameterizedType;
 
 /**
  * 变量说明
@@ -82,16 +83,14 @@ public interface VarSpec {
     /**
      * 获取泛型
      * */
-    Type getGenericType();
+    @Nullable
+    ParameterizedType getGenericType();
 
     /**
      * 是否为泛型
-     *
-     * @deprecated 3.7 {@link #getTypeEggg().isParameterizedType()}
      * */
-    @Deprecated
     default boolean isGenericType(){
-        return getTypeEggg().isParameterizedType();
+        return getGenericType() instanceof ParameterizedType;
     }
 
     /**

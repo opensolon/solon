@@ -18,7 +18,7 @@ package org.noear.solon.core.wrap;
 import org.noear.eggg.FieldEggg;
 import org.noear.eggg.TypeEggg;
 
-import java.lang.reflect.Type;
+import java.lang.reflect.ParameterizedType;
 
 /**
  * 字段 变量描述符
@@ -28,10 +28,17 @@ import java.lang.reflect.Type;
  */
 public class FieldSpec extends VarSpecBase {
     private final FieldEggg fe;
+    private final ParameterizedType pType;
 
     public FieldSpec(FieldEggg fe) {
         super(fe.getField(), fe.getName());
         this.fe = fe;
+
+        if (fe.getTypeEggg().isParameterizedType()) {
+            pType = fe.getTypeEggg().getParameterizedType();
+        } else {
+            pType = null;
+        }
     }
 
     @Override
@@ -40,8 +47,8 @@ public class FieldSpec extends VarSpecBase {
     }
 
     @Override
-    public Type getGenericType() {
-        return fe.getTypeEggg().getGenericType();
+    public ParameterizedType getGenericType() {
+        return pType;
     }
 
     @Override

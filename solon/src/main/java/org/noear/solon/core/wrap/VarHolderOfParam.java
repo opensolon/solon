@@ -24,7 +24,7 @@ import org.noear.solon.core.VarHolder;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Executable;
 import java.lang.reflect.Method;
-import java.lang.reflect.Type;
+import java.lang.reflect.ParameterizedType;
 import java.util.function.Supplier;
 
 /**
@@ -36,7 +36,9 @@ import java.util.function.Supplier;
  * @since 1.0
  * */
 public class VarHolderOfParam implements VarHolder {
-    private final ParamEggg pw;
+    private final ParamEggg pe;
+    private final ParameterizedType pType;
+
     private final AppContext ctx;
     private Class<?> dependencyType;
 
@@ -47,10 +49,16 @@ public class VarHolderOfParam implements VarHolder {
 
     private InjectGather gather;
 
-    public VarHolderOfParam(AppContext ctx, ParamEggg pw, InjectGather gather) {
+    public VarHolderOfParam(AppContext ctx, ParamEggg pe, InjectGather gather) {
         this.ctx = ctx;
-        this.pw = pw;
+        this.pe = pe;
         this.gather = gather;
+
+        if (pe.getTypeEggg().isParameterizedType()) {
+            pType = pe.getTypeEggg().getParameterizedType();
+        } else {
+            pType = null;
+        }
     }
 
     /**
@@ -71,7 +79,7 @@ public class VarHolderOfParam implements VarHolder {
 
     @Override
     public TypeEggg getTypeEggg() {
-        return pw.getTypeEggg();
+        return pe.getTypeEggg();
     }
 
     /**
@@ -79,15 +87,15 @@ public class VarHolderOfParam implements VarHolder {
      */
     @Override
     public Class<?> getType() {
-        return pw.getType();
+        return pe.getType();
     }
 
     /**
      * 泛型（可能为 null）
      */
     @Override
-    public Type getGenericType() {
-        return pw.getGenericType();
+    public ParameterizedType getGenericType() {
+        return pType;
     }
 
 
@@ -117,7 +125,7 @@ public class VarHolderOfParam implements VarHolder {
      */
     @Override
     public Annotation[] getAnnoS() {
-        return pw.getAnnotations();
+        return pe.getAnnotations();
     }
 
     /**
@@ -125,7 +133,7 @@ public class VarHolderOfParam implements VarHolder {
      */
     @Override
     public String getFullName() {
-        Executable e = pw.getParam().getDeclaringExecutable();
+        Executable e = pe.getParam().getDeclaringExecutable();
 
         Class<?> declClz = e.getDeclaringClass();
         Class<?> fileClz = declClz;
@@ -135,9 +143,9 @@ public class VarHolderOfParam implements VarHolder {
 
         if (e instanceof Method) {
             Method m = (Method) e;
-            return "'" + pw.getParam().getName() + "'" + "\r\n\tat " + declClz.getName() + "." + m.getName() + "(" + fileClz.getSimpleName() + ".java:0)";
+            return "'" + pe.getParam().getName() + "'" + "\r\n\tat " + declClz.getName() + "." + m.getName() + "(" + fileClz.getSimpleName() + ".java:0)";
         } else {
-            return "'" + pw.getParam().getName() + "'" + "\r\n\tat " + declClz.getName() + "(" + fileClz.getSimpleName() + ".java:10)";
+            return "'" + pe.getParam().getName() + "'" + "\r\n\tat " + declClz.getName() + "(" + fileClz.getSimpleName() + ".java:10)";
         }
     }
 
@@ -209,10 +217,10 @@ public class VarHolderOfParam implements VarHolder {
 
     @Override
     public String toString() {
-        if (pw.getGenericType() == null) {
-            return pw.getName() + ":" + pw.getType().getTypeName();
+        if (pe.getGenericType() == null) {
+            return pe.getName() + ":" + pe.getType().getTypeName();
         } else {
-            return pw.getName() + ":" + pw.getGenericType().getTypeName();
+            return pe.getName() + ":" + pe.getGenericType().getTypeName();
         }
     }
 }

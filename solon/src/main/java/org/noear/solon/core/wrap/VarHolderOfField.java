@@ -22,7 +22,7 @@ import org.noear.solon.core.InjectGather;
 import org.noear.solon.core.VarHolder;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Type;
+import java.lang.reflect.ParameterizedType;
 import java.util.function.Supplier;
 
 /**
@@ -34,7 +34,9 @@ import java.util.function.Supplier;
  * @since 1.0
  * */
 public class VarHolderOfField implements VarHolder {
-    private final FieldEggg fw;
+    private final FieldEggg fe;
+    private final ParameterizedType pType;
+
     private final Object obj;
     private final AppContext ctx;
     private Class<?> dependencyType;
@@ -45,12 +47,18 @@ public class VarHolderOfField implements VarHolder {
     private boolean done;
     private InjectGather gather;
 
-    public VarHolderOfField(AppContext ctx, FieldEggg fw, Object obj, InjectGather gather) {
+    public VarHolderOfField(AppContext ctx, FieldEggg fe, Object obj, InjectGather gather) {
         this.ctx = ctx;
-        this.fw = fw;
+        this.fe = fe;
         this.obj = obj;
 
         this.gather = gather;
+
+        if (fe.getTypeEggg().isParameterizedType()) {
+            pType = fe.getTypeEggg().getParameterizedType();
+        } else {
+            pType = null;
+        }
     }
 
     /**
@@ -71,7 +79,7 @@ public class VarHolderOfField implements VarHolder {
 
     @Override
     public TypeEggg getTypeEggg() {
-        return fw.getTypeEggg();
+        return fe.getTypeEggg();
     }
 
     /**
@@ -79,15 +87,15 @@ public class VarHolderOfField implements VarHolder {
      */
     @Override
     public Class<?> getType() {
-        return fw.getTypeEggg().getType();
+        return fe.getTypeEggg().getType();
     }
 
     /**
      * 泛型（可能为null）
      */
     @Override
-    public Type getGenericType() {
-        return fw.getTypeEggg().getGenericType();
+    public ParameterizedType getGenericType() {
+        return pType;
     }
 
 
@@ -110,7 +118,7 @@ public class VarHolderOfField implements VarHolder {
      */
     @Override
     public Annotation[] getAnnoS() {
-        return fw.getAnnotations();
+        return fe.getAnnotations();
     }
 
     /**
@@ -118,23 +126,23 @@ public class VarHolderOfField implements VarHolder {
      */
     @Override
     public String getFullName() {
-        Class<?> declClz = fw.getField().getDeclaringClass();
+        Class<?> declClz = fe.getField().getDeclaringClass();
         Class<?> fileClz = declClz;
         if (declClz.isMemberClass()) {
             fileClz = declClz.getEnclosingClass();
         }
 
         StringBuilder buf = new StringBuilder();
-        buf.append("'").append(fw.getName()).append("'");
+        buf.append("'").append(fe.getName()).append("'");
 
 
         buf.append("\r\n\tat ").append(declClz.getName())
-                .append(".").append(fw.getName())
+                .append(".").append(fe.getName())
                 .append("(").append(fileClz.getSimpleName()).append(".java:0)");
 
 
-        if (declClz != fw.getOwnerEggg().getType()) {
-            buf.append("\r\n\tat ").append(fw.getOwnerEggg().getType().getName());
+        if (declClz != fe.getOwnerEggg().getType()) {
+            buf.append("\r\n\tat ").append(fe.getOwnerEggg().getType().getName());
         }
 
         return buf.toString();
@@ -147,7 +155,7 @@ public class VarHolderOfField implements VarHolder {
     @Override
     public void setValue(Object val) {
         if (val != null) {
-            fw.setValue(obj, val, false);
+            fe.setValue(obj, val, false);
 
             ctx.aot().registerJdkProxyType(getType(), val);
         }
@@ -217,10 +225,10 @@ public class VarHolderOfField implements VarHolder {
 
     @Override
     public String toString() {
-        if (fw.getGenericType() == null) {
-            return fw.getName() + ":" + fw.getType().getTypeName();
+        if (fe.getGenericType() == null) {
+            return fe.getName() + ":" + fe.getType().getTypeName();
         } else {
-            return fw.getName() + ":" + fw.getGenericType().getTypeName();
+            return fe.getName() + ":" + fe.getGenericType().getTypeName();
         }
     }
 }
