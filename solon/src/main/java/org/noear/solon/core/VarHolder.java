@@ -34,6 +34,7 @@ import java.util.function.Supplier;
  *
  * @author noear
  * @since 1.0
+ * @since 3.7
  * */
 public interface VarHolder {
     /**
@@ -65,12 +66,18 @@ public interface VarHolder {
 
     /**
      * 获取类型
+     *
+     * @deprecated 3.7 {@link #getTypeEggg()}
      */
+    @Deprecated
     Class<?> getType();
 
     /**
      * 获取泛型（可能为 null）
+     *
+     * @deprecated 3.7 {@link #getTypeEggg()}
      */
+    @Deprecated
     @Nullable
     ParameterizedType getGenericType();
 

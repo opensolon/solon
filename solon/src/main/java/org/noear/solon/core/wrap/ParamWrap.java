@@ -101,14 +101,20 @@ public class ParamWrap {
 
     /**
      * 获取类型
+     *
+     * @deprecated 3.7 {@link #getTypeEggg()}
      */
+    @Deprecated
     public Class<?> getType() {
         return pe.getTypeEggg().getType();
     }
 
     /**
      * 获取泛型
+     *
+     * @deprecated 3.7 {@link #getTypeEggg()}
      */
+    @Deprecated
     @Nullable
     public ParameterizedType getGenericType() {
         return pType;

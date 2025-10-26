@@ -26,6 +26,7 @@ import java.lang.reflect.ParameterizedType;
  *
  * @author noear
  * @since 2.3
+ * @since 3.7
  */
 public interface VarSpec {
     /**
@@ -77,18 +78,27 @@ public interface VarSpec {
 
     /**
      * 获取类型
+     *
+     * @deprecated 3.7 {@link #getTypeEggg()}
      * */
+    @Deprecated
     Class<?> getType();
 
     /**
      * 获取泛型
+     *
+     * @deprecated 3.7 {@link #getTypeEggg()}
      * */
+    @Deprecated
     @Nullable
     ParameterizedType getGenericType();
 
     /**
      * 是否为泛型
+     *
+     * @deprecated 3.7 {@link #getTypeEggg()}
      * */
+    @Deprecated
     default boolean isGenericType(){
         return getTypeEggg().isParameterizedType();
     }
