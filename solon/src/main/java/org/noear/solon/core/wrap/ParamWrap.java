@@ -113,12 +113,4 @@ public class ParamWrap {
     public ParameterizedType getGenericType() {
         return pType;
     }
-
-    /**
-     * 是否为泛型
-     * */
-    public boolean isParameterizedType(){
-        return getGenericType() instanceof ParameterizedType;
-    }
-
 }
