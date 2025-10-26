@@ -216,7 +216,7 @@ public abstract class AbstractEntityReader {
                 //2.如果是 UploadedFile[] 类型
                 return ctx.fileValues(pn);
             } else {
-                if (p.isParameterizedType() && List.class.isAssignableFrom(pt)) {
+                if (p.getTypeEggg().isParameterizedType() && List.class.isAssignableFrom(pt)) {
                     Type pta0 = p.getParamEggg().getTypeEggg().getActualTypeArguments()[0];
                     if (UploadedFile.class.equals(pta0)) {
                         return Arrays.asList(ctx.fileValues(pn));
