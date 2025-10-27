@@ -34,6 +34,8 @@
 * 调整 solon-config-plus 标为弃用，由 solon-config-snack3 或 solon-config-snack4 替代
 * 启用 eggg 作为类元信息构建机制
 * 升级 mcp-java-sdk 为 0.14.x？？？
+* redisx 升为 1.8.0（snack3 切换为 snack4）
+* snack4 升为 4.0.5
 
 | 快捷组合包      | 调整情况                                                           |
 |------------|----------------------------------------------------------------|
