@@ -18,19 +18,19 @@ public class EgggUtil {
             .withDigestHandler(EgggUtil::doDigestHandle)
             .withReflectHandler(new EgggReflectHandler());
 
-    private static String doAliasHandle(ClassEggg cw, Object h, Object digest, String ref) {
-        if (digest instanceof VarSpec) {
-            return ((VarSpec) digest).getName();
+    private static String doAliasHandle(ClassEggg cw, AnnotatedEggg s, String ref) {
+        if (s.getDigest() instanceof VarSpec) {
+            return s.<VarSpec>getDigest().getName();
         }
 
         return ref;
     }
 
-    private static VarSpec doDigestHandle(ClassEggg cw, Object h, AnnotatedElement e, VarSpec ref) {
-        if (h instanceof FieldEggg) {
-            return new FieldSpec((FieldEggg) h);
-        } else if (h instanceof ParamEggg) {
-            return new ParamSpec((ParamEggg) h);
+    private static Object doDigestHandle(ClassEggg cw, AnnotatedEggg s, Object ref) {
+        if (s instanceof FieldEggg) {
+            return new FieldSpec((FieldEggg) s);
+        } else if (s instanceof ParamEggg) {
+            return new ParamSpec((ParamEggg) s);
         }
 
         return ref;

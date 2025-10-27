@@ -41,14 +41,15 @@
 
         <solonx.version>1.2.0</solonx.version>
 
-        <snack3.version>3.2.139</snack3.version>
-        <snack4.version>4.0.4</snack4.version>
-        <eggg.version>1.0.0</eggg.version>
-        <weed3.version>3.4.33</weed3.version>
+        <eggg.version>1.0.1</eggg.version>
+        <snack4.version>4.0.5</snack4.version>
         <wood.version>1.3.26</wood.version>
         <redisx.version>1.7.0</redisx.version>
         <socketd.version>2.5.18</socketd.version>
         <liquor.version>1.6.3</liquor.version>
+
+        <snack3.version>3.2.139</snack3.version>
+        <weed3.version>3.4.33</weed3.version>
 
         <folkmq.version>1.7.11</folkmq.version>
         <water.version>2.18.0</water.version>
@@ -816,6 +817,18 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-config-plus</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-config-snack3</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-config-snack4</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
