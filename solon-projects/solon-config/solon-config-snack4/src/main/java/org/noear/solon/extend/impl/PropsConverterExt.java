@@ -29,6 +29,7 @@ import java.util.Properties;
  *
  * @author noear
  * @since 1.6
+ * @since 3.7
  */
 public class PropsConverterExt extends PropsConverter {
     @Override

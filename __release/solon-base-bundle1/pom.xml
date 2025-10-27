@@ -31,8 +31,10 @@
         <module>../../solon-projects/solon-rx/solon-data-rx-sqlutils</module>
 
         <module>../../solon-projects/solon-config/solon-config-banner</module>
-        <module>../../solon-projects/solon-config/solon-config-plus</module>
         <module>../../solon-projects/solon-config/solon-config-yaml</module>
+        <module>../../solon-projects/solon-config/solon-config-plus</module>
+        <module>../../solon-projects/solon-config/solon-config-snack3</module>
+        <module>../../solon-projects/solon-config/solon-config-snack4</module>
 
         <module>../../solon-projects/solon-net/solon-net</module>
         <module>../../solon-projects/solon-net/solon-net-stomp</module>

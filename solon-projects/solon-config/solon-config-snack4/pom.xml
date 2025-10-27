@@ -11,7 +11,7 @@
         <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon-config-yaml</artifactId>
+    <artifactId>solon-config-snack4</artifactId>
     <name>${project.artifactId}</name>
     <packaging>jar</packaging>
 
@@ -22,16 +22,11 @@
         </dependency>
 
         <dependency>
-            <groupId>org.yaml</groupId>
-            <artifactId>snakeyaml</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>${junit5.version}</version>
-            <scope>test</scope>
+            <groupId>org.noear</groupId>
+            <artifactId>snack4</artifactId>
         </dependency>
     </dependencies>
+
+
 </project>
 

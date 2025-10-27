@@ -28,10 +28,17 @@
 
 ### 3.7.0
 
-* 调整 snack3 切换为 snack4
-* 启用 新的范型识别机制？？？
+* 升级 snack3 切换为 snack4
+* 新增 solon-config-snack3 插件
+* 新增 solon-config-snack4 插件
+* 调整 solon-config-plus 标为弃用，由 solon-config-snack3 或 solon-config-snack4 替代
+* 启用 eggg 作为类元信息构建机制
 * 升级 mcp-java-sdk 为 0.14.x？？？
 
+| 快捷组合包      | 调整情况                                                           |
+|------------|----------------------------------------------------------------|
+| solon-lib  | 使用 solon-config-snack4 替代 solon-config-snack3                  |
+| solon-web  | 使用 solon-serialization-snack4 替代    solon-serialization-snack3 |
 
 
 ### 3.6.2

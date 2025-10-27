@@ -55,7 +55,7 @@
         <!-- 配置注入增强插件 -->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-config-plus</artifactId>
+            <artifactId>solon-config-snack4</artifactId>
         </dependency>
     </dependencies>
 
