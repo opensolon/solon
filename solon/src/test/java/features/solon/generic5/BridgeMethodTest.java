@@ -21,9 +21,9 @@ public class BridgeMethodTest {
 
         MethodEggg[] methodEgggs = classWrap.getPublicMethodEgggs().toArray(new MethodEggg[0]);
         assert methodEgggs[0].getName().equals("saveAll");
-        assert methodEgggs[0].getReturnTypeEggg().getGenericType() instanceof ParameterizedType;
+        assert methodEgggs[0].getGenericReturnType() instanceof ParameterizedType;
         assert methodEgggs[1].getName().equals("saveOne");
-        assert methodEgggs[1].getReturnTypeEggg().getGenericType().equals(SysResourcePermission.class);
+        assert methodEgggs[1].getGenericReturnType().equals(SysResourcePermission.class);
 
         System.out.println(Arrays.toString(SysResourcePermissionController.class.getDeclaredMethods()));
         //=> [public java.util.List com.example.demo.App$SysResourcePermissionController.saveAll(java.util.List)]

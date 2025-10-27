@@ -885,7 +885,7 @@ public class AppContext extends BeanContainer {
                 log.error("{}", me.getMethod());
             }
 
-            tryBuildArgsOfMethod(bw.context(), 1, me.getReturnTypeEggg().getType(), me.getParamEgggAry(), (args2) -> {
+            tryBuildArgsOfMethod(bw.context(), 1, me.getReturnType(), me.getParamEgggAry(), (args2) -> {
                 RunUtil.runOrThrow(() -> tryBuildBeanOfMethod2(me, bw, args2, completionConsumer));
             });
         }
@@ -949,8 +949,8 @@ public class AppContext extends BeanContainer {
      *
      */
     protected void tryBuildBeanOfMethod3(MethodEggg me, BeanWrap bw, Object raw, Bean anno) {
-        Class<?> beanClz = me.getReturnTypeEggg().getType();
-        Type beanGtp = me.getReturnTypeEggg().getGenericType();
+        Class<?> beanClz = me.getReturnType();
+        Type beanGtp = me.getGenericReturnType();
 
         //产生的bean，不再支持二次注入
 

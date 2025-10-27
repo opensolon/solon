@@ -201,14 +201,14 @@ public class MethodWrap implements MethodInterceptor, MethodHolder {
      * 获取函数反回类型
      */
     public Class<?> getReturnType() {
-        return methodEggg.getReturnTypeEggg().getType();
+        return methodEggg.getReturnType();
     }
 
     /**
      * 获取函数泛型类型
      */
     public Type getGenericReturnType() {
-        return methodEggg.getReturnTypeEggg().getGenericType();
+        return methodEggg.getGenericReturnType();
     }
 
     /**
