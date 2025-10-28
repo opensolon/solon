@@ -6,6 +6,7 @@ import org.noear.solon.core.wrap.ParamSpec;
 import org.noear.solon.core.wrap.VarSpec;
 
 import java.lang.reflect.*;
+import java.util.*;
 
 /**
  *
@@ -34,6 +35,14 @@ public class EgggUtil {
         }
 
         return ref;
+    }
+
+    public static Map<String, Type> findGenericInfo(Type type, Class<?> declaringClass) {
+        return eggg.findGenericInfo(getTypeEggg(type), declaringClass);
+    }
+
+    public static List<Type> findGenericList(Type type, Class<?> declaringClass) {
+        return eggg.findGenericList(getTypeEggg(type), declaringClass);
     }
 
     public static TypeEggg getTypeEggg(Type type) {

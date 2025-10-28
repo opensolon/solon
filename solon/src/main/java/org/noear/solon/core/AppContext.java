@@ -556,9 +556,9 @@ public class AppContext extends BeanContainer {
      * 添加事件监听支持
      */
     private void addEventListener(Class<?> clz, BeanWrap bw) {
-        Class<?>[] ets = GenericUtil.resolveTypeArguments(clz, EventListener.class);
-        if (ets != null && ets.length > 0) {
-            EventBus.subscribe(ets[0], bw.index(), bw.raw());
+        Type tType = EgggUtil.findGenericInfo(clz, EventListener.class).get("T");
+        if (tType instanceof Class<?>) {
+            EventBus.subscribe((Class<? extends Object>) tType, bw.index(), bw.raw());
         }
     }
 

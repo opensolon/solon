@@ -17,11 +17,11 @@ package org.noear.solon.core.event;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.exception.EventException;
-import org.noear.solon.core.util.GenericUtil;
+import org.noear.solon.core.util.EgggUtil;
 import org.noear.solon.core.util.RunUtil;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Type;
 import java.util.*;
 
 /**
@@ -189,9 +189,9 @@ public final class EventBus {
         Utils.locker().lock();
 
         try {
-            Class<?>[] ets = GenericUtil.resolveTypeArguments(listener.getClass(), EventListener.class);
-            if (ets != null && ets.length > 0) {
-                pipelineDo((Class<T>) ets[0]).remove(listener);
+            Type tType = EgggUtil.findGenericInfo(listener.getClass(), EventListener.class).get("T");
+            if (tType instanceof Class<?>) {
+                pipelineDo((Class<T>) tType).remove(listener);
             }
         } finally {
             Utils.locker().unlock();

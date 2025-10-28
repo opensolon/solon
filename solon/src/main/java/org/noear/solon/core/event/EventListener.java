@@ -42,6 +42,6 @@ package org.noear.solon.core.event;
  * @author noear
  * @since 1.0
  * */
-public interface EventListener<Event> {
-    void onEvent(Event event) throws Throwable;
+public interface EventListener<T> {
+    void onEvent(T event) throws Throwable;
 }

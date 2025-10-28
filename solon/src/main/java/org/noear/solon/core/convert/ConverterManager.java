@@ -15,7 +15,7 @@
  */
 package org.noear.solon.core.convert;
 
-import org.noear.solon.core.util.GenericUtil;
+import org.noear.solon.core.util.EgggUtil;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -38,7 +38,7 @@ public class ConverterManager {
      * @param converter 转换器
      */
     public <S, T> void register(Converter<S, T> converter) {
-        Map<String, Type> giMap = GenericUtil.getGenericInfo(converter.getClass());
+        Map<String, Type> giMap = EgggUtil.findGenericInfo(converter.getClass(), Converter.class);
         Type sType = null;
         Type tType = null;
 
@@ -70,7 +70,7 @@ public class ConverterManager {
      * @param converterFactory 转换器工厂
      */
     public <S, R> void register(ConverterFactory<S, R> converterFactory) {
-        Map<String, Type> giMap = GenericUtil.getGenericInfo(converterFactory.getClass());
+        Map<String, Type> giMap = EgggUtil.findGenericInfo(converterFactory.getClass(), ConverterFactory.class);
         Type sType = null;
         Type rType = null;
 

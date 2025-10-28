@@ -2,11 +2,12 @@ package features.solon.generic;
 
 import org.junit.jupiter.api.Test;
 import org.noear.solon.core.AppContext;
-import org.noear.solon.core.util.GenericUtil;
+import org.noear.solon.core.util.EgggUtil;
 
-import java.util.Arrays;
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
 
 /**
  * @author noear 2024/10/30 created
@@ -25,65 +26,65 @@ public class GenericUtilTest {
 
     @Test
     public void case2() {
-        Class<?>[] tmp = GenericUtil.resolveTypeArguments(DemoService.class, ServiceImplEx.class);
+        List<Type> tmp = EgggUtil.findGenericList(DemoService.class, ServiceImplEx.class);
 
-        System.out.println(Arrays.toString(tmp));
+        System.out.println(tmp);
 
-        assert tmp.length == 2;
-        assert tmp[0] == DemoMapper.class;
-        assert tmp[1] == Demo.class;
+        assert tmp.size() == 2;
+        assert tmp.get(0) == DemoMapper.class;
+        assert tmp.get(1) == Demo.class;
     }
 
     @Test
     public void case3() {
-        Class<?>[] tmp = GenericUtil.resolveTypeArguments(DemoService.class, ServiceImpl.class);
+        List<Type> tmp = EgggUtil.findGenericList(DemoService.class, ServiceImpl.class);
 
-        System.out.println(Arrays.toString(tmp));
+        System.out.println(tmp);
 
-        assert tmp.length == 2;
-        assert tmp[0] == DemoMapper.class;
-        assert tmp[1] == Demo.class;
+        assert tmp.size() == 2;
+        assert tmp.get(0) == DemoMapper.class;
+        assert tmp.get(1) == Demo.class;
     }
 
     @Test
     public void case4() {
-        Class<?>[] tmp = GenericUtil.resolveTypeArguments(DemoImpl.class, Map.class);
-        System.out.println(Arrays.toString(tmp));
+        List<Type> tmp = EgggUtil.findGenericList(DemoImpl.class, Map.class);
+        System.out.println(tmp);
 
-        assert tmp.length == 2;
-        assert tmp[0] == Integer.class;
-        assert tmp[1] == String.class;
+        assert tmp.size() == 2;
+        assert tmp.get(0) == Integer.class;
+        assert tmp.get(1) == String.class;
 
-        tmp = GenericUtil.resolveTypeArguments(DemoImpl.class, IDemo.class);
-        System.out.println(Arrays.toString(tmp));
+        tmp = EgggUtil.findGenericList(DemoImpl.class, IDemo.class);
+        System.out.println(tmp);
 
-        assert tmp.length == 1;
-        assert tmp[0] == Double.class;
+        assert tmp.size() == 1;
+        assert tmp.get(0) == Double.class;
     }
 
     @Test
     public void case5() {
-        Class<?>[] tmp = GenericUtil.resolveTypeArguments(DemoHashImpl.class, Map.class);
-        System.out.println(Arrays.toString(tmp));
+        List<Type> tmp = EgggUtil.findGenericList(DemoHashImpl.class, Map.class);
+        System.out.println(tmp);
 
-        assert tmp.length == 2;
-        assert tmp[0] == Integer.class;
-        assert tmp[1] == String.class;
+        assert tmp.size() == 2;
+        assert tmp.get(0) == Integer.class;
+        assert tmp.get(1) == String.class;
 
-        tmp = GenericUtil.resolveTypeArguments(DemoHashImpl.class, IDemo.class);
-        System.out.println(Arrays.toString(tmp));
+        tmp = EgggUtil.findGenericList(DemoHashImpl.class, IDemo.class);
+        System.out.println(tmp);
 
-        assert tmp.length == 1;
-        assert tmp[0] == Double.class;
+        assert tmp.size() == 1;
+        assert tmp.get(0) == Double.class;
     }
 
     @Test
     public void case6() {
-        Class<?>[] tmp = GenericUtil.resolveTypeArguments(UserMapperI.class, MapperI.class);
-        System.out.println(Arrays.toString(tmp));
+        List<Type> tmp = EgggUtil.findGenericList(UserMapperI.class, MapperI.class);
+        System.out.println(tmp);
 
-        assert tmp.length == 1;
-        assert tmp[0] == UserD.class;
+        assert tmp.size() == 1;
+        assert tmp.get(0) == UserD.class;
     }
 
     private interface IDemo<T> {

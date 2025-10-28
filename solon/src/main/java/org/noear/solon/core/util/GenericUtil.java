@@ -19,6 +19,7 @@ import org.noear.eggg.GenericResolver;
 
 import java.lang.reflect.*;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 泛型处理工具
@@ -38,44 +39,28 @@ public class GenericUtil {
      * }</pre>
      * @param clazz     类型
      * @param genericIfc 泛型接口
+     * @deprecated 3.7 {@link EgggUtil#findGenericList(Type, Class)}
      * */
+    @Deprecated
     public static Class<?>[] resolveTypeArguments(Class<?> clazz, Class<?> genericIfc) {
-        for (Type supIfc : getGenericInterfaces(clazz)) {
-            if (supIfc instanceof ParameterizedType) {
-                ParameterizedType type = (ParameterizedType) supIfc;
-                Class<?> rawClz = (Class<?>) type.getRawType();
-
-                if (rawClz == genericIfc || getDeepGenericInterfaces(rawClz).contains(genericIfc)) {
-                    return Arrays.stream(type.getActualTypeArguments())
-                            .filter(item -> item instanceof Class<?>)
-                            .map(item -> (Class<?>) item)
-                            .toArray(Class[]::new);
-                }
-            } else if (supIfc instanceof Class<?>) {
-                Class<?>[] classes = resolveTypeArguments((Class<?>) supIfc, genericIfc);
-                if (classes != null) {
-                    return classes;
-                }
+        List<Class<?>> types = new ArrayList<>();
+        for (Type type : EgggUtil.findGenericList(clazz, genericIfc)) {
+            if (type instanceof Class<?>) {
+                types.add((Class<?>) type);
             }
         }
 
-        Type supClz = getGenericSuperclass(clazz);
-        if (supClz instanceof ParameterizedType) {
-            ParameterizedType type = (ParameterizedType) supClz;
-            return Arrays.stream(type.getActualTypeArguments())
-                    .filter(item -> item instanceof Class<?>)
-                    .map(item -> (Class<?>) item)
-                    .toArray(Class[]::new);
-        }
-
-        return null;
+        return types.toArray(new Class<?>[types.size()]);
     }
 
 
 
     /**
      * 转换为参数化类型
+     *
+     * @deprecated 3.7
      * */
+    @Deprecated
     public static ParameterizedType toParameterizedType(Type type) throws RuntimeException{
         return toParameterizedType(type, null);
     }
@@ -85,55 +70,17 @@ public class GenericUtil {
      *
      * @param genericInfo 泛型信息
      * @since 3.0
+     * @deprecated 3.7
      * */
+    @Deprecated
     public static ParameterizedType toParameterizedType(Type type, Map<String, Type> genericInfo) throws RuntimeException{
-        if (type == null) {
-            return null;
-        }
-
-        ParameterizedType result = null;
-        if (type instanceof ParameterizedType) {
-            result = (ParameterizedType) type;
-
-            if (Assert.isEmpty(genericInfo) == false) {
-                //如果有泛型信息，做二次分析转换变量符
-                boolean typeArgsChanged = false;
-                Type[] typeArgs = result.getActualTypeArguments();
-                Class<?> rawClz = (Class<?>) result.getRawType();
-                for (int i = 0; i < typeArgs.length; i++) {
-                    Type typeArg1 = typeArgs[i];
-                    if (typeArg1 instanceof TypeVariable) {
-                        typeArg1 = genericInfo.get(typeArg1.getTypeName());
-                        if (typeArg1 != null) {
-                            typeArgsChanged = true;
-                            typeArgs[i] = typeArg1;
-                        }
-                    }
-                }
-
-                if (typeArgsChanged) {
-                    result = new GenericResolver.ParameterizedTypeImpl(rawClz, typeArgs, result.getOwnerType());
-                }
-            }
-        } else if (type instanceof Class) {
-            final Class<?> clazz = (Class<?>) type;
-            Type genericSuper = getGenericSuperclass(clazz);
-            if (null == genericSuper || Object.class.equals(genericSuper)) {
-                // 如果类没有父类，而是实现一些定义好的泛型接口，则取接口的 Type
-                final Type[] genericInterfaces = getGenericInterfaces(clazz);
-                if (genericInterfaces != null && genericInterfaces.length > 0) {
-                    // 默认取第一个实现接口的泛型 Type
-                    genericSuper = genericInterfaces[0];
-                }
-            }
-
-            result = toParameterizedType(genericSuper, genericInfo);
-        }
-        return result;
+       return GenericResolver.getDefault().toParameterizedType(type, genericInfo);
     }
 
     ///////////////////////////
 
+
+    private static final Map<Type,Map<String, Type>> genericInfoCached = new ConcurrentHashMap<>();
 
     /**
      * 获取泛型变量和泛型实际类型的对应关系Map
@@ -142,7 +89,7 @@ public class GenericUtil {
      * @return 泛型对应关系Map
      */
     public static Map<String, Type> getGenericInfo(Type type) {
-        return GenericResolver.getDefault().getGenericInfo(type);
+        return genericInfoCached.computeIfAbsent(type,k->GenericResolver.getDefault().createTypeDeepGenericMap(type));
     }
 
 
@@ -155,10 +102,12 @@ public class GenericUtil {
      * @param type        原始类型
      * @param genericInfo 泛型信息类
      * @since 3.0
+     * @deprecated 3.7
      * */
+    @Deprecated
     public static Type reviewType(Type type, Type genericInfo) {
         if (type instanceof TypeVariable || type instanceof ParameterizedType) {
-            return reviewType(type, getGenericInfo(genericInfo));
+            return reviewType(type, EgggUtil.getTypeEggg(genericInfo).getGenericInfo());
         } else {
             return type;
         }
@@ -170,7 +119,9 @@ public class GenericUtil {
      * @param type        原始类型
      * @param genericInfo 泛型信息
      * @since 3.0
+     * @deprecated 3.7
      * */
+    @Deprecated
     public static Type reviewType(Type type, Map<String, Type> genericInfo) {
         return GenericResolver.getDefault().reviewType(type, genericInfo);
     }
@@ -240,7 +191,7 @@ public class GenericUtil {
     /**
      * 通配类型匹配
      * */
-    public static boolean wildcardMatched(WildcardType w1, Class<?> s1) {
+    private static boolean wildcardMatched(WildcardType w1, Class<?> s1) {
         for (Type b1 : w1.getUpperBounds()) {
             if (b1 instanceof Class) {
                 if (((Class<?>) b1).isAssignableFrom(s1) == false) {
@@ -258,66 +209,5 @@ public class GenericUtil {
         }
 
         return true;
-    }
-
-    private static Type getGenericSuperclass(Class<?> clazz) throws RuntimeException{
-//        try {
-            return clazz.getGenericSuperclass();
-//        } catch (Throwable e) {
-//            if (e instanceof TypeNotPresentException) {
-//                return null;
-//            } else if (e instanceof ClassNotFoundException) {
-//                return null;
-//            } else if (e instanceof RuntimeException) {
-//                throw e;
-//            } else {
-//                throw new RuntimeException(e);
-//            }
-//        }
-    }
-
-    //private static final Type[] GENERIC_INTERFACES_EMPTY = new  Type[0];
-
-    private static Type[] getGenericInterfaces(Class<?> clazz) {
-//        try {
-            return clazz.getGenericInterfaces();
-//        } catch (Throwable e) {
-//            if (e instanceof TypeNotPresentException) {
-//                return GENERIC_INTERFACES_EMPTY;
-//            } else if (e instanceof ClassNotFoundException) {
-//                return GENERIC_INTERFACES_EMPTY;
-//            } else if (e instanceof RuntimeException) {
-//                throw e;
-//            } else {
-//                throw new RuntimeException(e);
-//            }
-//        }
-    }
-
-    /**
-     * 获取指定类的所有父接口
-     *
-     * @param clazz 要获取的类
-     * @return 所有父接口
-     */
-    private static List<Class<?>> getDeepGenericInterfaces(Class<?> clazz) {
-        return getDeepGenericInterfaces(clazz, new ArrayList<>());
-    }
-
-    /**
-     * 获取指定类的所有父类
-     *
-     * @param clazz 要获取的类
-     * @return 所有父类
-     */
-    private static List<Class<?>> getDeepGenericInterfaces(Class<?> clazz, List<Class<?>> classes) {
-        for (Type supIfc : getGenericInterfaces(clazz)) {
-            if (supIfc instanceof ParameterizedType) {
-                Class<?> rawClz = (Class<?>) ((ParameterizedType) supIfc).getRawType();
-                classes.add(rawClz);
-                getDeepGenericInterfaces(rawClz, classes);
-            }
-        }
-        return classes;
     }
 }
