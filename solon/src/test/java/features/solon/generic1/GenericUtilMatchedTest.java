@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @author noear 2025/10/28 created
  *
  */
-public class GenericUtilTest {
+public class GenericUtilMatchedTest {
     // --- Reflection Helpers ---
 
     private Type getTypeFromField(String fieldName) throws Exception {
@@ -40,23 +40,42 @@ public class GenericUtilTest {
 
     // 获取一个 Method TypeVariable (S)
     private Type getMethodTypeVariable() throws Exception {
-        class Dummy { public <S> List<S> getList() { return null; } }
+        class Dummy {
+            public <S> List<S> getList() {
+                return null;
+            }
+        }
         return Dummy.class.getDeclaredMethod("getList").getTypeParameters()[0];
     }
 
     // 获取一个 Method GenericArrayType (S[])
     private Type getMethodGenericArrayType() throws Exception {
-        class Dummy { public <S> S[] getArray() { return null; } }
+        class Dummy {
+            public <S> S[] getArray() {
+                return null;
+            }
+        }
         return Dummy.class.getDeclaredMethod("getArray").getGenericReturnType();
     }
 
     // 获取一个 ParameterizedType
     private Type getParameterizedType(Class<?> rawType, Type... args) {
         return new ParameterizedType() {
-            public Type[] getActualTypeArguments() { return args; }
-            public Type getRawType() { return rawType; }
-            public Type getOwnerType() { return null; }
-            public String toString() { return rawType.getTypeName() + "<" + Arrays.toString(args) + ">"; }
+            public Type[] getActualTypeArguments() {
+                return args;
+            }
+
+            public Type getRawType() {
+                return rawType;
+            }
+
+            public Type getOwnerType() {
+                return null;
+            }
+
+            public String toString() {
+                return rawType.getTypeName() + "<" + Arrays.toString(args) + ">";
+            }
         };
     }
 
@@ -111,11 +130,20 @@ public class GenericUtilTest {
         }
 
         @Override
-        public Type[] getActualTypeArguments() { return actualTypeArguments; }
+        public Type[] getActualTypeArguments() {
+            return actualTypeArguments;
+        }
+
         @Override
-        public Type getRawType() { return rawType; }
+        public Type getRawType() {
+            return rawType;
+        }
+
         @Override
-        public Type getOwnerType() { return null; }
+        public Type getOwnerType() {
+            return null;
+        }
+
         @Override
         public boolean equals(Object obj) {
             if (!(obj instanceof ParameterizedType)) return false;
@@ -172,7 +200,10 @@ public class GenericUtilTest {
         assertTrue(GenericUtil.typeMatched(innerType, innerType), "OwnerType self-match should work");
 
         // 2. Owner Mismatch (Different Owner Class) -> Covers !matchOwnerType
-        class DifferentOuter { class InnerClass<S> {} }
+        class DifferentOuter {
+            class InnerClass<S> {
+            }
+        }
         Type differentOwner = new ParameterizedTypeImpl(
                 DifferentOuter.InnerClass.class, String.class, DifferentOuter.class
         );
@@ -209,7 +240,6 @@ public class GenericUtilTest {
         class ArrayOfObject { public Object[] objArray; }
         Type objArrayClass = ArrayOfObject.class.getDeclaredField("objArray").getType(); // Object[].class
 
-        // T (bounds to Number/Comparable) is assignable to Object.
         assertTrue(GenericUtil.typeMatched(tArray, objArrayClass), "T[] vs Object[] should match (as T's bound is assignable)");
 
         // 4. GAT vs Class (Non-Array) -> Covers !classArray.isArray()
@@ -217,6 +247,17 @@ public class GenericUtilTest {
 
         // 5. GAT vs Other Type (Mismatch)
         assertFalse(GenericUtil.typeMatched(tArray, String.class), "GAT vs String should not match");
+
+        // 6. 【新增】GAT vs Class[] (Component raw class is null) -> Covers genericComponentClass == null
+        GenericArrayType gatOfUnknown = new GenericArrayType() {
+            @Override
+            public Type getGenericComponentType() {
+                return new Type() {}; // Unknown type, extractRawClass returns null
+            }
+        };
+        // 此时 genericComponentClass == null，应该返回 false
+        assertFalse(GenericUtil.typeMatched(gatOfUnknown, objArrayClass),
+                "GAT of unknown component vs Object[] should fail (genericComponentClass == null)");
     }
 
     @Test
@@ -277,7 +318,8 @@ public class GenericUtilTest {
         assertTrue(GenericUtil.typeMatched(sVar, sVar), "TypeVariable extraction (unbound) tested by TVar matches.");
 
         // 7. Unknown Type (Mismatch for dispatchTypeMatch final return)
-        class UnknownType implements Type {}
+        class UnknownType implements Type {
+        }
         assertFalse(GenericUtil.typeMatched(new UnknownType(), String.class), "Unknown type should not match (dispatchTypeMatch default)");
     }
 
@@ -299,11 +341,30 @@ public class GenericUtilTest {
             @Override
             public Type getGenericComponentType() {
                 // Return a Type that extractRawClass returns null for (e.g., an unknown Type implementation)
-                return new Type() {};
+                return new Type() {
+                };
             }
         };
         Class<?> fallback = extractRawClassInternal(badGat);
         assertTrue(fallback.equals(Object[].class), "Failed component extraction should fallback to Object[].class");
+    }
+
+    @Test
+    @DisplayName("8. Wildcard vs Unknown Type (actualClass == null coverage)")
+    void testWildcardVsUnknownType() throws Exception {
+        WildcardType extNum = getExtendsWildcard(); // ? extends Number
+
+        // 创建一个 extractRawClass 会返回 null 的 Type 实例
+        Type unknownType = new Type() {
+            @Override
+            public String toString() {
+                return "UnknownType";
+            }
+        };
+
+        // 此时 actualClass == null，应该返回 false
+        assertFalse(GenericUtil.typeMatched(extNum, unknownType),
+                "Wildcard vs Unknown Type should fail (actualClass == null)");
     }
 
     // Direct call to the private helper for coverage
