@@ -36,16 +36,9 @@
         <module>../../solon-projects/solon-config/solon-config-snack3</module>
         <module>../../solon-projects/solon-config/solon-config-snack4</module>
 
-        <module>../../solon-projects/solon-net/solon-net</module>
-        <module>../../solon-projects/solon-net/solon-net-stomp</module>
-        <module>../../solon-projects/solon-net/solon-net-httputils</module>
-
         <module>../../solon-projects/solon-security/solon-security-auth</module>
         <module>../../solon-projects/solon-security/solon-security-vault</module>
         <module>../../solon-projects/solon-security/solon-security-validation</module>
         <module>../../solon-projects/solon-security/solon-security-web</module>
-
-        <module>../../solon-projects/solon-tool/solon-maven-plugin</module>
-        <module>../../solon-projects/solon-tool/solon-configuration-processor</module>
     </modules>
 </project>

@@ -19,5 +19,19 @@
     <modules>
         <module>../../solon-shortcuts/solon-lib</module>
         <module>../../solon-shortcuts/solon-web</module>
+
+        <!-- 弃用 -->
+        <module>../../solon-projects/solon-boot/solon-boot</module>
+        <module>../../solon-projects/solon-boot/solon-boot-jdkhttp</module>
+        <module>../../solon-projects/solon-boot/solon-boot-smarthttp</module>
+        <module>../../solon-projects/solon-boot/solon-boot-jetty</module>
+        <module>../../solon-projects/solon-boot/solon-boot-undertow</module>
+        <module>../../solon-projects/solon-boot/solon-boot-undertow-add-jsp</module>
+        <module>../../solon-projects/solon-boot/solon-boot-vertx</module>
+        <module>../../solon-projects/solon-boot/solon-boot-websocket</module>
+        <module>../../solon-projects/solon-boot/solon-boot-websocket-netty</module>
+        <module>../../solon-projects/solon-boot/solon-boot-jetty-add-jsp</module>
+        <module>../../solon-projects/solon-boot/solon-boot-jetty-add-websocket</module>
+        <module>../../solon-projects/solon-boot/solon-boot-socketd</module>
     </modules>
 </project>

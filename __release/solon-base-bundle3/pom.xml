@@ -32,5 +32,9 @@
         <module>../../solon-projects/solon-web/solon-web-servlet</module>
         <module>../../solon-projects/solon-web/solon-web-webservices</module>
         <module>../../solon-projects/solon-web/solon-web-version</module>
+
+        <module>../../solon-projects/solon-net/solon-net</module>
+        <module>../../solon-projects/solon-net/solon-net-stomp</module>
+        <module>../../solon-projects/solon-net/solon-net-httputils</module>
     </modules>
 </project>

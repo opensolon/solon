@@ -33,17 +33,7 @@
         <module>../../solon-projects/solon-server/solon-server-websocket-netty</module>
         <module>../../solon-projects/solon-server/solon-server-socketd</module>
 
-        <module>../../solon-projects/solon-boot/solon-boot</module>
-        <module>../../solon-projects/solon-boot/solon-boot-jdkhttp</module>
-        <module>../../solon-projects/solon-boot/solon-boot-smarthttp</module>
-        <module>../../solon-projects/solon-boot/solon-boot-jetty</module>
-        <module>../../solon-projects/solon-boot/solon-boot-undertow</module>
-        <module>../../solon-projects/solon-boot/solon-boot-undertow-add-jsp</module>
-        <module>../../solon-projects/solon-boot/solon-boot-vertx</module>
-        <module>../../solon-projects/solon-boot/solon-boot-websocket</module>
-        <module>../../solon-projects/solon-boot/solon-boot-websocket-netty</module>
-        <module>../../solon-projects/solon-boot/solon-boot-jetty-add-jsp</module>
-        <module>../../solon-projects/solon-boot/solon-boot-jetty-add-websocket</module>
-        <module>../../solon-projects/solon-boot/solon-boot-socketd</module>
+        <module>../../solon-projects/solon-tool/solon-maven-plugin</module>
+        <module>../../solon-projects/solon-tool/solon-configuration-processor</module>
     </modules>
 </project>
