@@ -881,10 +881,6 @@ public class AppContext extends BeanContainer {
             //0.没有参数
             tryBuildBeanOfMethod2(me, bw, new Object[]{}, completionConsumer);
         } else {
-            if (me.getMethod().getReturnType() == void.class) {
-                log.error("{}", me.getMethod());
-            }
-
             tryBuildArgsOfMethod(bw.context(), 1, me.getReturnType(), me.getParamEgggAry(), (args2) -> {
                 RunUtil.runOrThrow(() -> tryBuildBeanOfMethod2(me, bw, args2, completionConsumer));
             });
