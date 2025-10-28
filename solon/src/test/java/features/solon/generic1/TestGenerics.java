@@ -1,6 +1,6 @@
 package features.solon.generic1;
 
-import com.sun.tools.javac.util.List;
+import java.util.List;
 
 // 辅助类：用于获取各种复杂的 Type 类型
 class TestGenerics<T extends Number & Comparable<T>, E> {
