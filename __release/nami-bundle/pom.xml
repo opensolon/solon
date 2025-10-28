@@ -36,19 +36,5 @@
         <module>../../solon-projects/nami/nami-coder-protostuff</module>
         <module>../../solon-projects/nami/nami-coder-kryo</module>
         <module>../../solon-projects/nami/nami-coder-abc</module>
-
-
-        <module>../../solon-projects/nami_old/nami.channel.http.okhttp</module>
-        <module>../../solon-projects/nami_old/nami.channel.http.hutool</module>
-
-        <module>../../solon-projects/nami_old/nami.channel.socketd</module>
-
-        <module>../../solon-projects/nami_old/nami.coder.snack3</module>
-        <module>../../solon-projects/nami_old/nami.coder.fastjson</module>
-        <module>../../solon-projects/nami_old/nami.coder.fastjson2</module>
-        <module>../../solon-projects/nami_old/nami.coder.jackson</module>
-        <module>../../solon-projects/nami_old/nami.coder.fury</module>
-        <module>../../solon-projects/nami_old/nami.coder.hessian</module>
-        <module>../../solon-projects/nami_old/nami.coder.protostuff</module>
     </modules>
 </project>

@@ -19,27 +19,5 @@
     <modules>
         <module>../../solon-shortcuts/solon-lib</module>
         <module>../../solon-shortcuts/solon-web</module>
-
-        <module>../../solon-projects/solon-logging_old/solon.logging</module>
-        <module>../../solon-projects/solon-logging_old/solon.logging.log4j2</module>
-        <module>../../solon-projects/solon-logging_old/solon.logging.logback</module>
-        <module>../../solon-projects/solon-logging_old/solon.logging.simple</module>
-
-        <module>../../solon-projects/solon-security_old/solon.security.auth</module>
-        <module>../../solon-projects/solon-security_old/solon.security.vault</module>
-        <module>../../solon-projects/solon-security_old/solon.security.validation</module>
-
-        <module>../../solon-projects/solon-web_old/solon.sessionstate.jedis</module>
-        <module>../../solon-projects/solon-web_old/solon.sessionstate.local</module>
-        <module>../../solon-projects/solon-web_old/solon.sessionstate.jwt</module>
-        <module>../../solon-projects/solon-web_old/solon.sessionstate.redisson</module>
-
-        <module>../../solon-projects/solon-web_old/solon.web.staticfiles</module>
-        <module>../../solon-projects/solon-web_old/solon.web.servlet</module>
-        <module>../../solon-projects/solon-web_old/solon.web.cors</module>
-        <module>../../solon-projects/solon-web_old/solon.web.stop</module>
-        <module>../../solon-projects/solon-web_old/solon.web.sdl</module>
-        <module>../../solon-projects/solon-web_old/solon.web.sse</module>
-        <module>../../solon-projects/solon-web_old/solon.web.rx</module>
     </modules>
 </project>

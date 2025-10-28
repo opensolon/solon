@@ -32,6 +32,7 @@
 * 新增 solon-config-snack3 插件
 * 新增 solon-config-snack4 插件
 * 调整 solon-config-plus 标为弃用，由 solon-config-snack3 或 solon-config-snack4 替代
+* 移除 solon.xxx 和 nami.xxx 风格的发布包
 * 启用 eggg 作为类元信息构建机制
 * 升级 mcp-java-sdk 为 0.14.x？？？
 * redisx 升为 1.8.0（snack3 切换为 snack4）

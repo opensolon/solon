@@ -33,22 +33,5 @@
         <module>../../solon-projects/solon-view/solon-view-thymeleaf</module>
         <module>../../solon-projects/solon-view/solon-view-enjoy</module>
         <module>../../solon-projects/solon-view/solon-view-beetl</module>
-
-        <module>../../solon-projects/solon-detector_old/solon.health</module>
-        <module>../../solon-projects/solon-detector_old/solon.health.detector</module>
-
-        <module>../../solon-projects/solon-faas_old/solon.luffy</module>
-
-        <module>../../solon-projects/solon-scheduling_old/solon.scheduling</module>
-        <module>../../solon-projects/solon-scheduling_old/solon.scheduling.simple</module>
-        <module>../../solon-projects/solon-scheduling_old/solon.scheduling.quartz</module>
-
-        <module>../../solon-projects/solon-view_old/solon.view</module>
-        <module>../../solon-projects/solon-view_old/solon.view.freemarker</module>
-        <module>../../solon-projects/solon-view_old/solon.view.jsp</module>
-        <module>../../solon-projects/solon-view_old/solon.view.velocity</module>
-        <module>../../solon-projects/solon-view_old/solon.view.thymeleaf</module>
-        <module>../../solon-projects/solon-view_old/solon.view.enjoy</module>
-        <module>../../solon-projects/solon-view_old/solon.view.beetl</module>
     </modules>
 </project>

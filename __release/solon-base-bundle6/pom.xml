@@ -45,18 +45,5 @@
         <module>../../solon-projects/solon-boot/solon-boot-jetty-add-jsp</module>
         <module>../../solon-projects/solon-boot/solon-boot-jetty-add-websocket</module>
         <module>../../solon-projects/solon-boot/solon-boot-socketd</module>
-
-        <module>../../solon-projects/solon-boot_old/solon.boot</module>
-        <module>../../solon-projects/solon-boot_old/solon.boot.jdkhttp</module>
-        <module>../../solon-projects/solon-boot_old/solon.boot.smarthttp</module>
-        <module>../../solon-projects/solon-boot_old/solon.boot.jetty</module>
-        <module>../../solon-projects/solon-boot_old/solon.boot.undertow</module>
-        <module>../../solon-projects/solon-boot_old/solon.boot.undertow.add.jsp</module>
-        <module>../../solon-projects/solon-boot_old/solon.boot.vertx</module>
-        <module>../../solon-projects/solon-boot_old/solon.boot.websocket</module>
-        <module>../../solon-projects/solon-boot_old/solon.boot.websocket.netty</module>
-        <module>../../solon-projects/solon-boot_old/solon.boot.jetty.add.jsp</module>
-        <module>../../solon-projects/solon-boot_old/solon.boot.jetty.add.websocket</module>
-        <module>../../solon-projects/solon-boot_old/solon.boot.socketd</module>
     </modules>
 </project>
