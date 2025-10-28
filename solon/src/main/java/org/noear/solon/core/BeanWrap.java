@@ -94,7 +94,7 @@ public class BeanWrap {
             }
 
             for (ParameterizedType pt : genericList) {
-                if (GenericUtil.genericMatched((ParameterizedType) checkType, pt)) {
+                if (GenericUtil.typeMatched(checkType, pt)) {
                     return true;
                 }
             }

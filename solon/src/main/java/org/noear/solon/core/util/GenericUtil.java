@@ -133,81 +133,233 @@ public class GenericUtil {
      *
      * @param checkType 检测类型
      * @param sourceType 源类型
+     * @deprecated 3.7 {@link #typeMatched(Type, Type)}
      * */
+    @Deprecated
     public static boolean genericMatched(ParameterizedType checkType, ParameterizedType sourceType) {
-        if (sourceType.getActualTypeArguments().length == checkType.getActualTypeArguments().length) {
-            if (sourceType.getTypeName().equals(checkType.getTypeName())) {
-                return true;
-            } else {
-                if (sourceType.getRawType().equals(checkType.getRawType())) {
-                    Type[] typesC = checkType.getActualTypeArguments();
-                    Type[] typesS = sourceType.getActualTypeArguments();
+        return typeMatched(checkType,sourceType);
+    }
 
-                    boolean isOk = true;
-                    for (int i = 0; i < typesC.length; i++) {
-                        Type c1 = typesC[i];
-                        Type s1 = typesS[i];
+    /**
+     * 泛型类型匹配 (检查是否等效或兼容)
+     *
+     * @param checkType  检测类型（模式）
+     * @param sourceType 源类型（实例）
+     */
+    public static boolean typeMatched(Type checkType, Type sourceType) {
+        // 1. 快速路径和基本检查
+        if (checkType == sourceType) {
+            return true;
+        }
+        if (checkType == null || sourceType == null) {
+            return false;
+        }
+        if (checkType.equals(sourceType)) {
+            return true;
+        }
 
-                        if (c1 instanceof Class) {
-                            isOk = c1.equals(s1);
-                        } else if (c1 instanceof ParameterizedType) {
-                            if (s1 instanceof ParameterizedType) {
-                                isOk = genericMatched((ParameterizedType) c1, (ParameterizedType) s1);
-                            } else {
-                                isOk = false;
-                            }
-                        } else if (c1 instanceof GenericArrayType) {
-                            isOk = c1.equals(s1);
-                        } else if (c1 instanceof WildcardType) {
-                            if (s1 instanceof Class) {
-                                isOk = wildcardMatched((WildcardType) c1, (Class<?>) s1);
-                            } else if (s1 instanceof ParameterizedType) {
-                                Type s2 = ((ParameterizedType) s1).getRawType();
-                                if (s2 instanceof Class) {
-                                    isOk = wildcardMatched((WildcardType) c1, (Class<?>) s2);
-                                }
-                            }
+        // 2. 类型分发处理
+        return dispatchTypeMatch(checkType, sourceType);
+    }
 
-                            //其它情况算 ok
-                        } else {
-                            isOk = false;
-                        }
+    /**
+     * 类型分发匹配（线性分发）
+     * 仅根据 checkType 的类型进行分发，简化逻辑。
+     */
+    private static boolean dispatchTypeMatch(Type checkType, Type sourceType) {
+        // Class 和 TypeVariable：在 typeMatched 的 fast path 中未匹配到，则认为不等效。
 
-                        if (isOk == false) {
-                            break;
-                        }
-                    }
+        if (checkType instanceof ParameterizedType) {
+            return matchParameterizedType((ParameterizedType) checkType, sourceType);
+        }
 
-                    if (isOk) {
-                        return true;
-                    }
-                }
-            }
+        if (checkType instanceof WildcardType) {
+            return matchWildcardType((WildcardType) checkType, sourceType);
+        }
+
+        if (checkType instanceof GenericArrayType) {
+            return matchGenericArrayType((GenericArrayType) checkType, sourceType);
         }
 
         return false;
     }
 
     /**
-     * 通配类型匹配
-     * */
-    private static boolean wildcardMatched(WildcardType w1, Class<?> s1) {
-        for (Type b1 : w1.getUpperBounds()) {
-            if (b1 instanceof Class) {
-                if (((Class<?>) b1).isAssignableFrom(s1) == false) {
-                    return false;
-                }
-            }
+     * 参数化类型匹配
+     */
+    private static boolean matchParameterizedType(ParameterizedType checkType, Type sourceType) {
+        // 1. sourceType 必须是 ParameterizedType
+        if (!(sourceType instanceof ParameterizedType)) {
+            return false;
         }
 
-        for (Type b1 : w1.getLowerBounds()) {
-            if (b1 instanceof Class) {
-                if ((s1).isAssignableFrom((Class<?>) b1) == false) {
-                    return false;
-                }
+        ParameterizedType sourcePType = (ParameterizedType) sourceType;
+
+        // 2. 检查原始类型和所有者类型
+        if (!typeMatched(checkType.getRawType(), sourcePType.getRawType()) ||
+                !matchOwnerType(checkType.getOwnerType(), sourcePType.getOwnerType())) {
+            return false;
+        }
+
+        // 3. 检查类型参数数量
+        Type[] checkArgs = checkType.getActualTypeArguments();
+        Type[] sourceArgs = sourcePType.getActualTypeArguments();
+
+        if (checkArgs.length != sourceArgs.length) {
+            return false;
+        }
+
+        // 4. 递归检查类型参数
+        for (int i = 0; i < checkArgs.length; i++) {
+            // 参数之间递归使用 typeMatched 检查等效性
+            if (!typeMatched(checkArgs[i], sourceArgs[i])) {
+                return false;
             }
         }
 
         return true;
+    }
+
+    /**
+     * 所有者类型匹配
+     */
+    private static boolean matchOwnerType(Type owner1, Type owner2) {
+        // 使用 typeMatched 递归检查所有者类型
+        return owner1 == owner2 || (owner1 != null && owner2 != null && typeMatched(owner1, owner2));
+    }
+
+    /**
+     * 泛型数组类型匹配
+     */
+    private static boolean matchGenericArrayType(GenericArrayType checkArray, Type sourceType) {
+        if (sourceType instanceof GenericArrayType) {
+            // 泛型数组 vs 泛型数组
+            GenericArrayType sourceArray = (GenericArrayType) sourceType;
+            return typeMatched(checkArray.getGenericComponentType(), sourceArray.getGenericComponentType());
+        }
+
+        if (sourceType instanceof Class) {
+            // 泛型数组 vs Class 数组 (e.g., T[] vs String[])
+            return matchGenericArrayToClass(checkArray, (Class<?>) sourceType);
+        }
+
+        return false;
+    }
+
+    /**
+     * 泛型数组与 Class 数组匹配
+     */
+    private static boolean matchGenericArrayToClass(GenericArrayType genericArray, Class<?> classArray) {
+        if (!classArray.isArray()) {
+            return false;
+        }
+
+        Type componentType = genericArray.getGenericComponentType();
+        Class<?> arrayComponentType = classArray.getComponentType();
+
+        // 提取组件类型的原始类
+        Class<?> genericComponentClass = extractRawClass(componentType);
+
+        // 检查组件是否兼容 (e.g., String[] is assignable from T[] where T is Object)
+        return genericComponentClass != null && arrayComponentType.isAssignableFrom(genericComponentClass);
+    }
+
+    /**
+     * 通配符类型匹配
+     * 【修正】禁止 WildcardType 匹配 TypeVariable 或 GenericArrayType 占位符。
+     */
+    private static boolean matchWildcardType(WildcardType wildcard, Type actualType) {
+        // 1. WildcardType vs WildcardType: 在 fast path 中已检查 equals()。
+        if (actualType instanceof WildcardType) {
+            return false;
+        }
+
+        // 2. 【关键修正】禁止 WildcardType 匹配 TypeVariable 或 GenericArrayType 占位符。
+        if (actualType instanceof TypeVariable || actualType instanceof GenericArrayType) {
+            return false;
+        }
+
+        // 3. 检查 Class/ParameterizedType 的原始类边界
+        Class<?> actualClass = extractRawClass(actualType);
+
+        if (actualClass != null) {
+            // 此时 actualClass 来源于 Class 或 ParameterizedType
+            return matchWildcardToBounds(wildcard, actualClass);
+        }
+
+        // 覆盖其他未知 Type 实现。
+        return false;
+    }
+
+    /**
+     * 通配符边界与原始类匹配
+     * 仅检查 Class 类型的上下界，避免复杂泛型子类型检查。
+     */
+    private static boolean matchWildcardToBounds(WildcardType w1, Class<?> s1) {
+        // 检查上界 (? extends Number)
+        for (Type upperBound : w1.getUpperBounds()) {
+            Class<?> boundClass = extractRawClass(upperBound);
+            // 边界检查：实际类型 s1 必须是上界 boundClass 的子类型
+            if (boundClass != null && !boundClass.isAssignableFrom(s1)) {
+                return false;
+            }
+        }
+
+        // 检查下界 (? super Integer)
+        for (Type lowerBound : w1.getLowerBounds()) {
+            Class<?> boundClass = extractRawClass(lowerBound);
+            // 边界检查：下界 boundClass 必须是实际类型 s1 的子类型
+            if (boundClass != null && !s1.isAssignableFrom(boundClass)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * 从 Type 中提取原始 Class
+     *
+     * @param type 泛型类型
+     * @return 原始 Class，无法解析返回 null
+     */
+    private static Class<?> extractRawClass(Type type) {
+        if (type instanceof Class) {
+            return (Class<?>) type;
+        } else if (type instanceof ParameterizedType) {
+            Type rawType = ((ParameterizedType) type).getRawType();
+            return rawType instanceof Class ? (Class<?>) rawType : null;
+        } else if (type instanceof GenericArrayType) {
+            // 处理泛型数组
+            return extractArrayClass((GenericArrayType) type);
+        } else if (type instanceof WildcardType) {
+            // 取第一个上界，默认为 Object.class
+            Type[] upperBounds = ((WildcardType) type).getUpperBounds();
+            return upperBounds.length > 0 ? extractRawClass(upperBounds[0]) : Object.class;
+        } else if (type instanceof TypeVariable) {
+            // 取第一个边界，默认为 Object.class
+            Type[] bounds = ((TypeVariable<?>) type).getBounds();
+            return bounds.length > 0 ? extractRawClass(bounds[0]) : Object.class;
+        }
+        return null;
+    }
+
+    /**
+     * 提取数组 Class
+     */
+    private static Class<?> extractArrayClass(GenericArrayType arrayType) {
+        Type componentType = arrayType.getGenericComponentType();
+        Class<?> componentClass = extractRawClass(componentType);
+
+        if (componentClass != null) {
+            try {
+                // 动态创建数组 Class
+                return Array.newInstance(componentClass, 0).getClass();
+            } catch (Exception e) {
+                // 忽略异常
+            }
+        }
+        // 安全回退
+        return Object[].class;
     }
 }
