@@ -890,7 +890,7 @@ public class AppContext extends BeanContainer {
     /**
      * 尝试托管方法参数收集
      */
-    protected void tryBuildArgsOfMethod(AppContext context, int label, Class<?> outType, List<ParamEggg> paramAry, ConsumerEx<Object[]> completionConsumer) {
+    protected void tryBuildArgsOfMethod(AppContext context, int label, Class<?> outType, Collection<ParamEggg> paramAry, ConsumerEx<Object[]> completionConsumer) {
         //1.构建参数 (requireRun=false => true) //运行条件已经确认过，且必须已异常
         InjectGather gather = new InjectGather(label, outType, true, paramAry.size(), (args2) -> {
             //变量收集完成后，会回调此处

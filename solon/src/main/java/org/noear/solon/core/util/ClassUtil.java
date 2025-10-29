@@ -503,11 +503,11 @@ public class ClassUtil {
 
         if (classEggg.isRealRecordClass() || classEggg.isLikeRecordClass()) {
             //for record
-            List<ParamEggg> argsP = classEggg.getCreator().getParamEgggAry();
-            Object[] argsV = new Object[argsP.size()];
+            ConstrEggg constrEggg = classEggg.getCreator();
+            Object[] argsV = new Object[constrEggg.getParamCount()];
 
-            for (int i = 0; i < argsP.size(); i++) {
-                ParamEggg p = argsP.get(i);
+            for (int i = 0; i < argsV.length; i++) {
+                ParamEggg p = constrEggg.getParamEgggAt(i);
                 String key = p.<VarSpec>getDigest().getName();
                 String val0 = data.apply(key);
 

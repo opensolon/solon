@@ -126,7 +126,7 @@ public class MethodWrap implements MethodInterceptor, MethodHolder {
         ParamWrap[] tmp = new ParamWrap[methodEggg.getParamCount()];
         for (int i = 0, len = methodEggg.getParamCount(); i < len; i++) {
             //@since 3.0
-            tmp[i] = new ParamWrap(methodEggg.getParamEgggAry().get(i));
+            tmp[i] = new ParamWrap(methodEggg.getParamEgggAt(i));
         }
         return tmp;
     }
