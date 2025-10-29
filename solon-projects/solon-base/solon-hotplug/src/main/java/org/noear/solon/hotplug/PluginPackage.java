@@ -142,17 +142,29 @@ public class PluginPackage {
 
     /**
      * 预停止插件包
+     *
+     * @deprecated 3.7 {{@link #preStop()}}
      */
+    @Deprecated
     public void prestop() {
+        preStop();
+    }
+
+    /**
+     * 预停止插件包
+     *
+     * @since 3.7
+     */
+    public void preStop() {
         SYNC_LOCK.lock();
         try {
             started = false;
             for (PluginEntity p1 : plugins) {
-                p1.prestop();
+                p1.preStop();
             }
 
             if (context != null) {
-                getContext().prestop();
+                getContext().preStop();
             }
 
         } finally {
@@ -215,7 +227,7 @@ public class PluginPackage {
     public static void unloadJar(PluginPackage pluginPackage) {
         try {
             if (pluginPackage.getStarted()) {
-                pluginPackage.prestop();
+                pluginPackage.preStop();
                 pluginPackage.stop();
             }
 

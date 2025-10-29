@@ -23,21 +23,33 @@ package org.noear.solon.core;
  * */
 public interface Plugin {
     /**
-     * 启动（保留，为兼容性过度）
+     * 启动（在应用容器启动前执行）
      *
      * @param context 应用上下文
      */
     void start(AppContext context) throws Throwable;
 
-
     /**
-     * 预停止
+     * 预停止（在应用容器预停止前执行）
+     *
+     * @deprecated 3.7 {@link #preStop()}
      */
+    @Deprecated
     default void prestop() throws Throwable {
     }
 
     /**
-     * 停止
+     * 预停止（在应用容器预停止前执行）
+     *
+     * @since 3.7
+     */
+    default void preStop() throws Throwable {
+        prestop(); //向下兼容
+    }
+
+
+    /**
+     * 停止（在应用容器停止前执行）
      */
     default void stop() throws Throwable {
     }

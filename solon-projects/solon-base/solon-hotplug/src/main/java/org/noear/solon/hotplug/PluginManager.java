@@ -150,7 +150,7 @@ public class PluginManager {
         }
 
         if (info.getAddinPackage() != null) {
-            info.getAddinPackage().prestop();
+            info.getAddinPackage().preStop();
             info.getAddinPackage().stop();
         }
     }

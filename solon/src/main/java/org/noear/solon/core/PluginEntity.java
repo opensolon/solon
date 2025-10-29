@@ -119,20 +119,32 @@ public class PluginEntity implements Comparable<PluginEntity> {
             } catch (RuntimeException e) {
                 throw e;
             } catch (Throwable e) {
-                throw new IllegalStateException("Plugin start failed", e);
+                throw new IllegalStateException("The plugin start failed: " + className, e);
             }
         }
     }
 
     /**
      * 预停止
+     *
+     * @deprecated 3.7 {@link #preStop()}
      */
+    @Deprecated
     public void prestop() {
+        preStop();
+    }
+
+    /**
+     * 预停止
+     *
+     * @since 3.7
+     */
+    public void preStop() {
         if (plugin != null) {
             try {
-                plugin.prestop();
+                plugin.preStop(); //新名
             } catch (Throwable e) {
-                //e.printStackTrace();
+                log.warn("The plugin preStop failed: {}", className, e);
             }
         }
     }
@@ -145,7 +157,7 @@ public class PluginEntity implements Comparable<PluginEntity> {
             try {
                 plugin.stop();
             } catch (Throwable e) {
-                //e.printStackTrace();
+                log.warn("The plugin stop failed: {}", className, e);
             }
         }
     }

@@ -337,7 +337,7 @@ public class Solon {
             log.info("App: Security to stop: begin...(1.prestop 2.delay 3.stop)");
 
             //1.预停止
-            Solon.app().prestopDo();
+            Solon.app().preStopDo();
             log.info("App: Security to stop: 1/3 completed");
 
             //2.延时标停
@@ -364,7 +364,7 @@ public class Solon {
             log.info("App: Security to stop: 3/3 completed");
         } else {
             //1.预停止
-            Solon.app().prestopDo();
+            Solon.app().preStopDo();
             //2.标停
             Solon.app().stoppingDo();
             //3.停止

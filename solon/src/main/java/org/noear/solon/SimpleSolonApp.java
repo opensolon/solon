@@ -69,7 +69,7 @@ public class SimpleSolonApp extends SolonApp {
      */
     public void stop() {
         try {
-            super.prestopDo();
+            super.preStopDo();
             super.stoppingDo();
             super.stopDo();
         } finally {

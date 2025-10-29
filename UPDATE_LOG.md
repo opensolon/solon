@@ -31,6 +31,7 @@
 * 升级 snack3 切换为 snack4
 * 新增 solon-config-snack3 插件
 * 新增 solon-config-snack4 插件
+* 添加 solon preStop 方法名（替代 prestop），后者标为弃用。两者都可用
 * 调整 solon-config-plus 标为弃用，由 solon-config-snack3 或 solon-config-snack4 替代
 * 移除 solon.xxx 和 nami.xxx 风格的发布包
 * 启用 eggg 作为类元信息构建机制

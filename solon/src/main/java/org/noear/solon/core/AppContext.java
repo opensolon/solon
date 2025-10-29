@@ -1270,9 +1270,21 @@ public class AppContext extends BeanContainer {
     }
 
     /**
-     * 停止（一般在插件停止之后，再执行）
+     * 预停止（一般在插件预停止之后，再执行）
+     *
+     * @deprecated 3.7 {@link #preStop()}
      */
+    @Deprecated
     public void prestop() {
+        preStop();
+    }
+
+    /**
+     * 预停止（一般在插件预停止之后，再执行）
+     *
+     * @since 3.7
+     */
+    public void preStop() {
         started = false;
 
         try {

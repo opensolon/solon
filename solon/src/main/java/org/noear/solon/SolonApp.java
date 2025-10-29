@@ -231,9 +231,9 @@ public class SolonApp extends RouterWrapper {
     /**
      * 预停止
      */
-    protected void prestopDo() {
-        this.cfg().plugins().forEach(p -> p.prestop());
-        this.context().prestop();
+    protected void preStopDo() {
+        this.cfg().plugins().forEach(p -> p.preStop());
+        this.context().preStop();
         EventBus.publishTry(new AppPrestopEndEvent(this));
     }
 
@@ -585,19 +585,6 @@ public class SolonApp extends RouterWrapper {
                 x.status(503);
             } else {
                 chains().doFilter(x, _handler);
-
-                //todo: 改由 HttpException 处理（不会到这里来了）
-//                if (x.getHandled() == false) { //@since: 1.9
-//                    if (x.status() <= 200 && x.mainHandler() == null) {//@since: 1.10
-//                        int statusPreview = x.statusPreview(); //支持405  //@since: 2.5
-//                        if (statusPreview > 0) {
-//                            x.status(statusPreview);
-//                        } else {
-//                            x.status(404);
-//                        }
-//                    }
-//                    //x.setHandled(true);  //todo: 不能加，对websocket有影响
-//                }
             }
 
             //40x,50x...
