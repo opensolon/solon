@@ -39,14 +39,15 @@ import io.swagger.models.refs.RefFormat;
 import io.swagger.solon.annotation.ApiNoAuthorize;
 import io.swagger.solon.annotation.ApiRes;
 import io.swagger.solon.annotation.ApiResProperty;
+import org.noear.eggg.ClassEggg;
+import org.noear.eggg.FieldEggg;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.route.Routing;
+import org.noear.solon.core.util.EgggUtil;
 import org.noear.solon.core.util.GenericUtil;
 import org.noear.solon.core.util.PathUtil;
-import org.noear.solon.core.wrap.ClassWrap;
-import org.noear.solon.core.wrap.FieldWrap;
 import org.noear.solon.core.wrap.MethodWrap;
 import org.noear.solon.core.wrap.ParamWrap;
 import org.noear.solon.docs.DocDocket;
@@ -613,24 +614,24 @@ public class OpenApi2Builder {
     private void parseActionParametersByFields(ParamHolder paramHolder, List<Parameter> paramList) {
 
         //做为 字段
-        ClassWrap classWrap = ClassWrap.get(paramHolder.getParam().getType());
-        for (FieldWrap fw : classWrap.getAllFieldWraps()) {
-            if (Modifier.isTransient(fw.getField().getModifiers())) {
+        ClassEggg ce = paramHolder.getParam().getParamEggg().getTypeEggg().getClassEggg();
+        for (FieldEggg fe : ce.getAllFieldEgggs()) {
+            if (fe.isTransient()) {
                 continue;
             }
 
             QueryParameter parameter = new QueryParameter();
 
-            if (Collection.class.isAssignableFrom(fw.getType())) {
+            if (Collection.class.isAssignableFrom(fe.getType())) {
                 parameter.setType(ApiEnum.RES_ARRAY);
-            } else if (Map.class.isAssignableFrom(fw.getType())) {
+            } else if (Map.class.isAssignableFrom(fe.getType())) {
                 parameter.setType(ApiEnum.RES_OBJECT);
             } else {
-                parameter.setType(fw.getType().getSimpleName());
+                parameter.setType(fe.getType().getSimpleName());
             }
 
-            ApiModelProperty anno = fw.getField().getAnnotation(ApiModelProperty.class);
-            FieldJavadoc fieldJavadoc = RuntimeJavadoc.getJavadoc(fw.getField());
+            ApiModelProperty anno = fe.getField().getAnnotation(ApiModelProperty.class);
+            FieldJavadoc fieldJavadoc = RuntimeJavadoc.getJavadoc(fe.getField());
 
             String description = format(fieldJavadoc.getComment());
             parameter.setDescription(description);
@@ -646,7 +647,7 @@ public class OpenApi2Builder {
             }
 
             if (Utils.isEmpty(parameter.getName())) {
-                parameter.setName(fw.getField().getName());
+                parameter.setName(fe.getName());
             }
 
 
@@ -800,14 +801,14 @@ public class OpenApi2Builder {
 
 
         // 3.完成模型解析
-        ClassWrap classWrap = ClassWrap.get(clazz);
-        for (FieldWrap fw : classWrap.getAllFieldWraps()) {
-            if (Modifier.isStatic(fw.getField().getModifiers())) {
+        ClassEggg ce = EgggUtil.getClassEggg(clazz);
+        for (FieldEggg fe : ce.getAllFieldEgggs()) {
+            if (Modifier.isStatic(fe.getField().getModifiers())) {
                 //静态的跳过
                 continue;
             }
 
-            Field field = fw.getField();
+            Field field = fe.getField();
 
             FieldJavadoc fieldJavadoc = RuntimeJavadoc.getJavadoc(field);
             ApiModelProperty apiField = field.getAnnotation(ApiModelProperty.class);

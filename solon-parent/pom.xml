@@ -662,11 +662,11 @@
                 <artifactId>solon-docs-openapi2</artifactId>
                 <version>${solon.version}</version>
             </dependency>
-<!--            <dependency>-->
-<!--                <groupId>org.noear</groupId>-->
-<!--                <artifactId>solon-docs-openapi2-javadoc</artifactId>-->
-<!--                <version>${solon.version}</version>-->
-<!--            </dependency>-->
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-docs-openapi2-javadoc</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-config-banner</artifactId>
