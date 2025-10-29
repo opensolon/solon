@@ -18,6 +18,7 @@ package org.noear.solon.server.tomcat.integration;
 import org.apache.catalina.util.ServerInfo;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.core.bean.LifecycleBean;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.server.ServerConstants;
 import org.noear.solon.server.ServerProps;
@@ -49,7 +50,7 @@ public final class TomcatPlugin implements Plugin {
     }
 
     @Override
-    public void start(AppContext context) {
+    public void start(AppContext context) throws Throwable{
         if (Solon.app().enableHttp() == false) {
             return;
         }
@@ -61,9 +62,16 @@ public final class TomcatPlugin implements Plugin {
         context.beanBuilderAdd(WebListener.class, (clz, bw, ano) -> {
         });
 
-        context.lifecycle(ServerConstants.SIGNAL_LIFECYCLE_INDEX, () -> {
+        if (context.isStarted()) {
             start0(context);
-        });
+        } else {
+            context.lifecycle(ServerConstants.SIGNAL_LIFECYCLE_INDEX, new LifecycleBean() {
+                @Override
+                public void postStart() throws Throwable {
+                    start0(context);
+                }
+            });
+        }
     }
 
     private void start0(AppContext context) throws Throwable {
