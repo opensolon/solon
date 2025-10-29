@@ -718,7 +718,11 @@ public class Utils {
      * 将 source:Map 数据，绑定到 target:bean
      */
     public static void bindTo(Map<String, String> source, Object target) {
-        bindTo((k) -> source.get(k), target);
+        if(Assert.isNotEmpty(source)){
+            Properties properties = new  Properties();
+            properties.putAll(source);
+            injectProperties(target, properties);
+        }
     }
 
     /**
