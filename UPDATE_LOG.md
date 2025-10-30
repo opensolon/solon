@@ -36,9 +36,10 @@
 * 移除 solon.xxx 和 nami.xxx 风格的发布包
 * 启用 eggg 作为类元信息构建机制
 * 升级 mcp-java-sdk 为 0.14.x？？？
-* redisx 升为 1.8.0（snack3 切换为 snack4）
-* snack4 升为 4.0.5
-* wood 升为 1.4.0
+* redisx 升为 1.8.1（snack3 切换为 snack4）
+* snack4 升为 4.0.6
+* wood 升为 1.4.1
+* log4j 升为 2.25.2
 * micrometer 升为 1.15.5 
 * opentelemetry 升为 1.55.0
 
