@@ -808,10 +808,8 @@ public class OpenApi2Builder {
                 continue;
             }
 
-            Field field = fe.getField();
-
-            FieldJavadoc fieldJavadoc = RuntimeJavadoc.getJavadoc(field);
-            ApiModelProperty apiField = field.getAnnotation(ApiModelProperty.class);
+            FieldJavadoc fieldJavadoc = RuntimeJavadoc.getJavadoc(fe.getField());
+            ApiModelProperty apiField = fe.getField().getAnnotation(ApiModelProperty.class);
 
             // 隐藏的跳过
             if (apiField != null && apiField.hidden()) {
@@ -823,23 +821,9 @@ public class OpenApi2Builder {
             // 第一行注释作为标题
             String fieldTitle = StrUtil.isBlank(fieldComment) ? "" : IoUtil.readLines(new StringReader(fieldComment), new ArrayList<>()).get(0);
 
-            Class<?> typeClazz = field.getType();
-            Type typeGenericType = field.getGenericType();
-            if (typeGenericType instanceof TypeVariable) {
-                if (type instanceof ParameterizedType) {
-                    Map<String, Type> genericMap = GenericUtil.getGenericInfo(type);
-                    Type typeClazz2 = genericMap.get(typeGenericType.getTypeName());
-                    if (typeClazz2 instanceof Class) {
-                        typeClazz = (Class<?>) typeClazz2;
-                    }
+            Class<?> typeClazz = fe.getType();
+            Type typeGenericType = fe.getGenericType();
 
-                    if (typeClazz2 instanceof ParameterizedType) {
-                        ParameterizedType typeGenericType2 = (ParameterizedType) typeClazz2;
-                        typeClazz = (Class<?>) typeGenericType2.getRawType();
-                        typeGenericType = typeClazz2;
-                    }
-                }
-            }
 
             // List<Class> 类型
             if (Collection.class.isAssignableFrom(typeClazz)) {
@@ -899,8 +883,7 @@ public class OpenApi2Builder {
                         }
                     }
 
-
-                    fieldList.put(field.getName(), fieldPr);
+                    fieldList.put(fe.getName(), fieldPr);
                 }
                 continue;
             }
@@ -919,7 +902,7 @@ public class OpenApi2Builder {
                     }
 
 
-                    fieldList.put(field.getName(), fieldPr);
+                    fieldList.put(fe.getName(), fieldPr);
                 } else {
                     ModelImpl swaggerModel = (ModelImpl) this.parseSwaggerModel(typeClazz, typeGenericType);
 
@@ -932,11 +915,11 @@ public class OpenApi2Builder {
                         fieldPr.setExample(apiField.example());
                     }
 
-                    fieldList.put(field.getName(), fieldPr);
+                    fieldList.put(fe.getName(), fieldPr);
                 }
             } else {
                 ObjectProperty fieldPr = new ObjectProperty();
-                fieldPr.setName(field.getName());
+                fieldPr.setName(fe.getName());
                 fieldPr.setTitle(fieldTitle);
                 fieldPr.setDescription(fieldComment);
                 if (apiField != null) {
@@ -948,7 +931,7 @@ public class OpenApi2Builder {
                     fieldPr.setType(typeClazz.getSimpleName().toLowerCase());
                 }
 
-                fieldList.put(field.getName(), fieldPr);
+                fieldList.put(fe.getName(), fieldPr);
             }
         }
 
