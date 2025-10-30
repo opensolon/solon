@@ -40,6 +40,7 @@
 * snack4 升为 4.0.6
 * wood 升为 1.4.1
 * log4j 升为 2.25.2
+* logback 升为 1.3.16
 * micrometer 升为 1.15.5 
 * opentelemetry 升为 1.55.0
 
