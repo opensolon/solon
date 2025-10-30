@@ -21,7 +21,6 @@ import org.noear.solon.Utils;
 import org.noear.solon.annotation.BindProps;
 import org.noear.solon.annotation.Import;
 import org.noear.solon.core.util.*;
-import org.noear.solon.expression.snel.SnEL;
 
 import java.net.URL;
 import java.util.*;
