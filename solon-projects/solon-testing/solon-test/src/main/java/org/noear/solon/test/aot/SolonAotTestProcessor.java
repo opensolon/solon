@@ -29,7 +29,7 @@ public class SolonAotTestProcessor extends SolonAotProcessor {
         super(null, null, applicationClass);
     }
 
-    public void process(AppContext appContext) {
+    public void process(AppContext appContext) throws Throwable {
         RuntimeNativeMetadata metadata = genRuntimeNativeMetadata(appContext);
 
         // 注册到 bean 容器，方便后续断言使用
