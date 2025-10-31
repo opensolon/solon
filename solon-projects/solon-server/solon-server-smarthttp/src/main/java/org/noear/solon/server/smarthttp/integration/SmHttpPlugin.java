@@ -58,8 +58,13 @@ public final class SmHttpPlugin implements Plugin {
             return;
         }
 
-        //如果有undrtow插件，就不启动了
+        //如果有 undrtow 插件，就不启动了
         if (ClassUtil.loadClass("org.noear.solon.server.undertow.integration.UndertowPlugin") != null) {
+            return;
+        }
+
+        //如果有 tomcat 插件，就不启动了
+        if (ClassUtil.loadClass("org.noear.solon.server.tomcat.integration.TomcatPlugin") != null) {
             return;
         }
 
