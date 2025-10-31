@@ -55,14 +55,22 @@ class BeanWrapLifecycle implements LifecycleBean {
      * 初始化方法
      */
     public Method initMethod() {
-        return initMethod.getMethod();
+        if (initMethod == null) {
+            return null;
+        } else {
+            return initMethod.getMethod();
+        }
     }
 
     /**
      * 注解方法
      */
     public Method destroyMethod() {
-        return destroyMethod.getMethod();
+        if (destroyMethod == null) {
+            return null;
+        } else {
+            return destroyMethod.getMethod();
+        }
     }
 
     /**
@@ -100,7 +108,7 @@ class BeanWrapLifecycle implements LifecycleBean {
                         if (m.getParamCount() == 0) {
                             //只接收没有参数的，支持非公有函数
                             initMethod = m;
-                            ClassUtil.accessibleAsTrue(initMethod.getMethod());
+                            ClassUtil.accessibleAsTrue(m.getMethod());
                             initIndex = initAnno.index();
                         }
                     } else {
