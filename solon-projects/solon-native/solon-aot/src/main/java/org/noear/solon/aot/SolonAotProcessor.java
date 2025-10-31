@@ -66,7 +66,7 @@ public class SolonAotProcessor {
         this.applicationClass = applicationClass;
     }
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws Throwable {
 
         log.info("Aot processor start, args: " + Arrays.toString(args));
 
@@ -85,7 +85,7 @@ public class SolonAotProcessor {
         new SolonAotProcessor(build, applicationArgs, application).process();
     }
 
-    public final void process() throws Exception {
+    public final void process() throws Throwable {
         try {
             System.setProperty(NativeDetector.AOT_PROCESSING, "true");
             doProcess();
@@ -94,7 +94,7 @@ public class SolonAotProcessor {
         }
     }
 
-    protected void doProcess() throws Exception {
+    protected void doProcess() throws Throwable {
         // aot 执行 solon 应用主类报错时，应将异常抛出去，中断 maven 打包流程
         try {
             Method mainMethod = applicationClass.getMethod("main", String[].class);
@@ -116,6 +116,9 @@ public class SolonAotProcessor {
             addJdkProxyConfig(metadata);
 
             log.info("Aot processor end.");
+        } catch (Throwable e) {
+            log.error(e.getMessage(), e);
+            throw e;
         } finally {
             // 确保正常退出（异常时也不影响）
             Solon.stopBlock(true, -1, 0);
@@ -125,7 +128,7 @@ public class SolonAotProcessor {
     /**
      * 生成运行时的元数据
      */
-    protected RuntimeNativeMetadata genRuntimeNativeMetadata(AppContext context) {
+    protected RuntimeNativeMetadata genRuntimeNativeMetadata(AppContext context) throws Throwable {
         // 获取 AppContextNativeProcessor
         AppContextNativeProcessor contextNativeProcessor = context.getBean(AppContextNativeProcessor.class);
         if (contextNativeProcessor == null) {

@@ -64,7 +64,7 @@ public class AppContextNativeProcessorDefault implements AppContextNativeProcess
      * @param settings 运行设置
      * @param metadata 元信息对象
      */
-    public void process(AppContext context, Settings settings, RuntimeNativeMetadata metadata) {
+    public void process(AppContext context, Settings settings, RuntimeNativeMetadata metadata) throws Throwable {
         AtomicInteger beanCount = new AtomicInteger();
 
         //for beanWrap

@@ -33,5 +33,5 @@ public interface AppContextNativeProcessor {
      * @param settings 运行设置
      * @param metadata 元信息对象
      */
-    void process(AppContext context, Settings settings, RuntimeNativeMetadata metadata);
+    void process(AppContext context, Settings settings, RuntimeNativeMetadata metadata) throws Throwable;
 }
