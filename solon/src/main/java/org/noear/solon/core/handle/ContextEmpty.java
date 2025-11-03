@@ -68,6 +68,11 @@ public class ContextEmpty extends Context {
     }
 
     @Override
+    public int localPort() {
+        return 0;
+    }
+
+    @Override
     public String method() {
         return null;
     }

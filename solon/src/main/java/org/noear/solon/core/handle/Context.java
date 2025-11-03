@@ -156,6 +156,11 @@ public abstract class Context {
      */
     public abstract int remotePort();
 
+    /**
+     * 获取本地Port
+     */
+    public abstract int localPort();
+
     private String realIp;
 
     /**

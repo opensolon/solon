@@ -58,7 +58,12 @@ public interface StompSession {
     /**
      * 获取远程地址
      */
-    InetSocketAddress remoteAddress() throws IOException;
+    InetSocketAddress remoteAddress();
+
+    /**
+     * 获取本地地址
+     */
+    InetSocketAddress localAddress();
 
     /**
      * 发送

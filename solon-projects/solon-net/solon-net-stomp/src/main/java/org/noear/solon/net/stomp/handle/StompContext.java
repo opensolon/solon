@@ -82,20 +82,17 @@ public class StompContext extends ContextEmpty {
 
     @Override
     public String remoteIp() {
-        try {
-            return session.remoteAddress().getAddress().toString();
-        } catch (IOException e) {
-            throw new IllegalStateException(e);
-        }
+        return session.remoteAddress().getAddress().toString();
     }
 
     @Override
     public int remotePort() {
-        try {
-            return session.remoteAddress().getPort();
-        } catch (IOException e) {
-            throw new IllegalStateException(e);
-        }
+        return session.remoteAddress().getPort();
+    }
+
+    @Override
+    public int localPort() {
+        return session.localAddress().getPort();
     }
 
     @Override
@@ -275,7 +272,7 @@ public class StompContext extends ContextEmpty {
 
     ///////////////////////
     // for async
-    ///////////////////////
+    /// ////////////////////
 
     protected final AsyncContextState asyncState = new AsyncContextState();
 

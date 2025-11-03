@@ -85,8 +85,13 @@ public class StompSessionImpl implements StompSession {
     }
 
     @Override
-    public InetSocketAddress remoteAddress() throws IOException {
+    public InetSocketAddress remoteAddress() {
         return socket.remoteAddress();
+    }
+
+    @Override
+    public InetSocketAddress localAddress() {
+        return socket.localAddress();
     }
 
     @Override

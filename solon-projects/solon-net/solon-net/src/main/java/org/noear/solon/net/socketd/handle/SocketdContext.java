@@ -99,6 +99,15 @@ public class SocketdContext extends ContextEmpty {
     }
 
     @Override
+    public int localPort() {
+        try {
+            return _session.localAddress().getPort();
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    @Override
     public boolean isMultipart() {
         return false;
     }

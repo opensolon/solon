@@ -88,6 +88,11 @@ public class JdkHttpContext extends ContextBase {
     }
 
     @Override
+    public int localPort() {
+        return _exchange.getLocalAddress().getPort();
+    }
+
+    @Override
     public String method() {
         return _exchange.getRequestMethod();
     }

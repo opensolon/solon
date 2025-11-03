@@ -100,6 +100,11 @@ public class VxWebContext extends ContextBase {
     }
 
     @Override
+    public int localPort() {
+        return _request.localAddress().port();
+    }
+
+    @Override
     public String method() {
         return _request.method().name();
     }

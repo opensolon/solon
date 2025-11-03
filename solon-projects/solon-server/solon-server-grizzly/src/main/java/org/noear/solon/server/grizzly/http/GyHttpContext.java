@@ -98,6 +98,11 @@ public class GyHttpContext extends ContextBase {
     }
 
     @Override
+    public int localPort() {
+        return _request.getLocalPort();
+    }
+
+    @Override
     public String method() {
         return _request.getMethod().getMethodString();
     }

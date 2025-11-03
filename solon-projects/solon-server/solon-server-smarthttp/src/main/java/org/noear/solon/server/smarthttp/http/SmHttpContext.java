@@ -98,6 +98,11 @@ public class SmHttpContext extends ContextBase {
     }
 
     @Override
+    public int localPort() {
+        return _request.getLocalAddress().getPort();
+    }
+
+    @Override
     public String method() {
         return _request.getMethod();
     }
