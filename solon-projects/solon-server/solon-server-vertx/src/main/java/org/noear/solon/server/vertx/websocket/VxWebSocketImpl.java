@@ -65,12 +65,12 @@ public class VxWebSocketImpl extends WebSocketTimeoutBase {
     }
 
     @Override
-    public InetSocketAddress remoteAddress() throws IOException {
+    public InetSocketAddress remoteAddress() {
         return (InetSocketAddress) real.remoteAddress();
     }
 
     @Override
-    public InetSocketAddress localAddress() throws IOException {
+    public InetSocketAddress localAddress() {
         return (InetSocketAddress) real.localAddress();
     }
 

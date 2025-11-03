@@ -51,12 +51,12 @@ public class WebSocketImpl extends WebSocketTimeoutBase {
     }
 
     @Override
-    public InetSocketAddress remoteAddress() throws IOException {
+    public InetSocketAddress remoteAddress() {
         return real.getRemoteSocketAddress();
     }
 
     @Override
-    public InetSocketAddress localAddress() throws IOException {
+    public InetSocketAddress localAddress() {
         return real.getLocalSocketAddress();
     }
 

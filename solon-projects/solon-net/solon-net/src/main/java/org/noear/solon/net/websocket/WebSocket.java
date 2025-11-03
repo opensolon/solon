@@ -17,7 +17,6 @@ package org.noear.solon.net.websocket;
 
 import org.noear.solon.core.util.MultiMap;
 
-import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.util.Map;
@@ -103,12 +102,12 @@ public interface WebSocket {
     /**
      * 获取远程地址
      */
-    InetSocketAddress remoteAddress() throws IOException;
+    InetSocketAddress remoteAddress();
 
     /**
      * 获取本地地址
      */
-    InetSocketAddress localAddress() throws IOException;
+    InetSocketAddress localAddress();
 
     /**
      * 获取所有属性
