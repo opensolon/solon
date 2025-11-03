@@ -31,8 +31,10 @@ import org.smartboot.http.server.HttpBootstrap;
 import org.smartboot.http.server.HttpServerConfiguration;
 import org.smartboot.http.server.impl.Request;
 import org.smartboot.socket.extension.plugins.SslPlugin;
+import org.smartboot.socket.extension.ssl.factory.SSLContextFactory;
 
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLEngine;
 import java.util.concurrent.Executor;
 
 /**
@@ -93,8 +95,16 @@ public class SmHttpServer implements ServerLifecycle {
         if (sslConfig.isSslEnable()) {
             SSLContext sslContext = sslConfig.getSslContext();
 
-            SslPlugin<Request> sslPlugin = new SslPlugin<>(() -> sslContext, sslEngine -> {
-                sslEngine.setUseClientMode(false);
+            SslPlugin<Request> sslPlugin = new SslPlugin<>(new SSLContextFactory() {
+                @Override
+                public SSLContext create() throws Exception {
+                    return sslContext;
+                }
+
+                @Override
+                public void initSSLEngine(SSLEngine sslEngine) {
+                    sslEngine.setUseClientMode(false);
+                }
             });
             _config.addPlugin(sslPlugin);
             isSecure = true;
