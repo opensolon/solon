@@ -65,4 +65,9 @@ public class HttpPathTest extends HttpTester {
     public void test4() throws Exception {
         assert path("/demo2/path/test4/noear").get().equals("noear");
     }
+
+    @Test
+    public void pathprefix() throws Exception {
+        assert path("/pp1/demo2/pathprefix/hello").get().equals("hello");
+    }
 }

@@ -15,14 +15,14 @@
  */
 package org.noear.solon.core.route;
 
-import org.noear.solon.Solon;
 import org.noear.solon.core.BeanWrap;
-import org.noear.solon.core.Constants;
 import org.noear.solon.core.FactoryManager;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.util.PathMatcher;
+import org.noear.solon.core.util.PathUtil;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 /**
  * 通用路由器默认实现
@@ -45,6 +45,13 @@ public class RouterDefault implements Router, HandlerSlots {
         PathMatcher.setCaseSensitive(caseSensitive);
     }
 
+    private List<Map.Entry<String, Predicate<Class<?>>>> pathPrefixTester = new ArrayList<>();
+
+    @Override
+    public void addPathPrefix(String pathPrefix, Predicate<Class<?>> tester) {
+        pathPrefixTester.add(new AbstractMap.SimpleEntry<>(pathPrefix, tester));
+    }
+
     /**
      * 添加路由关系 for Handler
      *
@@ -55,6 +62,27 @@ public class RouterDefault implements Router, HandlerSlots {
      */
     @Override
     public void add(String path, MethodType method, int index, Handler handler) {
+        if (pathPrefixTester.size() > 0) {
+            //添加路径前缀支持
+            if (handler instanceof Action) {
+                Action action = (Action) handler;
+
+                for (Map.Entry<String, Predicate<Class<?>>> entry : pathPrefixTester) {
+                    if (entry.getValue().test(action.controller().rawClz())) {
+                        path = PathUtil.mergePath(entry.getKey(), path);
+                        break;
+                    }
+                }
+            } else {
+                for (Map.Entry<String, Predicate<Class<?>>> entry : pathPrefixTester) {
+                    if (entry.getValue().test(handler.getClass())) {
+                        path = PathUtil.mergePath(entry.getKey(), path);
+                        break;
+                    }
+                }
+            }
+        }
+
         RoutingDefault routing = new RoutingDefault<>(path, handler.version(), method, index, handler);
 
         table.add(routing);

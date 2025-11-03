@@ -15,13 +15,14 @@
  */
 package org.noear.solon.core.route;
 
-import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.ChainManager;
 import org.noear.solon.core.Constants;
 import org.noear.solon.core.handle.*;
+
+import java.util.function.Predicate;
 
 /**
  * 路由包装器（更简单的使用路由）
@@ -150,6 +151,7 @@ public abstract class RouterWrapper implements HandlerSlots {
      * <pre>{@code
      * Solon.app().renders().register(name, render);
      * }</pre>
+     *
      * @deprecated 3.6 {@link SolonApp#renders()#register(String, Render)}
      */
     @Deprecated
@@ -163,6 +165,7 @@ public abstract class RouterWrapper implements HandlerSlots {
      * <pre>{@code
      * Solon.app().renders().get(name);
      * }</pre>
+     *
      * @deprecated 3.6 {@link SolonApp#renders()#get(String)}
      */
     @Deprecated
@@ -186,6 +189,14 @@ public abstract class RouterWrapper implements HandlerSlots {
     @Override
     public void add(String expr, MethodType method, Handler handler) {
         _router.add(expr, method, handler);
+    }
+
+    /**
+     * 添加路径前缀
+     *
+     */
+    public void addPathPrefix(String pathPrefix, Predicate<Class<?>> tester) {
+        _router.addPathPrefix(pathPrefix, tester);
     }
 
     @Override

@@ -39,6 +39,7 @@ import org.noear.solon.web.staticfiles.repository.FileStaticRepository;
 import org.noear.solon.serialization.JsonRenderFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import webapp.demo2_mvc.PathPrefixController;
 import webapp.demo6_aop.TestImport;
 
 import java.io.ByteArrayOutputStream;
@@ -124,6 +125,8 @@ public class App {
             x.onEvent(AppInitEndEvent.class, e -> {
                 StaticMappings.add("/", new ExtendStaticRepository());
             });
+
+            x.addPathPrefix("/pp1/", clz -> clz == PathPrefixController.class);
 
             StaticMappings.add("/file-a/", new ClassPathStaticRepository("static_test"));
             StaticMappings.add("/ext/", new ExtendStaticRepository());

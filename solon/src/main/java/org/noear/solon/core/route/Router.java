@@ -19,6 +19,7 @@ import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.handle.*;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 /**
  * 通用路由器
@@ -59,6 +60,11 @@ public interface Router {
      * @param caseSensitive 区分大小写
      */
     void caseSensitive(boolean caseSensitive);
+
+    /**
+     * 添加路径前缀
+     */
+    void addPathPrefix(String pathPrefix, Predicate<Class<?>> tester);
 
     /**
      * 添加路由关系 for Handler
