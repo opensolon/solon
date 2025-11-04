@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>3.7.0-SNAPSHOT</version>
+        <version>3.7.0</version>
         <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
     
@@ -18,7 +18,7 @@
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon</artifactId>
+            <artifactId>solon-lib</artifactId>
         </dependency>
 
         <dependency>
@@ -28,22 +28,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-data</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-proxy</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
             <artifactId>solon-net-httputils</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-config-yaml</artifactId>
         </dependency>
 
         <dependency>

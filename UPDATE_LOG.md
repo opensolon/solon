@@ -43,6 +43,7 @@
 * 调整 solon ChainManager:addInterceptor （内部接口）更名为 addRouterInterceptor 强化语义
 * 调整 solon 不再对 remoting 注册作 mapping 限制（改成跟控制器一样的策略）
 * 调整 solon Router:getBy 更名为 findBy （前者标为弃用），避免下 get 疑似冲突
+* 调整 solon-server 允许不输出 content-type 
 * 移除 solon.xxx 和 nami.xxx 风格的发布包
 * 启用 eggg 作为类元信息构建机制
 * 升级 mcp-java-sdk 为 0.14.x？？？
