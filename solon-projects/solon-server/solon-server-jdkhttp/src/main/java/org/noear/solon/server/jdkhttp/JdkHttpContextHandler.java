@@ -54,7 +54,7 @@ public class JdkHttpContextHandler implements HttpHandler {
         try {
             //初始化好后，再处理；异常时，可以获取上下文
             //
-            ctx.contentType(MimeType.TEXT_PLAIN_UTF8_VALUE);
+            //ctx.contentType(MimeType.TEXT_PLAIN_UTF8_VALUE);
 
             if (ServerProps.output_meta) {
                 ctx.headerSet("Solon-Server", JdkHttpPlugin.solon_server_ver());

@@ -47,7 +47,7 @@ public class HttpServerHandler extends SimpleChannelInboundHandler<FullHttpReque
                 new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK));
 
         try {
-            context.contentType(MimeType.TEXT_PLAIN_UTF8_VALUE);
+            //context.contentType(MimeType.TEXT_PLAIN_UTF8_VALUE);
 
             if (ServerProps.output_meta) {
                 context.headerSet("Solon-Server", XPluginImp.solon_server_ver());
