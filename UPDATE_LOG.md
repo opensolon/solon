@@ -34,9 +34,15 @@
 * 添加 solon preStop 方法名（替代 prestop），后者标为弃用。两者都可用
 * 添加 solon Router:addPathPrefix(path, tester) 方法
 * 添加 solon Context:localPort() 方法
+* 添加 solon Solon.router() 方法
 * 添加 solon-server-smarthttp 有 tomcat 时的启动控制
 * 调整 solon-config-plus 标为弃用，由 solon-config-snack3 或 solon-config-snack4 替代
 * 调整 solon-net WebSocket:remoteAddress, localAddress 移除 throws IOException
+* 调整 solon ActionLoader, ActionLoaderFactory 内部接口设计
+* 调整 solon RouterWrapper 标为弃用，功能转到 Router 接口上
+* 调整 solon ChainManager:addInterceptor （内部接口）更名为 addRouterInterceptor 强化语义
+* 调整 solon 不再对 remoting 注册作 mapping 限制（改成跟控制器一样的策略）
+* 调整 solon Router:getBy 更名为 findBy （前者标为弃用），避免下 get 疑似冲突
 * 移除 solon.xxx 和 nami.xxx 风格的发布包
 * 启用 eggg 作为类元信息构建机制
 * 升级 mcp-java-sdk 为 0.14.x？？？

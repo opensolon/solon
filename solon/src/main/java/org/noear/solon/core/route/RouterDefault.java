@@ -149,7 +149,7 @@ public class RouterDefault implements Router, HandlerSlots {
      * @return 处理点的所有路由记录
      */
     @Override
-    public Collection<Routing<Handler>> getAll() {
+    public Collection<Routing<Handler>> findAll() {
         return table.getAll();
     }
 
@@ -161,12 +161,12 @@ public class RouterDefault implements Router, HandlerSlots {
      * @since 2.6
      */
     @Override
-    public Collection<Routing<Handler>> getBy(String pathPrefix) {
+    public Collection<Routing<Handler>> findBy(String pathPrefix) {
         return table.getBy(pathPrefix);
     }
 
     @Override
-    public Collection<Routing<Handler>> getBy(Class<?> controllerClz) {
+    public Collection<Routing<Handler>> findBy(Class<?> controllerClz) {
         return table.getBy(controllerClz);
     }
 

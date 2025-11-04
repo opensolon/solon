@@ -33,7 +33,7 @@ public class App {
 
             //例：或者增某段路径的处理
             x.routerInterceptor(new CrossInterceptor().pathPatterns("/user/**").allowedOrigins("*"));
-        }).router().getAll().forEach(e -> {
+        }).router().findAll().forEach(e -> {
             System.out.println(e.method() + " " + e.path());
         });
     }

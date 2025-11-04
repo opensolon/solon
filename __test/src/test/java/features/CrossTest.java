@@ -35,13 +35,13 @@ import java.util.Collection;
 public class CrossTest {
     @Test
     public void cross1() throws IOException {
-        Collection<Routing<Handler>> routings1 = Solon.app().router().getBy("/demo2/cross1/hello");
+        Collection<Routing<Handler>> routings1 = Solon.app().router().findBy("/demo2/cross1/hello");
 
         System.out.println(routings1);
         Assertions.assertEquals(1, routings1.size());
         assert routings1.stream().anyMatch(r -> r.method() == MethodType.ALL);
 
-        Collection<Routing<Handler>> routings2 = Solon.app().router().getBy("/demo2/cross1/test");
+        Collection<Routing<Handler>> routings2 = Solon.app().router().findBy("/demo2/cross1/test");
 
         System.out.println(routings2);
         Assertions.assertEquals(2, routings2.size());
@@ -49,13 +49,13 @@ public class CrossTest {
 
     @Test
     public void cross13() throws IOException {
-        Collection<Routing<Handler>> routings1 = Solon.app().router().getBy("/demo2/cross13/hello");
+        Collection<Routing<Handler>> routings1 = Solon.app().router().findBy("/demo2/cross13/hello");
 
         System.out.println(routings1);
         Assertions.assertEquals(1, routings1.size());
         assert routings1.stream().anyMatch(r -> r.method() == MethodType.ALL);
 
-        Collection<Routing<Handler>> routings2 = Solon.app().router().getBy("/demo2/cross13/test");
+        Collection<Routing<Handler>> routings2 = Solon.app().router().findBy("/demo2/cross13/test");
 
         System.out.println(routings2);
         Assertions.assertEquals(2, routings2.size());
@@ -63,13 +63,13 @@ public class CrossTest {
 
     @Test
     public void cross2() throws IOException {
-        Collection<Routing<Handler>> routings1 = Solon.app().router().getBy("/demo2/cross2/hello");
+        Collection<Routing<Handler>> routings1 = Solon.app().router().findBy("/demo2/cross2/hello");
 
         System.out.println(routings1);
         Assertions.assertEquals(2, routings1.size());
         assert routings1.stream().anyMatch(r -> r.method() == MethodType.SOCKET);
 
-        Collection<Routing<Handler>> routings2 = Solon.app().router().getBy("/demo2/cross2/test");
+        Collection<Routing<Handler>> routings2 = Solon.app().router().findBy("/demo2/cross2/test");
 
         System.out.println(routings2);
         Assertions.assertEquals(2, routings2.size());
@@ -77,13 +77,13 @@ public class CrossTest {
 
     @Test
     public void cross22() throws IOException {
-        Collection<Routing<Handler>> routings1 = Solon.app().router().getBy("/demo2/cross22/hello");
+        Collection<Routing<Handler>> routings1 = Solon.app().router().findBy("/demo2/cross22/hello");
 
         System.out.println(routings1);
         Assertions.assertEquals(2, routings1.size());
         assert routings1.stream().anyMatch(r -> r.method() == MethodType.SOCKET);
 
-        Collection<Routing<Handler>> routings2 = Solon.app().router().getBy("/demo2/cross22/test");
+        Collection<Routing<Handler>> routings2 = Solon.app().router().findBy("/demo2/cross22/test");
 
         System.out.println(routings2);
         Assertions.assertEquals(2, routings2.size());
@@ -91,13 +91,13 @@ public class CrossTest {
 
     @Test
     public void cross3() throws IOException {
-        Collection<Routing<Handler>> routings1 = Solon.app().router().getBy("/demo2/cross3/hello");
+        Collection<Routing<Handler>> routings1 = Solon.app().router().findBy("/demo2/cross3/hello");
 
         System.out.println(routings1);
         Assertions.assertEquals(2, routings1.size());
         assert routings1.stream().anyMatch(r -> r.method() == MethodType.SOCKET);
 
-        Collection<Routing<Handler>> routings2 = Solon.app().router().getBy("/demo2/cross3/test");
+        Collection<Routing<Handler>> routings2 = Solon.app().router().findBy("/demo2/cross3/test");
 
         System.out.println(routings2);
         Assertions.assertEquals(3, routings2.size());
@@ -107,13 +107,13 @@ public class CrossTest {
 
     @Test
     public void cross32() throws IOException {
-        Collection<Routing<Handler>> routings1 = Solon.app().router().getBy("/demo2/cross32/hello");
+        Collection<Routing<Handler>> routings1 = Solon.app().router().findBy("/demo2/cross32/hello");
 
         System.out.println(routings1);
         Assertions.assertEquals(2, routings1.size());
         assert routings1.stream().anyMatch(r -> r.method() == MethodType.SOCKET);
 
-        Collection<Routing<Handler>> routings2 = Solon.app().router().getBy("/demo2/cross32/test");
+        Collection<Routing<Handler>> routings2 = Solon.app().router().findBy("/demo2/cross32/test");
 
         System.out.println(routings2);
         Assertions.assertEquals(3, routings2.size());

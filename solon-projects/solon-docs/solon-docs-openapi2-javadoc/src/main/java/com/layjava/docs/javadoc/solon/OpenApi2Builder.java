@@ -46,7 +46,6 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.route.Routing;
 import org.noear.solon.core.util.EgggUtil;
-import org.noear.solon.core.util.GenericUtil;
 import org.noear.solon.core.util.PathUtil;
 import org.noear.solon.core.wrap.MethodWrap;
 import org.noear.solon.core.wrap.ParamWrap;
@@ -192,7 +191,7 @@ public class OpenApi2Builder {
         Map<Class<?>, List<ActionHolder>> apiMap = new HashMap<>(16);
 
         //@since 3.0
-        Collection<Routing<Handler>> routingCollection = Solon.app().router().getAll();
+        Collection<Routing<Handler>> routingCollection = Solon.app().router().findAll();
         for (Routing<Handler> routing : routingCollection) {
             if (routing.target() instanceof Action) {
                 //如果是 Action
