@@ -88,28 +88,13 @@ public class RouterDefault implements Router, HandlerSlots {
         table.add(routing);
     }
 
-    @Override
-    public void add(BeanWrap controllerWrap) {
-        if (controllerWrap != null) {
-            ActionLoader al = FactoryManager.getGlobal()
-                    .createLoader(controllerWrap);
-
-//            if (controllerWrap.remoting()) {
-//                if (Assert.isEmpty(al.mapping())) {
-//                    //如果类没有 mapping，则不进行  remoting注册 //感觉没啥必要性？@
-//                    return;
-//                }
-//            }
-
-            al.load(this);
-        }
-    }
 
     @Override
-    public void add(String path, BeanWrap controllerWrap) {
-        if (controllerWrap != null) {
+    public void add(String pathPrefix, BeanWrap bw, boolean remoting) {
+        if (bw != null) {
             FactoryManager.getGlobal()
-                    .createLoader(controllerWrap, path, controllerWrap.remoting(), null, true)
+                    .createLoader(bw, remoting)
+                    .withPathPrefix(pathPrefix)
                     .load(this);
         }
     }

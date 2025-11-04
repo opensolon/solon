@@ -22,7 +22,8 @@ import org.noear.solon.annotation.Addition;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.FactoryManager;
-import org.noear.solon.core.util.ConsumerEx;
+import org.noear.solon.core.util.Assert;
+import org.noear.solon.core.util.PathUtil;
 import org.noear.solon.core.util.ProxyBinder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,58 +44,48 @@ public class ActionLoaderDefault extends HandlerAide implements ActionLoader {
     static final Logger log = LoggerFactory.getLogger(ActionLoaderDefault.class);
 
     protected final BeanWrap bw;
-    protected final Render bRender;
-    protected final Mapping bMapping;
-    protected final String bPath;
-    protected final String bVersion;
     protected final boolean bRemoting;
 
-    protected final boolean allowMapping;
+    protected Mapping bMapping;
+    protected String bPath;
+    protected String bVersion;
 
-    public ActionLoaderDefault(BeanWrap wrap) {
-        this(wrap, null, wrap.remoting(), null, true);
+    protected String pathPrefix;
+    protected Render render;
+    protected boolean allowClassMapping = true;
+    protected boolean allowMethodMapping = true;
+
+    @Override
+    public ActionLoader withPathPrefix(String pathPrefix) {
+        this.pathPrefix = pathPrefix;
+        return this;
     }
 
-    public ActionLoaderDefault(BeanWrap wrap, String mapping, boolean remoting, Render render, boolean allowMapping) {
-        if (render == null) {
-            if (wrap.raw() instanceof Render) {
-                render = wrap.raw();
-            }
-        }
+    @Override
+    public ActionLoader withAllowClassMapping(boolean allow) {
+        this.allowClassMapping = allow;
+        return this;
+    }
 
-        if (mapping == null) {
-            bMapping = wrap.clz().getAnnotation(Mapping.class);
+    @Override
+    public ActionLoader withAllowMethodMapping(boolean allow) {
+        this.allowMethodMapping = allow;
+        return this;
+    }
 
-            if (bMapping != null) {
-                mapping = Utils.annoAlias(bMapping.value(), bMapping.path());
-            }
-        } else {
-            bMapping = null;
-        }
+    @Override
+    public ActionLoader withRender(Render render) {
+        this.render = render;
+        return this;
+    }
 
+    public ActionLoaderDefault(BeanWrap wrap, boolean remoting) {
         this.bw = wrap;
-        this.bRender = render;
-        this.allowMapping = allowMapping;
-
-        this.bPath = Utils.annoAlias(mapping, "");
         this.bRemoting = remoting;
 
-        if (bMapping == null) {
-            bVersion = null;
-        } else {
-            if (Utils.isNotEmpty(bMapping.version())) {
-                bVersion = bMapping.version();
-            } else {
-                bVersion = null;
-            }
+        if (wrap.raw() instanceof Render) {
+            render = wrap.raw();
         }
-    }
-
-    /**
-     * mapping expr
-     */
-    public String mapping() {
-        return bPath;
     }
 
     /**
@@ -103,6 +94,27 @@ public class ActionLoaderDefault extends HandlerAide implements ActionLoader {
      * @param slots 接收加载结果的容器（槽）
      */
     public void load(HandlerSlots slots) {
+        if (allowClassMapping) {
+            bMapping = bw.clz().getAnnotation(Mapping.class);
+        }
+
+        if (bMapping == null) {
+            bPath = "";
+            bVersion = null;
+        } else {
+            bPath = Utils.annoAlias(bMapping.value(), bMapping.path());
+
+            if (Utils.isNotEmpty(bMapping.version())) {
+                bVersion = bMapping.version();
+            } else {
+                bVersion = null;
+            }
+        }
+
+        if (Assert.isNotEmpty(pathPrefix)) {
+            bPath = PathUtil.mergePath(pathPrefix, bPath);
+        }
+
         load(bRemoting, slots);
     }
 
@@ -267,7 +279,8 @@ public class ActionLoaderDefault extends HandlerAide implements ActionLoader {
 
     /**
      * @since 3.0
-     * */
+     *
+     */
     protected boolean loadControllerAideAdd(Annotation anno, Set<MethodType> addinMethodSet) {
         if (anno instanceof Addition) {
             Addition additionAnno = (Addition) anno;
@@ -307,7 +320,7 @@ public class ActionLoaderDefault extends HandlerAide implements ActionLoader {
 
     /**
      * @since 3.0
-     * */
+     */
     protected boolean loadActionAideAdd(Annotation anno, ActionDefault action, Set<MethodType> addinMethodSet) {
         if (anno instanceof Addition) {
             Addition additionAnno = (Addition) anno;
@@ -343,27 +356,10 @@ public class ActionLoaderDefault extends HandlerAide implements ActionLoader {
      * 构建 Action
      */
     protected ActionDefault createAction(BeanWrap bw, MethodEggg mE, Mapping mp, String path, boolean remoting) {
-        if (allowMapping) {
-            return new ActionDefault(bw, this, bVersion, mE, mp, path, remoting, bRender);
+        if (allowMethodMapping) {
+            return new ActionDefault(bw, this, bVersion, mE, mp, path, remoting, render);
         } else {
-            return new ActionDefault(bw, this, bVersion, mE, null, path, remoting, bRender);
-        }
-    }
-
-    /**
-     * 附加处理
-     */
-    protected <T> void addDo(T[] ary, ConsumerEx<T> fun) {
-        if (ary != null) {
-            for (T t : ary) {
-                try {
-                    fun.accept(t);
-                } catch (RuntimeException ex) {
-                    throw ex;
-                } catch (Throwable ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
+            return new ActionDefault(bw, this, bVersion, mE, null, path, remoting, render);
         }
     }
 }

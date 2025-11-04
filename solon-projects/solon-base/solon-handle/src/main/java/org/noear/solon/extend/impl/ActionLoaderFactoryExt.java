@@ -38,17 +38,10 @@ public class ActionLoaderFactoryExt implements ActionLoaderFactory {
      * 创建动作加载器
      */
     @Override
-    public ActionLoader createLoader(BeanWrap wrap) {
-        return new ActionLoaderDefault(wrap);
+    public ActionLoader createLoader(BeanWrap wrap, boolean remoting) {
+        return new ActionLoaderDefault(wrap, remoting);
     }
 
-    /**
-     * 创建动作加载器
-     */
-    @Override
-    public ActionLoader createLoader(BeanWrap wrap, String mapping, boolean remoting, Render render, boolean allowMapping) {
-        return new ActionLoaderDefault(wrap, mapping, remoting, render, allowMapping);
-    }
 
     /**
      * 查找方式类型

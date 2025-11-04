@@ -94,7 +94,7 @@ public class ActionDefault extends HandlerAide implements Action {
         bRender = render;
 
         if (bRender == null) {
-            //如果控制器是XRender
+            //如果控制器是 Render
             if (Render.class.isAssignableFrom(bWrap.clz())) {
                 bRender = bWrap.raw();
             }

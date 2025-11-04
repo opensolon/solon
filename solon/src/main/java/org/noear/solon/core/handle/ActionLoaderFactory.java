@@ -34,14 +34,7 @@ public interface ActionLoaderFactory {
      *
      * @since 2.7
      */
-    ActionLoader createLoader(BeanWrap wrap);
-
-    /**
-     * 创建动作加载器
-     *
-     * @since 2.7
-     */
-    ActionLoader createLoader(BeanWrap wrap, String mapping, boolean remoting, Render render, boolean allowMapping);
+    ActionLoader createLoader(BeanWrap wrap, boolean remoting);
 
     /**
      * 查找动作方式类型

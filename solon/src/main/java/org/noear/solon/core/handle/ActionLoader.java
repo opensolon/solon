@@ -22,10 +22,26 @@ package org.noear.solon.core.handle;
  * @since 2.7
  */
 public interface ActionLoader {
+
     /**
-     * 映射
+     * 配置路径前缀
      */
-    String mapping();
+    ActionLoader withPathPrefix(String pathPrefix);
+
+    /**
+     * 配置允许类映射注解（默认为 true）
+     */
+    ActionLoader withAllowClassMapping(boolean allow);
+
+    /**
+     * 配置允许方法映射注解（默认为 true）
+     */
+    ActionLoader withAllowMethodMapping(boolean allow);
+
+    /**
+     * 配置指定渲染器
+     */
+    ActionLoader withRender(Render render);
 
     /**
      * 加载

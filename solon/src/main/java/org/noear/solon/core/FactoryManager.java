@@ -147,14 +147,14 @@ public final class FactoryManager {
      * 创建动作加载器
      */
     public ActionLoader createLoader(BeanWrap wrap) {
-        return actionLoaderFactory().createLoader(wrap);
+        return createLoader(wrap, wrap.remoting());
     }
 
     /**
      * 创建动作加载器
      */
-    public ActionLoader createLoader(BeanWrap wrap, String mapping, boolean remoting, Render render, boolean allowMapping) {
-        return actionLoaderFactory().createLoader(wrap, mapping, remoting, render, allowMapping);
+    public ActionLoader createLoader(BeanWrap wrap, boolean remoting) {
+        return actionLoaderFactory().createLoader(wrap, remoting);
     }
 
     /**

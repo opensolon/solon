@@ -193,18 +193,18 @@ public abstract class RouterWrapper {
     /**
      * 添加主体处理
      */
-    public void add(String path, Class<?> clz) {
+    public void add(String pathPrefix, Class<?> clz) {
         BeanWrap bw = context().wrapAndPut(clz);
-        _router.add(path, bw);
+        _router.add(pathPrefix, bw);
     }
 
     /**
      * 添加主体处理
      */
-    public void add(String path, Class<?> clz, boolean remoting) {
+    public void add(String pathPrefix, Class<?> clz, boolean remoting) {
         BeanWrap bw = context().wrapAndPut(clz);
         bw.remotingSet(remoting);
-        _router.add(path, bw);
+        _router.add(pathPrefix, bw);
     }
 
     /**

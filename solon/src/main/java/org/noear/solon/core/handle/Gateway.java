@@ -378,8 +378,8 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
     /**
      * 添加接口
      */
-    public void add(String path, BeanWrap beanWp) {
-        add(path, beanWp, beanWp.remoting());
+    public void add(String pathPrefix, BeanWrap beanWp) {
+        add(pathPrefix, beanWp, beanWp.remoting());
     }
 
     /**
@@ -392,27 +392,24 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
     /**
      * 添加接口
      */
-    public void add(String path, BeanWrap beanWp, boolean remoting) {
+    public void add(String pathPrefix, BeanWrap beanWp, boolean remoting) {
         if (beanWp == null) {
             return;
         }
 
-        Mapping bMapping = beanWp.clz().getAnnotation(Mapping.class);
-        String bPath = null;
-        if (bMapping != null) {
-            bPath = Utils.annoAlias(bMapping.value(), bMapping.path());
-        }
+//        Mapping bMapping = beanWp.clz().getAnnotation(Mapping.class);
+//        String bPath = null;
+//        if (bMapping != null) {
+//            bPath = Utils.annoAlias(bMapping.value(), bMapping.path());
+//        }
 
-        ActionLoader uw = FactoryManager.getGlobal()
-                .createLoader(beanWp, bPath, remoting, this, allowActionMapping());
-
-        uw.load((expr, method, index, handler) -> {
-            if (path == null) {
-                addDo(expr, method, index, handler);
-            } else {
-                addDo(PathUtil.mergePath(path, expr), method, index, handler);
-            }
-        });
+        //bPath, remoting, this, allowActionMapping()
+        FactoryManager.getGlobal()
+                .createLoader(beanWp, remoting)
+                .withPathPrefix(pathPrefix)
+                .withRender(this)
+                .withAllowMethodMapping(allowActionMapping())
+                .load(this::addDo); //会解析 bPath
     }
 
     /**

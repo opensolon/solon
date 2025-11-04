@@ -53,7 +53,6 @@ import java.util.function.Predicate;
  * @since 3.0
  * */
 public interface Router {
-
     /**
      * 区分大小写（默认不区分）
      *
@@ -70,27 +69,6 @@ public interface Router {
      * 添加路由关系 for Handler
      *
      * @param path    路径
-     * @param handler 处理接口
-     */
-    default void add(String path, Handler handler) {
-        add(path, MethodType.HTTP, handler);
-    }
-
-    /**
-     * 添加路由关系 for Handler
-     *
-     * @param path    路径
-     * @param method  方法
-     * @param handler 处理接口
-     */
-    default void add(String path, MethodType method, Handler handler) {
-        add(path, method, 0, handler);
-    }
-
-    /**
-     * 添加路由关系 for Handler
-     *
-     * @param path    路径
      * @param method  方法
      * @param index   顺序位
      * @param handler 处理接口
@@ -100,17 +78,11 @@ public interface Router {
     /**
      * 添加路由关系 for Handler
      *
-     * @param controllerWrap 控制器包装
+     * @param pathPrefix 路径前缀
+     * @param bw         Bean 包装
+     * @param remoting   是否为远程处理
      */
-    void add(BeanWrap controllerWrap);
-
-    /**
-     * 添加路由关系 for Handler
-     *
-     * @param path           路径
-     * @param controllerWrap 控制器包装
-     */
-    void add(String path, BeanWrap controllerWrap);
+    void add(String pathPrefix, BeanWrap bw, boolean remoting);
 
     /**
      * 区配一个主处理，并获取状态（根据上下文）
@@ -175,4 +147,47 @@ public interface Router {
      * 清空路由关系
      */
     void clear();
+
+    //--------------- ext1
+
+
+    /**
+     * 添加路由关系 for Handler
+     *
+     * @param path    路径
+     * @param handler 处理接口
+     */
+    default void add(String path, Handler handler) {
+        add(path, MethodType.HTTP, handler);
+    }
+
+    /**
+     * 添加路由关系 for Handler
+     *
+     * @param path    路径
+     * @param method  方法
+     * @param handler 处理接口
+     */
+    default void add(String path, MethodType method, Handler handler) {
+        add(path, method, 0, handler);
+    }
+
+    /**
+     * 添加路由关系 for Handler
+     *
+     * @param bw Bean 包装
+     */
+    default void add(BeanWrap bw) {
+        add(null, bw);
+    }
+
+    /**
+     * 添加路由关系 for Handler
+     *
+     * @param pathPrefix 路径前缀
+     * @param bw         Bean 包装
+     */
+    default void add(String pathPrefix, BeanWrap bw) {
+        add(pathPrefix, bw, bw.remoting());
+    }
 }
