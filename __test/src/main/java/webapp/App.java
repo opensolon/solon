@@ -126,7 +126,7 @@ public class App {
                 StaticMappings.add("/", new ExtendStaticRepository());
             });
 
-            x.addPathPrefix("/pp1/", clz -> clz == PathPrefixController.class);
+            x.router().addPathPrefix("/pp1/", clz -> clz == PathPrefixController.class);
 
             StaticMappings.add("/file-a/", new ClassPathStaticRepository("static_test"));
             StaticMappings.add("/ext/", new ExtendStaticRepository());
