@@ -16,6 +16,7 @@
 package org.noear.solon.core.route;
 
 import org.noear.solon.core.BeanWrap;
+import org.noear.solon.core.ChainManager;
 import org.noear.solon.core.FactoryManager;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.util.PathMatcher;
@@ -32,6 +33,12 @@ import java.util.function.Predicate;
  * @since 3.0
  */
 public class RouterDefault implements Router, HandlerSlots {
+    private final ChainManager chains;
+
+    public RouterDefault(ChainManager chains) {
+        this.chains = chains;
+    }
+
     /**
      * 路由表
      *
@@ -185,6 +192,26 @@ public class RouterDefault implements Router, HandlerSlots {
     @Override
     public void clear() {
         table.clear();
+    }
+
+    @Override
+    public void filter(int index, Filter filter) {
+        chains.addFilter(filter, index);
+    }
+
+    @Override
+    public void filterIfAbsent(int index, Filter filter) {
+        chains.addFilterIfAbsent(filter, index);
+    }
+
+    @Override
+    public void routerInterceptor(int index, RouterInterceptor interceptor) {
+        chains.addRouterInterceptor(interceptor, index);
+    }
+
+    @Override
+    public void routerInterceptorIfAbsent(int index, RouterInterceptor interceptor) {
+        chains.addRouterInterceptorIfAbsent(interceptor, index);
     }
 
     //

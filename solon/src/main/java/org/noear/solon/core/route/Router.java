@@ -149,6 +149,66 @@ public interface Router {
      */
     void clear();
 
+    //--------------- ext0
+
+    /**
+     * 添加过滤器（按先进后出策略执行）
+     *
+     * @param index  顺序位
+     * @param filter 过滤器
+     * @since 1.5
+     * @since 3.7
+     */
+    void filter(int index, Filter filter);
+
+    /**
+     * 添加过滤器（按先进后出策略执行）,如果有相同类的则不加
+     *
+     * @param index  顺序位
+     * @param filter 过滤器
+     * @since 2.6
+     * @since 3.7
+     */
+    void filterIfAbsent(int index, Filter filter);
+
+    /**
+     * 添加过滤器（按先进后出策略执行）
+     *
+     * @param filter 过滤器
+     * @since 3.7
+     */
+    default void filter(Filter filter) {
+        filter(0, filter);
+    }
+
+    /**
+     * 添加路由拦截器（按先进后出策略执行）
+     *
+     * @param index       顺序位
+     * @param interceptor 路由拦截器
+     * @since 3.7
+     */
+    void routerInterceptor(int index, RouterInterceptor interceptor);
+
+    /**
+     * 添加路由拦截器（按先进后出策略执行）,如果有相同类的则不加
+     *
+     * @param index       顺序位
+     * @param interceptor 路由拦截器
+     * @since 3.7
+     */
+    void routerInterceptorIfAbsent(int index, RouterInterceptor interceptor);
+
+    /**
+     * 添加路由拦截器（按先进后出策略执行）
+     *
+     * @param interceptor 路由拦截器
+     * @since 3.7
+     */
+    default void routerInterceptor(RouterInterceptor interceptor) {
+        routerInterceptor(0, interceptor);
+    }
+
     //--------------- ext1
 
     /**

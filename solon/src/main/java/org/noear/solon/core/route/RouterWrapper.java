@@ -41,7 +41,7 @@ public abstract class RouterWrapper {
         //顺序不能换
         _app = app;
         _chainManager = new ChainManager(app);
-        _router = new RouterDefault();
+        _router = new RouterDefault(_chainManager);
         _routerHandler = new RouterHandler(_router, _chainManager);
     }
 
@@ -86,7 +86,7 @@ public abstract class RouterWrapper {
      * 添加过滤器（按先进后出策略执行）
      *
      * @param filter 过滤器
-     * @deprecated 3.7 {@link ChainManager#addFilter(Filter, int)}
+     * @deprecated 3.7 {@link Router#filter(Filter)}
      */
     @Deprecated
     public void filter(Filter filter) {
@@ -99,11 +99,11 @@ public abstract class RouterWrapper {
      * @param index  顺序位
      * @param filter 过滤器
      * @since 1.5
-     * @deprecated 3.7 {@link ChainManager#addFilter(Filter, int)}
+     * @deprecated 3.7 {@link Router#filter(int, Filter)}
      */
     @Deprecated
     public void filter(int index, Filter filter) {
-        chains().addFilter(filter, index);
+        _router.filter(index, filter);
     }
 
     /**
@@ -112,22 +112,22 @@ public abstract class RouterWrapper {
      * @param index  顺序位
      * @param filter 过滤器
      * @since 2.6
-     * @deprecated 3.7 {@link ChainManager#addFilterIfAbsent(Filter, int)}
+     * @deprecated 3.7 {@link Router#filterIfAbsent(int, Filter)}
      */
     @Deprecated
     public void filterIfAbsent(int index, Filter filter) {
-        chains().addFilterIfAbsent(filter, index);
+        _router.filterIfAbsent(index, filter);
     }
 
     /**
      * 添加路由拦截器（按先进后出策略执行）
      *
      * @param interceptor 路由拦截器
-     * @deprecated 3.7 {@link ChainManager#addRouterInterceptor(RouterInterceptor, int)}
+     * @deprecated 3.7 {@link Router#routerInterceptor(RouterInterceptor)}
      */
     @Deprecated
     public void routerInterceptor(RouterInterceptor interceptor) {
-        chains().addRouterInterceptor(interceptor, 0);
+        _router.routerInterceptor(interceptor);
     }
 
 
@@ -136,11 +136,11 @@ public abstract class RouterWrapper {
      *
      * @param index       顺序位
      * @param interceptor 路由拦截器
-     * @deprecated 3.7 {@link ChainManager#addRouterInterceptor(RouterInterceptor, int)}
+     * @deprecated 3.7 {@link Router#routerInterceptor(int, RouterInterceptor)}
      */
     @Deprecated
     public void routerInterceptor(int index, RouterInterceptor interceptor) {
-        chains().addRouterInterceptor(interceptor, index);
+        _router.routerInterceptor(index, interceptor);
     }
 
     /**
@@ -148,11 +148,11 @@ public abstract class RouterWrapper {
      *
      * @param index       顺序位
      * @param interceptor 路由拦截器
-     * @deprecated 3.7 {@link ChainManager#addRouterInterceptorIfAbsent(RouterInterceptor, int)}
+     * @deprecated 3.7 {@link Router#routerInterceptorIfAbsent(int, RouterInterceptor)}
      */
     @Deprecated
     public void routerInterceptorIfAbsent(int index, RouterInterceptor interceptor) {
-        chains().addRouterInterceptorIfAbsent(interceptor, index);
+        _router.routerInterceptorIfAbsent(index, interceptor);
     }
 
     /**
