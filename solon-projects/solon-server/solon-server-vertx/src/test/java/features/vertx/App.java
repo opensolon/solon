@@ -11,7 +11,7 @@ import org.noear.solon.core.handle.Context;
 @Controller
 public class App {
     public static void main(String[] args) {
-        Solon.start(ServerText.class, args);
+        Solon.start(ServerTest.class, args);
     }
 
     @Mapping("hello")

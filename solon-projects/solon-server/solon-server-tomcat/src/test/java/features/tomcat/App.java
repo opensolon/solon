@@ -1,4 +1,4 @@
-package features.smarthttp;
+package features.tomcat;
 
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Controller;

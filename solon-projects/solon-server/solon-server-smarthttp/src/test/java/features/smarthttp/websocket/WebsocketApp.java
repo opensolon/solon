@@ -1,6 +1,6 @@
 package features.smarthttp.websocket;
 
-import features.smarthttp.ServerText;
+import features.smarthttp.ServerTest;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
@@ -16,7 +16,7 @@ import org.noear.solon.annotation.Mapping;
 @Controller
 public class WebsocketApp {
     public static void main(String[] args) {
-        Solon.start(ServerText.class, args, app -> app.enableWebSocket(true));
+        Solon.start(ServerTest.class, args, app -> app.enableWebSocket(true));
     }
 
     @Mapping("hello")
