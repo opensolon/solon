@@ -18,6 +18,7 @@ package org.noear.solon;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.AppClassLoader;
 import org.noear.solon.core.NvMap;
+import org.noear.solon.core.route.Router;
 import org.noear.solon.core.util.MultiMap;
 import org.noear.solon.logging.LogIncubator;
 import org.noear.solon.core.runtime.NativeDetector;
@@ -61,7 +62,7 @@ public class Solon {
      * 框架版本号
      */
     public static String version() {
-        return "3.7.0-SNAPSHOT";
+        return "3.7.0";
     }
 
     /**
@@ -106,6 +107,19 @@ public class Solon {
             return null;
         } else {
             return app.context();
+        }
+    }
+
+    /**
+     * 应用路由器
+     *
+     * @since 3.7
+     */
+    public static Router router() {
+        if (app == null) {
+            return null;
+        } else {
+            return app.router();
         }
     }
 
