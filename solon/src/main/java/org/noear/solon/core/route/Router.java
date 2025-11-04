@@ -15,6 +15,7 @@
  */
 package org.noear.solon.core.route;
 
+import org.noear.solon.Solon;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.handle.*;
 
@@ -150,7 +151,6 @@ public interface Router {
 
     //--------------- ext1
 
-
     /**
      * 添加路由关系 for Handler
      *
@@ -189,5 +189,89 @@ public interface Router {
      */
     default void add(String pathPrefix, BeanWrap bw) {
         add(pathPrefix, bw, bw.remoting());
+    }
+
+
+    //--------------- ext2
+
+    /**
+     * 添加主体处理
+     */
+    default void add(String pathPrefix, Class<?> clz) {
+        BeanWrap bw = Solon.context().wrapAndPut(clz);
+        add(pathPrefix, bw);
+    }
+
+    /**
+     * 添加主体处理
+     */
+    default void add(String pathPrefix, Class<?> clz, boolean remoting) {
+        BeanWrap bw = Solon.context().wrapAndPut(clz);
+        add(pathPrefix, bw, remoting);
+    }
+
+
+    /**
+     * 添加所有方法处理
+     */
+    default void all(String path, Handler handler) {
+        add(path, MethodType.ALL, handler);
+    }
+
+    /**
+     * 添加HTTP所有方法的处理（GET,POST,PUT,PATCH,DELETE,HEAD）
+     */
+    default void http(String path, Handler handler) {
+        add(path, MethodType.HTTP, handler);
+    }
+
+    /**
+     * 添加HEAD方法的处理
+     */
+    default void head(String path, Handler handler) {
+        add(path, MethodType.HEAD, handler);
+    }
+
+    /**
+     * 添加GET方法的处理（REST.select 从服务端获取一或多项资源）
+     */
+    default void get(String path, Handler handler) {
+        add(path, MethodType.GET, handler);
+    }
+
+    /**
+     * 添加POST方法的处理（REST.create 在服务端新建一项资源）
+     */
+    default void post(String path, Handler handler) {
+        add(path, MethodType.POST, handler);
+    }
+
+    /**
+     * 添加PUT方法的处理（REST.update 客户端提供改变后的完整资源）
+     */
+    default void put(String path, Handler handler) {
+        add(path, MethodType.PUT, handler);
+    }
+
+    /**
+     * 添加PATCH方法的处理（REST.update 客户端提供改变的属性）
+     */
+    default void patch(String path, Handler handler) {
+        add(path, MethodType.PATCH, handler);
+    }
+
+    /**
+     * 添加DELETE方法的处理（REST.delete 从服务端删除资源）
+     */
+    default void delete(String path, Handler handler) {
+        add(path, MethodType.DELETE, handler);
+    }
+
+
+    /**
+     * 添加socket方法的监听
+     */
+    default void socketd(String path, Handler handler) {
+        add(path, MethodType.SOCKET, handler);
     }
 }

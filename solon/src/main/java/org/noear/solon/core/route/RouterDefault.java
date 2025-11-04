@@ -112,7 +112,7 @@ public class RouterDefault implements Router, HandlerSlots {
 
             FactoryManager.getGlobal()
                     .createLoader(bw, remoting)
-                    .withPathPrefix(pathPrefix) 
+                    .withPathPrefix(pathPrefix)
                     .load(this::doAdd);
         }
     }

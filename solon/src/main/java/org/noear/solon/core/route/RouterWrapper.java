@@ -22,8 +22,6 @@ import org.noear.solon.core.ChainManager;
 import org.noear.solon.core.Constants;
 import org.noear.solon.core.handle.*;
 
-import java.util.function.Predicate;
-
 /**
  * 路由包装器（更简单的使用路由）
  *
@@ -88,7 +86,9 @@ public abstract class RouterWrapper {
      * 添加过滤器（按先进后出策略执行）
      *
      * @param filter 过滤器
+     * @deprecated 3.7 {@link ChainManager#addFilter(Filter, int)}
      */
+    @Deprecated
     public void filter(Filter filter) {
         filter(0, filter);
     }
@@ -99,9 +99,11 @@ public abstract class RouterWrapper {
      * @param index  顺序位
      * @param filter 过滤器
      * @since 1.5
+     * @deprecated 3.7 {@link ChainManager#addFilter(Filter, int)}
      */
+    @Deprecated
     public void filter(int index, Filter filter) {
-        _chainManager.addFilter(filter, index);
+        chains().addFilter(filter, index);
     }
 
     /**
@@ -110,18 +112,22 @@ public abstract class RouterWrapper {
      * @param index  顺序位
      * @param filter 过滤器
      * @since 2.6
+     * @deprecated 3.7 {@link ChainManager#addFilterIfAbsent(Filter, int)}
      */
+    @Deprecated
     public void filterIfAbsent(int index, Filter filter) {
-        _chainManager.addFilterIfAbsent(filter, index);
+        chains().addFilterIfAbsent(filter, index);
     }
 
     /**
      * 添加路由拦截器（按先进后出策略执行）
      *
      * @param interceptor 路由拦截器
+     * @deprecated 3.7 {@link ChainManager#addRouterInterceptor(RouterInterceptor, int)}
      */
+    @Deprecated
     public void routerInterceptor(RouterInterceptor interceptor) {
-        _chainManager.addInterceptor(interceptor, 0);
+        chains().addRouterInterceptor(interceptor, 0);
     }
 
 
@@ -130,9 +136,11 @@ public abstract class RouterWrapper {
      *
      * @param index       顺序位
      * @param interceptor 路由拦截器
+     * @deprecated 3.7 {@link ChainManager#addRouterInterceptor(RouterInterceptor, int)}
      */
+    @Deprecated
     public void routerInterceptor(int index, RouterInterceptor interceptor) {
-        _chainManager.addInterceptor(interceptor, index);
+        chains().addRouterInterceptor(interceptor, index);
     }
 
     /**
@@ -140,9 +148,11 @@ public abstract class RouterWrapper {
      *
      * @param index       顺序位
      * @param interceptor 路由拦截器
+     * @deprecated 3.7 {@link ChainManager#addRouterInterceptorIfAbsent(RouterInterceptor, int)}
      */
+    @Deprecated
     public void routerInterceptorIfAbsent(int index, RouterInterceptor interceptor) {
-        _chainManager.addInterceptorIfAbsent(interceptor, index);
+        chains().addRouterInterceptorIfAbsent(interceptor, index);
     }
 
     /**
@@ -183,24 +193,24 @@ public abstract class RouterWrapper {
         return _app.renders().get(Constants.AT_JSON);
     }
 
-    /**
-     * 添加路径前缀
-     */
-    public void addPathPrefix(String pathPrefix, Predicate<Class<?>> tester) {
-        _router.addPathPrefix(pathPrefix, tester);
-    }
 
     /**
-     * 添加主体处理
+     * 添加处理
+     *
+     * @deprecated 3.7 {@link Router#add(String, Class)}
      */
+    @Deprecated
     public void add(String pathPrefix, Class<?> clz) {
         BeanWrap bw = context().wrapAndPut(clz);
         _router.add(pathPrefix, bw);
     }
 
     /**
-     * 添加主体处理
+     * 添加处理
+     *
+     * @deprecated 3.7 {@link Router#add(String, Class, boolean)}
      */
+    @Deprecated
     public void add(String pathPrefix, Class<?> clz, boolean remoting) {
         BeanWrap bw = context().wrapAndPut(clz);
         bw.remotingSet(remoting);
@@ -208,68 +218,101 @@ public abstract class RouterWrapper {
     }
 
     /**
-     * 添加主体处理
+     * 添加处理
+     *
+     * @deprecated 3.7 {@link Router#add(String, MethodType, Handler)}
      */
+    @Deprecated
     public void add(String path, MethodType method, Handler handler) {
         _router.add(path, method, handler);
     }
 
+    /**
+     * 添加处理
+     *
+     * @deprecated 3.7 {@link Router#add(String, MethodType, int, Handler)}
+     */
+    @Deprecated
     public void add(String path, MethodType method, int index, Handler handler) {
         _router.add(path, method, index, handler);
     }
 
     /**
      * 添加所有方法处理
+     *
+     * @deprecated 3.7 {@link Router#all(String, Handler)}
      */
+    @Deprecated
     public void all(String path, Handler handler) {
         add(path, MethodType.ALL, handler);
     }
 
     /**
      * 添加HTTP所有方法的处理（GET,POST,PUT,PATCH,DELETE,HEAD）
+     *
+     * @deprecated 3.7 {@link Router#http(String, Handler)}
      */
+    @Deprecated
     public void http(String path, Handler handler) {
         add(path, MethodType.HTTP, handler);
     }
 
     /**
      * 添加HEAD方法的处理
+     *
+     * @deprecated 3.7 {@link Router#head(String, Handler)}
      */
+    @Deprecated
     public void head(String path, Handler handler) {
         add(path, MethodType.HEAD, handler);
     }
 
     /**
      * 添加GET方法的处理（REST.select 从服务端获取一或多项资源）
+     *
+     * @deprecated 3.7 {@link Router#get(String, Handler)}
      */
+    @Deprecated
     public void get(String path, Handler handler) {
         add(path, MethodType.GET, handler);
     }
 
     /**
      * 添加POST方法的处理（REST.create 在服务端新建一项资源）
+     *
+     * @deprecated 3.7 {@link Router#post(String, Handler)}
      */
+    @Deprecated
     public void post(String path, Handler handler) {
         add(path, MethodType.POST, handler);
     }
 
     /**
      * 添加PUT方法的处理（REST.update 客户端提供改变后的完整资源）
+     *
+     * @deprecated 3.7 {@link Router#put(String, Handler)}
      */
+    @Deprecated
     public void put(String path, Handler handler) {
         add(path, MethodType.PUT, handler);
     }
 
     /**
      * 添加PATCH方法的处理（REST.update 客户端提供改变的属性）
+     *
+     * @deprecated 3.7 {@link Router#patch(String, Handler)}
      */
+    @Deprecated
     public void patch(String path, Handler handler) {
         add(path, MethodType.PATCH, handler);
     }
 
     /**
      * 添加DELETE方法的处理（REST.delete 从服务端删除资源）
+     *
+     * @deprecated 3.7 {@link Router#delete(String, Handler)}
      */
+    @Deprecated
     public void delete(String path, Handler handler) {
         add(path, MethodType.DELETE, handler);
     }
@@ -277,7 +320,10 @@ public abstract class RouterWrapper {
 
     /**
      * 添加socket方法的监听
+     *
+     * @deprecated 3.7 {@link Router#socketd(String, Handler)}
      */
+    @Deprecated
     public void socketd(String path, Handler handler) {
         add(path, MethodType.SOCKET, handler);
     }

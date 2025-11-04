@@ -100,6 +100,6 @@ public class RouterHandler implements Handler {
         }
 
         //执行
-        chainManager.doIntercept(x, result.getData(), this::handle1);
+        chainManager.doRouterIntercept(x, result.getData(), this::handle1);
     }
 }
