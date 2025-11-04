@@ -98,7 +98,7 @@ public class VxWebHandler implements VxHandler {
 
     private void handle0(VxWebContext ctx) {
         try {
-            ctx.contentType(MimeType.TEXT_PLAIN_UTF8_VALUE);
+            //ctx.contentType(MimeType.TEXT_PLAIN_UTF8_VALUE);
 
             preHandle(ctx);
 

@@ -95,7 +95,7 @@ public class GyHttpContextHandler extends HttpHandler {
                 return;
             }
 
-            ctx.contentType(MimeType.TEXT_PLAIN_UTF8_VALUE);
+            //ctx.contentType(MimeType.TEXT_PLAIN_UTF8_VALUE);
             if (ServerProps.output_meta) {
                 ctx.headerSet("Solon-Server", GyHttpPlugin.solon_server_ver());
             }
