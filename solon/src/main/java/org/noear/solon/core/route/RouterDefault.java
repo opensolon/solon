@@ -52,6 +52,21 @@ public class RouterDefault implements Router, HandlerSlots {
         pathPrefixTester.add(new AbstractMap.SimpleEntry<>(pathPrefix, tester));
     }
 
+    private void doAdd(String path, MethodType method, int index, Handler handler) {
+        RoutingDefault routing = new RoutingDefault<>(path, handler.version(), method, index, handler);
+        table.add(routing);
+    }
+
+    private String doGetPathPrefix(Class<?> clz) {
+        for (Map.Entry<String, Predicate<Class<?>>> entry : pathPrefixTester) {
+            if (entry.getValue().test(clz)) {
+                return entry.getKey();
+            }
+        }
+
+        return null;
+    }
+
     /**
      * 添加路由关系 for Handler
      *
@@ -64,38 +79,41 @@ public class RouterDefault implements Router, HandlerSlots {
     public void add(String path, MethodType method, int index, Handler handler) {
         if (pathPrefixTester.size() > 0) {
             //添加路径前缀支持
+            String pp0;
             if (handler instanceof Action) {
-                Action action = (Action) handler;
-
-                for (Map.Entry<String, Predicate<Class<?>>> entry : pathPrefixTester) {
-                    if (entry.getValue().test(action.controller().rawClz())) {
-                        path = PathUtil.mergePath(entry.getKey(), path);
-                        break;
-                    }
-                }
+                pp0 = doGetPathPrefix(((Action) handler).controller().rawClz());
             } else {
-                for (Map.Entry<String, Predicate<Class<?>>> entry : pathPrefixTester) {
-                    if (entry.getValue().test(handler.getClass())) {
-                        path = PathUtil.mergePath(entry.getKey(), path);
-                        break;
-                    }
-                }
+                pp0 = doGetPathPrefix(handler.getClass());
+            }
+
+            if (pp0 != null) {
+                path = PathUtil.mergePath(pp0, path);
             }
         }
 
-        RoutingDefault routing = new RoutingDefault<>(path, handler.version(), method, index, handler);
-
-        table.add(routing);
+        this.doAdd(path, method, index, handler);
     }
 
 
     @Override
     public void add(String pathPrefix, BeanWrap bw, boolean remoting) {
         if (bw != null) {
+            if (pathPrefixTester.size() > 0) {
+                //添加路径前缀支持
+                String pp0 = doGetPathPrefix(bw.rawClz());
+                if (pp0 != null) {
+                    if (pathPrefix == null) {
+                        pathPrefix = pp0;
+                    } else {
+                        pathPrefix = PathUtil.mergePath(pp0, pathPrefix);
+                    }
+                }
+            }
+
             FactoryManager.getGlobal()
                     .createLoader(bw, remoting)
-                    .withPathPrefix(pathPrefix)
-                    .load(this);
+                    .withPathPrefix(pathPrefix) 
+                    .load(this::doAdd);
         }
     }
 
