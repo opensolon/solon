@@ -835,7 +835,7 @@ public abstract class Context {
         contentTypeDoSet(contentType);
 
         //只记录非默认值
-        if (contentType != null) {
+        if (Utils.isNotEmpty(contentType)) {
             if (contentType.startsWith(MimeType.TEXT_PLAIN_VALUE) == false
                     && contentType.startsWith(MimeType.ALL_VALUE) == false) {
                 contentTypeNew = contentType;
