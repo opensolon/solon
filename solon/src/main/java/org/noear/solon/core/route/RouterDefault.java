@@ -94,12 +94,12 @@ public class RouterDefault implements Router, HandlerSlots {
             ActionLoader al = FactoryManager.getGlobal()
                     .createLoader(controllerWrap);
 
-            if (controllerWrap.remoting()) {
-                if (al.mapping() == null) {
-                    //如果类没有 mapping，则不进行  remoting注册
-                    return;
-                }
-            }
+//            if (controllerWrap.remoting()) {
+//                if (Assert.isEmpty(al.mapping())) {
+//                    //如果类没有 mapping，则不进行  remoting注册 //感觉没啥必要性？@
+//                    return;
+//                }
+//            }
 
             al.load(this);
         }

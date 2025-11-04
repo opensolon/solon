@@ -31,7 +31,7 @@ import java.util.function.Predicate;
  * @since 1.8
  * @since 3.0
  */
-public abstract class RouterWrapper implements HandlerSlots {
+public abstract class RouterWrapper {
     private Router _router;
     private RouterHandler _routerHandler;
     private ChainManager _chainManager;
@@ -184,41 +184,38 @@ public abstract class RouterWrapper implements HandlerSlots {
     }
 
     /**
-     * 添加主体处理
-     */
-    @Override
-    public void add(String expr, MethodType method, Handler handler) {
-        _router.add(expr, method, handler);
-    }
-
-    /**
      * 添加路径前缀
-     *
      */
     public void addPathPrefix(String pathPrefix, Predicate<Class<?>> tester) {
         _router.addPathPrefix(pathPrefix, tester);
     }
 
-    @Override
-    public void add(String expr, MethodType method, int index, Handler handler) {
-        _router.add(expr, method, index, handler);
-    }
-
     /**
      * 添加主体处理
      */
-    public void add(String expr, Class<?> clz) {
+    public void add(String path, Class<?> clz) {
         BeanWrap bw = context().wrapAndPut(clz);
-        _router.add(expr, bw);
+        _router.add(path, bw);
     }
 
     /**
      * 添加主体处理
      */
-    public void add(String expr, Class<?> clz, boolean remoting) {
+    public void add(String path, Class<?> clz, boolean remoting) {
         BeanWrap bw = context().wrapAndPut(clz);
         bw.remotingSet(remoting);
-        _router.add(expr, bw);
+        _router.add(path, bw);
+    }
+
+    /**
+     * 添加主体处理
+     */
+    public void add(String path, MethodType method, Handler handler) {
+        _router.add(path, method, handler);
+    }
+
+    public void add(String path, MethodType method, int index, Handler handler) {
+        _router.add(path, method, index, handler);
     }
 
     /**
