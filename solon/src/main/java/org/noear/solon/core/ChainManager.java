@@ -127,15 +127,15 @@ public class ChainManager {
     /**
      * 路由拦截器节点
      */
-    private final List<RankEntity<RouterInterceptor>> interceptorNodes = new ArrayList<>();
+    private final List<RankEntity<RouterInterceptor>> routerInterceptorNodes = new ArrayList<>();
 
     /**
      * 获取所有路由拦截器
      */
-    public Collection<RouterInterceptor> getInterceptorNodes() {
+    public Collection<RouterInterceptor> getRouterInterceptorNodes() {
         List<RouterInterceptor> tmp = new ArrayList<>();
 
-        for (RankEntity<RouterInterceptor> entity : interceptorNodes) {
+        for (RankEntity<RouterInterceptor> entity : routerInterceptorNodes) {
             if (entity.target instanceof RouterInterceptorLimiter) {
                 tmp.add(((RouterInterceptorLimiter) entity.target).getInterceptor());
             } else {
@@ -150,15 +150,15 @@ public class ChainManager {
     /**
      * 添加路由拦截器
      */
-    public void addInterceptor(RouterInterceptor interceptor, int index) {
+    public void addRouterInterceptor(RouterInterceptor interceptor, int index) {
         SYNC_LOCK.lock();
 
         try {
             typeSet.add(interceptor.getClass());
 
             interceptor = new RouterInterceptorLimiter(interceptor, interceptor.pathPatterns());
-            interceptorNodes.add(new RankEntity<>(interceptor, index));
-            interceptorNodes.sort(Comparator.comparingInt(f -> f.index));
+            routerInterceptorNodes.add(new RankEntity<>(interceptor, index));
+            routerInterceptorNodes.sort(Comparator.comparingInt(f -> f.index));
         } finally {
             SYNC_LOCK.unlock();
         }
@@ -167,7 +167,7 @@ public class ChainManager {
     /**
      * 添加路由拦截器，如果有相同类的则不加
      */
-    public void addInterceptorIfAbsent(RouterInterceptor interceptor, int index) {
+    public void addRouterInterceptorIfAbsent(RouterInterceptor interceptor, int index) {
         SYNC_LOCK.lock();
 
         try {
@@ -179,8 +179,8 @@ public class ChainManager {
             typeSet.add(interceptor.getClass());
 
             interceptor = new RouterInterceptorLimiter(interceptor, interceptor.pathPatterns());
-            interceptorNodes.add(new RankEntity<>(interceptor, index));
-            interceptorNodes.sort(Comparator.comparingInt(f -> f.index));
+            routerInterceptorNodes.add(new RankEntity<>(interceptor, index));
+            routerInterceptorNodes.sort(Comparator.comparingInt(f -> f.index));
         } finally {
             SYNC_LOCK.unlock();
         }
@@ -189,13 +189,13 @@ public class ChainManager {
     /**
      * 移除路由拦截器
      */
-    public <T extends RouterInterceptor> void removeInterceptor(Class<T> clz) {
+    public <T extends RouterInterceptor> void removeRouterInterceptor(Class<T> clz) {
         SYNC_LOCK.lock();
 
         try {
             typeSet.add(clz);
 
-            interceptorNodes.removeIf(i -> {
+            routerInterceptorNodes.removeIf(i -> {
                 if (i.target instanceof RouterInterceptorLimiter) {
                     return ((RouterInterceptorLimiter) i.target).getInterceptor().getClass() == clz;
                 } else {
@@ -210,9 +210,9 @@ public class ChainManager {
     /**
      * 执行路由拦截
      */
-    public void doIntercept(Context x, Handler mainHandler, Handler lastHandler) throws Throwable {
+    public void doRouterIntercept(Context x, Handler mainHandler, Handler lastHandler) throws Throwable {
         //先执行的，包住后执行的
-        new RouterInterceptorChainImpl(interceptorNodes, lastHandler).doIntercept(x, mainHandler);
+        new RouterInterceptorChainImpl(routerInterceptorNodes, lastHandler).doIntercept(x, mainHandler);
     }
 
     /**
@@ -220,8 +220,8 @@ public class ChainManager {
      */
     public void postArguments(Context x, ParamWrap[] args, Object[] vals) throws Throwable {
         //后执行的，包住先执行的（与 doIntercept 的顺序反了一下）
-        for (int i = interceptorNodes.size() - 1; i >= 0; i--) {
-            RankEntity<RouterInterceptor> e = interceptorNodes.get(i);
+        for (int i = routerInterceptorNodes.size() - 1; i >= 0; i--) {
+            RankEntity<RouterInterceptor> e = routerInterceptorNodes.get(i);
             e.target.postArguments(x, args, vals);
         }
     }
@@ -231,8 +231,8 @@ public class ChainManager {
      */
     public Object postResult(Context x, @Nullable Object result) throws Throwable {
         //后执行的，包住先执行的（与 doIntercept 的顺序反了一下）
-        for (int i = interceptorNodes.size() - 1; i >= 0; i--) {
-            RankEntity<RouterInterceptor> e = interceptorNodes.get(i);
+        for (int i = routerInterceptorNodes.size() - 1; i >= 0; i--) {
+            RankEntity<RouterInterceptor> e = routerInterceptorNodes.get(i);
             result = e.target.postResult(x, result);
         }
 
