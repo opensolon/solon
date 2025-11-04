@@ -61,7 +61,10 @@ public abstract class RouterWrapper {
 
     /**
      * 处理链管理器
+     *
+     * @deprecated 3.7 {@link #chains()}
      */
+    @Deprecated
     public ChainManager chainManager() { //预计 v4.0 后标为弃用
         return chains();
     }

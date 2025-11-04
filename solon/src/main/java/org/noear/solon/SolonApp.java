@@ -174,7 +174,10 @@ public class SolonApp extends RouterWrapper {
 
     /**
      * 处理链管理器
+     *
+     * @deprecated 3.7 {@link #chains()}
      */
+    @Deprecated
     @Override
     public ChainManager chainManager() { //预计 v4.0 后标为弃用
         return super.chains();
