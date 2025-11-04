@@ -22,6 +22,8 @@ import org.noear.solon.core.event.EventListener;
 import org.noear.solon.core.event.*;
 import org.noear.solon.core.exception.StatusException;
 import org.noear.solon.core.handle.*;
+import org.noear.solon.core.route.Router;
+import org.noear.solon.core.route.RouterHandler;
 import org.noear.solon.core.route.RouterWrapper;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.serialize.SerializerManager;
@@ -152,6 +154,40 @@ public class SolonApp extends RouterWrapper {
      */
     public FactoryManager factories() {
         return FactoryManager.getGlobal();
+    }
+
+    /**
+     * 路由器处理器
+     */
+    @Override
+    public RouterHandler routerHandler() {
+        return super.routerHandler();
+    }
+
+    /**
+     * 路由器
+     */
+    @Override
+    public Router router() {
+        return super.router();
+    }
+
+    /**
+     * 处理链管理器
+     */
+    @Override
+    public ChainManager chainManager() { //预计 v4.0 后标为弃用
+        return super.chains();
+    }
+
+    /**
+     * 处理链管理器
+     *
+     * @since 3.6
+     */
+    @Override
+    public ChainManager chains() {
+        return super.chains();
     }
 
     /**
