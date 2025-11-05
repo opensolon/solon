@@ -34,6 +34,10 @@
 * 引入 `solon-expression` 替代 `solon` 内的表达式
 
 
+### 3.5.7
+
+* smart-http 升为 2.5.14-r2
+
 ### 3.5.5
 
 * 添加 `solon-net-httputils` HttpUtilsBuilder:factory 方法
