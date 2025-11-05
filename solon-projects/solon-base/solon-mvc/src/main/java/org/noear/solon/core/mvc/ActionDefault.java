@@ -254,6 +254,10 @@ public class ActionDefault extends HandlerAide implements Action {
         //设定输出产品（放在这个位置正好）
         if (Utils.isNotEmpty(mProduces)) {
             x.contentType(mProduces);
+        } else {
+            if (x.contentTypeNew() == null) {
+                x.contentType(MimeType.TEXT_PLAIN_UTF8_VALUE);
+            }
         }
 
         invoke(x, null);
