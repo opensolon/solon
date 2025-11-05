@@ -27,6 +27,11 @@
 * 使用 solon-expression 替代其它临时的表达式处理 //ok
 
 
+### 3.6.4
+
+* 修复 solon-ai parseToolCall 接收 stream 中间消息时可能会异常（添加 hasNestedJsonBlock 检测）
+
+
 ### 3.6.3
 
 * 优化 solon-server 不再默认输出 TEXT_PLAIN_UTF8_VALUE（允许空 content-type）
