@@ -40,7 +40,7 @@ public class SolonServletHandler extends HttpServlet {
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         SolonServletContext ctx = new SolonServletContext(request, response);
-        ctx.contentType(MimeType.TEXT_PLAIN_UTF8_VALUE);
+        //ctx.contentType(MimeType.TEXT_PLAIN_UTF8_VALUE);
 
         preHandle(ctx);
 
