@@ -111,19 +111,6 @@ public class Solon {
     }
 
     /**
-     * 应用路由器
-     *
-     * @since 3.7
-     */
-    public static Router router() {
-        if (app == null) {
-            return null;
-        } else {
-            return app.router();
-        }
-    }
-
-    /**
      * 应用源码位置
      */
     public static URL location() {
