@@ -35,6 +35,7 @@
 * 添加 solon Router:addPathPrefix(path, tester) 方法
 * 添加 solon Context:localPort() 方法
 * 添加 solon-server-smarthttp 有 tomcat 时的启动控制
+* 优化 solon-web-staticfiles StaticResourceHandler 的 Cache-Control 处理（允许外部设定并优先）
 * 调整 solon-config-plus 标为弃用，由 solon-config-snack3 或 solon-config-snack4 替代
 * 调整 solon-net WebSocket:remoteAddress, localAddress 移除 throws IOException
 * 调整 solon ActionLoader, ActionLoaderFactory 内部接口设计
