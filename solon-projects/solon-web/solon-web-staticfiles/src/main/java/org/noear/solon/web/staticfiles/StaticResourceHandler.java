@@ -100,21 +100,20 @@ public class StaticResourceHandler implements Handler {
         if (resUri != null) {
             ctx.setHandled(true);
 
-            if(StaticConfig.getCacheMaxAge() > 0) {
-                String modified_since = ctx.header("If-Modified-Since");
-                String modified_now = DateUtil.toGmtString(modified_time);
+            String modified_since = ctx.header("If-Modified-Since");
+            String modified_now = DateUtil.toGmtString(modified_time);
 
-                if (modified_since != null) {
-                    if (modified_since.equals(modified_now)) {
-                        ctx.headerSet(CACHE_CONTROL, "max-age=" + StaticConfig.getCacheMaxAge());//单位秒
-                        ctx.headerSet(LAST_MODIFIED, modified_now);
-                        ctx.status(304);
-                        return;
-                    }
-                }
-
+            if(ctx.headerValuesOfResponse("headerValuesOfResponse")== null){
+                // 用户设置优先,用户不设置时才会使用配置文件或默认配置
                 ctx.headerSet(CACHE_CONTROL, "max-age=" + StaticConfig.getCacheMaxAge());//单位秒
-                ctx.headerSet(LAST_MODIFIED, modified_now);
+            }
+
+            ctx.headerSet(LAST_MODIFIED, modified_now);
+            if (modified_since != null) {
+                if (modified_since.equals(modified_now)) {
+                    ctx.status(304);
+                    return;
+                }
             }
 
 
