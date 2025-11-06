@@ -34,7 +34,7 @@ public class StaticConfig {
 
     static {
         if (Solon.cfg().isDebugMode()) {
-            cacheMaxAge = -1;
+            cacheMaxAge = 0;
         } else {
             String tmp = Solon.cfg().get(PROP_CACHE_MAX_AGE);
 
