@@ -47,7 +47,7 @@
 * 启用 eggg 作为类元信息构建机制
 * 升级 mcp-java-sdk 为 0.14.x？？？
 * redisx 升为 1.8.1（snack3 切换为 snack4）
-* snack4 升为 4.0.7
+* snack4 升为 4.0.8
 * wood 升为 1.4.1
 * log4j 升为 2.25.2
 * logback 升为 1.3.16
