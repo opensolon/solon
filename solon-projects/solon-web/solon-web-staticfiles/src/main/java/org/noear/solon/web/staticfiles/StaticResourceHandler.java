@@ -103,7 +103,7 @@ public class StaticResourceHandler implements Handler {
             String modified_since = ctx.header("If-Modified-Since");
             String modified_now = DateUtil.toGmtString(modified_time);
 
-            if(ctx.headerValuesOfResponse("headerValuesOfResponse")== null){
+            if(ctx.headerValuesOfResponse(CACHE_CONTROL)== null){
                 // 用户设置优先,用户不设置时才会使用配置文件或默认配置
                 ctx.headerSet(CACHE_CONTROL, "max-age=" + StaticConfig.getCacheMaxAge());//单位秒
             }
