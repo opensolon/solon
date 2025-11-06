@@ -15,6 +15,8 @@
  */
 package org.noear.solon.web.sse;
 
+import java.time.Duration;
+
 /**
  * Sse 事件
  *
@@ -29,7 +31,7 @@ public class SseEvent {
      * 添加 SSE "id" 行.
      */
     public SseEvent id(String id) {
-        append("id:").append(id).append("\n");
+        buf.append("id:").append(id).append('\n');
         return this;
     }
 
@@ -37,7 +39,7 @@ public class SseEvent {
      * 添加 SSE "event" 行.
      */
     public SseEvent name(String name) {
-        append("event:").append(name).append("\n");
+        buf.append("event:").append(name).append('\n');
         return this;
     }
 
@@ -45,7 +47,15 @@ public class SseEvent {
      * 添加 SSE "retry" 行.
      */
     public SseEvent reconnectTime(long reconnectTimeMillis) {
-        append("retry:").append(String.valueOf(reconnectTimeMillis)).append("\n");
+        return retry(reconnectTimeMillis);
+    }
+
+    public SseEvent retry(Duration duration) {
+        return retry(duration.toMillis());
+    }
+
+    public SseEvent retry(long reconnectTimeMillis) {
+        buf.append("retry:").append(String.valueOf(reconnectTimeMillis)).append('\n');
         return this;
     }
 
@@ -53,7 +63,7 @@ public class SseEvent {
      * 添加 SSE "data" 行.
      */
     public SseEvent data(Object object) {
-        append("data:").append(object.toString()).append("\n");
+        buf.append("data:").append(object.toString()).append('\n');
         return this;
     }
 
@@ -61,7 +71,7 @@ public class SseEvent {
      * 添加 SSE "comment" 行.
      */
     public SseEvent comment(String comment) {
-        append(":").append(comment.replace("\n", "\n:")).append("\n");
+        buf.append(":").append(comment.replace("\n", "\n:")).append('\n');
         return this;
     }
 
@@ -79,10 +89,5 @@ public class SseEvent {
     @Override
     public String toString() {
         return buf.toString();
-    }
-
-    SseEvent append(String text) {
-        this.buf.append(text);
-        return this;
     }
 }

@@ -18,6 +18,7 @@ package org.noear.solon.net.http.textstream;
 import org.noear.solon.Utils;
 
 import java.io.Serializable;
+import java.time.Duration;
 import java.util.Map;
 
 /**
@@ -31,6 +32,7 @@ public class ServerSentEvent implements Serializable {
     private String id;
     private String event;
     private String retry;
+    private String comment;
 
     public ServerSentEvent() {
         //用于反序列化
@@ -49,6 +51,10 @@ public class ServerSentEvent implements Serializable {
     }
 
     public ServerSentEvent(String id, String event, String data, String retry) {
+        this(id, event, data, retry, null);
+    }
+
+    public ServerSentEvent(String id, String event, String data, String retry, String comment) {
         this.id = id;
         this.event = event;
         this.retry = retry;
@@ -56,8 +62,11 @@ public class ServerSentEvent implements Serializable {
         if (data != null) {
             this.data = data.trim();
         }
+
+        this.comment = comment;
     }
 
+    //序列化用
     public String getData() {
         return data;
     }
@@ -72,6 +81,10 @@ public class ServerSentEvent implements Serializable {
 
     public String getRetry() {
         return retry;
+    }
+
+    public String getComment() {
+        return comment;
     }
 
     /**
@@ -106,25 +119,79 @@ public class ServerSentEvent implements Serializable {
         return this.retry;
     }
 
+    /**
+     * @deprecated 3.1 {@link #getComment()}
+     */
+    @Deprecated
+    public String comment() {
+        return comment;
+    }
+
     @Override
     public String toString() {
         StringBuilder buf = new StringBuilder();
         if (Utils.isNotEmpty(id)) {
-            buf.append("id:").append(id).append("\n");
+            buf.append("id:").append(id).append('\n');
         }
 
         if (Utils.isNotEmpty(event)) {
-            buf.append("event:").append(event).append("\n");
+            buf.append("event:").append(event).append('\n');
         }
 
         if (Utils.isNotEmpty(data)) {
-            buf.append("data:").append(data).append("\n");
+            buf.append("data:").append(data).append('\n');
         }
 
         if (Utils.isNotEmpty(retry)) {
-            buf.append("retry:").append(retry).append("\n");
+            buf.append("retry:").append(retry).append('\n');
+        }
+
+        if (this.comment != null) {
+            buf.append(':').append(this.comment.replace("\n", "\n:")).append('\n');
         }
 
         return buf.toString();
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+        private ServerSentEvent sse = new ServerSentEvent();
+
+        public Builder id(String id) {
+            sse.id = id;
+            return this;
+        }
+
+        public Builder event(String event) {
+            sse.event = event;
+            return this;
+        }
+
+        public Builder data(String data) {
+            sse.data = data;
+            return this;
+        }
+
+        public Builder retry(String retry) {
+            sse.retry = retry;
+            return this;
+        }
+
+        public Builder retry(Duration retry) {
+            sse.retry = String.valueOf(retry.toMillis());
+            return this;
+        }
+
+        public Builder comment(String comment) {
+            sse.comment = comment;
+            return this;
+        }
+
+        public ServerSentEvent build() {
+            return sse;
+        }
     }
 }
