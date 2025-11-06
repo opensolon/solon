@@ -28,6 +28,11 @@
 * 把 Plugin 统一交给 AppContext 管理（之前由 SolonApp 或 PluginPackage 管理）
 * Plugin 添加 postStart 事件
 
+
+### 3.4.8
+
+* 修复 solon-ai parseToolCall 接收 stream 中间消息时可能会异常（添加 hasNestedJsonBlock 检测）
+
 ### 3.4.7
 
 * 修复 `solon-rx` SimpleSubscriber 长流输出可能出错的问题
