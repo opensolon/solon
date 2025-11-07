@@ -30,6 +30,7 @@
 ### v3.7.1
 
 * 添加 solon Router:add(clz) 方法
+* 修复 solon AppContext:tryBuildBeanOfClass2 出现 getCreator 异常的问题
 
 ### 3.7.0
 
