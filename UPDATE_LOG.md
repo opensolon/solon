@@ -27,6 +27,10 @@
 * 使用 solon-expression 替代其它临时的表达式处理 //ok
 * 升级 mcp-java-sdk 为 0.14.x？？？
 
+### v3.7.1
+
+* 添加 solon Router:add(clz) 方法
+
 ### 3.7.0
 
 * 升级 snack3 切换为 snack4
