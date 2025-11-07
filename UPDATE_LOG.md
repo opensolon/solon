@@ -25,6 +25,7 @@
 * 添加 Plugin postStart 事件???
 * 调整 Plugin 统一交给 AppContext 管理（之前由 SolonApp 或 PluginPackage 管理）？？
 * 使用 solon-expression 替代其它临时的表达式处理 //ok
+* 升级 mcp-java-sdk 为 0.14.x？？？
 
 ### 3.7.0
 
@@ -50,10 +51,9 @@
 * 修复 solon-ai-mcp 可能出现 Unknown media type 错误（取消 request.contentType 空设置）
 * 移除 solon.xxx 和 nami.xxx 风格的发布包
 * 启用 eggg 作为类元信息构建机制
-* 升级 mcp-java-sdk 为 0.14.x？？？
-* redisx 升为 1.8.1（snack3 切换为 snack4）
+* redisx 升为 1.8.2（snack3 切换为 snack4）
 * snack4 升为 4.0.8
-* wood 升为 1.4.1
+* wood 升为 1.4.2
 * log4j 升为 2.25.2
 * logback 升为 1.3.16
 * micrometer 升为 1.15.5 
