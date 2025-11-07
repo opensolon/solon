@@ -233,7 +233,7 @@ public interface Router {
     }
 
     /**
-     * 添加控制器类
+     * 添加控制器
      *
      * @param bw Bean 包装
      */
@@ -242,7 +242,7 @@ public interface Router {
     }
 
     /**
-     * 添加控制器类
+     * 添加控制器
      *
      * @param pathPrefix 路径前缀
      * @param bw         Bean 包装
