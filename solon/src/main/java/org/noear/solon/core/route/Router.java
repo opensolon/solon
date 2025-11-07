@@ -256,6 +256,16 @@ public interface Router {
 
     /**
      * 添加主体处理
+     *
+     * @since 3.7
+     */
+    default void add(Class<?> clz) {
+        BeanWrap bw = Solon.context().wrapAndPut(clz);
+        add(null, bw);
+    }
+
+    /**
+     * 添加主体处理
      */
     default void add(String pathPrefix, Class<?> clz) {
         BeanWrap bw = Solon.context().wrapAndPut(clz);
