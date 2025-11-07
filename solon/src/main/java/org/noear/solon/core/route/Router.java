@@ -233,7 +233,7 @@ public interface Router {
     }
 
     /**
-     * 添加路由关系 for Handler
+     * 添加控制器类
      *
      * @param bw Bean 包装
      */
@@ -242,7 +242,7 @@ public interface Router {
     }
 
     /**
-     * 添加路由关系 for Handler
+     * 添加控制器类
      *
      * @param pathPrefix 路径前缀
      * @param bw         Bean 包装
@@ -255,9 +255,9 @@ public interface Router {
     //--------------- ext2
 
     /**
-     * 添加主体处理
+     * 添加控制器类
      *
-     * @since 3.7
+     * @since 3.7.1
      */
     default void add(Class<?> clz) {
         BeanWrap bw = Solon.context().wrapAndPut(clz);
@@ -265,7 +265,7 @@ public interface Router {
     }
 
     /**
-     * 添加主体处理
+     * 添加控制器类
      */
     default void add(String pathPrefix, Class<?> clz) {
         BeanWrap bw = Solon.context().wrapAndPut(clz);
@@ -273,7 +273,7 @@ public interface Router {
     }
 
     /**
-     * 添加主体处理
+     * 添加控制器类
      */
     default void add(String pathPrefix, Class<?> clz, boolean remoting) {
         BeanWrap bw = Solon.context().wrapAndPut(clz);
