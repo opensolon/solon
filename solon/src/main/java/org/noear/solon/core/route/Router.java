@@ -212,7 +212,7 @@ public interface Router {
     //--------------- ext1
 
     /**
-     * 添加路由关系 for Handler
+     * 添加路径处理
      *
      * @param path    路径
      * @param handler 处理接口
@@ -222,7 +222,7 @@ public interface Router {
     }
 
     /**
-     * 添加路由关系 for Handler
+     * 添加路径处理
      *
      * @param path    路径
      * @param method  方法
