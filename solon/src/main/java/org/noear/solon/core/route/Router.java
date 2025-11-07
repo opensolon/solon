@@ -32,7 +32,7 @@ import java.util.function.Predicate;
  *             //
  *             //路由手写模式
  *             //
- *             app.get("/hello/*",c->coutput("heollo world;"));
+ *             app.router().get("/hello/*",c->coutput("heollo world;"));
  *         });
  *     }
  * }
