@@ -1073,8 +1073,8 @@ public class AppContext extends BeanContainer {
     private void tryBuildBeanOfClass2(Class<?> clz, BeanBuilder builder, Annotation anno) throws Throwable {
         ClassEggg clzEggg = EgggUtil.getClassEggg(clz);
 
-        if (clzEggg.getCreator().getParamCount() == 0) {
-            tryBuildBeanOfClass3(clz, builder, anno, clzEggg.getCreator(), new Object[0]);
+        if (clzEggg.getCreator() == null || clzEggg.getCreator().getParamCount() == 0) {
+            tryBuildBeanOfClass3(clz, builder, anno, null, null);
         } else {
             //包装（处理泛型参数）
             tryBuildArgsOfMethod(this, 2, clz, clzEggg.getCreator().getParamEgggAry(), (args2) -> {
@@ -1086,7 +1086,7 @@ public class AppContext extends BeanContainer {
 
     private void tryBuildBeanOfClass3(Class<?> clz, BeanBuilder builder, Annotation anno, ConstrEggg rawCon, Object[] rawConArgs) throws Throwable {
         //包装
-        BeanWrap bw = new BeanWrap(this, clz, (Constructor) rawCon.getConstr(), rawConArgs);
+        BeanWrap bw = new BeanWrap(this, clz, (rawCon == null ? null : (Constructor) rawCon.getConstr()), rawConArgs);
         //执行构建
         builder.doBuild(clz, bw, anno);
         //尝试入库
