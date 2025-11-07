@@ -41,6 +41,8 @@
 
 ### 3.5.7
 
+* 优化 solon-server 不再默认输出 TEXT_PLAIN_UTF8_VALUE（允许空 content-type）
+* 优化 solon-handle Action 默认为 TEXT_PLAIN_UTF8_VALUE
 * smart-http 升为 2.5.14-r2
 
 ### 3.5.5
