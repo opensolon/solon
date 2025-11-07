@@ -61,7 +61,7 @@
 * undertow 升为 2.2.38.Final
 * socketd 升为 2.5.20
 * smartsocket 升为 1.7.4
-* smarthttp 升为 2.5.15
+* smarthttp 升为 2.5.16
 
 
 | 快捷组合包      | 调整情况                                                           |
