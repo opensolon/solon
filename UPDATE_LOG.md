@@ -30,7 +30,7 @@
 ### v3.7.1
 
 * 添加 solon Router:add(clz) 方法
-* 修复 solon AppContext:tryBuildBeanOfClass2 目标组件为接口时出现 getCreator null 异常
+* 修复 solon AppContext:tryBuildBeanOfClass2 目标组件为接口时出现 getCreator null 异常（边界问题）
 
 ### 3.7.0
 
