@@ -35,7 +35,7 @@ public class ProxyBinderExt extends ProxyBinder {
             throw new IllegalStateException("Interfaces are not supported as proxy components: " + bw.clz().getName());
         }
 
-        int modifier = bw.clz().getModifiers();
+        int modifier = bw.rawClz().getModifiers();
         if (Modifier.isFinal(modifier)) {
             throw new IllegalStateException("Final classes are not supported as proxy components: " + bw.clz().getName());
         }

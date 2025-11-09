@@ -43,15 +43,15 @@ public class BeanWrap {
     static final Logger log = LoggerFactory.getLogger(BeanWrap.class);
 
     // bean clz
-    private Class<?> clz;
+    private final Class<?> clz;
     // bean lifecycle
     private BeanWrapLifecycle lifecycle;
     // bean raw（初始实例）
     private Constructor rawCtor;
     private Object[] rawCtorArgs;
     private Object raw;
-    private Object rawUnproxied;
-    private Class<?> rawClz;
+    private final Object rawUnproxied; //未被代理的
+    private final Class<?> rawClz;
     private ClassEggg rawEggg;
 
     // 是否为单例
@@ -162,6 +162,8 @@ public class BeanWrap {
 
         if (rawUnproxied != null) {
             rawClz = rawUnproxied.getClass();
+        } else {
+            rawClz = clz;
         }
 
         //尝试初始化
@@ -290,11 +292,7 @@ public class BeanWrap {
     }
 
     public Class<?> rawClz() {
-        if (rawClz == null) {
-            return clz;
-        } else {
-            return rawClz;
-        }
+        return rawClz;
     }
 
     public ClassEggg rawEggg() {
