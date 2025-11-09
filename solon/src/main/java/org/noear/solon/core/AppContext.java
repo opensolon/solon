@@ -1060,7 +1060,7 @@ public class AppContext extends BeanContainer {
                     if (builder != null) {
                         try {
                             state = build_bean_ofclass_state2;
-                            tryBuildBeanOfClass2(clz, builder, a);
+                            tryBuildBeanOfClass2(clz, builder, a, annS);
                         } catch (Throwable e) {
                             e = Utils.throwableUnwrap(e);
                             if (e instanceof RuntimeException) {
@@ -1077,26 +1077,26 @@ public class AppContext extends BeanContainer {
         return state;
     }
 
-    private void tryBuildBeanOfClass2(Class<?> clz, BeanBuilder builder, Annotation anno) throws Throwable {
+    private void tryBuildBeanOfClass2(Class<?> clz, BeanBuilder builder, Annotation anno, Annotation[] annoS) throws Throwable {
         ClassEggg clzEggg = EgggUtil.getClassEggg(clz);
 
         if (clzEggg.getCreator() == null) {
             //没有（可能是接口）
-            tryBuildBeanOfClass3(clz, builder, anno, null, null);
+            tryBuildBeanOfClass3(clz, builder, anno, null, null, annoS);
         } else if (clzEggg.getCreator().getParamCount() == 0) {
             //默认构造方法
-            tryBuildBeanOfClass3(clz, builder, anno, (Constructor) clzEggg.getCreator().getConstr(), new Object[0]);
+            tryBuildBeanOfClass3(clz, builder, anno, (Constructor) clzEggg.getCreator().getConstr(), new Object[0], annoS);
         } else {
             //有参数的构造方法。需处理泛型参数
             tryBuildArgsOfMethod(this, 2, clz, clzEggg.getCreator().getParamEgggAry(), (args2) -> {
-                tryBuildBeanOfClass3(clz, builder, anno, (Constructor) clzEggg.getCreator().getConstr(), args2);
+                tryBuildBeanOfClass3(clz, builder, anno, (Constructor) clzEggg.getCreator().getConstr(), args2, annoS);
             });
         }
     }
 
-    private void tryBuildBeanOfClass3(Class<?> clz, BeanBuilder builder, Annotation anno, Constructor rawCon, Object[] rawConArgs) throws Throwable {
+    private void tryBuildBeanOfClass3(Class<?> clz, BeanBuilder builder, Annotation anno, Constructor rawCon, Object[] rawConArgs, Annotation[] annoS) throws Throwable {
         //包装
-        BeanWrap bw = new BeanWrap(this, clz, rawCon, rawConArgs);
+        BeanWrap bw = new BeanWrap(this, clz, rawCon, rawConArgs, annoS);
         //执行构建
         builder.doBuild(clz, bw, anno);
         //尝试入库

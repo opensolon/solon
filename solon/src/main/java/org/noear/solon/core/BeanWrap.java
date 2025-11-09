@@ -69,7 +69,7 @@ public class BeanWrap {
     // bean 代理（为ASM代理提供接口支持）
     private BeanWrap.Proxy proxy;
     // bean clz 的注解（算是缓存起来）
-    private final Annotation[] annotations;
+    private Annotation[] annotations;
 
     private final AppContext context;
     private Set<ParameterizedType> genericList;
@@ -126,17 +126,17 @@ public class BeanWrap {
     }
 
     public BeanWrap(AppContext context, Class<?> clz, Object raw, String name, boolean typed, String initMethodName, String destroyMethodName) {
-        this(context, clz, raw, name, typed, initMethodName, destroyMethodName, null, null);
+        this(context, clz, raw, name, typed, initMethodName, destroyMethodName, null, null, null);
     }
 
-    public BeanWrap(AppContext context, Class<?> clz, Constructor rawCtor, Object[] rawCtorArgs) {
-        this(context, clz, null, null, false, null, null, rawCtor, rawCtorArgs);
+    public BeanWrap(AppContext context, Class<?> clz, Constructor rawCtor, Object[] rawCtorArgs, Annotation[] annoS) {
+        this(context, clz, null, null, false, null, null, rawCtor, rawCtorArgs, annoS);
     }
 
     /**
      * @since 1.10
      */
-    public BeanWrap(AppContext context, Class<?> clz, Object raw, String name, boolean typed, String initMethodName, String destroyMethodName, Constructor rawCtor, Object[] rawCtorArgs) {
+    protected BeanWrap(AppContext context, Class<?> clz, Object raw, String name, boolean typed, String initMethodName, String destroyMethodName, Constructor rawCtor, Object[] rawCtorArgs, Annotation[] annoS) {
         this.context = context;
         this.clz = clz;
         this.name = name;
@@ -149,7 +149,7 @@ public class BeanWrap {
         Singleton anoS = clz.getAnnotation(Singleton.class);
         singleton = (anoS == null || anoS.value()); //默认为单例
 
-        annotations = clz.getAnnotations();
+        annotations = annoS;
 
         //构建原生实例
         if (raw == null) {
@@ -298,7 +298,7 @@ public class BeanWrap {
     }
 
     public ClassEggg rawEggg() {
-        if(rawEggg == null) {
+        if (rawEggg == null) {
             rawEggg = EgggUtil.getClassEggg(rawClz());
         }
 
@@ -370,6 +370,10 @@ public class BeanWrap {
      * 注解
      */
     public Annotation[] annotations() {
+        if (annotations == null) {
+            annotations = clz.getAnnotations();
+        }
+
         return annotations;
     }
 
