@@ -146,8 +146,8 @@ public class BeanWrap {
         this.rawCtorArgs = rawCtorArgs;
 
         //不否为单例
-        Singleton anoS = clz.getAnnotation(Singleton.class);
-        singleton = (anoS == null || anoS.value()); //默认为单例
+        Singleton singAnno = clz.getAnnotation(Singleton.class);
+        singleton = (singAnno == null || singAnno.value()); //默认为单例
 
         annotations = annoS;
 
@@ -466,7 +466,7 @@ public class BeanWrap {
      * @since 2.3
      */
     protected void tryInit(String initMethodName, String destroyMethodName) {
-        if (context != null && lifecycle == null) {
+        if (context != null && lifecycle == null && raw != null) {
             lifecycle = new BeanWrapLifecycle(this, initMethodName, destroyMethodName);
             if (lifecycle.check()) {
                 context.lifecycle(lifecycle.index() + 1, lifecycle);
