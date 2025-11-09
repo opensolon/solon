@@ -2029,6 +2029,32 @@
             </build>
         </profile>
         <profile>
+            <id>aot</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.noear</groupId>
+                        <artifactId>solon-maven-plugin</artifactId>
+                        <version>${solon.version}</version>
+                        <executions>
+                            <execution>
+                                <id>process-aot</id>
+                                <goals>
+                                    <goal>process-aot</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+            <dependencies>
+                <dependency>
+                    <groupId>org.noear</groupId>
+                    <artifactId>solon-aot</artifactId>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
             <id>native</id>
             <build>
                 <plugins>
