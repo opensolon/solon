@@ -181,21 +181,10 @@ public class AppContext extends BeanContainer {
         //注册 @Configuration 构建器
         beanBuilderAdd(Configuration.class, (clz, bw, anno) -> {
             //尝试导入（可能会导入属性源，或小饼依赖的组件）
-            for (Annotation a1 : clz.getAnnotations()) {
-                if (a1 instanceof Import) {
-                    cfg().loadAdd((Import) a1);//v2.5
-                    beanImport((Import) a1);
-                } else {
-                    a1 = a1.annotationType().getAnnotation(Import.class);
-                    if (a1 != null) {
-                        cfg().loadAdd((Import) a1);//v2.5
-                        beanImport((Import) a1);
-                    }
-                }
-            }
+            tryImport(clz, bw.annotations());
 
             //尝试填充属性 //3.1
-            tryFill(bw.raw(), clz.getAnnotations());
+            tryFill(bw.raw(), bw.annotations());
 
             //构建小饼
             beanExtractOrProxy(bw, true, false);
@@ -784,6 +773,24 @@ public class AppContext extends BeanContainer {
     ////////////////////////////////////////////////////
     //
     //
+
+    /**
+     * 尝试导入
+     */
+    protected void tryImport(Class<?> clz, Annotation[] annS) {
+        for (Annotation a1 : annS) {
+            if (a1 instanceof Import) {
+                cfg().loadAdd((Import) a1);//v2.5
+                beanImport((Import) a1);
+            } else {
+                a1 = a1.annotationType().getAnnotation(Import.class);
+                if (a1 != null) {
+                    cfg().loadAdd((Import) a1);//v2.5
+                    beanImport((Import) a1);
+                }
+            }
+        }
+    }
 
     /**
      * 尝试为bean填充
