@@ -886,7 +886,7 @@ public class AppContext extends BeanContainer {
     private void tryBuildBeanOfMethod1(MethodEggg me, BeanWrap bw, BiConsumerEx<MethodEggg, Object> completionConsumer) throws Throwable {
         if (me.getParamCount() == 0) {
             //0.没有参数
-            tryBuildBeanOfMethod2(me, bw, new Object[]{}, completionConsumer);
+            tryBuildBeanOfMethod2(me, bw, BeanWrap.args_empty, completionConsumer);
         } else {
             tryBuildArgsOfMethod(bw.context(), 1, me.getReturnType(), me.getParamEgggAry(), (args2) -> {
                 RunUtil.runOrThrow(() -> tryBuildBeanOfMethod2(me, bw, args2, completionConsumer));
@@ -1085,7 +1085,7 @@ public class AppContext extends BeanContainer {
             tryBuildBeanOfClass3(clz, builder, anno, null, null, annoS);
         } else if (clzEggg.getCreator().getParamCount() == 0) {
             //默认构造方法
-            tryBuildBeanOfClass3(clz, builder, anno, (Constructor) clzEggg.getCreator().getConstr(), new Object[0], annoS);
+            tryBuildBeanOfClass3(clz, builder, anno, (Constructor) clzEggg.getCreator().getConstr(), BeanWrap.args_empty, annoS);
         } else {
             //有参数的构造方法。需处理泛型参数
             tryBuildArgsOfMethod(this, 2, clz, clzEggg.getCreator().getParamEgggAry(), (args2) -> {

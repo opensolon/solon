@@ -41,6 +41,7 @@ import org.slf4j.LoggerFactory;
 @SuppressWarnings("unchecked")
 public class BeanWrap {
     static final Logger log = LoggerFactory.getLogger(BeanWrap.class);
+    static final Object[] args_empty =  new Object[0];
 
     // bean clz
     private final Class<?> clz;
@@ -147,23 +148,19 @@ public class BeanWrap {
 
         //不否为单例
         Singleton singAnno = clz.getAnnotation(Singleton.class);
-        singleton = (singAnno == null || singAnno.value()); //默认为单例
+        this.singleton = (singAnno == null || singAnno.value()); //默认为单例
 
-        annotations = annoS;
+        this.annotations = annoS;
 
         //构建原生实例
         if (raw == null) {
+            this.rawClz = clz;
             this.rawUnproxied = _new();
             this.raw = rawUnproxied;
         } else {
+            this.rawClz = raw.getClass();
             this.rawUnproxied = raw;
             this.raw = rawUnproxied;
-        }
-
-        if (rawUnproxied != null) {
-            rawClz = rawUnproxied.getClass();
-        } else {
-            rawClz = clz;
         }
 
         //尝试初始化
@@ -436,8 +433,8 @@ public class BeanWrap {
         try {
             //1.构造
             if (rawCtor == null) {
-                rawCtor = rawClz().getDeclaredConstructor();
-                rawCtorArgs = new Object[]{};
+                rawCtor = clz.getDeclaredConstructor();
+                rawCtorArgs = args_empty;
             }
 
             Object bean = ClassUtil.newInstance(rawCtor, rawCtorArgs);
