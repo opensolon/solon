@@ -229,12 +229,12 @@ public class SolonAotProcessor {
                 int pathIdx = include.getPattern().indexOf("/");
                 if (pathIdx > 0) {
                     String pathDir = include.getPattern().substring(0, pathIdx);
-                    if (pathDir.contains("*") == false) {
+                    if (!pathDir.contains("*")) {
                         Pattern pattern = Pattern.compile(include.getPattern().substring(pathIdx + 1));
                         Set<String> scanned = ScanUtil.scan(pathDir, path -> pattern.matcher(path).find());
                         if (!scanned.isEmpty()) {
                             for (String uri : scanned) {
-                                if (uri.startsWith("META-INF/maven/") == false) {
+                                if (!uri.startsWith("META-INF/maven/")) {
                                     allResources.add(uri);
                                 }
                             }
