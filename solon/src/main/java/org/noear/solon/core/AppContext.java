@@ -735,24 +735,24 @@ public class AppContext extends BeanContainer {
             return;
         }
 
-        // 优先使用类索引文件（如果存在）
-        if (ClassIndexUtil.hasClassIndex(basePackage)) {
-            // 使用索引文件进行扫描
-            List<String> classNames = ClassIndexUtil.loadClassIndex(basePackage);
-            if (classNames != null) {
-                for (String className : classNames) {
-                    Class<?> clz = ClassUtil.loadClass(classLoader, className);
-                    if (clz != null) {
-                        tryBuildBeanOfClass(clz);
-                    }
-                }
-                return;
-            }
-        }
-
         // 如果在AOT编译时，生成类索引文件
         if (NativeDetector.isAotRuntime()) {
             ClassIndexUtil.generateClassIndex(classLoader, basePackage);
+        }else{
+            // 优先使用类索引文件（如果存在）
+            if (ClassIndexUtil.hasClassIndex(basePackage)) {
+                // 使用索引文件进行扫描
+                List<String> classNames = ClassIndexUtil.loadClassIndex(basePackage);
+                if (classNames != null) {
+                    for (String className : classNames) {
+                        Class<?> clz = ClassUtil.loadClass(classLoader, className);
+                        if (clz != null) {
+                            tryBuildBeanOfClass(clz);
+                        }
+                    }
+                    return;
+                }
+            }
         }
 
         String dir = basePackage.replace('.', '/');
