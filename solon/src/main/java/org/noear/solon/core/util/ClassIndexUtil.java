@@ -15,14 +15,16 @@
  */
 package org.noear.solon.core.util;
 
+import org.noear.solon.Utils;
+import org.noear.solon.core.runtime.NativeDetector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.util.*;
+import java.util.function.Predicate;
 
 /**
  * 类索引工具类
@@ -56,15 +58,20 @@ public class ClassIndexUtil {
      *
      * @param classLoader 类加载器
      * @param basePackage 基础包名
-     * @return 扫描的所有java类文件
+     * @return 是否生成了索引文件
      */
-    public static Set<String> generateClassIndex(ClassLoader classLoader, String basePackage) {
+    public static boolean generateClassIndex(ClassLoader classLoader, String basePackage) {
         if (classLoader == null) {
             throw new IllegalArgumentException("classLoader cannot be null");
         }
         
-        if (basePackage == null || basePackage.trim().isEmpty()) {
+        if (Utils.isEmpty(basePackage)) {
             throw new IllegalArgumentException("basePackage cannot be null or empty");
+        }
+        
+        if (!NativeDetector.isAotRuntime()) {
+            // 只在AOT编译时生成索引
+            return false;
         }
 
         String dir = basePackage.replace('.', '/');
@@ -73,14 +80,13 @@ public class ClassIndexUtil {
         Set<String> classNames = ScanUtil.scan(classLoader, dir, n -> n.endsWith(".class"));
         
         if (classNames.isEmpty()) {
-            return classNames;
+            return false;
         }
 
         // 生成索引文件内容
         List<String> indexContent = new ArrayList<>();
         for (String className : classNames) {
-            String fullClassName = className.substring(0, className.length() - 6);
-            fullClassName = fullClassName.replace('/', '.');
+            String fullClassName = className.substring(0, className.length() - 6).replace('/', '.');
             indexContent.add(fullClassName);
         }
 
@@ -88,9 +94,7 @@ public class ClassIndexUtil {
         Collections.sort(indexContent);
 
         // 写入索引文件
-        writeIndexFile(basePackage, indexContent);
-
-        return classNames;
+        return writeIndexFile(basePackage, indexContent);
     }
 
     /**
@@ -99,7 +103,7 @@ public class ClassIndexUtil {
      * @param basePackage 基础包名
      * @return 类名列表，如果不存在索引文件则返回null
      */
-    public static Set<String> loadClassIndex(String basePackage) {
+    public static List<String> loadClassIndex(String basePackage) {
         String indexFileName = getIndexFileName(basePackage);
         
         try {
@@ -108,7 +112,7 @@ public class ClassIndexUtil {
                 return null;
             }
 
-            Set<String> classNames = new HashSet<>();
+            List<String> classNames = new ArrayList<>();
             try (InputStream inputStream = resourceUrl.openStream();
                  BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
                 String line;
@@ -122,7 +126,6 @@ public class ClassIndexUtil {
             return classNames;
         } catch (IOException e) {
             // 索引文件读取失败，返回null
-            log.warn("Failed to read class index file: " + indexFileName, e);
             return null;
         }
     }
@@ -162,22 +165,25 @@ public class ClassIndexUtil {
     /**
      * 写入索引文件
      */
-    private static void writeIndexFile(String basePackage, List<String> classNames) {
+    public static boolean writeIndexFile(String basePackage, List<String> classNames) {
         String indexFileName = getIndexFileName(basePackage);
         File indexFile = new File("target/classes/" + INDEX_FILE_DIR + indexFileName);
-
+        
         try {
             // 确保目录存在
             indexFile.getParentFile().mkdirs();
-
-            try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(Files.newOutputStream(indexFile.toPath()), StandardCharsets.UTF_8))) {
+            
+            try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(indexFile), StandardCharsets.UTF_8))) {
                 for (String className : classNames) {
                     writer.write(className);
                     writer.newLine();
                 }
             }
+            
+            return true;
         } catch (IOException e) {
             log.warn("Failed to write class index file for package: {}", basePackage, e);
+            return false;
         }
     }
 }

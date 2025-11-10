@@ -18,14 +18,13 @@ package org.noear.solon.lang;
 import java.lang.annotation.*;
 
 /**
- * 预览的（只是标识一下）
+ * 内部的（只是标识一下）
  *
  * @author noear
- * @since 3.0
+ * @since 3.7
  */
 @Target({ElementType.TYPE, ElementType.ANNOTATION_TYPE, ElementType.METHOD, ElementType.CONSTRUCTOR, ElementType.FIELD, ElementType.PACKAGE})
 @Retention(RetentionPolicy.CLASS)
 @Documented
-public @interface Preview {
-    String value();
+public @interface Internal {
 }
