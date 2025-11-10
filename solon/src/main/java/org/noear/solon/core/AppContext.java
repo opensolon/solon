@@ -1010,62 +1010,67 @@ public class AppContext extends BeanContainer {
 
     /**
      * 根据类尝试生成 bean（用 protected，方便扩展时复用）
+     *
+     * @return 处理状态
      */
     protected int tryBuildBeanOfClass(Class<?> clz) {
-        //return handled?
-        Condition cc = clz.getAnnotation(Condition.class);
-
-        if (started == false && ConditionUtil.ifMissingBean(cc)) {
-            lifecycle(Constants.LF_IDX_CLASS_CONDITION_IF_MISSING, cc.priority(), () -> tryBuildBeanOfClass0(clz, cc));
-            return build_bean_ofclass_state1;
+        //去重处理
+        if (beanBuildedCached.contains(clz)) {
+            return build_bean_ofclass_state2;
         } else {
-            return tryBuildBeanOfClass0(clz, cc);
+            beanBuildedCached.add(clz);
+        }
+
+        Annotation[] annoS = clz.getAnnotations();
+
+        if (annoS.length > 0) {
+            //return handled?
+            Condition cc = clz.getAnnotation(Condition.class);
+
+            if (started == false && ConditionUtil.ifMissingBean(cc)) {
+                lifecycle(Constants.LF_IDX_CLASS_CONDITION_IF_MISSING, cc.priority(), () -> tryBuildBeanOfClass0(clz, cc, annoS));
+                return build_bean_ofclass_state1;
+            } else {
+                return tryBuildBeanOfClass0(clz, cc, annoS);
+            }
+        } else {
+            return build_bean_ofclass_state0;
         }
     }
 
-    private int tryBuildBeanOfClass0(Class<?> clz, Condition cc) {
+    private int tryBuildBeanOfClass0(Class<?> clz, Condition cc, Annotation[] annS) {
         //return handled?
         if (ConditionUtil.test(this, cc) == false) {
             return build_bean_ofclass_state1;
         }
 
         if (ConditionUtil.ifBean(cc)) {
-            ConditionUtil.onBeanRun(cc, this, () -> tryBuildBeanOfClass1(clz));
+            ConditionUtil.onBeanRun(cc, this, () -> tryBuildBeanOfClass1(clz, annS));
             return build_bean_ofclass_state1;
         } else {
-            return tryBuildBeanOfClass1(clz);
+            return tryBuildBeanOfClass1(clz, annS);
         }
     }
 
-    private int tryBuildBeanOfClass1(Class<?> clz) {
+    private int tryBuildBeanOfClass1(Class<?> clz, Annotation[] annS) {
         //return state?
-        Annotation[] annS = clz.getAnnotations();
         int state = build_bean_ofclass_state0;
 
-        if (annS.length > 0) {
-            //去重处理
-            if (beanBuildedCached.contains(clz)) {
-                return build_bean_ofclass_state2;
-            } else {
-                beanBuildedCached.add(clz);
-            }
+        for (Annotation a : annS) {
+            TypeMap<BeanBuilder<?>> bbMap = beanBuilders.get(a.annotationType());
 
-            for (Annotation a : annS) {
-                TypeMap<BeanBuilder<?>> bbMap = beanBuilders.get(a.annotationType());
-
-                if (bbMap != null) {
-                    BeanBuilder builder = bbMap.get(clz);
-                    if (builder != null) {
-                        try {
-                            state = build_bean_ofclass_state2;
-                            tryBuildBeanOfClass2(clz, builder, a, annS);
-                        } catch (Throwable e) {
-                            e = Utils.throwableUnwrap(e);
-                            if (e instanceof RuntimeException) {
-                                throw (RuntimeException) e;
-                            } else {
-                                throw new IllegalStateException(e);
-                            }
+            if (bbMap != null) {
+                BeanBuilder builder = bbMap.get(clz);
+                if (builder != null) {
+                    try {
+                        state = build_bean_ofclass_state2;
+                        tryBuildBeanOfClass2(clz, builder, a, annS);
+                    } catch (Throwable e) {
+                        e = Utils.throwableUnwrap(e);
+                        if (e instanceof RuntimeException) {
+                            throw (RuntimeException) e;
+                        } else {
+                            throw new IllegalStateException(e);
                         }
                     }
                 }
