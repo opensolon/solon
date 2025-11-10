@@ -732,34 +732,11 @@ public class AppContext extends BeanContainer {
             return;
         }
 
-        if (NativeDetector.isAotRuntime() == false) {
-            // 优先使用类索引文件（如果存在）
-            List<String> classNames = ClassIndexUtil.loadClassIndex(basePackage);
-            if (classNames != null) {
-                for (String className : classNames) {
-                    Class<?> clz = ClassUtil.loadClass(classLoader, className);
-                    if (clz != null) {
-                        tryBuildBeanOfClass(clz);
-                    }
-                }
-                return;
-            }
-        }
+        if (NativeDetector.isAotRuntime()) {
+            //（aot 运行时）
+            String dir = basePackage.replace('.', '/');
+            Set<String> clzNames = ScanUtil.scan(classLoader, dir, n -> n.endsWith(".class"));
 
-        String dir = basePackage.replace('.', '/');
-        //扫描类文件并处理（采用两段式加载，可以部分bean先处理；剩下的为第二段处理）
-        Set<String> clzNames = ScanUtil.scan(classLoader, dir, n -> n.endsWith(".class"));
-
-        if (NativeDetector.isAotRuntime() == false) {
-            for (String name : clzNames) {
-                String clzName = name.substring(0, name.length() - 6).replace('/', '.');
-
-                Class<?> clz = ClassUtil.loadClass(classLoader, clzName);
-                if (clz != null) {
-                    tryBuildBeanOfClass(clz);
-                }
-            }
-        } else {
             // 如果在AOT编译时，生成类索引文件
             List<String> clzNames2 = new ArrayList<>();
 
@@ -779,6 +756,30 @@ public class AppContext extends BeanContainer {
                 Collections.sort(clzNames2);
                 // 写入索引文件
                 ClassIndexUtil.writeIndexFile(basePackage, clzNames2);
+            }
+        } else {
+            //（非 aot 运行时） 优先使用类索引文件（如果存在）
+            Collection<String> clzNames = ClassIndexUtil.loadClassIndex(basePackage);
+            if (clzNames != null) {
+                for (String clzName : clzNames) {
+                    Class<?> clz = ClassUtil.loadClass(classLoader, clzName);
+                    if (clz != null) {
+                        tryBuildBeanOfClass(clz);
+                    }
+                }
+                return;
+            }
+
+            String dir = basePackage.replace('.', '/');
+            clzNames = ScanUtil.scan(classLoader, dir, n -> n.endsWith(".class"));
+
+            for (String name : clzNames) {
+                String clzName = name.substring(0, name.length() - 6).replace('/', '.');
+
+                Class<?> clz = ClassUtil.loadClass(classLoader, clzName);
+                if (clz != null) {
+                    tryBuildBeanOfClass(clz);
+                }
             }
         }
     }
