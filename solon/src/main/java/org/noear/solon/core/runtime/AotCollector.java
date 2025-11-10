@@ -16,6 +16,7 @@
 package org.noear.solon.core.runtime;
 
 import org.noear.eggg.MethodEggg;
+import org.noear.solon.lang.Internal;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Proxy;
@@ -29,6 +30,7 @@ import java.util.Set;
  * @author noear
  * @since  2.2
  */
+@Internal
 public class AotCollector {
     private final Set<Class<?>> entityTypes = new LinkedHashSet<>();
     private final Set<Class<?>> jdkProxyTypes = new LinkedHashSet<>();
@@ -97,5 +99,6 @@ public class AotCollector {
     public void clear() {
         entityTypes.clear();
         jdkProxyTypes.clear();
+        methodEgggs.clear();
     }
 }
