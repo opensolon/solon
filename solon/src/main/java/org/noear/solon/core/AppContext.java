@@ -27,6 +27,7 @@ import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.event.EventListener;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.route.RouterInterceptor;
+import org.noear.solon.core.runtime.ClassIndexUtil;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.serialize.Serializer;
 import org.noear.solon.core.util.*;
@@ -733,18 +734,15 @@ public class AppContext extends BeanContainer {
 
         if (NativeDetector.isAotRuntime() == false) {
             // 优先使用类索引文件（如果存在）
-            if (ClassIndexUtil.hasClassIndex(basePackage)) {
-                // 使用索引文件进行扫描
-                List<String> classNames = ClassIndexUtil.loadClassIndex(basePackage);
-                if (classNames != null) {
-                    for (String className : classNames) {
-                        Class<?> clz = ClassUtil.loadClass(classLoader, className);
-                        if (clz != null) {
-                            tryBuildBeanOfClass(clz);
-                        }
+            List<String> classNames = ClassIndexUtil.loadClassIndex(basePackage);
+            if (classNames != null) {
+                for (String className : classNames) {
+                    Class<?> clz = ClassUtil.loadClass(classLoader, className);
+                    if (clz != null) {
+                        tryBuildBeanOfClass(clz);
                     }
-                    return;
                 }
+                return;
             }
         }
 

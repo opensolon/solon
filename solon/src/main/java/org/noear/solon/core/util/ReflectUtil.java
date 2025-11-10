@@ -15,6 +15,8 @@
  */
 package org.noear.solon.core.util;
 
+import org.noear.solon.core.runtime.RuntimeService;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
@@ -31,12 +33,7 @@ public class ReflectUtil {
     static Reflection global;
 
     static {
-        //（静态扩展约定：org.noear.solon.extend.impl.XxxxExt）
-        global = ClassUtil.tryInstance("org.noear.solon.extend.impl.ReflectionExt");
-
-        if (global == null) {
-            global = new Reflection();
-        }
+        global = RuntimeService.global().createReflection();
     }
 
     /**

@@ -16,6 +16,7 @@
 package org.noear.solon.core.util;
 
 import org.noear.solon.core.AppClassLoader;
+import org.noear.solon.core.runtime.RuntimeService;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -32,16 +33,15 @@ public class ScanUtil {
 
     static {
         //（静态扩展约定：org.noear.solon.extend.impl.XxxxExt）
-        global = ClassUtil.tryInstance("org.noear.solon.extend.impl.ScannerExt");
-
-        if (global == null) {
-            global = new Scanner();
-        }
+        global = RuntimeService.global().createScanner();
     }
 
     /**
      * 设置扫描器（用户层扩展）
+     *
+     * @deprecated 3.7
      */
+    @Deprecated
     public static void setScanner(Scanner scanner) {
         if (scanner != null) {
             ScanUtil.global = scanner;

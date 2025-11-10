@@ -40,6 +40,7 @@ import java.util.TreeSet;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
+import org.noear.solon.extend.impl.RuntimeServiceExt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -78,6 +79,7 @@ public class SolonAotProcessor {
 
         Class<?> application = Class.forName(args[0]);
         Settings build = new Settings(Paths.get(args[1]), Paths.get(args[2]), args[3], args[4], args[5]);
+        RuntimeServiceExt.settings = build;
 
         String[] applicationArgs = (args.length > requiredArgs) ? Arrays.copyOfRange(args, requiredArgs, args.length)
                 : new String[0];
@@ -264,8 +266,7 @@ public class SolonAotProcessor {
             addReflectConfigDo(metadata, "org.noear.solon.extend.impl.PropsLoaderExt");
             addReflectConfigDo(metadata, "org.noear.solon.extend.impl.PropsConverterExt");
             addReflectConfigDo(metadata, "org.noear.solon.extend.impl.AppClassLoaderExt");
-            addReflectConfigDo(metadata, "org.noear.solon.extend.impl.ReflectionExt");
-            addReflectConfigDo(metadata, "org.noear.solon.extend.impl.ScannerExt");
+            addReflectConfigDo(metadata, "org.noear.solon.extend.impl.RuntimeServiceExt");
             addReflectConfigDo(metadata, "org.noear.solon.extend.impl.ProxyBinderExt");
             addReflectConfigDo(metadata, "org.noear.solon.extend.impl.ActionLoaderFactoryExt");
 
