@@ -735,26 +735,34 @@ public class AppContext extends BeanContainer {
             return;
         }
 
-        // 如果在AOT编译时，生成类索引文件
+        // 如果在AOT编译时，生成类索引文件，并加载bean
         if (NativeDetector.isAotRuntime()) {
-            ClassIndexUtil.generateClassIndex(classLoader, basePackage);
-        }else{
-            // 优先使用类索引文件（如果存在）
-            if (ClassIndexUtil.hasClassIndex(basePackage)) {
-                // 使用索引文件进行扫描
-                List<String> classNames = ClassIndexUtil.loadClassIndex(basePackage);
-                if (classNames != null) {
-                    for (String className : classNames) {
-                        Class<?> clz = ClassUtil.loadClass(classLoader, className);
-                        if (clz != null) {
-                            tryBuildBeanOfClass(clz);
-                        }
-                    }
-                    return;
+            Set<String> classNames = ClassIndexUtil.generateClassIndex(classLoader, basePackage);
+            for (String className : classNames) {
+                Class<?> clz = ClassUtil.loadClass(classLoader, className);
+                if (clz != null) {
+                    tryBuildBeanOfClass(clz);
                 }
+            }
+            return;
+        }
+
+        // 优先使用类索引文件（如果存在）
+        if (ClassIndexUtil.hasClassIndex(basePackage)) {
+            // 使用索引文件进行扫描
+            Set<String> classNames = ClassIndexUtil.loadClassIndex(basePackage);
+            if (classNames != null) {
+                for (String className : classNames) {
+                    Class<?> clz = ClassUtil.loadClass(classLoader, className);
+                    if (clz != null) {
+                        tryBuildBeanOfClass(clz);
+                    }
+                }
+                return;
             }
         }
 
+        //默认加载策略 （没有类索引文件，也不是aot编译阶段）
         String dir = basePackage.replace('.', '/');
 
         //扫描类文件并处理（采用两段式加载，可以部分bean先处理；剩下的为第二段处理）
