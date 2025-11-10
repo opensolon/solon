@@ -727,18 +727,11 @@ public class AppContext extends BeanContainer {
      * ::扫描源下的所有 bean 及对应处理
      */
     public void beanScan(ClassLoader classLoader, String basePackage) {
-        if (Utils.isEmpty(basePackage)) {
+        if (classLoader == null || Utils.isEmpty(basePackage)) {
             return;
         }
 
-        if (classLoader == null) {
-            return;
-        }
-
-        // 如果在AOT编译时，生成类索引文件
-        if (NativeDetector.isAotRuntime()) {
-            ClassIndexUtil.generateClassIndex(classLoader, basePackage);
-        }else{
+        if (NativeDetector.isAotRuntime() == false) {
             // 优先使用类索引文件（如果存在）
             if (ClassIndexUtil.hasClassIndex(basePackage)) {
                 // 使用索引文件进行扫描
@@ -756,16 +749,38 @@ public class AppContext extends BeanContainer {
         }
 
         String dir = basePackage.replace('.', '/');
-
         //扫描类文件并处理（采用两段式加载，可以部分bean先处理；剩下的为第二段处理）
         Set<String> clzNames = ScanUtil.scan(classLoader, dir, n -> n.endsWith(".class"));
-        for (String name : clzNames) {
-            String clzName = name.substring(0, name.length() - 6);
-            clzName = clzName.replace('/', '.');
 
-            Class<?> clz = ClassUtil.loadClass(classLoader, clzName);
-            if (clz != null) {
-                tryBuildBeanOfClass(clz);
+        if (NativeDetector.isAotRuntime() == false) {
+            for (String name : clzNames) {
+                String clzName = name.substring(0, name.length() - 6).replace('/', '.');
+
+                Class<?> clz = ClassUtil.loadClass(classLoader, clzName);
+                if (clz != null) {
+                    tryBuildBeanOfClass(clz);
+                }
+            }
+        } else {
+            // 如果在AOT编译时，生成类索引文件
+            List<String> clzNames2 = new ArrayList<>();
+
+            for (String name : clzNames) {
+                String clzName = name.substring(0, name.length() - 6).replace('/', '.');
+
+                Class<?> clz = ClassUtil.loadClass(classLoader, clzName);
+                if (clz != null) {
+                    if (tryBuildBeanOfClass(clz) > build_bean_ofclass_state0) {
+                        clzNames2.add(clzName);
+                    }
+                }
+            }
+
+            if (clzNames2.size() > 0) {
+                // 排序，确保索引文件内容稳定
+                Collections.sort(clzNames2);
+                // 写入索引文件
+                ClassIndexUtil.writeIndexFile(basePackage, clzNames2);
             }
         }
     }

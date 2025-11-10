@@ -15,6 +15,7 @@
  */
 package org.noear.solon.core.util;
 
+import org.noear.solon.Utils;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,7 +65,7 @@ public class ClassIndexUtil {
             throw new IllegalArgumentException("classLoader cannot be null");
         }
         
-        if (basePackage == null || basePackage.trim().isEmpty()) {
+        if (Utils.isEmpty(basePackage)) {
             throw new IllegalArgumentException("basePackage cannot be null or empty");
         }
         
@@ -85,8 +86,7 @@ public class ClassIndexUtil {
         // 生成索引文件内容
         List<String> indexContent = new ArrayList<>();
         for (String className : classNames) {
-            String fullClassName = className.substring(0, className.length() - 6);
-            fullClassName = fullClassName.replace('/', '.');
+            String fullClassName = className.substring(0, className.length() - 6).replace('/', '.');
             indexContent.add(fullClassName);
         }
 
@@ -165,7 +165,7 @@ public class ClassIndexUtil {
     /**
      * 写入索引文件
      */
-    private static boolean writeIndexFile(String basePackage, List<String> classNames) {
+    public static boolean writeIndexFile(String basePackage, List<String> classNames) {
         String indexFileName = getIndexFileName(basePackage);
         File indexFile = new File("target/classes/" + INDEX_FILE_DIR + indexFileName);
         
