@@ -30,6 +30,7 @@
 ### v3.7.1
 
 * 添加 solon Router:add(clz) 方法
+* 添加 solon 启动类索引机制（通过 aot 实现）
 * 修复 solon AppContext:tryBuildBeanOfClass2 目标组件为接口时出现 getCreator null 异常（边界问题）
 * snack4 升为 4.0.12
 * eggg 升为 1.0.7

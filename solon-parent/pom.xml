@@ -31,7 +31,7 @@
         <maven-war.version>3.4.0</maven-war.version>
 
         <solon.version>3.7.2-SNAPSHOT</solon.version>
-        <solon-ai.version>3.7.1</solon-ai.version>
+        <solon-ai.version>3.7.2-SNAPSHOT</solon-ai.version>
         <solon-flow.version>3.7.1</solon-flow.version>
         <solon-expression.version>3.7.1</solon-expression.version>
         <solon-cloud.version>3.7.1</solon-cloud.version>
@@ -1759,6 +1759,12 @@
             </dependency>
 
             <dependency>
+                <groupId>org.ow2.asm</groupId>
+                <artifactId>asm</artifactId>
+                <version>${asm.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
                 <version>${slf4j.version}</version>
@@ -2041,6 +2047,25 @@
                                 <id>process-aot</id>
                                 <goals>
                                     <goal>process-aot</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.graalvm.buildtools</groupId>
+                        <artifactId>native-maven-plugin</artifactId>
+                        <version>${graalvm.buildtools.version}</version>
+                        <!-- 使用graalvm提供的可达性元数据，很多第三方库就直接可以构建成可执行文件了 -->
+                        <configuration>
+                            <metadataRepository>
+                                <enabled>true</enabled>
+                            </metadataRepository>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>add-reachability-metadata</id>
+                                <goals>
+                                    <goal>add-reachability-metadata</goal>
                                 </goals>
                             </execution>
                         </executions>
