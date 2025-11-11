@@ -86,28 +86,28 @@ public class LogIncubatorImpl implements LogIncubator {
             url = ResourceUtil.getResource("log4j2-solon.xml");
         }
 
-        //3::尝试默认加载
-        if (url == null) {
-            boolean fileEnable = Solon.cfg().getBool("solon.logging.appender.file.enable", true);
-
-            if (fileEnable) {
-                url = ResourceUtil.getResource("META-INF/solon_def/log4j2-def.xml");
-            } else {
-                url = ResourceUtil.getResource("META-INF/solon_def/log4j2-def_nofile.xml");
-            }
-        }
-
         initDo(url);
     }
 
 
     private void initDo(URL url) {
-        if (url == null) {
-            return;
-        }
-
         try {
-            Configurator.reconfigure(url.toURI());
+            if (url == null) {
+                //::尝试默认加载
+                boolean fileEnable = Solon.cfg().getBool("solon.logging.appender.file.enable", true);
+
+                if (fileEnable) {
+                    url = ResourceUtil.getResource("META-INF/solon_def/log4j2-def.xml");
+                } else {
+                    url = ResourceUtil.getResource("META-INF/solon_def/log4j2-def_nofile.xml");
+                }
+
+                Configurator.reconfigure(url.toURI());
+            } else {
+                //::加载 xml url
+                Configurator.reconfigure(url.toURI());
+            }
+
 
             //同步 logger level 配置
             if (LogOptions.getLoggerLevels().size() > 0) {

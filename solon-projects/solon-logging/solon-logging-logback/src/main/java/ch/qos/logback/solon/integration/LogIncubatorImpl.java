@@ -101,7 +101,7 @@ public class LogIncubatorImpl implements LogIncubator {
                 DefaultLogbackConfiguration configuration = new DefaultLogbackConfiguration();
                 configuration.apply(new LogbackConfigurator(loggerContext));
             } else {
-                //::加载url
+                //::加载 xml url
                 configurator.doConfigure(url);
             }
 
