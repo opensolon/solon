@@ -44,11 +44,13 @@ public class RoutingTableDefault<T> implements RoutingTable<T> {
         int level = 0;
 
 
-        if (routing.isPathall()) {
+        if (routing.globstar() == 0) { // "/**"
+            level = 4;
+        } else if (routing.globstar() > 0) {  // "/a/**"
             level = 3;
-        } else if (routing.path().indexOf('*') >= 0) {
+        } else if (routing.path().indexOf('*') >= 0) { // "/a/*"
             level = 2;
-        } else if (routing.path().indexOf('{') >= 0) {
+        } else if (routing.path().indexOf('{') >= 0) { // "/a/{x}"
             level = 1;
         }
 

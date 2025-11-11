@@ -36,9 +36,9 @@ public interface Routing<T> {
     String path();
 
     /**
-     * 路径全匹配
+     * 递归通配符位置（-1 没有, 0 根位, 0+ 子位）
      */
-    boolean isPathall();
+    int globstar();
 
     /**
      * 版本号

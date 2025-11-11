@@ -42,7 +42,7 @@ public class RoutingDefault<T> implements Routing<T> {
 
         this.method = method;
         this.path = path;
-        this.isPathall = "/**".equals(path);
+        this.globstar = path.indexOf("/**");
 
         if (Utils.isEmpty(version)) {
             this.version = null;
@@ -61,7 +61,7 @@ public class RoutingDefault<T> implements Routing<T> {
     private final String version;
     private final T target;//代理
     private final MethodType method; //方式
-    private final boolean isPathall;
+    private final int globstar;
 
     @Override
     public int index() {
@@ -74,8 +74,8 @@ public class RoutingDefault<T> implements Routing<T> {
     }
 
     @Override
-    public boolean isPathall() {
-        return isPathall;
+    public int globstar() {
+        return globstar;
     }
 
     @Override
@@ -151,23 +151,8 @@ public class RoutingDefault<T> implements Routing<T> {
             return false;
         }
 
-        //1.如果当前为**，任何路径都可命中
-        if (isPathall) {
-            return true;
-        }
-
-        //2.如果与当前路径相关
-        if (path.equals(path2)) {
-            return true;
-        }
-
-        //3.正则检测
-        return rule.matches(path2);
-    }
-
-    private boolean matchesPath0(String path2) {
-        //1.如果当前为**，任何路径都可命中
-        if (isPathall) {
+        //1.如果当前为 /**，任何路径都可命中
+        if (globstar == 0) {
             return true;
         }
 
