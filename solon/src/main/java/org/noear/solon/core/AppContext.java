@@ -1314,19 +1314,27 @@ public class AppContext extends BeanContainer {
      */
     private void startInjectReview(int sel) throws Throwable {
         //全部跑完后，检查注入情况
-        List<InjectGather> gatherList = null;
+        List<InjectGather> gatherList = new ArrayList<>();
 
         if (sel == 0) {
-            gatherList = gatherSet.stream().filter(g1 -> g1.isDone() == false && g1.isMethod() == false)
-                    .collect(Collectors.toList());
+            for (InjectGather g1 : gatherSet) {
+                if (g1.isDone() == false && g1.isMethod() == false) {
+                    gatherList.add(g1);
+                }
+            }
         } else if (sel == 1) {
-            gatherList = gatherSet.stream().filter(g1 -> g1.isDone() == false && g1.isMethod() == true)
-                    .collect(Collectors.toList());
+            for (InjectGather g1 : gatherSet) {
+                if (g1.isDone() == false && g1.isMethod() == true) {
+                    gatherList.add(g1);
+                }
+            }
         } else {
-            gatherList = gatherSet.stream().filter(g1 -> g1.isDone() == false)
-                    .collect(Collectors.toList());
+            for (InjectGather g1 : gatherSet) {
+                if (g1.isDone() == false) {
+                    gatherList.add(g1);
+                }
+            }
         }
-
 
         if (gatherList.size() > 0) {
             for (InjectGather gather : gatherList) {
