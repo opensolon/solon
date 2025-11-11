@@ -87,7 +87,7 @@ public class ClassIndexUtil {
      * @param basePackage 基础包名
      * @return 类名列表，如果不存在索引文件则返回null
      */
-    public static Set<String> loadClassIndex(String basePackage) {
+    public static Collection<String> loadClassIndex(String basePackage) {
         String indexFileName = getIndexFileName(basePackage);
 
         try {
@@ -96,7 +96,7 @@ public class ClassIndexUtil {
                 return null;
             }
 
-            Set<String> classNames = new HashSet<>();
+            List<String> classNames = new ArrayList<>();
             try (InputStream inputStream = resourceUrl.openStream();
                  BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
                 String line;

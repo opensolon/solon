@@ -732,35 +732,57 @@ public class AppContext extends BeanContainer {
             return;
         }
 
-        // 如果在AOT编译时，生成类索引文件，并加载bean
         if (NativeDetector.isAotRuntime()) {
-            Set<String> classNames = ClassIndexUtil.scanClassGenerateIndex(classLoader, basePackage);
-            //按照配置类优先，其他类次之，两阶段加载
-            doMakeBean(classNames, classLoader);
-            return;
+            //（aot 运行时）
+            List<String> clzIndexs = new ArrayList<>();
+
+            String dir = basePackage.replace('.', '/');
+            ScanUtil.scan(classLoader, dir, n -> n.endsWith(".class"), name->{
+                //直接回调可减少一次 HashSet 收集（提升性能）；tryBuildBeanOfClass 有重复过滤（不用担心重复）
+                String clzName = name.substring(0, name.length() - 6).replace('/', '.');
+
+                Class<?> clz = ClassUtil.loadClass(classLoader, clzName);
+                if (clz != null) {
+                    if (tryBuildBeanOfClass(clz) > build_bean_ofclass_state0) {
+                        clzIndexs.add(clzName);
+                    }
+                }
+            });
+
+            if (clzIndexs.size() > 0) {
+                // 排序，确保索引文件内容稳定
+                Collections.sort(clzIndexs);
+                // 写入索引文件
+                ClassIndexUtil.writeIndexFile(basePackage, clzIndexs);
+            }
+        } else {
+            //（非 aot 运行时） 优先使用类索引文件（如果存在）
+            Collection<String> clzNames = ClassIndexUtil.loadClassIndex(basePackage);
+            if (clzNames != null) {
+                for (String clzName : clzNames) {
+                    Class<?> clz = ClassUtil.loadClass(classLoader, clzName);
+                    if (clz != null) {
+                        tryBuildBeanOfClass(clz);
+                    }
+                }
+                return;
+            }
+
+            String dir = basePackage.replace('.', '/');
+            ScanUtil.scan(classLoader, dir, n -> n.endsWith(".class"), name -> {
+                //直接回调可减少一次 HashSet 收集（提升性能）；tryBuildBeanOfClass 有重复过滤（不用担心重复）
+                String clzName = name.substring(0, name.length() - 6).replace('/', '.');
+
+                Class<?> clz = ClassUtil.loadClass(classLoader, clzName);
+                if (clz != null) {
+                    tryBuildBeanOfClass(clz);
+                }
+            });
         }
-
-        // 优先使用类索引文件（如果存在,加载到类文件）
-        Set<String> classNames = ClassIndexUtil.loadClassIndex(basePackage);
-        if (classNames != null && !classNames.isEmpty()) {
-            //按照配置类优先，其他类次之，两阶段加载
-            doMakeBean(classNames, classLoader);
-            return;
-        }
-
-        //默认加载策略 （没有类索引文件，也不是aot编译阶段）
-        String dir = basePackage.replace('.', '/');
-
-        //扫描类文件并分析（采用两段式加载，先处理配置类，再处理其他类）
-        Set<String> clzNames = ScanUtil.scan(classLoader, dir, n -> n.endsWith(".class"));
-
-        //按照配置类优先，其他类次之，两阶段加载
-        doMakeBean(clzNames, classLoader);
-
     }
 
     //两阶段加载
-    private void doMakeBean(Set<String> clzNames, ClassLoader classLoader) {
+    private void doMakeBean(Collection<String> clzNames, ClassLoader classLoader) {
         // 创建两个集合：配置类集合和其他类集合
         List<Class<?>> configClasses = new ArrayList<>();
         List<Class<?>> otherClasses = new ArrayList<>();

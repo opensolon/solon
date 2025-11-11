@@ -15,15 +15,11 @@
  */
 package org.noear.solon.extend.impl;
 
-import org.noear.solon.Solon;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.aot.graalvm.GraalvmUtil;
 import org.noear.solon.core.util.Scanner;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 /**
@@ -33,24 +29,15 @@ import java.util.function.Predicate;
  * @since 2.2
  */
 public class ScannerExt extends Scanner {
-    static final Logger log = LoggerFactory.getLogger(ScannerExt.class);
-
     @Override
-    public Set<String> scan(ClassLoader classLoader, String path, boolean fileMode, Predicate<String> filter) {
-        Set<String> urls = super.scan(classLoader, path, fileMode, filter);
+    public void scan(ClassLoader classLoader, String path, boolean fileMode, Predicate<String> filter, Consumer<String> consumer) {
+        super.scan(classLoader, path, fileMode, filter, consumer);
 
         if (fileMode == false) {
             //3.native image
             if (NativeDetector.inNativeImage()) {
-                GraalvmUtil.scanResource(path, filter, urls);
-                if (Solon.cfg().isDebugMode()) {
-                    log.info("Native: Resource scan: " + urls.size() + ", path: " + path);
-                }
-
-                return urls;
+                GraalvmUtil.scanResource(path, filter, consumer);
             }
         }
-
-        return urls;
     }
 }

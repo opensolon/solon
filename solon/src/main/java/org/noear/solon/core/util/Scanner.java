@@ -17,6 +17,7 @@ package org.noear.solon.core.util;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.lang.Internal;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,6 +27,7 @@ import java.net.URLDecoder;
 import java.util.Enumeration;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -36,6 +38,7 @@ import java.util.jar.JarFile;
  * @author noear
  * @since 1.5
  */
+@Internal
 public class Scanner {
 
     /**
@@ -46,16 +49,14 @@ public class Scanner {
      * @param fileMode    文件模式
      * @param filter      过滤条件
      */
-    public Set<String> scan(ClassLoader classLoader, String path, boolean fileMode, Predicate<String> filter) {
-        Set<String> urls = new LinkedHashSet<>();
-
+    public void scan(ClassLoader classLoader, String path, boolean fileMode, Predicate<String> filter, Consumer<String> consumer) {
         try {
             if (fileMode) {
                 URL root = Utils.getFile(path).toURI().toURL();
-                scanDo(root, path, fileMode, filter, urls);
+                scanDo(root, path, fileMode, filter, consumer);
             } else {
                 if (classLoader == null) {
-                    return urls;
+                    return;
                 }
 
                 //1.查找资源
@@ -64,28 +65,28 @@ public class Scanner {
                 //2.资源遍历
                 while (roots.hasMoreElements()) {
                     //3.尝试扫描
-                    scanDo(roots.nextElement(), path, fileMode, filter, urls);
+                    scanDo(roots.nextElement(), path, fileMode, filter, consumer);
                 }
             }
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
-
-        return urls;
     }
 
-    protected void scanDo(URL url, String path, boolean fileMode, Predicate<String> filter, Set<String> urls) throws IOException {
+    protected void scanDo(URL url, String path, boolean fileMode, Predicate<String> filter, Consumer<String> consumer) throws IOException {
         if ("file".equals(url.getProtocol())) {
             //3.1.找到文件
             //
             String fp = URLDecoder.decode(url.getFile(), Solon.encoding());
-            doScanByFile(new File(fp), path, fileMode, filter, urls);
+            doScanByFile(new File(fp), path, fileMode, filter, consumer);
         } else if ("jar".equals(url.getProtocol())) {
             //3.2.找到jar包
             //
             JarURLConnection jarCon = (JarURLConnection) url.openConnection();
             try (JarFile jar = jarCon.getJarFile()) {
-                doScanByJar(jar, path, filter, urls);jarCon.connect();;
+                doScanByJar(jar, path, filter, consumer);
+                jarCon.connect();
+                ;
             }
         }
     }
@@ -97,7 +98,7 @@ public class Scanner {
      * @param path   路径
      * @param filter 过滤条件
      */
-    protected void doScanByFile(File dir, String path, boolean fileMode, Predicate<String> filter, Set<String> urls) {
+    protected void doScanByFile(File dir, String path, boolean fileMode, Predicate<String> filter, Consumer<String> consumer) {
         // 如果不存在或者 也不是目录就直接返回
         if (!dir.exists() || !dir.isDirectory()) {
             return;
@@ -111,12 +112,12 @@ public class Scanner {
                 String p2 = path + "/" + f.getName();
                 // 如果是目录 则继续扫描
                 if (f.isDirectory()) {
-                    doScanByFile(f, p2, fileMode, filter, urls);
+                    doScanByFile(f, p2, fileMode, filter, consumer);
                 } else {
                     if (p2.startsWith("/") && fileMode == false) {
-                        urls.add(p2.substring(1));
+                        consumer.accept(p2.substring(1));
                     } else {
-                        urls.add(p2);
+                        consumer.accept(p2);
                     }
                 }
             }
@@ -130,7 +131,7 @@ public class Scanner {
      * @param path   路径
      * @param filter 过滤条件
      */
-    protected void doScanByJar(JarFile jar, String path, Predicate<String> filter, Set<String> urls) {
+    protected void doScanByJar(JarFile jar, String path, Predicate<String> filter, Consumer<String> consumer) {
         Enumeration<JarEntry> entry = jar.entries();
 
         while (entry.hasMoreElements()) {
@@ -147,9 +148,9 @@ public class Scanner {
             }
 
             if (n.startsWith("/")) {
-                urls.add(n.substring(1));
+                consumer.accept(n.substring(1));
             } else {
-                urls.add(n);
+                consumer.accept(n);
             }
         }
     }
