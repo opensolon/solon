@@ -41,7 +41,6 @@ import java.lang.reflect.*;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 /**
  * App 上下文（ 为全局对象；热插拨的插件，会产生独立的上下文）
