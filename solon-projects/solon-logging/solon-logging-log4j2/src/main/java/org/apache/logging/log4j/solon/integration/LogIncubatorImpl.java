@@ -86,28 +86,13 @@ public class LogIncubatorImpl implements LogIncubator {
             url = ResourceUtil.getResource("log4j2-solon.xml");
         }
 
-        initDo(url);
+        doInit(url);
     }
 
 
-    private void initDo(URL url) {
+    protected void doInit(URL url) {
         try {
-            if (url == null) {
-                //::尝试默认加载
-                boolean fileEnable = Solon.cfg().getBool("solon.logging.appender.file.enable", true);
-
-                if (fileEnable) {
-                    url = ResourceUtil.getResource("META-INF/solon_def/log4j2-def.xml");
-                } else {
-                    url = ResourceUtil.getResource("META-INF/solon_def/log4j2-def_nofile.xml");
-                }
-
-                Configurator.reconfigure(url.toURI());
-            } else {
-                //::加载 xml url
-                Configurator.reconfigure(url.toURI());
-            }
-
+            doLoadUrl(url);
 
             //同步 logger level 配置
             if (LogOptions.getLoggerLevels().size() > 0) {
@@ -124,6 +109,24 @@ public class LogIncubatorImpl implements LogIncubator {
             }
         } catch (Exception e) {
             throw new IllegalStateException(e);
+        }
+    }
+
+    protected void doLoadUrl(URL url) throws Exception {
+        if (url == null) {
+            //::尝试默认加载
+            boolean fileEnable = Solon.cfg().getBool("solon.logging.appender.file.enable", true);
+
+            if (fileEnable) {
+                url = ResourceUtil.getResource("META-INF/solon_def/log4j2-def.xml");
+            } else {
+                url = ResourceUtil.getResource("META-INF/solon_def/log4j2-def_nofile.xml");
+            }
+
+            Configurator.reconfigure(url.toURI());
+        } else {
+            //::加载 xml url
+            Configurator.reconfigure(url.toURI());
         }
     }
 

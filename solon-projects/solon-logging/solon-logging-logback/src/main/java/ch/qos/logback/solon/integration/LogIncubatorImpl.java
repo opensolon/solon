@@ -84,26 +84,15 @@ public class LogIncubatorImpl implements LogIncubator {
             url = ResourceUtil.getResource("logback-solon.xml");
         }
 
-        initDo(url);
+        doInit(url);
     }
 
-    private void initDo(URL url) {
+    protected void doInit(URL url) {
         try {
             LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
 
-            loggerContext.reset();
-
-            SolonConfigurator configurator = new SolonConfigurator();
-            configurator.setContext(loggerContext);
-
-            if (url == null) {
-                //::尝试默认加载
-                DefaultLogbackConfiguration configuration = new DefaultLogbackConfiguration();
-                configuration.apply(new LogbackConfigurator(loggerContext));
-            } else {
-                //::加载 xml url
-                configurator.doConfigure(url);
-            }
+            //加载配置文件
+            doLoadUrl(loggerContext, url);
 
             //同步 logger level 配置
             if (LogOptions.getLoggerLevels().size() > 0) {
@@ -116,8 +105,24 @@ public class LogIncubatorImpl implements LogIncubator {
             if (NativeDetector.inNativeImage()) {
                 reportConfigurationErrorsIfNecessary(loggerContext);
             }
-        } catch (JoranException e) {
+        } catch (Exception e) {
             throw new IllegalStateException(e);
+        }
+    }
+
+    protected void doLoadUrl(LoggerContext loggerContext, URL url) throws Exception {
+        loggerContext.reset();
+
+        SolonConfigurator configurator = new SolonConfigurator();
+        configurator.setContext(loggerContext);
+
+        if (url == null) {
+            //::尝试默认加载
+            DefaultLogbackConfiguration configuration = new DefaultLogbackConfiguration();
+            configuration.apply(new LogbackConfigurator(loggerContext));
+        } else {
+            //::加载 xml url
+            configurator.doConfigure(url);
         }
     }
 
