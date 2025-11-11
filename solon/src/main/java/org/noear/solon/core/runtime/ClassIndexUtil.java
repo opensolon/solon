@@ -15,10 +15,9 @@
  */
 package org.noear.solon.core.runtime;
 
-import org.noear.solon.Utils;
-import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.core.util.ScanUtil;
+import org.noear.solon.lang.Internal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,7 +26,6 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.*;
-import java.util.function.Predicate;
 
 /**
  * 类索引工具类
@@ -36,47 +34,33 @@ import java.util.function.Predicate;
  * 启动时：查找包对应的类索引文件。如果有，使用类索引文件替代ScanUtil.scan机制
  *
  * @author noear
- * @since 3.6
+ * @since 3.7
  */
+@Internal
 public class ClassIndexUtil {
     private static final Logger log = LoggerFactory.getLogger(ClassIndexUtil.class);
-    
-    /**
-     * 索引文件后缀名
-     */
-    private static final String INDEX_FILE_SUFFIX = ".solonindex";
 
-    /**
-     * 索引文件存储路径
-     */
+    //索引文件后缀名
+    private static final String INDEX_FILE_SUFFIX = ".index";
+
+    //索引文件存储路径
     private static final String INDEX_FILE_DIR = "META-INF/solon-index/";
-    
-    /**
-     * 文件名中允许的字符正则表达式
-     */
-    private static final String SAFE_FILENAME_PATTERN = "^[a-zA-Z0-9._-]+$";
+
 
     /**
-     * 生成类索引文件
+     * 扫描并生成类索引文件
      *
      * @param classLoader 类加载器
      * @param basePackage 基础包名
      * @return 扫描的所有java类文件
      */
     public static Set<String> scanClassGenerateIndex(ClassLoader classLoader, String basePackage) {
-        if (classLoader == null) {
-            throw new IllegalArgumentException("classLoader cannot be null");
-        }
-        
-        if (Utils.isEmpty(basePackage)) {
-            throw new IllegalArgumentException("basePackage cannot be null or empty");
-        }
 
         String dir = basePackage.replace('.', '/');
-        
+
         // 扫描包下的所有类文件
         Set<String> classNames = ScanUtil.scan(classLoader, dir, n -> n.endsWith(".class"));
-        
+
         if (classNames.isEmpty()) {
             return classNames;
         }
@@ -105,7 +89,7 @@ public class ClassIndexUtil {
      */
     public static Set<String> loadClassIndex(String basePackage) {
         String indexFileName = getIndexFileName(basePackage);
-        
+
         try {
             URL resourceUrl = ResourceUtil.getResource(INDEX_FILE_DIR + indexFileName);
             if (resourceUrl == null) {
@@ -117,29 +101,16 @@ public class ClassIndexUtil {
                  BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
                 String line;
                 while ((line = reader.readLine()) != null) {
-                    if (!line.trim().isEmpty()) {
-                        classNames.add(line.trim());
-                    }
+                    classNames.add(line.trim());
                 }
             }
-            
+
             return classNames;
         } catch (IOException e) {
             // 索引文件读取失败，返回null
-            log.warn("Failed to read class index file: " + indexFileName, e);
+            log.warn("Failed to load class index file for package: {}", basePackage, e);
             return null;
         }
-    }
-
-    /**
-     * 检查是否存在类索引文件
-     *
-     * @param basePackage 基础包名
-     * @return 是否存在索引文件
-     */
-    public static boolean hasClassIndex(String basePackage) {
-        String indexFileName = getIndexFileName(basePackage);
-        return ResourceUtil.getResource(INDEX_FILE_DIR + indexFileName) != null;
     }
 
     /**
@@ -149,26 +120,22 @@ public class ClassIndexUtil {
         if (basePackage == null || basePackage.isEmpty()) {
             throw new IllegalArgumentException("basePackage cannot be null or empty");
         }
-        
+
         // 防止路径遍历攻击
         if (basePackage.contains("..") || basePackage.contains("/") || basePackage.contains("\\")) {
             throw new IllegalArgumentException("Invalid basePackage: contains path traversal characters");
         }
-        
-        // 验证包名格式
-        if (!basePackage.matches(SAFE_FILENAME_PATTERN)) {
-            throw new IllegalArgumentException("Invalid basePackage: contains unsafe characters");
-        }
-        
+
         return basePackage.replace('.', '-') + INDEX_FILE_SUFFIX;
     }
 
     /**
      * 写入索引文件
      */
-    private static void writeIndexFile(String basePackage, List<String> classNames) {
+    public static void writeIndexFile(String basePackage, List<String> classNames) {
         String indexFileName = getIndexFileName(basePackage);
-        File indexFile = new File("target/classes/" + INDEX_FILE_DIR + indexFileName);
+
+        File indexFile = RuntimeService.global().createClassOutputFile(INDEX_FILE_DIR + indexFileName);
 
         try {
             // 确保目录存在
@@ -180,6 +147,7 @@ public class ClassIndexUtil {
                     writer.newLine();
                 }
             }
+
         } catch (IOException e) {
             log.warn("Failed to write class index file for package: {}", basePackage, e);
         }

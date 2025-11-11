@@ -740,15 +740,12 @@ public class AppContext extends BeanContainer {
             return;
         }
 
-        // 优先使用类索引文件（如果存在）
-        if (ClassIndexUtil.hasClassIndex(basePackage)) {
-            // 使用索引文件进行扫描
-            Set<String> classNames = ClassIndexUtil.loadClassIndex(basePackage);
-            if (classNames != null) {
-                //按照配置类优先，其他类次之，两阶段加载
-                doMakeBean(classNames, classLoader);
-                return;
-            }
+        // 优先使用类索引文件（如果存在,加载到类文件）
+        Set<String> classNames = ClassIndexUtil.loadClassIndex(basePackage);
+        if (classNames != null && !classNames.isEmpty()) {
+            //按照配置类优先，其他类次之，两阶段加载
+            doMakeBean(classNames, classLoader);
+            return;
         }
 
         //默认加载策略 （没有类索引文件，也不是aot编译阶段）
