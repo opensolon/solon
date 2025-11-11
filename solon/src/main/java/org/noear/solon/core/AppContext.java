@@ -567,7 +567,7 @@ public class AppContext extends BeanContainer {
      * @param tryProxy   尝试代理
      */
     public void beanExtractOrProxy(BeanWrap bw, boolean tryExtract, boolean tryProxy) {
-        if (bw == null) {
+        if (bw == null || bw.proxy() != null) { //如果代理不为 null，说明来过
             return;
         }
 
