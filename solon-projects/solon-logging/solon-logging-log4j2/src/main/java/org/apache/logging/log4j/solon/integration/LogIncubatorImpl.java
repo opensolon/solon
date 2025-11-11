@@ -41,8 +41,6 @@ import java.net.URL;
  * @since 2.4
  */
 public class LogIncubatorImpl implements LogIncubator {
-    static final Logger log = LoggerFactory.getLogger(LogIncubatorImpl.class);
-
     @Override
     public void incubate() throws Throwable {
         if (JavaUtil.IS_WINDOWS && Solon.cfg().isFilesMode() == false) {
@@ -86,14 +84,13 @@ public class LogIncubatorImpl implements LogIncubator {
             url = ResourceUtil.getResource("log4j2-solon.xml");
         }
 
-        doInit(url);
+        doLoadUrl(url);
+        doInit();
     }
 
 
-    protected void doInit(URL url) {
+    protected void doInit() {
         try {
-            doLoadUrl(url);
-
             //同步 logger level 配置
             if (LogOptions.getLoggerLevels().size() > 0) {
                 LoggerContext context = LoggerContext.getContext(false);
@@ -133,7 +130,7 @@ public class LogIncubatorImpl implements LogIncubator {
     /**
      * 基于配置，获取日志配置文件
      */
-    private URL getUrlOfConfig() throws MalformedURLException {
+    private URL getUrlOfConfig() {
         String logConfig = Solon.cfg().get("solon.logging.config");
 
         if (Utils.isNotEmpty(logConfig)) {
@@ -141,10 +138,7 @@ public class LogIncubatorImpl implements LogIncubator {
             if (logConfigUrl != null) {
                 return logConfigUrl;
             } else {
-                //改成异步，不然 log 初始化未完成
-                RunUtil.async(() -> {
-                    log.warn("Props: No log config file: " + logConfig);
-                });
+                System.err.println("Props: No logging config file exists: " + logConfig);
             }
         }
 

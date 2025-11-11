@@ -84,15 +84,32 @@ public class LogIncubatorImpl implements LogIncubator {
             url = ResourceUtil.getResource("logback-solon.xml");
         }
 
-        doInit(url);
+        //加载配置文件
+        doLoadUrl(url);
+        doInit();
     }
 
-    protected void doInit(URL url) {
+    protected void doLoadUrl(URL url) throws Exception {
+        LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
+
+        loggerContext.reset();
+
+        SolonConfigurator configurator = new SolonConfigurator();
+        configurator.setContext(loggerContext);
+
+        if (url == null) {
+            //::尝试默认加载
+            DefaultLogbackConfiguration configuration = new DefaultLogbackConfiguration();
+            configuration.apply(new LogbackConfigurator(loggerContext));
+        } else {
+            //::加载 xml url
+            configurator.doConfigure(url);
+        }
+    }
+
+    protected void doInit() {
         try {
             LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
-
-            //加载配置文件
-            doLoadUrl(loggerContext, url);
 
             //同步 logger level 配置
             if (LogOptions.getLoggerLevels().size() > 0) {
@@ -110,27 +127,13 @@ public class LogIncubatorImpl implements LogIncubator {
         }
     }
 
-    protected void doLoadUrl(LoggerContext loggerContext, URL url) throws Exception {
-        loggerContext.reset();
-
-        SolonConfigurator configurator = new SolonConfigurator();
-        configurator.setContext(loggerContext);
-
-        if (url == null) {
-            //::尝试默认加载
-            DefaultLogbackConfiguration configuration = new DefaultLogbackConfiguration();
-            configuration.apply(new LogbackConfigurator(loggerContext));
-        } else {
-            //::加载 xml url
-            configurator.doConfigure(url);
-        }
-    }
 
     /**
      * 报告配置错误（原生运行时）
      */
     private void reportConfigurationErrorsIfNecessary(LoggerContext loggerContext) {
         List<Status> statuses = loggerContext.getStatusManager().getCopyOfStatusList();
+
         StringBuilder errors = new StringBuilder();
         for (Status status : statuses) {
             if (status.getLevel() == Status.ERROR) {
@@ -151,7 +154,7 @@ public class LogIncubatorImpl implements LogIncubator {
     /**
      * 基于配置，获取日志配置文件
      */
-    private URL getUrlOfConfig() throws MalformedURLException {
+    private URL getUrlOfConfig() {
         String logConfig = Solon.cfg().get("solon.logging.config");
 
         if (Utils.isNotEmpty(logConfig)) {
@@ -159,10 +162,7 @@ public class LogIncubatorImpl implements LogIncubator {
             if (logConfigUrl != null) {
                 return logConfigUrl;
             } else {
-                //改成异步，不然 log 初始化未完成
-//                RunUtil.async(() -> {
-                System.err.println("Props: No log config file: " + logConfig);
-//                });
+                System.err.println("Props: No logging config file exists: " + logConfig);
             }
         }
 
