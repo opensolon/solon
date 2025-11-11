@@ -1677,6 +1677,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>resilience4j-solon-cloud-plugin</artifactId>
+                <version>${solon-cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>xxl-job-solon-cloud-plugin</artifactId>
                 <version>${solon-cloud.version}</version>
             </dependency>

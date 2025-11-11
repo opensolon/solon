@@ -27,6 +27,11 @@
 * 使用 solon-expression 替代其它临时的表达式处理 //ok
 * 升级 mcp-java-sdk 为 0.14.x？？？
 
+### v3.7.2
+
+* 新增 resilience4j-solon-cloud-plugin 插件
+
+
 ### v3.7.1
 
 * 添加 solon Router:add(clz) 方法
