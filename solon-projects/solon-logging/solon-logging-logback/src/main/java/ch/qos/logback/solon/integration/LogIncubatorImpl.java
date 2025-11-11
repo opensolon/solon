@@ -63,6 +63,12 @@ public class LogIncubatorImpl implements LogIncubator {
         //尝试从配置里获取
         URL url = getUrlOfConfig();
 
+        //加载配置文件
+        doLoadUrl(url);
+        doInit();
+    }
+
+    protected void doLoadUrl(URL url) throws Exception {
         //尝试包内定制加载
         if (url == null) {
             //检查是否有原生配置文件
@@ -70,26 +76,22 @@ public class LogIncubatorImpl implements LogIncubator {
                 //如果有直接返回（不支持对它进行 Solon 扩展）
                 return;
             }
-        }
 
-        //1::尝试应用环境加载
-        if (url == null) {
-            if (Utils.isNotEmpty(Solon.cfg().env())) {
-                url = ResourceUtil.getResource("logback-solon-" + Solon.cfg().env() + ".xml");
+            //1::尝试应用环境加载
+            if (url == null) {
+                if (Utils.isNotEmpty(Solon.cfg().env())) {
+                    url = ResourceUtil.getResource("logback-solon-" + Solon.cfg().env() + ".xml");
+                }
+            }
+
+            //2::尝试应用加载
+            if (url == null) {
+                url = ResourceUtil.getResource("logback-solon.xml");
             }
         }
 
-        //2::尝试应用加载
-        if (url == null) {
-            url = ResourceUtil.getResource("logback-solon.xml");
-        }
+        /// ///////////
 
-        //加载配置文件
-        doLoadUrl(url);
-        doInit();
-    }
-
-    protected void doLoadUrl(URL url) throws Exception {
         LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
 
         loggerContext.reset();

@@ -28,10 +28,6 @@ import org.noear.solon.logging.LogIncubator;
 import org.noear.solon.logging.LogOptions;
 import org.noear.solon.logging.model.LoggerLevelEntity;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
@@ -62,28 +58,6 @@ public class LogIncubatorImpl implements LogIncubator {
         //尝试从配置里获取
         URL url = getUrlOfConfig();
 
-        //尝试包内定制加载
-        if (url == null) {
-            //检查是否有原生配置文件
-            if (ResourceUtil.hasResource("log4j2.xml")) {
-                //如果有直接返回（不支持对它进行 Solon 扩展）
-                return;
-            }
-        }
-
-        //1::尝试应用环境加载
-        if (url == null) {
-            //尝试环境加载
-            if (Utils.isNotEmpty(Solon.cfg().env())) {
-                url = ResourceUtil.getResource("log4j2-solon-" + Solon.cfg().env() + ".xml");
-            }
-        }
-
-        //2::尝试应用加载
-        if (url == null) {
-            url = ResourceUtil.getResource("log4j2-solon.xml");
-        }
-
         doLoadUrl(url);
         doInit();
     }
@@ -110,6 +84,30 @@ public class LogIncubatorImpl implements LogIncubator {
     }
 
     protected void doLoadUrl(URL url) throws Exception {
+        //尝试包内定制加载
+        if (url == null) {
+            //检查是否有原生配置文件
+            if (ResourceUtil.hasResource("log4j2.xml")) {
+                //如果有直接返回（不支持对它进行 Solon 扩展）
+                return;
+            }
+
+            //1::尝试应用环境加载
+            if (url == null) {
+                //尝试环境加载
+                if (Utils.isNotEmpty(Solon.cfg().env())) {
+                    url = ResourceUtil.getResource("log4j2-solon-" + Solon.cfg().env() + ".xml");
+                }
+            }
+
+            //2::尝试应用加载
+            if (url == null) {
+                url = ResourceUtil.getResource("log4j2-solon.xml");
+            }
+        }
+
+        /// /////////////
+
         if (url == null) {
             //::尝试默认加载
             boolean fileEnable = Solon.cfg().getBool("solon.logging.appender.file.enable", true);
