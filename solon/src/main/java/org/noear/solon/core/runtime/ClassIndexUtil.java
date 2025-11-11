@@ -16,7 +16,6 @@
 package org.noear.solon.core.runtime;
 
 import org.noear.solon.core.util.ResourceUtil;
-import org.noear.solon.core.util.ScanUtil;
 import org.noear.solon.lang.Internal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,41 +45,6 @@ public class ClassIndexUtil {
     //索引文件存储路径
     private static final String INDEX_FILE_DIR = "META-INF/solon-index/";
 
-
-    /**
-     * 扫描并生成类索引文件
-     *
-     * @param classLoader 类加载器
-     * @param basePackage 基础包名
-     * @return 扫描的所有java类文件
-     */
-    public static Set<String> scanClassGenerateIndex(ClassLoader classLoader, String basePackage) {
-
-        String dir = basePackage.replace('.', '/');
-
-        // 扫描包下的所有类文件
-        Set<String> classNames = ScanUtil.scan(classLoader, dir, n -> n.endsWith(".class"));
-
-        if (classNames.isEmpty()) {
-            return classNames;
-        }
-
-        // 生成索引文件内容
-        List<String> indexContent = new ArrayList<>();
-        for (String className : classNames) {
-            String fullClassName = className.substring(0, className.length() - 6).replace('/', '.');
-            indexContent.add(fullClassName);
-        }
-
-        // 排序，确保索引文件内容稳定
-        Collections.sort(indexContent);
-
-        // 写入索引文件
-        writeIndexFile(basePackage, indexContent);
-
-        return classNames;
-    }
-
     /**
      * 加载类索引文件
      *
@@ -91,13 +55,13 @@ public class ClassIndexUtil {
         String indexFileName = getIndexFileName(basePackage);
 
         try {
-            URL resourceUrl = ResourceUtil.getResource(INDEX_FILE_DIR + indexFileName);
-            if (resourceUrl == null) {
+            URL uri = ResourceUtil.getResource(INDEX_FILE_DIR + indexFileName);
+            if (uri == null) {
                 return null;
             }
 
             List<String> classNames = new ArrayList<>();
-            try (InputStream inputStream = resourceUrl.openStream();
+            try (InputStream inputStream = uri.openStream();
                  BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
                 String line;
                 while ((line = reader.readLine()) != null) {

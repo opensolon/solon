@@ -736,7 +736,7 @@ public class AppContext extends BeanContainer {
             List<String> clzIndexs = new ArrayList<>();
 
             String dir = basePackage.replace('.', '/');
-            ScanUtil.scan(classLoader, dir, n -> n.endsWith(".class"), name->{
+            ScanUtil.scan(classLoader, dir, n -> n.endsWith(".class"), name -> {
                 //直接回调可减少一次 HashSet 收集（提升性能）；tryBuildBeanOfClass 有重复过滤（不用担心重复）
                 String clzName = name.substring(0, name.length() - 6).replace('/', '.');
 
@@ -756,42 +756,43 @@ public class AppContext extends BeanContainer {
             }
         } else {
             //（非 aot 运行时） 优先使用类索引文件（如果存在）
+            List<Class<?>> clzList = new ArrayList<>();
+
             Collection<String> clzNames = ClassIndexUtil.loadClassIndex(basePackage);
             if (clzNames != null) {
                 for (String clzName : clzNames) {
                     Class<?> clz = ClassUtil.loadClass(classLoader, clzName);
                     if (clz != null) {
-                        tryBuildBeanOfClass(clz);
+                        clzList.add(clz);
+                        //tryBuildBeanOfClass(clz);
                     }
                 }
-                return;
+            } else {
+                String dir = basePackage.replace('.', '/');
+                ScanUtil.scan(classLoader, dir, n -> n.endsWith(".class"), name -> {
+                    //直接回调可减少一次 HashSet 收集（提升性能）；tryBuildBeanOfClass 有重复过滤（不用担心重复）
+                    String clzName = name.substring(0, name.length() - 6).replace('/', '.');
+
+                    Class<?> clz = ClassUtil.loadClass(classLoader, clzName);
+                    if (clz != null) {
+                        clzList.add(clz);
+                        //tryBuildBeanOfClass(clz);
+                    }
+                });
             }
 
-            String dir = basePackage.replace('.', '/');
-            ScanUtil.scan(classLoader, dir, n -> n.endsWith(".class"), name -> {
-                //直接回调可减少一次 HashSet 收集（提升性能）；tryBuildBeanOfClass 有重复过滤（不用担心重复）
-                String clzName = name.substring(0, name.length() - 6).replace('/', '.');
-
-                Class<?> clz = ClassUtil.loadClass(classLoader, clzName);
-                if (clz != null) {
-                    tryBuildBeanOfClass(clz);
-                }
-            });
+            doMakeBeans(clzList);
         }
     }
 
     //两阶段加载
-    private void doMakeBean(Collection<String> clzNames, ClassLoader classLoader) {
+    private void doMakeBeans(Collection<Class<?>> clzList) {
         // 创建两个集合：配置类集合和其他类集合
         List<Class<?>> configClasses = new ArrayList<>();
         List<Class<?>> otherClasses = new ArrayList<>();
 
         // 先分析所有类，分类存储
-        for (String name : clzNames) {
-            String clzName = name.substring(0, name.length() - 6);
-            clzName = clzName.replace('/', '.');
-
-            Class<?> clz = ClassUtil.loadClass(classLoader, clzName);
+        for (Class<?> clz : clzList) {
             if (clz != null) {
                 // 检查是否为配置类（带有@Configuration注解）
                 if (clz.isAnnotationPresent(org.noear.solon.annotation.Configuration.class)) {
