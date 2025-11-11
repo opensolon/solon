@@ -43,12 +43,13 @@ public class RoutingTableDefault<T> implements RoutingTable<T> {
     public void add(Routing<T> routing) {
         int level = 0;
 
-        if (routing.path().indexOf('{') >= 0) {
-            level = 1;
-        }
 
-        if (routing.path().indexOf('*') >= 0) {
+        if (routing.isPathall()) {
+            level = 3;
+        } else if (routing.path().indexOf('*') >= 0) {
             level = 2;
+        } else if (routing.path().indexOf('{') >= 0) {
+            level = 1;
         }
 
         RankEntity<Routing<T>> entity = new RankEntity<>(routing, level, routing.index(), false);

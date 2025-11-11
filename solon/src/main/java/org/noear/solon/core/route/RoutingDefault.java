@@ -34,10 +34,15 @@ public class RoutingDefault<T> implements Routing<T> {
     }
 
     public RoutingDefault(String path, String version, MethodType method, int index, T target) {
-        this.rule = PathMatcher.get(path);
+        if(path.startsWith("/") == false){
+            path = "/" + path;
+        }
+
+        this.rule = PathMatcher.get(path, false);
 
         this.method = method;
         this.path = path;
+        this.isPathall = "/**".equals(path);
 
         if (Utils.isEmpty(version)) {
             this.version = null;
@@ -56,6 +61,7 @@ public class RoutingDefault<T> implements Routing<T> {
     private final String version;
     private final T target;//代理
     private final MethodType method; //方式
+    private final boolean isPathall;
 
     @Override
     public int index() {
@@ -65,6 +71,11 @@ public class RoutingDefault<T> implements Routing<T> {
     @Override
     public String path() {
         return path;
+    }
+
+    @Override
+    public boolean isPathall() {
+        return isPathall;
     }
 
     @Override
@@ -141,7 +152,7 @@ public class RoutingDefault<T> implements Routing<T> {
         }
 
         //1.如果当前为**，任何路径都可命中
-        if ("**".equals(path) || "/**".equals(path)) {
+        if (isPathall) {
             return true;
         }
 
@@ -156,7 +167,7 @@ public class RoutingDefault<T> implements Routing<T> {
 
     private boolean matchesPath0(String path2) {
         //1.如果当前为**，任何路径都可命中
-        if ("**".equals(path) || "/**".equals(path)) {
+        if (isPathall) {
             return true;
         }
 

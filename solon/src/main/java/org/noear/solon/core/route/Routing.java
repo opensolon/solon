@@ -36,6 +36,11 @@ public interface Routing<T> {
     String path();
 
     /**
+     * 路径全匹配
+     */
+    boolean isPathall();
+
+    /**
      * 版本号
      */
     String version();
