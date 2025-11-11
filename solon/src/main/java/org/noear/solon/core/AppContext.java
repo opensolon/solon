@@ -731,57 +731,66 @@ public class AppContext extends BeanContainer {
             return;
         }
 
-        if (NativeDetector.isAotRuntime() == false) {
-            // 优先使用类索引文件（如果存在）
-            if (ClassIndexUtil.hasClassIndex(basePackage)) {
-                // 使用索引文件进行扫描
-                List<String> classNames = ClassIndexUtil.loadClassIndex(basePackage);
-                if (classNames != null) {
-                    for (String className : classNames) {
-                        Class<?> clz = ClassUtil.loadClass(classLoader, className);
-                        if (clz != null) {
-                            tryBuildBeanOfClass(clz);
-                        }
-                    }
-                    return;
+        // 如果在AOT编译时，生成类索引文件，并加载bean
+        if (NativeDetector.isAotRuntime()) {
+            Set<String> classNames = ClassIndexUtil.generateClassIndex(classLoader, basePackage);
+            //按照配置类优先，其他类次之，两阶段加载
+            doMakeBean(classNames, classLoader);
+            return;
+        }
+
+        // 优先使用类索引文件（如果存在）
+        if (ClassIndexUtil.hasClassIndex(basePackage)) {
+            // 使用索引文件进行扫描
+            Set<String> classNames = ClassIndexUtil.loadClassIndex(basePackage);
+            if (classNames != null) {
+                //按照配置类优先，其他类次之，两阶段加载
+                doMakeBean(classNames, classLoader);
+                return;
+            }
+        }
+
+        //默认加载策略 （没有类索引文件，也不是aot编译阶段）
+        String dir = basePackage.replace('.', '/');
+
+        //扫描类文件并分析（采用两段式加载，先处理配置类，再处理其他类）
+        Set<String> clzNames = ScanUtil.scan(classLoader, dir, n -> n.endsWith(".class"));
+
+        //按照配置类优先，其他类次之，两阶段加载
+        doMakeBean(clzNames, classLoader);
+
+    }
+
+    //两阶段加载
+    private void doMakeBean(Set<String> clzNames, ClassLoader classLoader) {
+        // 创建两个集合：配置类集合和其他类集合
+        java.util.List<Class<?>> configClasses = new java.util.ArrayList<>();
+        java.util.List<Class<?>> otherClasses = new java.util.ArrayList<>();
+
+        // 先分析所有类，分类存储
+        for (String name : clzNames) {
+            String clzName = name.substring(0, name.length() - 6);
+            clzName = clzName.replace('/', '.');
+
+            Class<?> clz = ClassUtil.loadClass(classLoader, clzName);
+            if (clz != null) {
+                // 检查是否为配置类（带有@Configuration注解）
+                if (clz.isAnnotationPresent(org.noear.solon.annotation.Configuration.class)) {
+                    configClasses.add(clz);
+                } else {
+                    otherClasses.add(clz);
                 }
             }
         }
 
-        String dir = basePackage.replace('.', '/');
-        //扫描类文件并处理（采用两段式加载，可以部分bean先处理；剩下的为第二段处理）
-        Set<String> clzNames = ScanUtil.scan(classLoader, dir, n -> n.endsWith(".class"));
+        // 第一阶段：优先处理配置类
+        for (Class<?> clz : configClasses) {
+            tryBuildBeanOfClass(clz);
+        }
 
-        if (NativeDetector.isAotRuntime() == false) {
-            for (String name : clzNames) {
-                String clzName = name.substring(0, name.length() - 6).replace('/', '.');
-
-                Class<?> clz = ClassUtil.loadClass(classLoader, clzName);
-                if (clz != null) {
-                    tryBuildBeanOfClass(clz);
-                }
-            }
-        } else {
-            // 如果在AOT编译时，生成类索引文件
-            List<String> clzNames2 = new ArrayList<>();
-
-            for (String name : clzNames) {
-                String clzName = name.substring(0, name.length() - 6).replace('/', '.');
-
-                Class<?> clz = ClassUtil.loadClass(classLoader, clzName);
-                if (clz != null) {
-                    if (tryBuildBeanOfClass(clz) > build_bean_ofclass_state0) {
-                        clzNames2.add(clzName);
-                    }
-                }
-            }
-
-            if (clzNames2.size() > 0) {
-                // 排序，确保索引文件内容稳定
-                Collections.sort(clzNames2);
-                // 写入索引文件
-                ClassIndexUtil.writeIndexFile(basePackage, clzNames2);
-            }
+        // 第二阶段：处理其他类
+        for (Class<?> clz : otherClasses) {
+            tryBuildBeanOfClass(clz);
         }
     }
 
