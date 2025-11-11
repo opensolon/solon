@@ -747,7 +747,7 @@ public class AppContext extends BeanContainer {
                 }
             });
 
-            doMakeBeans2(clzList, clzIndexs);
+            doBuildBeans(clzList, clzIndexs);
 
             if (clzIndexs.size() > 0) {
                 // 排序，确保索引文件内容稳定
@@ -780,12 +780,12 @@ public class AppContext extends BeanContainer {
                 });
             }
 
-            doMakeBeans(clzList);
+            doBuildBeans(clzList, null);
         }
     }
 
     //两阶段加载
-    private void doMakeBeans(Collection<Class<?>> clzList) {
+    private void doBuildBeans(Collection<Class<?>> clzList, List<String> clzIndexs) {
         // 创建两个集合：配置类集合和其他类集合
         List<Class<?>> configClasses = new ArrayList<>();
         List<Class<?>> otherClasses = new ArrayList<>();
@@ -802,48 +802,29 @@ public class AppContext extends BeanContainer {
             }
         }
 
-        // 第一阶段：优先处理配置类
-        for (Class<?> clz : configClasses) {
-            tryBuildBeanOfClass(clz);
-        }
+        if (clzIndexs == null) {
+            for (Class<?> clz : configClasses) {
+                tryBuildBeanOfClass(clz);
+            }
 
-        // 第二阶段：处理其他类
-        for (Class<?> clz : otherClasses) {
-            tryBuildBeanOfClass(clz);
-        }
-    }
+            for (Class<?> clz : otherClasses) {
+                tryBuildBeanOfClass(clz);
+            }
+        } else { //for aot
+            for (Class<?> clz : configClasses) {
+                if (tryBuildBeanOfClass(clz) > build_bean_ofclass_state0) {
+                    clzIndexs.add(clz.getName());
+                }
+            }
 
-    private void doMakeBeans2(Collection<Class<?>> clzList, List<String> clzIndexs) {
-        // 创建两个集合：配置类集合和其他类集合
-        List<Class<?>> configClasses = new ArrayList<>();
-        List<Class<?>> otherClasses = new ArrayList<>();
-
-        // 先分析所有类，分类存储
-        for (Class<?> clz : clzList) {
-            if (clz != null) {
-                // 检查是否为配置类（带有@Configuration注解）
-                if (clz.isAnnotationPresent(Configuration.class)) {
-                    configClasses.add(clz);
-                } else {
-                    otherClasses.add(clz);
+            for (Class<?> clz : otherClasses) {
+                if (tryBuildBeanOfClass(clz) > build_bean_ofclass_state0) {
+                    clzIndexs.add(clz.getName());
                 }
             }
         }
-
-        // 第一阶段：优先处理配置类
-        for (Class<?> clz : configClasses) {
-            if (tryBuildBeanOfClass(clz) > build_bean_ofclass_state0) {
-                clzIndexs.add(clz.getName());
-            }
-        }
-
-        // 第二阶段：处理其他类
-        for (Class<?> clz : otherClasses) {
-            if (tryBuildBeanOfClass(clz) > build_bean_ofclass_state0) {
-                clzIndexs.add(clz.getName());
-            }
-        }
     }
+
 
     /**
      * ::制造 bean 及对应处理
