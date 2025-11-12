@@ -20,7 +20,7 @@ import org.noear.solon.core.AppClassLoader;
 import org.noear.solon.core.exception.ConstructionException;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.UploadedFile;
-import org.noear.solon.core.runtime.RuntimeDetector;
+import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.wrap.VarSpec;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -433,7 +433,7 @@ public class ClassUtil {
     private static void doFillObject(TypeEggg typeEggg, Object bean, Function<String, String> data, Context ctx) throws Exception {
         ClassEggg classEggg = typeEggg.getClassEggg();
 
-        if (classEggg.getAllFieldEgggs().isEmpty() && RuntimeDetector.inNativeImage()) {
+        if (classEggg.getAllFieldEgggs().isEmpty() && NativeDetector.inNativeImage()) {
             log.warn(String.format("Class: %s don't have any field, can't fill data. you should use: nativeMetadata.registerField(field) at aot runtime.", typeEggg.getType().getName()));
         }
 

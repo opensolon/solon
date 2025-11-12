@@ -20,7 +20,7 @@ import org.noear.solon.core.AppClassLoader;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.util.MultiMap;
 import org.noear.solon.logging.LogIncubator;
-import org.noear.solon.core.runtime.RuntimeDetector;
+import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.ConsumerEx;
 import org.noear.solon.lang.Preview;
 import org.slf4j.Logger;
@@ -231,7 +231,7 @@ public class Solon {
             log.error("Solon start failed: " + e.getMessage(), e);
 
             //3.停止服务并退出（主要是停止插件）
-            if (RuntimeDetector.isNotAotRuntime()) {
+            if (NativeDetector.isNotAotRuntime()) {
                 Solon.stop0(true, 0);
             } else {
                 Solon.stop0(false, 0);
@@ -242,7 +242,7 @@ public class Solon {
 
 
         //4.初始化安全停止
-        if (RuntimeDetector.isNotAotRuntime()) {
+        if (NativeDetector.isNotAotRuntime()) {
             if (app.cfg().stopSafe()) {
                 //添加关闭勾子
                 int stopDelay = app.cfg().stopDelay();

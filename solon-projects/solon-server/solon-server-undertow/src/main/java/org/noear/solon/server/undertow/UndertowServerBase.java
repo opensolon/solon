@@ -28,7 +28,7 @@ import org.noear.solon.server.undertow.http.UtContainerInitializer;
 import org.noear.solon.server.http.HttpServerConfigure;
 import org.noear.solon.server.undertow.integration.UndertowPlugin;
 import org.noear.solon.server.handle.SessionProps;
-import org.noear.solon.core.runtime.RuntimeDetector;
+import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.lang.Nullable;
 import org.slf4j.Logger;
@@ -127,7 +127,7 @@ abstract class UndertowServerBase implements ServerLifecycle, HttpServerConfigur
     protected String getResourceRoot() throws FileNotFoundException {
         URL rootURL = getRootPath();
         if (rootURL == null) {
-            if (RuntimeDetector.inNativeImage()) {
+            if (NativeDetector.inNativeImage()) {
                 return "";
             }
 

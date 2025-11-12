@@ -25,7 +25,7 @@ import ch.qos.logback.solon.SolonConfigurator;
 import org.fusesource.jansi.AnsiConsole;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.core.runtime.RuntimeDetector;
+import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.*;
 import org.noear.solon.logging.LogIncubator;
 import org.noear.solon.logging.LogOptions;
@@ -119,7 +119,7 @@ public class LogIncubatorImpl implements LogIncubator {
                 }
             }
 
-            if (RuntimeDetector.inNativeImage()) {
+            if (NativeDetector.inNativeImage()) {
                 reportConfigurationErrorsIfNecessary(loggerContext);
             }
         } catch (Exception e) {

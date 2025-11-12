@@ -25,7 +25,7 @@ import org.noear.solon.annotation.Produces;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.Constants;
 import org.noear.solon.core.exception.StatusException;
-import org.noear.solon.core.runtime.RuntimeDetector;
+import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.*;
 import org.noear.solon.core.wrap.MethodWrap;
 import org.slf4j.Logger;
@@ -83,7 +83,7 @@ public class ActionDefault extends HandlerAide implements Action {
 
         ClassUtil.accessibleAsTrue(mE.getMethod());
 
-        if (RuntimeDetector.isAotRuntime()) {
+        if (NativeDetector.isAotRuntime()) {
             bWrap.context().aot().registerMethodEggg(mE);
         }
 

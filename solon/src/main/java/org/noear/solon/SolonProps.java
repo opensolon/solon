@@ -17,7 +17,7 @@ package org.noear.solon;
 
 import org.noear.solon.annotation.Import;
 import org.noear.solon.core.*;
-import org.noear.solon.core.runtime.RuntimeDetector;
+import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.*;
 
 import java.lang.annotation.Annotation;
@@ -169,7 +169,7 @@ public final class SolonProps extends Props {
                 && app.sourceLocation().getPath().endsWith(".zip") == false
                 && app.sourceLocation().getPath().contains(".zip!/") == false);
 
-        if (RuntimeDetector.inNativeImage()) {
+        if (NativeDetector.inNativeImage()) {
             //如果是原生运行
             isFilesMode = false;
         }

@@ -15,7 +15,7 @@
  */
 package org.noear.solon.extend.impl;
 
-import org.noear.solon.core.runtime.RuntimeDetector;
+import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.aot.graalvm.GraalvmUtil;
 import org.noear.solon.core.util.Scanner;
 
@@ -35,7 +35,7 @@ public class ScannerExt extends Scanner {
 
         if (fileMode == false) {
             //3.native image
-            if (RuntimeDetector.inNativeImage()) {
+            if (NativeDetector.inNativeImage()) {
                 GraalvmUtil.scanResource(path, filter, consumer);
             }
         }

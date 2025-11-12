@@ -18,7 +18,7 @@ package demo2;
 import org.noear.solon.Solon;
 import org.noear.solon.aot.Settings;
 import org.noear.solon.aot.proxy.ProxyClassGenerator;
-import org.noear.solon.core.runtime.RuntimeDetector;
+import org.noear.solon.core.runtime.NativeDetector;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -29,7 +29,7 @@ import java.nio.file.Paths;
  */
 public class Test {
     public static void main(String[] args) {
-        System.setProperty(RuntimeDetector.AOT_PROCESSING, "1");
+        System.setProperty(NativeDetector.AOT_PROCESSING, "1");
 
         Solon.start(Test.class, args);
 

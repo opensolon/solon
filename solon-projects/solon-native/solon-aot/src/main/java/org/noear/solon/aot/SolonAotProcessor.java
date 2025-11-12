@@ -24,7 +24,7 @@ import org.noear.solon.aot.graalvm.GraalvmUtil;
 import org.noear.solon.aot.hint.ResourceHint;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.PluginEntity;
-import org.noear.solon.core.runtime.RuntimeDetector;
+import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.ScanUtil;
 
@@ -90,10 +90,10 @@ public class SolonAotProcessor {
 
     public final void process() throws Throwable {
         try {
-            System.setProperty(RuntimeDetector.AOT_PROCESSING, "true");
+            System.setProperty(NativeDetector.AOT_PROCESSING, "true");
             doProcess();
         } finally {
-            System.clearProperty(RuntimeDetector.AOT_PROCESSING);
+            System.clearProperty(NativeDetector.AOT_PROCESSING);
         }
     }
 

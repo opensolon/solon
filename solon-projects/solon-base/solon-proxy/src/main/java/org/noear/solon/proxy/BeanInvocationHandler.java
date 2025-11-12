@@ -17,7 +17,7 @@ package org.noear.solon.proxy;
 
 import org.noear.solon.Solon;
 import org.noear.solon.core.BeanWrap;
-import org.noear.solon.core.runtime.RuntimeDetector;
+import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.proxy.aot.AotProxy;
 import org.noear.solon.proxy.asm.AsmProxy;
@@ -51,7 +51,7 @@ public class BeanInvocationHandler implements InvocationHandler {
         this.handler = handler;
 
         //支持 AOT 生成的代理 (支持 Graalvm Native  打包)
-        if (RuntimeDetector.isNotAotRuntime()) {
+        if (NativeDetector.isNotAotRuntime()) {
             this.proxy = AotProxy.newProxyInstance(bw.context(), this, bw.rawClz(), bw.clzCtorArgs());
         }
 
