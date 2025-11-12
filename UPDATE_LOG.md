@@ -38,6 +38,7 @@
 * 优化 solon-logging 初始化处理，避免二次加载文件配置
 * 优化 solon 启动性能（提升 10% 到 30%）
 * 调整 solon 编译配置荐 maven.compiler.source,target 改为 release
+* 修复 solon-server-vertx VxWebSocketImpl:remoteAddress 转换失败的问题
 
 
 ### v3.7.1
