@@ -18,7 +18,7 @@ package org.noear.solon.proxy;
 import org.noear.solon.Solon;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.BeanWrap;
-import org.noear.solon.core.runtime.NativeDetector;
+import org.noear.solon.core.runtime.RuntimeDetector;
 import org.noear.solon.proxy.aot.AotProxy;
 import org.noear.solon.proxy.asm.AsmProxy;
 
@@ -71,7 +71,7 @@ public class ProxyUtil {
         } else {
             Object proxy = null;
             //支持 AOT 生成的代理 (支持 Graalvm Native  打包)
-            if (NativeDetector.isNotAotRuntime()) {
+            if (RuntimeDetector.isNotAotRuntime()) {
                 proxy = AotProxy.newProxyInstance(context, handler, clazz, new Object[0]);
             }
 

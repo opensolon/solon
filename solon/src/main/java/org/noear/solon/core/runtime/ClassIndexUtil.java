@@ -99,7 +99,7 @@ public class ClassIndexUtil {
     public static void writeIndexFile(String basePackage, List<String> classNames) {
         String indexFileName = getIndexFileName(basePackage);
 
-        File indexFile = RuntimeService.global().createClassOutputFile(INDEX_FILE_DIR + indexFileName);
+        File indexFile = RuntimeService.singleton().createClassOutputFile(INDEX_FILE_DIR + indexFileName);
 
         try {
             // 确保目录存在

@@ -33,7 +33,7 @@ public class ReflectUtil {
     static Reflection global;
 
     static {
-        global = RuntimeService.global().createReflection();
+        global = RuntimeService.singleton().createReflection();
     }
 
     /**

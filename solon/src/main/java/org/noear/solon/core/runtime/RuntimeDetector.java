@@ -20,36 +20,39 @@ package org.noear.solon.core.runtime;
  *
  * @author Sebastien Deleuze
  * @since 2.2
- * @deprecated 3.7 {@link RuntimeDetector}
  */
-@Deprecated
-public final class NativeDetector {
+public final class RuntimeDetector {
+    public static final String AOT_PROCESSING = "solon.aot.processing";
+    public static final String AOT_IMAGECODE = "org.graalvm.nativeimage.imagecode";
+
+    private static final boolean imageCode = (System.getProperty(AOT_IMAGECODE) != null);
+    private static final boolean aotRuntime = (System.getProperty(AOT_PROCESSING) != null);
+
     /**
      * 是否在原生镜像上执行
      */
     public static boolean inNativeImage() {
-        return RuntimeDetector.inNativeImage();
+        return imageCode;
     }
 
     /**
      * 是否不在原生镜像上执行
-     *
      */
     public static boolean notInNativeImage() {
-        return RuntimeDetector.notInNativeImage();
+        return !imageCode;
     }
 
     /**
      * 是否在 aot 运行时
      */
     public static boolean isAotRuntime() {
-        return RuntimeDetector.isAotRuntime();
+        return aotRuntime;
     }
 
     /**
      * 是否不在 aot 运行时
      */
     public static boolean isNotAotRuntime() {
-        return RuntimeDetector.isNotAotRuntime();
+        return !aotRuntime;
     }
 }

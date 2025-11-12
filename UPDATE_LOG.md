@@ -30,6 +30,14 @@
 ### v3.7.2
 
 * 新增 resilience4j-solon-cloud-plugin 插件
+* 新增 solon 启动扫描类索引机制（由 solon aot 构建时自动生成）
+* 新增 aot 构建配置（在 native 基础上去除 graalvm.buildtools），任意 jdk 版本可用
+* 优化 solon 路由匹配规则，原3个优先级升为5优先级（更细）
+* 优化 solon AppContext:beanScan 改为先加载再分批处理（确保配置类先处理）
+* 优化 solon AppContext:startInjectReview 去掉 stream 写法（减少中转，提升性能）
+* 优化 solon-logging 初始化处理，避免二次加载文件配置
+* 优化 solon 启动性能（提升 10% 到 30%）
+* 调整 solon NativeDetector 更名为 RuntimeDetector（前者标为弃用）
 
 
 ### v3.7.1

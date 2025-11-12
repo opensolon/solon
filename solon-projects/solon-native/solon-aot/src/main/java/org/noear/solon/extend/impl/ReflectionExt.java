@@ -15,7 +15,7 @@
  */
 package org.noear.solon.extend.impl;
 
-import org.noear.solon.core.runtime.NativeDetector;
+import org.noear.solon.core.runtime.RuntimeDetector;
 import org.noear.solon.aot.graalvm.GraalvmUtil;
 import org.noear.solon.core.util.Reflection;
 
@@ -35,7 +35,7 @@ public class ReflectionExt extends Reflection {
      */
     @Override
     public Field[] getDeclaredFields(Class<?> clazz) {
-        if (NativeDetector.inNativeImage()) {
+        if (RuntimeDetector.inNativeImage()) {
             return GraalvmUtil.getDeclaredFields(clazz);
         } else {
             return super.getDeclaredFields(clazz);
@@ -47,7 +47,7 @@ public class ReflectionExt extends Reflection {
      */
     @Override
     public Method[] getDeclaredMethods(Class<?> clazz) {
-        if (NativeDetector.inNativeImage()) {
+        if (RuntimeDetector.inNativeImage()) {
             return GraalvmUtil.getDeclaredMethods(clazz);
         } else {
             return super.getDeclaredMethods(clazz);
@@ -61,7 +61,7 @@ public class ReflectionExt extends Reflection {
      */
     @Override
     public Method[] getMethods(Class<?> clazz) {
-        if (NativeDetector.inNativeImage()) {
+        if (RuntimeDetector.inNativeImage()) {
             return GraalvmUtil.getMethods(clazz);
         } else {
             return super.getMethods(clazz);

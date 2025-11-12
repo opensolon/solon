@@ -34,7 +34,7 @@ public class ScanUtil {
 
     static {
         //（静态扩展约定：org.noear.solon.extend.impl.XxxxExt）
-        global = RuntimeService.global().createScanner();
+        global = RuntimeService.singleton().createScanner();
     }
 
     /**

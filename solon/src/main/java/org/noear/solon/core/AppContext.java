@@ -28,7 +28,7 @@ import org.noear.solon.core.event.EventListener;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.route.RouterInterceptor;
 import org.noear.solon.core.runtime.ClassIndexUtil;
-import org.noear.solon.core.runtime.NativeDetector;
+import org.noear.solon.core.runtime.RuntimeDetector;
 import org.noear.solon.core.serialize.Serializer;
 import org.noear.solon.core.util.*;
 import org.noear.solon.core.wrap.*;
@@ -614,7 +614,7 @@ public class AppContext extends BeanContainer {
 
             try {
                 //起到 aot 注册效果
-                if (NativeDetector.isAotRuntime()) {
+                if (RuntimeDetector.isAotRuntime()) {
                     aot().registerMethodEggg(me);
                 }
                 be.doExtract(bw, me.getMethod(), a);
@@ -731,7 +731,7 @@ public class AppContext extends BeanContainer {
             return;
         }
 
-        if (NativeDetector.isAotRuntime()) {
+        if (RuntimeDetector.isAotRuntime()) {
             //（aot 运行时）
             List<String> clzIndexs = new ArrayList<>();
             List<Class<?>> clzList = new ArrayList<>();
@@ -918,7 +918,7 @@ public class AppContext extends BeanContainer {
      * 尝试托管方法调用
      */
     private void tryBuildBeanOfMethod(Method m, BeanWrap bw, int priority, BiConsumerEx<MethodEggg, Object> completionConsumer) throws Throwable {
-        if (NativeDetector.isAotRuntime()) {
+        if (RuntimeDetector.isAotRuntime()) {
             //如果是 aot 则注册函数
             aot().registerMethodEggg(bw.rawEggg().findMethodEgggOrNew(m));
         }
@@ -943,7 +943,7 @@ public class AppContext extends BeanContainer {
         ClassUtil.accessibleAsTrue(m);
 
         MethodEggg me = bw.rawEggg().findMethodEgggOrNew(m);
-        if (NativeDetector.isAotRuntime()) {
+        if (RuntimeDetector.isAotRuntime()) {
             aot().registerMethodEggg(me);
         }
 

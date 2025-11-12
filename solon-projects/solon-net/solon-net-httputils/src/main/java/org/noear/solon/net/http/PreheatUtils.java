@@ -16,7 +16,7 @@
 package org.noear.solon.net.http;
 
 import org.noear.solon.Solon;
-import org.noear.solon.core.runtime.NativeDetector;
+import org.noear.solon.core.runtime.RuntimeDetector;
 import org.noear.solon.core.util.ConsumerEx;
 
 /**
@@ -38,7 +38,7 @@ public final class PreheatUtils {
      * 预热本地地址
      */
     public static void preheat(String path, ConsumerEx<HttpUtils> handling) {
-        if (NativeDetector.isAotRuntime()) {
+        if (RuntimeDetector.isAotRuntime()) {
             return;
         }
 

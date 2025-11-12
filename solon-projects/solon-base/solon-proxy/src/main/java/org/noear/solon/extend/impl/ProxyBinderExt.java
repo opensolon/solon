@@ -18,7 +18,7 @@ package org.noear.solon.extend.impl;
 import org.noear.eggg.ClassEggg;
 import org.noear.eggg.MethodEggg;
 import org.noear.solon.core.BeanWrap;
-import org.noear.solon.core.runtime.NativeDetector;
+import org.noear.solon.core.runtime.RuntimeDetector;
 import org.noear.solon.core.util.ProxyBinder;
 import org.noear.solon.proxy.BeanProxy;
 
@@ -48,7 +48,7 @@ public class ProxyBinderExt extends ProxyBinder {
             throw new IllegalStateException("Not public classes are not supported as proxy components: " + bw.clz().getName());
         }
 
-        if (NativeDetector.isAotRuntime()) {
+        if (RuntimeDetector.isAotRuntime()) {
             //如果是 aot 则注册函数
             ClassEggg rawEggg = bw.rawEggg();
             for (MethodEggg me : rawEggg.getOwnMethodEgggs()) {

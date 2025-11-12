@@ -23,7 +23,7 @@ import org.noear.solon.core.AppContext;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.event.AppInitEndEvent;
 import org.noear.solon.core.event.EventBus;
-import org.noear.solon.core.runtime.NativeDetector;
+import org.noear.solon.core.runtime.RuntimeDetector;
 import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.test.annotation.Rollback;
 import org.noear.solon.test.aot.SolonAotTestProcessor;
@@ -155,7 +155,7 @@ public class RunnerUtils {
 
             try {
                 if (anno.isAot()) {
-                    System.setProperty(NativeDetector.AOT_PROCESSING, "true");
+                    System.setProperty(RuntimeDetector.AOT_PROCESSING, "true");
                 }
 
                 AppContext appContext = startDo(mainClz, argsAry, klass, anno.enableHttp());
@@ -176,7 +176,7 @@ public class RunnerUtils {
 
                 return appContext;
             } finally {
-                System.clearProperty(NativeDetector.AOT_PROCESSING);
+                System.clearProperty(RuntimeDetector.AOT_PROCESSING);
             }
         } else {
             List<String> argsAry = new ArrayList<>();

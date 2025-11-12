@@ -18,7 +18,6 @@ package ch.qos.logback.solon.integration;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
-import ch.qos.logback.core.joran.spi.JoranException;
 import ch.qos.logback.core.status.Status;
 import ch.qos.logback.core.status.StatusUtil;
 import ch.qos.logback.core.util.StatusPrinter;
@@ -26,14 +25,13 @@ import ch.qos.logback.solon.SolonConfigurator;
 import org.fusesource.jansi.AnsiConsole;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.core.runtime.NativeDetector;
+import org.noear.solon.core.runtime.RuntimeDetector;
 import org.noear.solon.core.util.*;
 import org.noear.solon.logging.LogIncubator;
 import org.noear.solon.logging.LogOptions;
 import org.noear.solon.logging.model.LoggerLevelEntity;
 import org.slf4j.LoggerFactory;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
@@ -121,7 +119,7 @@ public class LogIncubatorImpl implements LogIncubator {
                 }
             }
 
-            if (NativeDetector.inNativeImage()) {
+            if (RuntimeDetector.inNativeImage()) {
                 reportConfigurationErrorsIfNecessary(loggerContext);
             }
         } catch (Exception e) {

@@ -19,7 +19,7 @@ import org.noear.eggg.ClassEggg;
 import org.noear.eggg.MethodEggg;
 import org.noear.nami.annotation.NamiClient;
 import org.noear.solon.Solon;
-import org.noear.solon.core.runtime.NativeDetector;
+import org.noear.solon.core.runtime.RuntimeDetector;
 import org.noear.solon.core.util.EgggUtil;
 
 import java.lang.reflect.Proxy;
@@ -174,7 +174,7 @@ public class NamiBuilder {
             throw new NamiException("NamiClient only support interfaces: " + clz.getName());
         }
 
-        if (NativeDetector.isAotRuntime()) {
+        if (RuntimeDetector.isAotRuntime()) {
             //如果是 aot 则注册函数
             if (Solon.app() != null) {
                 ClassEggg classEggg = EgggUtil.getClassEggg(clz);

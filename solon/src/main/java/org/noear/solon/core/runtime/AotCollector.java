@@ -58,7 +58,7 @@ public class AotCollector {
      * 注册实体类型
      */
     public void registerEntityType(Class<?> type, Type genericType) {
-        if (NativeDetector.isAotRuntime()) {
+        if (RuntimeDetector.isAotRuntime()) {
             if (type.getName().startsWith("java.") == false) {
                 entityTypes.add(type);
             }
@@ -80,7 +80,7 @@ public class AotCollector {
      * 注册jdk代理类型
      */
     public void registerJdkProxyType(Class<?> type, Object target) {
-        if (NativeDetector.isAotRuntime()) {
+        if (RuntimeDetector.isAotRuntime()) {
             if (Proxy.isProxyClass(target.getClass())) {
                 if (type.getName().startsWith("java.") == false) {
                     jdkProxyTypes.add(type);

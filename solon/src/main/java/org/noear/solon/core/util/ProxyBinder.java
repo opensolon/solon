@@ -16,7 +16,7 @@
 package org.noear.solon.core.util;
 
 import org.noear.solon.core.BeanWrap;
-import org.noear.solon.core.runtime.NativeDetector;
+import org.noear.solon.core.runtime.RuntimeDetector;
 
 /**
  * 代理绑定器
@@ -44,7 +44,7 @@ public class ProxyBinder {
      * 绑定代理
      * */
     public void binding(BeanWrap bw){
-        if (NativeDetector.isNotAotRuntime()) {
+        if (RuntimeDetector.isNotAotRuntime()) {
             throw new IllegalStateException("Missing plugin dependency: 'solon.proxy'");
         }
     }

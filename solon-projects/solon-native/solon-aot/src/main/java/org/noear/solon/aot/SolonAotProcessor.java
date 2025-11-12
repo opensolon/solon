@@ -24,7 +24,7 @@ import org.noear.solon.aot.graalvm.GraalvmUtil;
 import org.noear.solon.aot.hint.ResourceHint;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.PluginEntity;
-import org.noear.solon.core.runtime.NativeDetector;
+import org.noear.solon.core.runtime.RuntimeDetector;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.ScanUtil;
 
@@ -37,6 +37,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
@@ -89,10 +90,10 @@ public class SolonAotProcessor {
 
     public final void process() throws Throwable {
         try {
-            System.setProperty(NativeDetector.AOT_PROCESSING, "true");
+            System.setProperty(RuntimeDetector.AOT_PROCESSING, "true");
             doProcess();
         } finally {
-            System.clearProperty(NativeDetector.AOT_PROCESSING);
+            System.clearProperty(RuntimeDetector.AOT_PROCESSING);
         }
     }
 
@@ -214,7 +215,7 @@ public class SolonAotProcessor {
     /**
      * 添加 resource-config.json，同时将扫描到的文件，写入solon-resource.json中，方便 native 模式下，扫描资源
      *
-     * @see GraalvmUtil#scanResource(String, Predicate, Set)
+     * @see GraalvmUtil#scanResource(String, Predicate, Consumer)
      */
     private void addResourceConfig(RuntimeNativeMetadata metadata) {
         try {

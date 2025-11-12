@@ -25,7 +25,7 @@ import org.noear.solon.core.handle.*;
 import org.noear.solon.core.route.Router;
 import org.noear.solon.core.route.RouterHandler;
 import org.noear.solon.core.route.RouterWrapper;
-import org.noear.solon.core.runtime.NativeDetector;
+import org.noear.solon.core.runtime.RuntimeDetector;
 import org.noear.solon.core.serialize.SerializerManager;
 import org.noear.solon.core.util.ConsumerEx;
 import org.noear.solon.core.util.MultiMap;
@@ -722,7 +722,7 @@ public class SolonApp extends RouterWrapper {
      * 是否已启用 Http 信号接入
      */
     public boolean enableHttp() {
-        return _enableHttp && NativeDetector.isNotAotRuntime();
+        return _enableHttp && RuntimeDetector.isNotAotRuntime();
     }
 
     /**
@@ -736,7 +736,7 @@ public class SolonApp extends RouterWrapper {
     private boolean _enableWebSocket = false;
 
     public boolean enableWebSocket() {
-        return _enableWebSocket && NativeDetector.isNotAotRuntime();
+        return _enableWebSocket && RuntimeDetector.isNotAotRuntime();
     }
 
     /**
@@ -756,7 +756,7 @@ public class SolonApp extends RouterWrapper {
      * 是否已启用 SocketD 信号接入
      */
     public boolean enableSocketD() {
-        return _enableSocketD && NativeDetector.isNotAotRuntime();
+        return _enableSocketD && RuntimeDetector.isNotAotRuntime();
     }
 
     /**
