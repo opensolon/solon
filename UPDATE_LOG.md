@@ -38,6 +38,7 @@
 * 优化 solon AppContext:startInjectReview 去掉 stream 写法（减少中转，提升性能）
 * 优化 solon-logging 初始化处理，避免二次加载文件配置
 * 优化 solon 启动性能（提升 10% 到 30%）
+* 优化 solon-serve-vertx websocket 适配，避免与 solon-cloud-gateway 的 ws 代理起冲突
 * 调整 solon 编译配置荐 maven.compiler.source,target 改为 release
 * 调整 solon-serve-vertx 去除内部对象 VertxHolder（没地方用到了）
 * 修复 solon-server-vertx VxWebSocketImpl:remoteAddress 转换失败的问题
