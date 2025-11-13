@@ -15,8 +15,6 @@
  */
 package org.noear.solon.server.vertx.integration;
 
-import io.vertx.core.Vertx;
-import io.vertx.solon.VertxHolder;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.server.ServerConstants;
@@ -55,8 +53,6 @@ public class VxHttpPlugin implements Plugin {
         if (context.app().enableHttp() == false) {
             return;
         }
-
-        context.wrapAndPut(Vertx.class, VertxHolder.getVertx());
 
         if (context.isStarted()) {
             start0(context);
@@ -128,7 +124,5 @@ public class VxHttpPlugin implements Plugin {
         if (_server != null) {
             _server.stop();
         }
-
-        VertxHolder.tryClose();
     }
 }
