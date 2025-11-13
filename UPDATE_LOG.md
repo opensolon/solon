@@ -30,6 +30,7 @@
 ### v3.7.2
 
 * 新增 resilience4j-solon-cloud-plugin 插件
+* 新增 solon-cloud-gateway websocket 协议代理支持
 * 新增 solon 启动扫描类索引机制（由 solon aot 构建时自动生成）
 * 新增 aot 构建配置（在 native 基础上去除 graalvm.buildtools），任意 jdk 版本可用
 * 优化 solon 路由匹配规则，原3个优先级升为5优先级（更细）
@@ -38,6 +39,7 @@
 * 优化 solon-logging 初始化处理，避免二次加载文件配置
 * 优化 solon 启动性能（提升 10% 到 30%）
 * 调整 solon 编译配置荐 maven.compiler.source,target 改为 release
+* 调整 solon-serve-vertx 去除内部对象 VertxHolder（没地方用到了）
 * 修复 solon-server-vertx VxWebSocketImpl:remoteAddress 转换失败的问题
 
 
