@@ -20,8 +20,9 @@ import io.vertx.core.http.ServerWebSocket;
 import io.vertx.core.net.SocketAddress;
 import org.noear.solon.Utils;
 import org.noear.solon.server.util.DecodeUtils;
-import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.net.websocket.WebSocketTimeoutBase;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
 import java.net.URI;
@@ -33,6 +34,7 @@ import java.util.concurrent.Future;
  * @since 3.0
  */
 public class VxWebSocketImpl extends WebSocketTimeoutBase {
+    private static final Logger log = LoggerFactory.getLogger(VxWebSocketImpl.class);
     private ServerWebSocket real;
 
     public VxWebSocketImpl(ServerWebSocket real) {
@@ -69,6 +71,7 @@ public class VxWebSocketImpl extends WebSocketTimeoutBase {
     }
 
     private InetSocketAddress remoteAddress;
+
     @Override
     public InetSocketAddress remoteAddress() {
         if (remoteAddress == null) {
@@ -79,6 +82,7 @@ public class VxWebSocketImpl extends WebSocketTimeoutBase {
     }
 
     private InetSocketAddress localAddress;
+
     @Override
     public InetSocketAddress localAddress() {
         if (localAddress == null) {
@@ -111,7 +115,20 @@ public class VxWebSocketImpl extends WebSocketTimeoutBase {
         super.close();
 
         if (real.isClosed() == false) {
-            RunUtil.runAndTry(real::close);
+            real.close().onFailure(ignore -> {
+                log.debug("Close failure: {}", ignore.getMessage());
+            });
+        }
+    }
+
+    @Override
+    public void close(int code, String reason) {
+        super.close(code, reason);
+
+        if (real.isClosed() == false) {
+            real.close((short) code, reason).onFailure(ignore -> {
+                log.debug("Close failure: {}", ignore.getMessage());
+            });
         }
     }
 }

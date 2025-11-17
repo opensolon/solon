@@ -172,4 +172,11 @@ public interface WebSocket {
      * 关闭
      */
     void close();
+
+    /**
+     * 关闭
+     *
+     * @param reason 原因
+     */
+    void close(int code, String reason);
 }
