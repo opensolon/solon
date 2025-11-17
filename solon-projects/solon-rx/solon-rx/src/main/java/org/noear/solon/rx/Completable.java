@@ -19,6 +19,7 @@ import org.noear.solon.rx.impl.CompletableImpl;
 import org.reactivestreams.Publisher;
 
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -32,6 +33,13 @@ public interface Completable extends Publisher<Void> {
      * 出错时
      */
     Completable doOnError(Consumer<Throwable> doOnError);
+
+    /**
+     * 出错时恢复一个新流
+     *
+     * @since 3.7
+     */
+    Completable doOnErrorResume(Function<Throwable, Completable> doOnError);
 
     /**
      * 完成时

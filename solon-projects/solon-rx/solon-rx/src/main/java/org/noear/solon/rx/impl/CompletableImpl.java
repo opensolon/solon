@@ -22,6 +22,7 @@ import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -33,7 +34,7 @@ import java.util.function.Supplier;
 public class CompletableImpl implements Completable, Subscription {
     private final SimpleSubscriber<Object> subscriberBuilder;
     private final Throwable cause;
-    private Consumer<CompletableEmitter> emitterConsumer;
+    private volatile Consumer<CompletableEmitter> emitterConsumer;
 
     public CompletableImpl(Throwable cause, Consumer<CompletableEmitter> emitterConsumer) {
         this.subscriberBuilder = new SimpleSubscriber<>();
@@ -75,6 +76,25 @@ public class CompletableImpl implements Completable, Subscription {
     public Completable doOnError(Consumer<Throwable> doOnError) {
         return Completable.create(emitter -> {
             subscriberBuilder.doOnError(doOnError);
+            subscriberBuilder.doOnComplete(() -> {
+                emitter.onComplete();
+            });
+
+            subscribe();
+        });
+    }
+
+    @Override
+    public Completable doOnErrorResume(Function<Throwable, Completable> doOnError) {
+        return Completable.create(emitter -> {
+            subscriberBuilder.doOnError(err -> {
+                doOnError.apply(err).doOnComplete(() -> {
+                    emitter.onComplete();
+                }).doOnError(err2 -> {
+                    emitter.onError(err2);
+                }).subscribe();
+            });
+
             subscriberBuilder.doOnComplete(() -> {
                 emitter.onComplete();
             });
