@@ -30,10 +30,13 @@ import java.util.function.Supplier;
  *
  * @author noear
  * @since 2.9
+ * @since 3.7
  */
 public class CompletableImpl implements Completable, Subscription {
     private final Throwable cause;
     private volatile Consumer<CompletableEmitter> emitterConsumer;
+    private volatile boolean subscribed = false; // 添加订阅状态
+    private volatile boolean cancelled = false; // 添加取消状态
 
     public CompletableImpl(Throwable cause, Consumer<CompletableEmitter> emitterConsumer) {
         this.cause = cause;
@@ -42,6 +45,20 @@ public class CompletableImpl implements Completable, Subscription {
 
     @Override
     public void subscribe(Subscriber<? super Void> subscriber) {
+        if (subscriber == null) {
+            throw new IllegalArgumentException("Subscriber cannot be null");
+        }
+
+        if (cancelled) {
+            throw new IllegalStateException("Completable has been cancelled");
+        }
+
+        if (subscribed) {
+            throw new IllegalStateException("Completable can only be subscribed once");
+        } else {
+            subscribed = true;
+        }
+
         //开始订阅
         subscriber.onSubscribe(this);
 
@@ -66,14 +83,19 @@ public class CompletableImpl implements Completable, Subscription {
 
     @Override
     public void cancel() {
-
+        cancelled = true;
+        emitterConsumer = null; // 帮助GC
     }
 
 
     @Override
     public Completable doOnError(Consumer<Throwable> doOnError) {
+        if (doOnError == null) {
+            throw new IllegalArgumentException("doOnError consumer cannot be null");
+        }
+
         return Completable.create(emitter -> {
-            subscribe(new SimpleSubscriber() {
+            subscribe(new SimpleSubscriber<Void>() {
                 @Override
                 public void onError(Throwable err) {
                     try {
@@ -93,22 +115,35 @@ public class CompletableImpl implements Completable, Subscription {
 
     @Override
     public Completable doOnErrorResume(Function<Throwable, Completable> doOnError) {
+        if (doOnError == null) {
+            throw new IllegalArgumentException("doOnErrorResume function cannot be null");
+        }
+
         return Completable.create(emitter -> {
-            subscribe(new SimpleSubscriber() {
+            subscribe(new SimpleSubscriber<Void>() {
                 @Override
                 public void onError(Throwable err) {
-                    Completable resumed = doOnError.apply(err);
-                    resumed.subscribe(new SimpleSubscriber<Void>() {
-                        @Override
-                        public void onComplete() {
-                            emitter.onComplete();
-                        }
+                    try {
+                        Completable resumed = doOnError.apply(err);
 
-                        @Override
-                        public void onError(Throwable err2) {
-                            emitter.onError(err2);
+                        if (resumed == null) {
+                            emitter.onError(err);
+                        } else {
+                            resumed.subscribe(new SimpleSubscriber<Void>() {
+                                @Override
+                                public void onComplete() {
+                                    emitter.onComplete();
+                                }
+
+                                @Override
+                                public void onError(Throwable err2) {
+                                    emitter.onError(err2);
+                                }
+                            });
                         }
-                    });
+                    } catch (Throwable t) {
+                        emitter.onError(t);
+                    }
                 }
 
                 @Override
@@ -121,6 +156,10 @@ public class CompletableImpl implements Completable, Subscription {
 
     @Override
     public Completable doOnComplete(Runnable doOnComplete) {
+        if (doOnComplete == null) {
+            throw new IllegalArgumentException("doOnComplete runnable cannot be null");
+        }
+
         return Completable.create(emitter -> {
             subscribe(new SimpleSubscriber<Void>() {
                 @Override
@@ -142,6 +181,10 @@ public class CompletableImpl implements Completable, Subscription {
 
     @Override
     public Completable then(Supplier<Completable> otherSupplier) {
+        if (otherSupplier == null) {
+            throw new IllegalArgumentException("otherSupplier cannot be null");
+        }
+
         return Completable.create(emitter -> {
             subscribe(new SimpleSubscriber<Void>() {
                 @Override
@@ -151,17 +194,26 @@ public class CompletableImpl implements Completable, Subscription {
 
                 @Override
                 public void onComplete() {
-                    otherSupplier.get().subscribe(new SimpleSubscriber<Void>() {
-                        @Override
-                        public void onComplete() {
+                    try {
+                        Completable other = otherSupplier.get();
+                        if (other == null) {
                             emitter.onComplete();
-                        }
+                        } else {
+                            other.subscribe(new SimpleSubscriber<Void>() {
+                                @Override
+                                public void onComplete() {
+                                    emitter.onComplete();
+                                }
 
-                        @Override
-                        public void onError(Throwable err2) {
-                            emitter.onError(err2);
+                                @Override
+                                public void onError(Throwable err2) {
+                                    emitter.onError(err2);
+                                }
+                            });
                         }
-                    });
+                    } catch (Throwable t) {
+                        emitter.onError(t);
+                    }
                 }
             });
         });

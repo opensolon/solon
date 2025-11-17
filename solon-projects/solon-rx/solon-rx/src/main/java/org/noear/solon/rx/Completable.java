@@ -74,6 +74,10 @@ public interface Completable extends Publisher<Void> {
      * 创建
      */
     static Completable create(Consumer<CompletableEmitter> emitterConsumer) {
+        if (emitterConsumer == null) {
+            throw new IllegalArgumentException("emitterConsumer cannot be null");
+        }
+
         return new CompletableImpl(null, emitterConsumer);
     }
 
@@ -85,9 +89,13 @@ public interface Completable extends Publisher<Void> {
     }
 
     /**
-     * 出错的完成
+     * 出错
      */
     static Completable error(Throwable cause) {
+        if (cause == null) {
+            throw new IllegalArgumentException("cause cannot be null");
+        }
+
         return new CompletableImpl(cause, null);
     }
 }
