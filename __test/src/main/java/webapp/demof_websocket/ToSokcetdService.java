@@ -90,8 +90,7 @@ public class ToSokcetdService extends ToSocketdWebSocketListener {
                     }
                 }).doOn("/unpush", (s, m) -> {
                     s.attrMap().remove("push");
-                })
-                .doOnClose(s -> {
+                }).doOnClose(s -> {
                     System.out.println("onClose: " + s.sessionId());
                 }).doOnError((s, err) -> {
                     System.out.println("onError: " + s.sessionId());

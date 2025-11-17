@@ -80,8 +80,7 @@ public class SokcetdService extends EventListener {
                     }
                 }).doOn("/unpush", (s, m) -> {
                     s.attrMap().remove("push");
-                })
-                .doOnClose(s -> {
+                }).doOnClose(s -> {
                     System.out.println("onClose: " + s.sessionId());
                 }).doOnError((s, err) -> {
                     System.out.println("onError: " + s.sessionId());
