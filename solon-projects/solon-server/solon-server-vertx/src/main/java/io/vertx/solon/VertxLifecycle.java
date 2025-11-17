@@ -19,7 +19,7 @@ import io.vertx.core.Vertx;
 import org.noear.solon.core.bean.LifecycleBean;
 
 /**
- * Vertx 生舒周期
+ * Vertx 生命周期管理
  *
  * @author noear
  * @since 3.7

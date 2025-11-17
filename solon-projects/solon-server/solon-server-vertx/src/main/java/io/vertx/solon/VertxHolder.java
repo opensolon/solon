@@ -21,6 +21,7 @@ import org.noear.solon.core.AppContext;
 import org.noear.solon.core.event.EventBus;
 
 /**
+ * Vertx 持有管理
  *
  * @author noear
  * @since 3.7
