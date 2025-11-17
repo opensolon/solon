@@ -92,11 +92,12 @@ public class CompletableImpl implements Completable, Subscription {
         return Completable.create(emitter -> {
             subscribe(new SimpleSubscriber<>()
                     .doOnError(err -> {
-                        doOnError.apply(err).doOnComplete(() -> {
-                            emitter.onComplete();
-                        }).doOnError(err2 -> {
-                            emitter.onError(err2);
-                        }).subscribe();
+                        doOnError.apply(err).subscribe(new SimpleSubscriber<>()
+                                .doOnComplete(() -> {
+                                    emitter.onComplete();
+                                }).doOnError(err2 -> {
+                                    emitter.onError(err2);
+                                }));
                     }).doOnComplete(() -> {
                         emitter.onComplete();
                     }));
@@ -125,11 +126,12 @@ public class CompletableImpl implements Completable, Subscription {
                     .doOnError(err -> {
                         emitter.onError(err);
                     }).doOnComplete(() -> {
-                        otherSupplier.get().doOnComplete(() -> {
-                            emitter.onComplete();
-                        }).doOnError(err -> {
-                            emitter.onError(err);
-                        }).subscribe();
+                        otherSupplier.get().subscribe(new SimpleSubscriber<>()
+                                .doOnComplete(() -> {
+                                    emitter.onComplete();
+                                }).doOnError(err -> {
+                                    emitter.onError(err);
+                                }));
                     }));
         });
     }
