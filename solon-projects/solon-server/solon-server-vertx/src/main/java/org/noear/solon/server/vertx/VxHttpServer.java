@@ -19,6 +19,8 @@ import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.net.JksOptions;
+import io.vertx.solon.VertxHolder;
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.server.ServerConstants;
 import org.noear.solon.server.ServerLifecycle;
@@ -85,7 +87,7 @@ public class VxHttpServer implements ServerLifecycle {
 
     @Override
     public void start(String host, int port) throws Throwable {
-        Vertx _vertx = context.getBean(Vertx.class);
+        Vertx _vertx = VertxHolder.getVertx(Solon.context());
 
         VxHandlerSupplier handlerFactory = null;
         if (allowExternalHandler) {
