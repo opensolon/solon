@@ -36,7 +36,7 @@ public class SimpleSubscriber<T> implements Subscriber<T> {
     private Consumer<Throwable> doOnError;
     private Runnable doOnComplete;
 
-    private final AtomicBoolean isCompleted = new AtomicBoolean(false);
+    private final AtomicBoolean isTerminated = new AtomicBoolean(false);
 
     public SimpleSubscriber<T> doOnSubscribe(Consumer<Subscription> doOnSubscribe) {
         this.doOnSubscribe = doOnSubscribe;
@@ -93,6 +93,10 @@ public class SimpleSubscriber<T> implements Subscriber<T> {
 
     @Override
     public void onNext(T item) {
+        if (isTerminated.get()) {
+            return;
+        }
+
         if (doOnNextFunc != null) {
             if (doOnNextFunc.apply(item) == false) {
                 cancel();
@@ -104,16 +108,17 @@ public class SimpleSubscriber<T> implements Subscriber<T> {
 
     @Override
     public void onError(Throwable throwable) {
-        if (doOnError != null) {
-            doOnError.accept(throwable);
+        if (isTerminated.compareAndSet(false, true)) {
+            if (doOnError != null) {
+                doOnError.accept(throwable);
+            }
         }
     }
 
     @Override
     public void onComplete() {
-        if (doOnComplete != null) {
-            if (isCompleted.compareAndSet(false, true)) {
-                //确保只运行一次
+        if (isTerminated.compareAndSet(false, true)) {
+            if (doOnComplete != null) {
                 doOnComplete.run();
             }
         }

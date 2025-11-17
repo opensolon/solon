@@ -73,66 +73,97 @@ public class CompletableImpl implements Completable, Subscription {
     @Override
     public Completable doOnError(Consumer<Throwable> doOnError) {
         return Completable.create(emitter -> {
-            subscribe(new SimpleSubscriber<>()
-                    .doOnError(err -> {
-                        try {
-                            doOnError.accept(err);
-                        } finally {
-                            emitter.onError(err);
-                        }
-                    })
-                    .doOnComplete(() -> {
-                        emitter.onComplete();
-                    }));
+            subscribe(new SimpleSubscriber() {
+                @Override
+                public void onError(Throwable err) {
+                    try {
+                        doOnError.accept(err);
+                    } finally {
+                        emitter.onError(err);
+                    }
+                }
+
+                @Override
+                public void onComplete() {
+                    emitter.onComplete();
+                }
+            });
         });
     }
 
     @Override
     public Completable doOnErrorResume(Function<Throwable, Completable> doOnError) {
         return Completable.create(emitter -> {
-            subscribe(new SimpleSubscriber<>()
-                    .doOnError(err -> {
-                        doOnError.apply(err).subscribe(new SimpleSubscriber<>()
-                                .doOnComplete(() -> {
-                                    emitter.onComplete();
-                                }).doOnError(err2 -> {
-                                    emitter.onError(err2);
-                                }));
-                    }).doOnComplete(() -> {
-                        emitter.onComplete();
-                    }));
+            subscribe(new SimpleSubscriber() {
+                @Override
+                public void onError(Throwable err) {
+                    Completable resumed = doOnError.apply(err);
+                    resumed.subscribe(new SimpleSubscriber<Void>() {
+                        @Override
+                        public void onComplete() {
+                            emitter.onComplete();
+                        }
+
+                        @Override
+                        public void onError(Throwable err2) {
+                            emitter.onError(err2);
+                        }
+                    });
+                }
+
+                @Override
+                public void onComplete() {
+                    emitter.onComplete();
+                }
+            });
         });
     }
 
     @Override
     public Completable doOnComplete(Runnable doOnComplete) {
         return Completable.create(emitter -> {
-            subscribe(new SimpleSubscriber<>().doOnError(err -> {
-                emitter.onError(err);
-            }).doOnComplete(() -> {
-                try {
-                    doOnComplete.run();
-                } finally {
-                    emitter.onComplete();
+            subscribe(new SimpleSubscriber<Void>() {
+                @Override
+                public void onError(Throwable err) {
+                    emitter.onError(err);
                 }
-            }));
+
+                @Override
+                public void onComplete() {
+                    try {
+                        doOnComplete.run();
+                    } finally {
+                        emitter.onComplete();
+                    }
+                }
+            });
         });
     }
 
     @Override
     public Completable then(Supplier<Completable> otherSupplier) {
         return Completable.create(emitter -> {
-            subscribe(new SimpleSubscriber<>()
-                    .doOnError(err -> {
-                        emitter.onError(err);
-                    }).doOnComplete(() -> {
-                        otherSupplier.get().subscribe(new SimpleSubscriber<>()
-                                .doOnComplete(() -> {
-                                    emitter.onComplete();
-                                }).doOnError(err -> {
-                                    emitter.onError(err);
-                                }));
-                    }));
+            subscribe(new SimpleSubscriber<Void>() {
+                @Override
+                public void onError(Throwable err) {
+                    emitter.onError(err);
+                }
+
+                @Override
+                public void onComplete() {
+                    otherSupplier.get().subscribe(new SimpleSubscriber<Void>() {
+                        @Override
+                        public void onComplete() {
+                            emitter.onComplete();
+                        }
+
+                        @Override
+                        public void onError(Throwable err2) {
+                            emitter.onError(err2);
+                        }
+                    });
+                }
+            });
         });
     }
 
@@ -143,9 +174,16 @@ public class CompletableImpl implements Completable, Subscription {
 
     @Override
     public void subscribe(CompletableEmitter emitter) {
-        subscribe(new SimpleSubscriber<>()
-                .doOnError(emitter::onError)
-                .doOnComplete(emitter::onComplete)
-        );
+        subscribe(new SimpleSubscriber<Void>() {
+            @Override
+            public void onError(Throwable err) {
+                emitter.onError(err);
+            }
+
+            @Override
+            public void onComplete() {
+                emitter.onComplete();
+            }
+        });
     }
 }
