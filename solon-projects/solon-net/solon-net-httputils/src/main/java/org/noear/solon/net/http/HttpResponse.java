@@ -130,6 +130,6 @@ public interface HttpResponse extends Closeable {
      *
      * @return 全部 header
      */
-    Map<String, List<String>> headers();
+    Map<String, List<String>> headerMap();
 
 }

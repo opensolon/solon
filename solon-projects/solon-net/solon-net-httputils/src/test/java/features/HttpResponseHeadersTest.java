@@ -10,7 +10,7 @@ import java.util.*;
 public class HttpResponseHeadersTest {
 
     @Test
-    public void testHeaders() {
+    public void testHeaderMap() {
         try (HttpResponse resp = HttpUtils.http("http://localhost:8080/hello")
                 .data("name", "world")
                 .exec("POST")) {
@@ -28,7 +28,7 @@ public class HttpResponseHeadersTest {
 
             // 方法2：使用新增的headers()接口
             System.out.println("【新增方式】直接通过 headers() 获取：");
-            Map<String, List<String>> all = resp.headers();
+            Map<String, List<String>> all = resp.headerMap();
             all.forEach((k, v) -> System.out.println("  " + k + " -> " + v));
 
         } catch (IOException e) {

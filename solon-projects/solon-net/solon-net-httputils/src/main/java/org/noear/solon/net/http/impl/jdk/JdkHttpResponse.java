@@ -240,15 +240,18 @@ public class JdkHttpResponse implements HttpResponse {
         return new HttpResponseException(this, http.getRequestMethod(), http.getURL());
     }
 
+    private Map<String, List<String>> headerMap;
     @Override
-    public Map<String, List<String>> headers() {
-        Map<String, List<String>> headersMap = new LinkedHashMap<>();
-        for (String name : headerNames()) {
-            headersMap.put(name, headers(name));
+    public Map<String, List<String>> headerMap() {
+        if (headerMap == null) {
+            headerMap = new LinkedHashMap<>();
+            for (String name : headerNames()) {
+                headerMap.put(name, headers(name));
+            }
         }
-        return headersMap;
-    }
 
+        return headerMap;
+    }
 
     @Override
     public void close() throws IOException {

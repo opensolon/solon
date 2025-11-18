@@ -171,15 +171,19 @@ public class OkHttpResponse implements HttpResponse {
         return new HttpResponseException(this, response.request().method(), response.request().url().url());
     }
 
-    @Override
-    public Map<String, List<String>> headers() {
-        Map<String, List<String>> headersMap = new LinkedHashMap<>();
-        for (String name : headerNames()) {
-            headersMap.put(name, headers(name));
-        }
-        return headersMap;
-    }
+    private Map<String, List<String>> headerMap;
 
+    @Override
+    public Map<String, List<String>> headerMap() {
+        if (headerMap == null) {
+            headerMap = new LinkedHashMap<>();
+            for (String name : headerNames()) {
+                headerMap.put(name, headers(name));
+            }
+        }
+
+        return headerMap;
+    }
 
     @Override
     public void close() throws IOException {

@@ -37,6 +37,7 @@
 * 添加 solon-rx Completable:doOnErrorResume 方法
 * 添加 solon-rx Completable:subscribeOn, delay 方法，方便同步io对接
 * 添加 solon-net WebSocket:colse(code,reason) 方法及相关适配
+* 添加 solon-net-httputils HttpResponse:headerMap 方法
 * 优化 solon 路由匹配规则，原3个优先级升为5优先级（更细）
 * 优化 solon AppContext:beanScan 改为先加载再分批处理（确保配置类先处理）
 * 优化 solon AppContext:startInjectReview 去掉 stream 写法（减少中转，提升性能）
