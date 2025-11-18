@@ -22,6 +22,7 @@ import java.lang.reflect.Type;
 import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Http 响应
@@ -123,4 +124,12 @@ public interface HttpResponse extends Closeable {
      * 创建响应异常
      */
     HttpResponseException createError();
+
+    /**
+     * 获取所有响应头信息
+     *
+     * @return 全部 header
+     */
+    Map<String, List<String>> headers();
+
 }

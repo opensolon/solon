@@ -27,7 +27,9 @@ import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.nio.charset.Charset;
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Http 响应 OkHttp 实现
@@ -168,6 +170,16 @@ public class OkHttpResponse implements HttpResponse {
     public HttpResponseException createError() {
         return new HttpResponseException(this, response.request().method(), response.request().url().url());
     }
+
+    @Override
+    public Map<String, List<String>> headers() {
+        Map<String, List<String>> headersMap = new LinkedHashMap<>();
+        for (String name : headerNames()) {
+            headersMap.put(name, headers(name));
+        }
+        return headersMap;
+    }
+
 
     @Override
     public void close() throws IOException {
