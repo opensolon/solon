@@ -33,19 +33,19 @@ import java.util.function.Supplier;
  */
 public interface Completable extends Publisher<Void> {
     /**
-     * 出错时
+     * 当出错时
      */
     Completable doOnError(Consumer<Throwable> doOnError);
 
     /**
-     * 出错时恢复一个新流
+     * 当出错时，恢复为一个新流
      *
      * @since 3.7
      */
     Completable doOnErrorResume(Function<Throwable, Completable> doOnError);
 
     /**
-     * 完成时
+     * 当完成时
      */
     Completable doOnComplete(Runnable doOnComplete);
 
@@ -63,12 +63,12 @@ public interface Completable extends Publisher<Void> {
     }
 
     /**
-     * 然后下一个新流
+     * 当完成后（然后），下一个新流
      */
     Completable then(Supplier<Completable> otherSupplier);
 
     /**
-     * 然后下一个新流
+     * 当完成后（然后），下一个新流
      */
     default Completable then(Completable other) {
         return then(() -> other);
