@@ -63,12 +63,12 @@ public interface Completable extends Publisher<Void> {
     }
 
     /**
-     * 然后下一个流新
+     * 然后下一个新流
      */
     Completable then(Supplier<Completable> otherSupplier);
 
     /**
-     * 然后下一个流新
+     * 然后下一个新流
      */
     default Completable then(Completable other) {
         return then(() -> other);
