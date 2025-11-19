@@ -5,6 +5,36 @@
       "type": "java.lang.String",
       "defaultValue": "local",
       "description": "缓存驱动类型"
+    },
+    {
+      "name": "solon.dataSources.*.class",
+      "type": "java.lang.Class",
+      "description": "数据源类名"
+    },
+    {
+      "name": "solon.dataSources.*.driverClassName",
+      "type": "java.lang.Class",
+      "description": "驱动类名"
+    },
+    {
+      "name": "solon.dataSources.*.url",
+      "type": "java.lang.String",
+      "description": "连接地址"
+    },
+    {
+      "name": "solon.dataSources.*.jdbcUrl",
+      "type": "java.lang.String",
+      "description": "连接地址"
+    },
+    {
+      "name": "solon.dataSources.*.username",
+      "type": "java.lang.String",
+      "description": "用户名"
+    },
+    {
+      "name": "solon.dataSources.*.paasword",
+      "type": "java.lang.String",
+      "description": "密码"
     }
   ],
   "hints": [
