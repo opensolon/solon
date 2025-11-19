@@ -11,9 +11,8 @@ public class HttpResponseHeadersTest {
 
     @Test
     public void testHeaderMap() {
-        try (HttpResponse resp = HttpUtils.http("http://localhost:8080/hello")
-                .data("name", "world")
-                .exec("POST")) {
+        try (HttpResponse resp = HttpUtils.http("https://h5.noear.org/")
+                .exec("GET")) {
 
             // 方法1：传统方式获取headers
             System.out.println("【传统方式】通过 headerNames() + headers(headerName) 获取：");

@@ -15,6 +15,7 @@
  */
 package demo.webrx;
 
+import org.noear.snack4.ONode;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.annotation.Produces;
@@ -45,7 +46,10 @@ public class Case1Controller {
     @Produces(MimeType.APPLICATION_X_NDJSON_VALUE)
     @Mapping("f2")
     public Flux<String> f2(String name) {
-        return Flux.just("Hello " + name, "hello2 " + name);
+        return Flux.just(
+                ONode.ofBean("Hello " + name).toJson(),
+                ONode.ofBean("hello2 " + name).toJson()
+        );
     }
 
     @Mapping("f3")
