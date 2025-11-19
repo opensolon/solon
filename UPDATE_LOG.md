@@ -46,6 +46,7 @@
 * 优化 solon-serve-vertx websocket 适配，避免与 solon-cloud-gateway 的 ws 代理起冲突
 * 调整 solon 编译配置荐 maven.compiler.source,target 改为 release
 * 调整 solon-serve-vertx 去除内部对象 VertxHolder（没地方用到了）
+* 调整 solon-serialization  AbstractStringEntityConverter string 类型直接输出（不序列化）
 * 调整 solon ChainManager:getInterceptorNodes，addInterceptor，addInterceptorIfAbsent，removeInterceptor 恢复旧方法并标为弃用
 * 修复 solon-rx Completable:doOnError 会中断传递的问题
 * 修复 solon-server-vertx VxWebSocketImpl:remoteAddress 转换失败的问题

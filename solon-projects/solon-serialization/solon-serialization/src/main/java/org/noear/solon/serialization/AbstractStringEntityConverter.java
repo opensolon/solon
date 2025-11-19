@@ -53,6 +53,10 @@ public abstract class AbstractStringEntityConverter<T extends EntitySerializer<S
 
     @Override
     public String writeAndReturn(Object data, Context ctx) throws Throwable {
+        if (data instanceof String) {
+            return (String) data;
+        }
+
         return serializer.serialize(data);
     }
 
@@ -79,7 +83,11 @@ public abstract class AbstractStringEntityConverter<T extends EntitySerializer<S
                 throw (Throwable) data;
             }
 
-            text = serializer.serialize(data);
+            if (data instanceof String) {
+                text = (String) data;
+            } else {
+                text = serializer.serialize(data);
+            }
         }
 
         ctx.attrSet("output", text);
