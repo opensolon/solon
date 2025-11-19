@@ -68,7 +68,7 @@ public abstract class AbstractStringEntityConverter<T extends EntitySerializer<S
 
         String text = null;
 
-        if (isWriteType()) {
+        if (isWriteType() || ctx.remoting()) {
             //序列化处理
             //
             text = serializer.serialize(data);
