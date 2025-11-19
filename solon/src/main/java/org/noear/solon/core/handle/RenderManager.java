@@ -264,6 +264,7 @@ public class RenderManager implements Render {
             }
         }
 
+        //如果是文件
         if (data instanceof File) {
             ctx.outputAsFile((File) data);
             return;
@@ -275,6 +276,7 @@ public class RenderManager implements Render {
             return;
         }
 
+        //如果是输入流
         if (data instanceof InputStream) {
             ctx.output((InputStream) data);
             return;
