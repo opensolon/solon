@@ -76,8 +76,8 @@ public class JsonController {
         return user;
     }
 
-    @Mapping("/bean_map")
-    public String bean_map(@Body Map<String, Object> user) {
+    @Mapping("/bean_map_str")
+    public String bean_map_str(@Body Map<String, Object> user) {
         return ONode.ofBean(user).toJson();
     }
 

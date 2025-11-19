@@ -56,6 +56,25 @@ public class HttpJsonTest extends HttpTester {
     }
 
     @Test
+    public void json_bean() throws Exception {
+        UserModel userModel = new UserModel();
+        userModel.id = 12;
+
+        String json = path("/demo2/json/bean").bodyOfJson(ONode.ofBean(userModel).toJson()).post();
+        assert ONode.ofJson(json).get("id").getInt() == 12;
+    }
+
+    @Test
+    public void json_bean_map_str() throws Exception {
+        UserModel userModel = new UserModel();
+        userModel.id = 12;
+
+        String json = path("/demo2/json/bean_map_str").bodyOfJson(ONode.ofBean(userModel).toJson()).post();
+        assert json.startsWith("{");
+        assert ONode.ofJson(json).get("id").getInt() == 12;
+    }
+
+    @Test
     public void json_list() throws Exception {
         List<UserModel> list = new ArrayList<>();
 
