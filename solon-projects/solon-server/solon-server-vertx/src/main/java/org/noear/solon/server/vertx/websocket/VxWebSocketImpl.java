@@ -17,6 +17,7 @@ package org.noear.solon.server.vertx.websocket;
 
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.ServerWebSocket;
+import io.vertx.core.net.SocketAddress;
 import org.noear.solon.Utils;
 import org.noear.solon.server.util.DecodeUtils;
 import org.noear.solon.core.util.RunUtil;
@@ -54,6 +55,10 @@ public class VxWebSocketImpl extends WebSocketTimeoutBase {
         }
     }
 
+    private static InetSocketAddress toInetSocketAddress(SocketAddress socketAddress) {
+        return new InetSocketAddress(socketAddress.hostAddress(), socketAddress.port());
+    }
+
     @Override
     public boolean isValid() {
         return isClosed() == false;
@@ -64,14 +69,26 @@ public class VxWebSocketImpl extends WebSocketTimeoutBase {
         return real.isSsl();
     }
 
-    @Override
-    public InetSocketAddress remoteAddress() throws IOException {
-        return (InetSocketAddress) real.remoteAddress();
-    }
+    private InetSocketAddress remoteAddress;
 
     @Override
-    public InetSocketAddress localAddress() throws IOException {
-        return (InetSocketAddress) real.localAddress();
+    public InetSocketAddress remoteAddress() {
+        if (remoteAddress == null) {
+            remoteAddress = toInetSocketAddress(real.remoteAddress());
+        }
+
+        return remoteAddress;
+    }
+
+    private InetSocketAddress localAddress;
+
+    @Override
+    public InetSocketAddress localAddress() {
+        if (localAddress == null) {
+            localAddress = toInetSocketAddress(real.localAddress());
+        }
+
+        return localAddress;
     }
 
     @Override

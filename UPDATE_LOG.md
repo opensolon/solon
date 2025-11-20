@@ -27,6 +27,10 @@
 * 使用 solon-expression 替代其它临时的表达式处理 //ok
 
 
+### 3.6.5
+
+* 修复 solon-server-vertx VxWebSocketImpl:remoteAddress 转换失败的问题
+
 ### 3.6.4
 
 * 修复 solon-ai parseToolCall 接收 stream 中间消息时可能会异常（添加 hasNestedJsonBlock 检测）
