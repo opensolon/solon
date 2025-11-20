@@ -21,6 +21,12 @@
       "description": "应用标题"
     },
     {
+      "name": "solon.app.enabled",
+      "type": "java.lang.Boolean",
+      "defaultValue": true,
+      "description": "应用是否启用"
+    },
+    {
       "name": "solon.stop.safe",
       "type": "java.lang.Integer",
       "defaultValue": 0,
