@@ -89,8 +89,8 @@ public final class SolonProps extends Props {
         Properties sysPropOrg = new Properties();
         //3.1.把带'.'的环境变量同步到系统属性（支持弹性容器设置的环境变量）
         System.getenv().forEach((k, v) -> {
-            if(k.indexOf('.') > 0){
-                System.setProperty(k,v);
+            if (k.indexOf('.') > 0) {
+                System.setProperty(k, v);
             }
         });
         //3.2.为系统属性建立一个原始副本
@@ -99,7 +99,7 @@ public final class SolonProps extends Props {
 
         //4.加载文件配置
         String config = argx.get("cfg"); //？限定属性文件，且不再加应用属性文件（一般用于内嵌场景）
-        if(Utils.isEmpty(config)) {
+        if (Utils.isEmpty(config)) {
             loadInit(ResourceUtil.getResource("app.properties"), sysPropOrg);
             loadInit(ResourceUtil.getResource("app.yml"), sysPropOrg);
 
@@ -113,13 +113,12 @@ public final class SolonProps extends Props {
                 loadInit(ResourceUtil.getResource("app-" + env + ".properties"), sysPropOrg);
                 loadInit(ResourceUtil.getResource("app-" + env + ".yml"), sysPropOrg);
             }
-        } else{
+        } else {
             loadInit(ResourceUtil.getResource(config), sysPropOrg);
 
             //4.1.加载环境变量（支持弹性容器设置的环境变量）
             //loadEnv(k -> k.indexOf('.') > 0);
         }
-
 
 
         //4.3.加载注解配置（优于固定配置）/v1.12
@@ -158,7 +157,7 @@ public final class SolonProps extends Props {
         }
 
         //4.6.加载扩展配置 solon.config.add //支持多文件（支持内部或外部，支持{env}）
-        addConfig(getArg("config.add"),  sysPropOrg);//替代旧的 solon.config, 与 config.load 配对
+        addConfig(getArg("config.add"), sysPropOrg);//替代旧的 solon.config, 与 config.load 配对
 
 
         //5.初始化模式状态
@@ -211,7 +210,9 @@ public final class SolonProps extends Props {
         }
 
         //9. 插件排除
-        pluginExcludeds.addAll(getList("solon.plugin.exclude"));
+        find("solon.plugin.exclude[", (k, v) -> {
+            pluginExcludeds.add(v);
+        });
     }
 
     private void importPropsTry(Class<?> source) {

@@ -420,7 +420,7 @@ public class Props extends Properties {
     }
 
     /**
-     * 查找 keyStarts 开头的所有配置；并生成一个新的 List
+     * 查找 keyStarts 开头的所有配置；并生成一个新的 List（有数组顺序）
      *
      * @param keyStarts key 的开始字符
      */
