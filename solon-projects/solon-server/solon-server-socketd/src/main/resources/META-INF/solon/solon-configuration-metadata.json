@@ -39,6 +39,19 @@
       "name": "server.socket.idleTimeout",
       "type": "java.lang.Long",
       "description": "服务 socket 闲置线程超时（0表示自动，单位毫秒）"
+    },
+
+
+
+    {
+      "name": "server.socket.ssl.keyStore",
+      "type": "java.lang.String",
+      "description": "服务 socket ssl 证书（例：demo.jks 或 demo.pfx）"
+    },
+    {
+      "name": "server.socket.ssl.keyPassword",
+      "type": "java.lang.String",
+      "description": "服务 socket ssl 证书密码"
     }
   ]
 }

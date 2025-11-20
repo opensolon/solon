@@ -104,21 +104,14 @@
       "description": "服务ssl证书密码"
     },
     {
-      "name": "server.http.gzip.enable",
-      "type": "java.lang.Boolean",
-      "defaultValue": false,
-      "description": "gzip 是否启用"
-    },
-    {
-      "name": "server.http.gzip.minSize",
-      "type": "java.lang.Integer",
-      "defaultValue": 4096,
-      "description": "gzip 启用最小体积"
-    },
-    {
-      "name": "server.http.gzip.mimeTypes",
+      "name": "server.ssl.keyStore",
       "type": "java.lang.String",
-      "description": "gzip 启用类型"
+      "description": "服务ssl证书（例：demo.jks 或 demo.pfx）"
+    },
+    {
+      "name": "server.ssl.keyPassword",
+      "type": "java.lang.String",
+      "description": "服务ssl证书密码"
     }
   ]
 }

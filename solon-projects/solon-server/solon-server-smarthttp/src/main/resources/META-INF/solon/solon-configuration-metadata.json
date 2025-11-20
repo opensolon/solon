@@ -46,51 +46,37 @@
       "defaultValue": true,
       "description": "服务 http 是否为IO密集型"
     },
+
+
+
     {
-      "name": "server.websocket.name",
+      "name": "server.http.ssl.keyStore",
       "type": "java.lang.String",
-      "description": "服务 websocket 信号名称"
+      "description": "服务 http ssl 证书（例：demo.jks 或 demo.pfx）"
     },
     {
-      "name": "server.websocket.port",
-      "type": "java.lang.Integer",
-      "description": "服务 websocket 信号端口"
-    },
-    {
-      "name": "server.htwebsockettp.host",
+      "name": "server.http.ssl.keyPassword",
       "type": "java.lang.String",
-      "description": "服务 websocket 信号主机"
+      "description": "服务 http ssl 证书密码"
     },
+
+
     {
-      "name": "server.websocket.wrapPort",
-      "type": "java.lang.Integer",
-      "description": "服务 websocket 信号包装端口"
-    },
-    {
-      "name": "server.websocket.wrapHost",
-      "type": "java.lang.String",
-      "description": "服务 websocket 信号包装主机"
-    },
-    {
-      "name": "server.websocket.coreThreads",
-      "type": "java.lang.Integer",
-      "description": "服务 websocket 最小线程数（默认：0表示自动，支持固定值 16 或 倍数 x16）"
-    },
-    {
-      "name": "server.websocket.maxThreads",
-      "type": "java.lang.Integer",
-      "description": "服务 websocket 最大线程数（默认：0表示自动，支持固定值 16 或 倍数 x16）"
-    },
-    {
-      "name": "server.websocket.idleTimeout",
-      "type": "java.lang.Long",
-      "description": "服务 websocket 闲置线程超时（0表示自动，单位毫秒）"
-    },
-    {
-      "name": "server.websocket.ioBound",
+      "name": "server.http.gzip.enable",
       "type": "java.lang.Boolean",
-      "defaultValue": true,
-      "description": "服务 websocket 是否为IO密集型"
+      "defaultValue": false,
+      "description": "gzip 是否启用"
+    },
+    {
+      "name": "server.http.gzip.minSize",
+      "type": "java.lang.Integer",
+      "defaultValue": 4096,
+      "description": "gzip 启用最小体积"
+    },
+    {
+      "name": "server.http.gzip.mimeTypes",
+      "type": "java.lang.String",
+      "description": "gzip 启用类型"
     }
   ]
 }
