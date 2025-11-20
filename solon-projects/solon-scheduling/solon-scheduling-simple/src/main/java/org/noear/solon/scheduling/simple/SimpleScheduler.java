@@ -25,8 +25,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
+import java.time.ZoneId;
 import java.util.Date;
-import java.util.TimeZone;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledFuture;
 
@@ -66,7 +66,7 @@ public class SimpleScheduler implements Lifecycle {
             this.cron = CronUtils.get(jobHolder.getScheduled().cron());
 
             if (Utils.isNotEmpty(jobHolder.getScheduled().zone())) {
-                this.cron.setTimeZone(TimeZone.getTimeZone(jobHolder.getScheduled().zone()));
+                this.cron.setZoneId(ZoneId.of(jobHolder.getScheduled().zone()));
             }
         }
     }
