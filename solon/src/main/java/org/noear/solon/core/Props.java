@@ -432,7 +432,14 @@ public class Props extends Properties {
         return new ArrayList<>(sortMap.values());
     }
 
-    protected void doFind(String keyStarts, BiConsumer<String, String> setFun) {
+    /**
+     * 查找
+     * */
+    public void find(String keyStarts, BiConsumer<String, String> consumer){
+        doFind(keyStarts, consumer);
+    }
+
+    protected void doFind(String keyStarts, BiConsumer<String, String> consumer) {
         String key2 = keyStarts;
         int idx2 = key2.length();
 
@@ -443,11 +450,11 @@ public class Props extends Properties {
                 if (keyStr.startsWith(key2)) {
                     String key = keyStr.substring(idx2);
 
-                    setFun.accept(key, (String) v);
+                    consumer.accept(key, (String) v);
 
                     if (key.indexOf('-') >= 0) {
                         String camelKey = Utils.snakeToCamel(key);
-                        setFun.accept(camelKey, (String) v);
+                        consumer.accept(camelKey, (String) v);
                     }
                 }
             }

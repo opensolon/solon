@@ -91,7 +91,7 @@ public class WebStaticfilesPlugin implements Plugin {
         //尝试启动静态代理（也可能在后面动态添加仓库）
 
         //3.加载自定义 mime
-        context.cfg().getMap("solon.mime.").forEach((key, val) -> {
+        context.cfg().find("solon.mime.", (key, val) -> {
             StaticMimes.add("." + key, val);
         });
 

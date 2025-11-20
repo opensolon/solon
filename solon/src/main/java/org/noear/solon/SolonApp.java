@@ -399,8 +399,7 @@ public class SolonApp extends RouterWrapper {
         EventBus.publish(new AppBeanLoadEndEvent(this));
 
         //3.加载渲染关系
-        Map<String, String> map = cfg().getMap("solon.view.mapping.");
-        map.forEach((k, v) -> {
+        cfg().find("solon.view.mapping." , (k, v) -> {
             renders().register("." + k, v);
         });
 

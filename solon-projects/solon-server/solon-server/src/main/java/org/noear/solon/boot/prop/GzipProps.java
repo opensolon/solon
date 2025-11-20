@@ -100,7 +100,7 @@ public class GzipProps {
 
         enable = Solon.cfg().getBool(ServerConstants.SERVER_HTTP_GZIP_ENABLE, false);
         minSize = Solon.cfg().getLong(ServerConstants.SERVER_HTTP_GZIP_MINSIZE, 4096);
-        Solon.cfg().getMap(ServerConstants.SERVER_HTTP_GZIP_MIMETYPES).forEach((key, val) -> {
+        Solon.cfg().find(ServerConstants.SERVER_HTTP_GZIP_MIMETYPES + ".", (key, val) -> {
             for (String mime : val.split(",")) {
                 mimeTypes.add(mime);
             }
