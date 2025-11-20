@@ -49,7 +49,7 @@ public class Snack4Decoder implements Decoder {
                 }
             }
 
-            return ONode.ofJson(str).toBean(type);
+            return ONode.deserialize(str, type);
         } catch (Throwable ex) {
             throw new NamiDecodeException("Decoding failure, type: " + type.getTypeName() + ", data: " + str, ex);
         }

@@ -32,7 +32,7 @@ public class Snack4Encoder implements Encoder {
 
     @Override
     public byte[] encode(Object obj) {
-        return ONode.ofBean(obj).toJson().getBytes(StandardCharsets.UTF_8);
+        return ONode.serialize(obj).getBytes(StandardCharsets.UTF_8);
     }
 
     @Override
