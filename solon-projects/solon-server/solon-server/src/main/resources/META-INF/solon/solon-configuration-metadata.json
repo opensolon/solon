@@ -32,21 +32,25 @@
     {
       "name": "server.request.maxBodySize",
       "type": "java.lang.String",
+      "defaultValue": "2mb",
       "description": "设定最大的请求包大小（或表单项的值大小）"
     },
     {
       "name": "server.request.maxFileSize",
       "type": "java.lang.String",
+      "defaultValue": "2mb",
       "description": "设定最大的上传文件大小"
     },
     {
       "name": "server.request.maxHeaderSize",
       "type": "java.lang.String",
+      "defaultValue": "8kb",
       "description": "设定最大的请求头大小"
     },
     {
       "name": "server.request.fileSizeThreshold",
       "type": "java.lang.String",
+      "defaultValue": "512kb",
       "description": "设定上传文件大小阀值（小于走内存，大于走临时文件）"
     },
     {
