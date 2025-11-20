@@ -45,10 +45,9 @@
       "description": "设定最大的请求头大小"
     },
     {
-      "name": "server.request.useTempfile",
-      "type": "java.lang.Boolean",
-      "defaultValue": false,
-      "description": "设定使用上传临时文件"
+      "name": "server.request.fileSizeThreshold",
+      "type": "java.lang.String",
+      "description": "设定上传文件大小阀值（小于走内存，大于走临时文件）"
     },
     {
       "name": "server.request.useRawpath",
