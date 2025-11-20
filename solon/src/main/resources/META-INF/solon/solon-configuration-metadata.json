@@ -1,0 +1,68 @@
+{
+  "properties": [
+    {
+      "name": "solon.app.name",
+      "type": "java.lang.String",
+      "description": "应用名称"
+    },
+    {
+      "name": "solon.app.group",
+      "type": "java.lang.String",
+      "description": "应用分组"
+    },
+    {
+      "name": "solon.app.namespace",
+      "type": "java.lang.String",
+      "description": "应用命名空间"
+    },
+    {
+      "name": "solon.app.title",
+      "type": "java.lang.String",
+      "description": "应用标题"
+    },
+    {
+      "name": "solon.stop.safe",
+      "type": "java.lang.Integer",
+      "defaultValue": 0,
+      "description": "应用是否安全停止"
+    },
+    {
+      "name": "solon.stop.delay",
+      "type": "java.lang.Integer",
+      "defaultValue": 10,
+      "description": "应用安全停止延时（单位：秒）"
+    },
+    {
+      "name": "solon.extend",
+      "type": "java.lang.String",
+      "description": "应用体外扩展目录"
+    },
+    {
+      "name": "solon.config.add",
+      "type": "java.lang.String",
+      "description": "应用体外扩展配置"
+    },
+    {
+      "name": "solon.config.load",
+      "type": "java.lang.String[]",
+      "description": "应用体外扩展配置"
+    },
+    {
+      "name": "solon.output.meta",
+      "type": "java.lang.Integer",
+      "defaultValue": 0,
+      "description": "应用是否输出元信息"
+    },
+    {
+      "name": "solon.env",
+      "type": "java.lang.String",
+      "description": "应用环境配置"
+    },
+    {
+      "name": "solon.threads.virtual.enabled",
+      "type": "java.lang.Boolean",
+      "defaultValue": false,
+      "description": "虚拟线程池启用（默认false）"
+    }
+  ]
+}
