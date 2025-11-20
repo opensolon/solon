@@ -50,6 +50,7 @@
 * 调整 solon-serve-vertx 去除内部对象 VertxHolder（没地方用到了）
 * 调整 solon-serialization  AbstractStringEntityConverter string 类型直接输出（不序列化）
 * 调整 solon ChainManager:getInterceptorNodes，addInterceptor，addInterceptorIfAbsent，removeInterceptor 恢复旧方法并标为弃用
+* 修复 nami-coder-snack4 插件元数据配置失效问题（v3.7.0 出现的）
 * 修复 solon-rx Completable:doOnError 会中断传递的问题
 * 修复 solon-server-vertx VxWebSocketImpl:remoteAddress 转换失败的问题
 * 修复 solon-scheduling-simple 不能识别：`zone=+08` 配置问题
