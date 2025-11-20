@@ -49,7 +49,7 @@ public class SocketdChannel extends ChannelBase implements Channel {
         pretreatment(ctx);
 
         if (ctx.config.getDecoder() == null) {
-            throw new IllegalArgumentException("There is no suitable decoder");
+            throw new IllegalArgumentException("There is no matching decoder");
         }
 
         //0.尝试解码器的过滤
@@ -67,7 +67,7 @@ public class SocketdChannel extends ChannelBase implements Channel {
         }
 
         if (encoder == null) {
-            throw new IllegalArgumentException("There is no suitable encoder");
+            throw new IllegalArgumentException("There is no matching encoder");
         } else {
             if (encoder.bodyRequired() && ctx.body == null) {
                 throw new NamiException("The encoder requires parameters with '@NamiBody'");

@@ -55,7 +55,7 @@ public class HttpChannel extends ChannelBase implements Channel {
         }
 
         if (ctx.config.getDecoder() == null) {
-            throw new IllegalArgumentException("There is no suitable decoder");
+            throw new IllegalArgumentException("There is no matching decoder");
         }
 
         //0.尝试解码器的过滤
@@ -92,7 +92,7 @@ public class HttpChannel extends ChannelBase implements Channel {
             if (ctx.body != null || encoder != null) {
                 if (encoder == null) {
                     //有 body 的话，必须要有编译
-                    throw new IllegalArgumentException("There is no suitable decoder");
+                    throw new IllegalArgumentException("There is no matching decoder");
                 }
 
                 byte[] bytes = encoder.encode(ctx.bodyOrArgs());

@@ -60,7 +60,7 @@ public class HttpChannel extends ChannelBase implements Channel {
         }
 
         if (ctx.config.getDecoder() == null) {
-            throw new IllegalArgumentException("There is no suitable decoder");
+            throw new IllegalArgumentException("There is no matching decoder");
         }
 
         //0.尝试解码器的过滤
