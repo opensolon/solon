@@ -1,0 +1,44 @@
+{
+  "properties": [
+    {
+      "name": "server.socket.name",
+      "type": "java.lang.String",
+      "description": "服务 socket 信号名称"
+    },
+    {
+      "name": "server.socket.port",
+      "type": "java.lang.Integer",
+      "description": "服务 socket 信号端口"
+    },
+    {
+      "name": "server.socket.host",
+      "type": "java.lang.String",
+      "description": "服务 socket 信号主机"
+    },
+    {
+      "name": "server.socket.wrapPort",
+      "type": "java.lang.Integer",
+      "description": "服务 socket 信号包装端口"
+    },
+    {
+      "name": "server.socket.wrapHost",
+      "type": "java.lang.String",
+      "description": "服务 socket 信号包装主机"
+    },
+    {
+      "name": "server.socket.coreThreads",
+      "type": "java.lang.Integer",
+      "description": "服务 socket 最小线程数（默认：0表示自动，支持固定值 16 或 倍数 x16）"
+    },
+    {
+      "name": "server.socket.maxThreads",
+      "type": "java.lang.Integer",
+      "description": "服务 socket 最大线程数（默认：0表示自动，支持固定值 16 或 倍数 x16）"
+    },
+    {
+      "name": "server.socket.idleTimeout",
+      "type": "java.lang.Long",
+      "description": "服务 socket 闲置线程超时（0表示自动，单位毫秒）"
+    }
+  ]
+}

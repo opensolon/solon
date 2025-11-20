@@ -27,17 +27,17 @@
     },
     {
       "name": "server.http.coreThreads",
-      "type": "java.lang.Object",
+      "type": "java.lang.Integer",
       "description": "服务 http 最小线程数（默认：0表示自动，支持固定值 16 或 倍数 x16）"
     },
     {
       "name": "server.http.maxThreads",
-      "type": "java.lang.Object",
+      "type": "java.lang.Integer",
       "description": "服务 http 最大线程数（默认：0表示自动，支持固定值 16 或 倍数 x16）"
     },
     {
       "name": "server.http.idleTimeout",
-      "type": "java.lang.Object",
+      "type": "java.lang.Long",
       "description": "服务 http 闲置线程超时（0表示自动，单位毫秒）"
     },
     {
@@ -73,17 +73,17 @@
     },
     {
       "name": "server.websocket.coreThreads",
-      "type": "java.lang.Object",
+      "type": "java.lang.Integer",
       "description": "服务 websocket 最小线程数（默认：0表示自动，支持固定值 16 或 倍数 x16）"
     },
     {
       "name": "server.websocket.maxThreads",
-      "type": "java.lang.Object",
+      "type": "java.lang.Integer",
       "description": "服务 websocket 最大线程数（默认：0表示自动，支持固定值 16 或 倍数 x16）"
     },
     {
       "name": "server.websocket.idleTimeout",
-      "type": "java.lang.Object",
+      "type": "java.lang.Long",
       "description": "服务 websocket 闲置线程超时（0表示自动，单位毫秒）"
     },
     {
