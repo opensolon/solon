@@ -79,9 +79,15 @@
       "description": "设定会话id的cookieName"
     },
     {
-      "name": "server.session.state.domain",
+      "name": "server.session.cookieDomain",
       "type": "java.lang.String",
-      "description": "设定会话状态的cookie域（默认为当前域名）"
+      "description": "设定会话id的cookie域（默认为当前域名）"
+    },
+    {
+      "name": "server.session.cookieDomainAuto",
+      "type": "java.lang.String",
+      "defaultValue": true,
+      "description": "设定会话id的cookie域自动处理"
     },
     {
       "name": "server.ssl.keyStore",
