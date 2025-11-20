@@ -81,7 +81,7 @@ public class ServerProps {
      * @deprecated 3.6 不需要了
      */
     @Deprecated
-    public static final boolean request_useTempfile;
+    public static boolean request_useTempfile;
 
     /**
      * 上传临时目录
@@ -143,7 +143,7 @@ public class ServerProps {
             request_encoding = tmp;
         }
 
-        request_useTempfile = Solon.cfg().getBool(ServerConstants.SERVER_REQUEST_USETEMPFILE, false);
+        //request_useTempfile = Solon.cfg().getBool(ServerConstants.SERVER_REQUEST_USETEMPFILE, false);
 
         request_useRawpath = Solon.cfg().getBool(ServerConstants.SERVER_REQUEST_USERAWPATH, false);
 
