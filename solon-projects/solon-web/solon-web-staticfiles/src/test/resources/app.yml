@@ -1,0 +1,4 @@
+solon.mime.mapping:
+  vue: "text/html"
+  map: "application/json"
+  log: "text/plain" #这三行只是示例一下!

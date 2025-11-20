@@ -29,6 +29,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author noear
+ * */
 public class WebStaticfilesPlugin implements Plugin {
     @Override
     public void start(AppContext context) {
@@ -50,7 +53,7 @@ public class WebStaticfilesPlugin implements Plugin {
         if (ResourceUtil.hasResource(StaticConfig.RES_WEB_INF_STATIC_LOCATION)) {
             ///第一优化
             StaticMappings.add("/", new ClassPathStaticRepository(StaticConfig.RES_WEB_INF_STATIC_LOCATION));
-        }else{
+        } else {
             if (ResourceUtil.hasResource(StaticConfig.RES_STATIC_LOCATION)) {
                 ///第二优化
                 StaticMappings.add("/", new ClassPathStaticRepository(StaticConfig.RES_STATIC_LOCATION));
@@ -78,12 +81,12 @@ public class WebStaticfilesPlugin implements Plugin {
                 }
 
                 if (repository.startsWith(":")) {
-                    StaticMappings.add(path,  new ExtendStaticRepository());
+                    StaticMappings.add(path, new ExtendStaticRepository());
                 } else if (ResourceUtil.hasClasspath(repository)) {
                     repository = ResourceUtil.remSchema(repository);
-                    StaticMappings.add(path,  new ClassPathStaticRepository(repository));
+                    StaticMappings.add(path, new ClassPathStaticRepository(repository));
                 } else {
-                    StaticMappings.add(path,  new FileStaticRepository(repository));
+                    StaticMappings.add(path, new FileStaticRepository(repository));
                 }
             }
         }
@@ -92,7 +95,11 @@ public class WebStaticfilesPlugin implements Plugin {
 
         //3.加载自定义 mime
         context.cfg().find("solon.mime.", (key, val) -> {
-            StaticMimes.add("." + key, val);
+            if (key.startsWith("mapping.")) { //@since 3.7.2
+                StaticMimes.add(key.substring(7), val);
+            } else {
+                StaticMimes.add("." + key, val);
+            }
         });
 
         //4.切换代理（让静态文件优先）
