@@ -83,6 +83,80 @@ public class RoutingDefault<T> implements Routing<T> {
     }
 
     /**
+     * 版本是否匹配（支持模式匹配）
+     * 
+     * @param routeVersion 路由定义的版本（如 "1.0", "1.0+"）
+     * @param requestVersion 请求的版本（如 "1.0", "1.1", "1.2"）
+     * @return 是否匹配
+     */
+    private boolean matchesVersion(String routeVersion, String requestVersion) {
+        if (Utils.isEmpty(routeVersion) || Utils.isEmpty(requestVersion)) {
+            return false;
+        }
+        
+        // 精确匹配
+        if (routeVersion.equals(requestVersion)) {
+            return true;
+        }
+        
+        // 模式匹配：支持 "1.0+" 格式
+        if (routeVersion.endsWith("+")) {
+            String baseVersion = routeVersion.substring(0, routeVersion.length() - 1);
+            return compareVersions(requestVersion, baseVersion) >= 0;
+        }
+        
+        // 不匹配
+        return false;
+    }
+    
+    /**
+     * 比较两个版本号
+     * 
+     * @param version1 版本1
+     * @param version2 版本2
+     * @return 返回值：<0 表示 version1 < version2；==0 表示 version1 == version2；>0 表示 version1 > version2
+     */
+    private int compareVersions(String version1, String version2) {
+        String[] v1Parts = version1.split("\\.");
+        String[] v2Parts = version2.split("\\.");
+        
+        int maxLength = Math.max(v1Parts.length, v2Parts.length);
+        
+        for (int i = 0; i < maxLength; i++) {
+            int v1Part = i < v1Parts.length ? parseVersionPart(v1Parts[i]) : 0;
+            int v2Part = i < v2Parts.length ? parseVersionPart(v2Parts[i]) : 0;
+            
+            int result = Integer.compare(v1Part, v2Part);
+            if (result != 0) {
+                return result;
+            }
+        }
+        
+        return 0;
+    }
+    
+    /**
+     * 解析版本号的部分
+     * 
+     * @param versionPart 版本号部分字符串
+     * @return 解析后的整数
+     */
+    private int parseVersionPart(String versionPart) {
+        try {
+            // 移除可能存在的非数字字符（如预发布版本标识）
+            String numericPart = versionPart.replaceAll("[^0-9]", "");
+            if (numericPart.isEmpty()) {
+                return 0;
+            }
+            return Integer.parseInt(numericPart);
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+    }
+    
+
+
+    /**
      * 是否匹配
      */
     @Override
@@ -132,7 +206,7 @@ public class RoutingDefault<T> implements Routing<T> {
     private boolean matches0(String path2, String version2) {
         if (Utils.isNotEmpty(version)) {
             //如果有版本申明
-            if (version.equals(version2) == false) {
+            if (!matchesVersion(version, version2)) {
                 return false;
             }
         } else if (Utils.isNotEmpty(version2)) {

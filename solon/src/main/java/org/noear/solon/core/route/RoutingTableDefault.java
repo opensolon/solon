@@ -51,15 +51,72 @@ public class RoutingTableDefault<T> implements RoutingTable<T> {
             level = 2;
         }
 
-        RankEntity<Routing<T>> entity = new RankEntity<>(routing, level, routing.index(), false);
+        // 计算版本优先级：精确匹配版本 > 模式匹配版本 > 无版本
+        int versionLevel = getVersionPriority(routing);
+//        RankEntity<Routing<T>> entity = new RankEntity<>(routing, level, routing.index(), false);
+        RankEntity<Routing<T>> entity = new RankEntity<>(routing, routing.index(), versionLevel, true);
 
-        if (level != 0 || routing.index() != 0) {
-            //有 * 号的 或有 index 的；排序下
+        if (level != 0 || routing.index() != 0 || versionLevel != 0) {
+            //有 * 号的 或有 index 的 或有版本优先级的；排序下
             table.addLast(entity);
             Collections.sort(table);
         } else {
             table.addFirst(entity);
         }
+    }
+    
+    /**
+     * 计算版本优先级
+     * 返回值越大，优先级越高
+     * 
+     * @param routing 路由
+     * @return 版本优先级值
+     */
+    public int getVersionPriority(Routing<T> routing) {
+        String version = routing.version();
+        if (version == null || version.isEmpty()) {
+            return 0; // 无版本优先级最低
+        }
+        
+        if (version.endsWith("+")) {
+            // 模式匹配：将版本号转换为数值用于比较
+            String baseVersion = version.substring(0, version.length() - 1);
+            return calculateVersionValue(baseVersion);
+        } else {
+            // 精确匹配：比模式匹配优先级更高，在相同版本基础上加分
+            return calculateVersionValue(version) + 10000; // 加分确保精确匹配优先
+        }
+    }
+    
+    /**
+     * 计算版本号的数值（用于排序）
+     * 例如：1.2.3 -> 1*1000000 + 2*1000 + 3 = 1002003
+     * 
+     * @param version 版本号
+     * @return 版本数值
+     */
+    private int calculateVersionValue(String version) {
+        if (version == null || version.isEmpty()) {
+            return 0;
+        }
+        
+        String[] parts = version.split("\\.");
+        int value = 0;
+        int multiplier = 1000000; // 从最高位开始
+        
+        for (String part : parts) {
+            try {
+                // 移除非数字字符
+                String numericPart = part.replaceAll("[^0-9]", "");
+                int partValue = numericPart.isEmpty() ? 0 : Integer.parseInt(numericPart);
+                value += partValue * multiplier;
+                multiplier /= 1000; // 每个部分的权重递减
+            } catch (NumberFormatException e) {
+                // 解析失败则使用 0
+            }
+        }
+        
+        return value;
     }
 
     /**
@@ -132,6 +189,7 @@ public class RoutingTableDefault<T> implements RoutingTable<T> {
      * @return 一个区配的目标
      */
     public T matchOne(String path, String version, MethodType method) {
+        // 路由表已按优先级排序，直接返回第一个匹配的即可
         for (RankEntity<Routing<T>> l : table) {
             if (l.target.matches(method, path, version)) {
                 return l.target.target();
@@ -151,6 +209,8 @@ public class RoutingTableDefault<T> implements RoutingTable<T> {
     @Override
     public Result<T> matchOneAndStatus(String path, String version, MethodType method) {
         int degrees = 0;
+        
+        // 路由表已按优先级排序，直接返回第一个匹配的即可
         for (RankEntity<Routing<T>> l : table) {
             int tmp = l.target.degrees(method, path, version);
             if (tmp == 2) {
