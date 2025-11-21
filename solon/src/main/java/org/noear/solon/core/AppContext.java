@@ -731,12 +731,13 @@ public class AppContext extends BeanContainer {
             return;
         }
 
+        String dir = basePackage.replace('.', '/');
+
         if (NativeDetector.isAotRuntime()) {
             //（aot 运行时）
             List<String> clzIndexs = new ArrayList<>();
             List<Class<?>> clzList = new ArrayList<>();
 
-            String dir = basePackage.replace('.', '/');
             ScanUtil.scan(classLoader, dir, n -> n.endsWith(".class"), name -> {
                 //直接回调可减少一次 HashSet 收集（提升性能）；tryBuildBeanOfClass 有重复过滤（不用担心重复）
                 String clzName = name.substring(0, name.length() - 6).replace('/', '.');
@@ -753,13 +754,13 @@ public class AppContext extends BeanContainer {
                 // 排序，确保索引文件内容稳定
                 Collections.sort(clzIndexs);
                 // 写入索引文件
-                IndexFiles.writeIndexFile(basePackage, clzIndexs);
+                IndexFiles.writeIndexFile(dir, "bean_clz", clzIndexs);
             }
         } else {
             //（非 aot 运行时） 优先使用类索引文件（如果存在）
             List<Class<?>> clzList = new ArrayList<>();
 
-            Collection<String> clzNames = IndexFiles.loadIndexFile(basePackage);
+            Collection<String> clzNames = IndexFiles.loadIndexFile(dir, "bean_clz");
             if (clzNames != null) {
                 for (String clzName : clzNames) {
                     Class<?> clz = ClassUtil.loadClass(classLoader, clzName);
@@ -768,7 +769,6 @@ public class AppContext extends BeanContainer {
                     }
                 }
             } else {
-                String dir = basePackage.replace('.', '/');
                 ScanUtil.scan(classLoader, dir, n -> n.endsWith(".class"), name -> {
                     //直接回调可减少一次 HashSet 收集（提升性能）；tryBuildBeanOfClass 有重复过滤（不用担心重复）
                     String clzName = name.substring(0, name.length() - 6).replace('/', '.');

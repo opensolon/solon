@@ -388,16 +388,14 @@ public class ResourceUtil {
      * @param resExpr     资源表达式
      */
     public static Collection<String> scanResources(ClassLoader classLoader, String resExpr) {
-        String indexFileName = resExpr.replace('/', '-') + "_scan_res";
-
         if (NativeDetector.isAotRuntime()) {
             List<String> resList = doScanResources(classLoader, resExpr);
 
-            IndexFiles.writeIndexFile(indexFileName, resList);
+            IndexFiles.writeIndexFile(resExpr, "scan_res", resList);
 
             return resList;
         } else {
-            Collection<String> resList = IndexFiles.loadIndexFile(indexFileName);
+            Collection<String> resList = IndexFiles.loadIndexFile(resExpr, "scan_res");
             if (resList == null) {
                 resList = doScanResources(classLoader, resExpr);
             }

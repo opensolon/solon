@@ -404,8 +404,6 @@ public class ClassUtil {
         Objects.requireNonNull(clzExpr, "clzExpr");
         Objects.requireNonNull(clzConsumer, "clzConsumer");
 
-        String indexFileName = clzExpr + "_scan_clz";
-
         if (NativeDetector.isAotRuntime()) {
             if (clzFilter == null) {
                 //没有过滤器，说明可缓存
@@ -417,7 +415,7 @@ public class ClassUtil {
                     clzConsumer.accept(clz);
                 });
 
-                IndexFiles.writeIndexFile(indexFileName, clzNames);
+                IndexFiles.writeIndexFile(clzExpr, "scan_clz", clzNames);
             } else {
                 doScanClasses0(classLoader, clzExpr, clzFilter, (name, clz) -> clzConsumer.accept(clz));
             }
@@ -425,7 +423,7 @@ public class ClassUtil {
             if (clzFilter == null) {
                 //没有过滤器，说明可缓存
                 clzFilter = SCAN_CLASSES_FILTER_DEF;
-                Collection<String> clzNames = IndexFiles.loadIndexFile(indexFileName);
+                Collection<String> clzNames = IndexFiles.loadIndexFile(clzExpr, "scan_clz");
 
                 if (clzNames != null) {
                     for (String clzName : clzNames) {

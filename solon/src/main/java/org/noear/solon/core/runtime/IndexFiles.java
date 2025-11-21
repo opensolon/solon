@@ -15,6 +15,7 @@
  */
 package org.noear.solon.core.runtime;
 
+import org.noear.solon.Utils;
 import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.lang.Internal;
 import org.slf4j.Logger;
@@ -29,8 +30,8 @@ import java.util.*;
 /**
  * 索引文件工具
  * 
- * 编译时：借助AOT时机，生成（主要是类）索引文件
- * 启动时：查找包对应的类索引文件。如果有，使用类索引文件替代ScanUtil.scan机制
+ * 编译时：借助AOT时机，生成'类'或'资源'索引文件
+ * 启动时：查找包对应的'类'或'资源'索引文件。如果有，则替代 ScanUtil.scan 机制
  *
  * @author noear
  * @since 3.7
@@ -48,11 +49,11 @@ public class IndexFiles {
     /**
      * 加载类索引文件
      *
-     * @param basePackage 基础包名
+     * @param dir 目录
      * @return 类名列表，如果不存在索引文件则返回null
      */
-    public static Collection<String> loadIndexFile(String basePackage) {
-        String indexFileName = getIndexFileName(basePackage);
+    public static Collection<String> loadIndexFile(String dir, String tag) {
+        String indexFileName = getIndexFileName(dir, tag);
 
         try {
             URL uri = ResourceUtil.getResource(INDEX_FILE_DIR + indexFileName);
@@ -72,32 +73,42 @@ public class IndexFiles {
             return indexList;
         } catch (IOException e) {
             // 索引文件读取失败，返回null
-            log.warn("Failed to load class index file for package: {}", basePackage, e);
+            log.warn("Failed to load class index file for dir: {}", dir, e);
             return null;
         }
     }
 
     /**
      * 获取索引文件名
+     *
+     * @param dir 目标
+     * @param tag 标记
      */
-    public static String getIndexFileName(String basePackage) {
-        if (basePackage == null || basePackage.isEmpty()) {
-            throw new IllegalArgumentException("basePackage cannot be null or empty");
+    public static String getIndexFileName(String dir, String tag) {
+        if (Utils.isEmpty(dir)) {
+            throw new IllegalArgumentException("dir cannot be null or empty");
+        }
+
+        if (Utils.isEmpty(tag)) {
+            throw new IllegalArgumentException("tag cannot be null or empty");
         }
 
         // 防止路径遍历攻击
-        if (basePackage.contains("..") || basePackage.contains(File.separator)) {
-            throw new IllegalArgumentException("Invalid basePackage: contains path traversal characters");
+        if (dir.contains("..")) {
+            throw new IllegalArgumentException("Invalid dir: contains path traversal characters");
         }
 
-        return basePackage.replace('.', '-') + INDEX_FILE_SUFFIX;
+        return dir.replace('/', '-').replace('.', '-') +
+                "_" +
+                tag +
+                INDEX_FILE_SUFFIX;
     }
 
     /**
      * 写入索引文件
      */
-    public static void writeIndexFile(String basePackage, List<String> indexList) {
-        String indexFileName = getIndexFileName(basePackage);
+    public static void writeIndexFile(String dir, String tag, List<String> indexList) {
+        String indexFileName = getIndexFileName(dir, tag);
 
         File indexFile = RuntimeService.singleton().createClassOutputFile(INDEX_FILE_DIR + indexFileName);
 
@@ -113,7 +124,7 @@ public class IndexFiles {
             }
 
         } catch (IOException e) {
-            log.warn("Failed to write class index file for package: {}", basePackage, e);
+            log.warn("Failed to write class index file for dir: {}", dir, e);
         }
     }
 }
