@@ -16,6 +16,7 @@
 package features;
 
 import org.junit.jupiter.api.Test;
+import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.ResourceUtil;
 
 import java.util.Collection;
@@ -50,32 +51,32 @@ public class ClassPathTest {
         //如果是apt代理，会找到更多的类
         //
 
-        Collection<Class<?>> classes = ResourceUtil.scanClasses("webapp.**.cache.*.class");
+        Collection<Class<?>> classes = ClassUtil.scanClasses("webapp.**.cache.*.class");
         System.out.println(classes.size());
         assert classes.size() >= 2;
 
-        classes = ResourceUtil.scanClasses("webapp.**.cache.*");
+        classes = ClassUtil.scanClasses("webapp.**.cache.*");
         System.out.println(classes.size());
         assert classes.size() >= 2;
 
 
-        classes = ResourceUtil.scanClasses("webapp.dso.cache.*");
+        classes = ClassUtil.scanClasses("webapp.dso.cache.*");
         System.out.println(classes.size());
         assert classes.size() >= 2;
 
-        classes = ResourceUtil.scanClasses("webapp.dso.cache.*.class");
+        classes = ClassUtil.scanClasses("webapp.dso.cache.*.class");
         System.out.println(classes.size());
         assert classes.size() >= 2;
 
-        classes = ResourceUtil.scanClasses("webapp.dso.*.class");
+        classes = ClassUtil.scanClasses("webapp.dso.*.class");
         System.out.println(classes.size());
         assert classes.size() >= 16;
 
-        classes = ResourceUtil.scanClasses("webapp.dso.*");
+        classes = ClassUtil.scanClasses("webapp.dso.*");
         System.out.println(classes.size());
         assert classes.size() >= 16;
 
-        classes = ResourceUtil.scanClasses("webapp.dso.*.*.class");
+        classes = ClassUtil.scanClasses("webapp.dso.*.*.class");
         System.out.println(classes.size());
         assert classes.size() >= 8;
     }
@@ -88,20 +89,20 @@ public class ClassPathTest {
 
         Collection<Class<?>> classes;
 
-        classes = ResourceUtil.scanClasses("webapp.**.cache.*");
+        classes = ClassUtil.scanClasses("webapp.**.cache.*");
         System.out.println(classes.size());
         assert classes.size() >= 2;
 
 
-        classes = ResourceUtil.scanClasses("webapp.dso.cache.*");
+        classes = ClassUtil.scanClasses("webapp.dso.cache.*");
         System.out.println(classes.size());
         assert classes.size() >= 2;
 
-        classes = ResourceUtil.scanClasses("webapp.dso.*");
+        classes = ClassUtil.scanClasses("webapp.dso.*");
         System.out.println(classes.size());
         assert classes.size() >= 16;
 
-        classes = ResourceUtil.scanClasses("webapp.dso.*.*");
+        classes = ClassUtil.scanClasses("webapp.dso.*.*");
         System.out.println(classes.size());
         assert classes.size() >= 8;
     }
@@ -115,12 +116,12 @@ public class ClassPathTest {
 
         Collection<Class<?>> classes;
 
-        classes = ResourceUtil.scanClasses("webapp.**.cache.*Server");
+        classes = ClassUtil.scanClasses("webapp.**.cache.*Server");
         System.out.println(classes.size());
         assert classes.size() == 1;
 
 
-        classes = ResourceUtil.scanClasses("webapp.*.cache");
+        classes = ClassUtil.scanClasses("webapp.*.cache");
         System.out.println(classes.size());
         assert classes.size() >= 2;
     }
@@ -133,12 +134,12 @@ public class ClassPathTest {
 
         Collection<Class<?>> classes;
 
-        classes = ResourceUtil.scanClasses("webapp.dso.cache");
+        classes = ClassUtil.scanClasses("webapp.dso.cache");
         System.out.println(classes.size());
         assert classes.size() >= 2;
 
 
-        classes = ResourceUtil.scanClasses("webapp.dso.cache.OathServer");
+        classes = ClassUtil.scanClasses("webapp.dso.cache.OathServer");
         System.out.println(classes.size());
         assert classes.size() == 1;
     }
