@@ -18,6 +18,8 @@ package org.noear.solon.rx;
 
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
@@ -28,15 +30,19 @@ import java.util.function.Function;
  *
  * @author noear
  * @since 2.9
+ * @since 3.7
  */
 public class SimpleSubscriber<T> implements Subscriber<T> {
+    static final Logger log = LoggerFactory.getLogger(SimpleSubscriber.class);
+
     private Consumer<Subscription> doOnSubscribe;
     private Function<T, Boolean> doOnNextFunc;
     private Consumer<T> doOnNextCons;
     private Consumer<Throwable> doOnError;
     private Runnable doOnComplete;
 
-    private final AtomicBoolean isCompleted = new AtomicBoolean(false);
+    private final AtomicBoolean terminated = new AtomicBoolean(false);
+    private final AtomicBoolean cancelled = new AtomicBoolean(false);
 
     public SimpleSubscriber<T> doOnSubscribe(Consumer<Subscription> doOnSubscribe) {
         this.doOnSubscribe = doOnSubscribe;
@@ -70,15 +76,18 @@ public class SimpleSubscriber<T> implements Subscriber<T> {
 
     private Subscription subscription;
 
+    public boolean isCancelled() {
+        return cancelled.get();
+    }
+
     /**
      * 取消
      */
     public void cancel() {
-        if (subscription != null) {
+        if (cancelled.compareAndSet(false, true) && subscription != null) {
             subscription.cancel();
         }
     }
-
 
     @Override
     public void onSubscribe(Subscription subscription) {
@@ -93,28 +102,45 @@ public class SimpleSubscriber<T> implements Subscriber<T> {
 
     @Override
     public void onNext(T item) {
-        if (doOnNextFunc != null) {
-            if (doOnNextFunc.apply(item) == false) {
-                cancel();
+        if (terminated.get() || cancelled.get()) {
+            return;
+        }
+
+        try {
+            if (doOnNextFunc != null) {
+                if (doOnNextFunc.apply(item) == false) {
+                    cancel();
+                }
+            } else if (doOnNextCons != null) {
+                doOnNextCons.accept(item);
             }
-        } else if (doOnNextCons != null) {
-            doOnNextCons.accept(item);
+        } catch (Throwable t) {
+            onError(t); // 将异常转换为 onError
         }
     }
 
     @Override
-    public void onError(Throwable throwable) {
-        if (doOnError != null) {
-            doOnError.accept(throwable);
+    public void onError(Throwable err) {
+        if (terminated.compareAndSet(false, true)) {
+            if (doOnError != null) {
+                try {
+                    doOnError.accept(err);
+                } catch (Throwable t) {
+                    log.warn("Error in doOnError callback", t);
+                }
+            }
         }
     }
 
     @Override
     public void onComplete() {
-        if (doOnComplete != null) {
-            if (isCompleted.compareAndSet(false, true)) {
-                //确保只运行一次
-                doOnComplete.run();
+        if (terminated.compareAndSet(false, true)) {
+            if (doOnComplete != null) {
+                try {
+                    doOnComplete.run();
+                } catch (Throwable t) {
+                    log.warn("Error in doOnComplete callback", t);
+                }
             }
         }
     }

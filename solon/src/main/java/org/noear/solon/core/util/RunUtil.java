@@ -70,6 +70,20 @@ public class RunUtil {
     }
 
     /**
+     * io 执行器
+     */
+    public static ExecutorService io() {
+        return runHolder.getAsyncExecutor();
+    }
+
+    /**
+     * timer 执行器
+     */
+    public static ScheduledExecutorService timer() {
+        return runHolder.getScheduledExecutor();
+    }
+
+    /**
      * 运行或异常
      */
     public static void runOrThrow(RunnableEx task) {

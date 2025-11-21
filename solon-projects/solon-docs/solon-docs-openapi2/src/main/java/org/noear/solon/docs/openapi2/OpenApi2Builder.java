@@ -865,7 +865,7 @@ public class OpenApi2Builder {
 
                 propertyList.put(propName, propPr);
             } else {
-                ModelImpl swaggerModel = (ModelImpl) this.parseSwaggerModel(propTypeEggg.getType(), propTypeEggg.getParameterizedType());
+                ModelImpl swaggerModel = (ModelImpl) this.parseSwaggerModel(propTypeEggg.getType(), propTypeEggg.getGenericType());
 
                 RefProperty propPr = new RefProperty(swaggerModel.getName(), RefFormat.INTERNAL);
                 if (propAnno != null) {

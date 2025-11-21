@@ -39,6 +39,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -184,15 +185,15 @@ public class GraalvmUtil {
     /**
      * graalvm 里的 scan 通过预处理，存放到配置文件，key= solon.scan (@since 1.6)
      *
-     * @param path   路径
-     * @param filter 过滤条件
-     * @param urls   扫描到的路径 作为返回
+     * @param path     路径
+     * @param filter   过滤条件
+     * @param consumer 消费者
      */
-    public static void scanResource(String path, Predicate<String> filter, Set<String> urls) {
+    public static void scanResource(String path, Predicate<String> filter, Consumer<String> consumer) {
 
         for (String f : resources) {
             if (f.startsWith(path) && filter.test(f)) {
-                urls.add(f);
+                consumer.accept(f);
             }
         }
     }

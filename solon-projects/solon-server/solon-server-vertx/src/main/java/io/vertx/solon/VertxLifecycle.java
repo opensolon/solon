@@ -13,31 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ch.qos.logback.solon.integration;
+package io.vertx.solon;
 
-import org.noear.solon.core.AppContext;
-import org.noear.solon.core.Plugin;
-
-import java.net.URL;
+import io.vertx.core.Vertx;
+import org.noear.solon.core.bean.LifecycleBean;
 
 /**
+ * Vertx 生命周期管理
+ *
  * @author noear
- * @since 1.6
+ * @since 3.7
  */
-public class LogbackPlugin extends LogIncubatorImpl implements Plugin {
-    @Override
-    public void start(AppContext context) throws Throwable {
-        //容器加载完后，允许再次处理
-        incubate();
+public class VertxLifecycle implements LifecycleBean {
+    private final Vertx vertx;
+
+    public VertxLifecycle(Vertx vertx) {
+        this.vertx = vertx;
     }
 
     @Override
-    protected void doLoadUrl(URL url) throws Exception {
-        if (url == null) {
-            //说明没有指定配置文件。。。不需要再次默认加载
-            return;
-        }
-
-        super.doLoadUrl(url);
+    public void stop() throws Throwable {
+        vertx.close();
     }
 }

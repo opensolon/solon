@@ -15,9 +15,12 @@
  */
 package org.noear.solon.server.vertx.http;
 
+import io.vertx.core.http.HttpServerRequest;
+import org.noear.solon.Utils;
 import org.noear.solon.server.ServerProps;
 import org.noear.solon.server.vertx.integration.VxHttpPlugin;
 import org.noear.solon.core.handle.Context;
+import org.noear.solon.server.vertx.websocket.VxWebSocketHandlerImpl;
 import org.noear.solon.web.vertx.VxWebHandler;
 
 import java.io.IOException;
@@ -27,10 +30,37 @@ import java.io.IOException;
  * @since 2.9
  */
 public class VxWebHandlerPlus extends VxWebHandler {
+    private boolean enableWebSocket;
+    private VxWebSocketHandlerImpl vxWebSocketHandlerImpl = new VxWebSocketHandlerImpl();
+
+    @Override
+    public void enableWebSocket(boolean enable) {
+        enableWebSocket = enable;
+    }
+
     @Override
     protected void preHandle(Context ctx) throws IOException {
         if (ServerProps.output_meta) {
             ctx.headerSet("Solon-Server", VxHttpPlugin.solon_server_ver());
         }
+    }
+
+    @Override
+    public void handle(HttpServerRequest req) {
+        if (enableWebSocket) {
+            String upgradeStr = req.getHeader("Upgrade");
+            if (Utils.isNotEmpty(upgradeStr)) {
+                if (upgradeStr.contains("websocket")) {
+                    vxWebSocketHandlerImpl.subProtocolCapable(req);
+
+                    req.toWebSocket().onSuccess(ws -> {
+                        vxWebSocketHandlerImpl.handle(ws);
+                    });
+                    return;
+                }
+            }
+        }
+
+        super.handle(req);
     }
 }

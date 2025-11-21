@@ -3,9 +3,10 @@ package org.noear.solon.server.grizzly.websocket;
 import jakarta.servlet.http.HttpServletRequest;
 import org.glassfish.grizzly.websockets.DefaultWebSocket;
 import org.noear.solon.Utils;
-import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.net.websocket.WebSocketTimeoutBase;
 import org.noear.solon.server.util.DecodeUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
 import java.net.URI;
@@ -19,6 +20,7 @@ import java.util.concurrent.Future;
  *
  */
 public class WebSocketImpl extends WebSocketTimeoutBase {
+    private static final Logger log = LoggerFactory.getLogger(WebSocketImpl.class);
     private final DefaultWebSocket real;
     private final HttpServletRequest req;
 
@@ -108,6 +110,30 @@ public class WebSocketImpl extends WebSocketTimeoutBase {
     @Override
     public void close() {
         super.close();
-        RunUtil.runAndTry(real::close);
+
+        if (real.isConnected()) {
+            try {
+                real.close();
+            } catch (Throwable ignore) {
+                if (log.isDebugEnabled()) {
+                    log.debug("Close failure: {}", ignore.getMessage());
+                }
+            }
+        }
+    }
+
+    @Override
+    public void close(int code, String reason) {
+        super.close(code, reason);
+
+        if (real.isConnected()) {
+            try {
+                real.close(code, reason);
+            } catch (Throwable ignore) {
+                if (log.isDebugEnabled()) {
+                    log.debug("Close failure: {}", ignore.getMessage());
+                }
+            }
+        }
     }
 }

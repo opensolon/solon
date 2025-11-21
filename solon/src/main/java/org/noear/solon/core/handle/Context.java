@@ -1071,6 +1071,8 @@ public abstract class Context {
      */
     public void status(int status, String message) {
         statusDoSet(status);
+
+        //ps: 新的 http 规范不再支持自定义 status message，通过 body 模拟
         output(message);
     }
 

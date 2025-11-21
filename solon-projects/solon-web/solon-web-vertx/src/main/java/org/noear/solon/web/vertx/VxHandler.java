@@ -36,4 +36,11 @@ public interface VxHandler extends Handler<HttpServerRequest> {
      * 设置执行器
      */
     void setExecutor(Executor executor);
+
+    /**
+     * 启用 web socket
+     */
+    default void enableWebSocket(boolean enable) {
+
+    }
 }

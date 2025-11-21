@@ -37,6 +37,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
@@ -214,7 +215,7 @@ public class SolonAotProcessor {
     /**
      * 添加 resource-config.json，同时将扫描到的文件，写入solon-resource.json中，方便 native 模式下，扫描资源
      *
-     * @see GraalvmUtil#scanResource(String, Predicate, Set)
+     * @see GraalvmUtil#scanResource(String, Predicate, Consumer)
      */
     private void addResourceConfig(RuntimeNativeMetadata metadata) {
         try {

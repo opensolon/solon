@@ -19,6 +19,8 @@ import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.net.JksOptions;
+import io.vertx.solon.VertxHolder;
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.server.ServerConstants;
 import org.noear.solon.server.ServerLifecycle;
@@ -27,7 +29,6 @@ import org.noear.solon.server.prop.impl.HttpServerProps;
 import org.noear.solon.server.ssl.SslConfig;
 import org.noear.solon.server.vertx.http.VxHandlerSupplier;
 import org.noear.solon.server.vertx.http.VxHandlerSupplierDefault;
-import org.noear.solon.server.vertx.websocket.VxWebSocketHandlerImpl;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.handle.Handler;
 import org.noear.solon.lang.Nullable;
@@ -86,7 +87,7 @@ public class VxHttpServer implements ServerLifecycle {
 
     @Override
     public void start(String host, int port) throws Throwable {
-        Vertx _vertx = context.getBean(Vertx.class);
+        Vertx _vertx = VertxHolder.getVertx(Solon.context());
 
         VxHandlerSupplier handlerFactory = null;
         if (allowExternalHandler) {
@@ -131,26 +132,11 @@ public class VxHttpServer implements ServerLifecycle {
         VxHandler vxHandler = handlerFactory.get();
         vxHandler.setExecutor(workExecutor);
         vxHandler.setHandler(handler);
-
-        VxWebSocketHandlerImpl vxWebSocketHandlerImpl = new VxWebSocketHandlerImpl();
+        vxHandler.enableWebSocket(enableWebSocket);
 
         //启动 server
         server = _vertx.createHttpServer(_serverOptions);
         server.requestHandler(req -> {
-            if (enableWebSocket) {
-                String upgradeStr = req.getHeader("Upgrade");
-                if (Utils.isNotEmpty(upgradeStr)) {
-                    if (upgradeStr.contains("websocket")) {
-                        vxWebSocketHandlerImpl.subProtocolCapable(req);
-
-                        req.toWebSocket().onSuccess(ws -> {
-                            vxWebSocketHandlerImpl.handle(ws);
-                        });
-                        return;
-                    }
-                }
-            }
-
             vxHandler.handle(req);
         });
 

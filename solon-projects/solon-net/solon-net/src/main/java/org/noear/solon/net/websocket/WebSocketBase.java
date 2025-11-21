@@ -141,4 +141,9 @@ public abstract class WebSocketBase implements WebSocket {
     public void close() {
         isClosed = true;
     }
+
+    @Override
+    public void close(int code, String reason) {
+        isClosed = true;
+    }
 }

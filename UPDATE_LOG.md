@@ -27,6 +27,32 @@
 * 使用 solon-expression 替代其它临时的表达式处理 //ok
 * 升级 mcp-java-sdk 为 0.14.x？？？
 
+### v3.7.2
+
+* 新增 resilience4j-solon-cloud-plugin 插件
+* 新增 solon-cloud-gateway websocket 协议代理支持
+* 新增 solon 启动扫描类索引机制（由 solon aot 构建时自动生成）
+* 新增 aot 构建配置（在 native 基础上去除 graalvm.buildtools），任意 jdk 版本可用
+* 添加 solon RunUtil.io(),timer() 方便响应式使用
+* 添加 solon-rx Completable:doOnErrorResume 方法
+* 添加 solon-rx Completable:subscribeOn, delay 方法，方便同步io对接
+* 添加 solon-net WebSocket:colse(code,reason) 方法及相关适配
+* 添加 solon-net-httputils HttpResponse:headerMap 方法
+* 优化 solon 路由匹配规则，原3个优先级升为5优先级（更细）
+* 优化 solon AppContext:beanScan 改为先加载再分批处理（确保配置类先处理）
+* 优化 solon AppContext:startInjectReview 去掉 stream 写法（减少中转，提升性能）
+* 优化 solon-logging 初始化处理，避免二次加载文件配置
+* 优化 solon 启动性能（提升 10% 到 30%）
+* 优化 solon-serve-vertx websocket 适配，避免与 solon-cloud-gateway 的 ws 代理起冲突
+* 调整 solon 编译配置荐 maven.compiler.source,target 改为 release
+* 调整 solon-serve-vertx 去除内部对象 VertxHolder（没地方用到了）
+* 调整 solon ChainManager:getInterceptorNodes，addInterceptor，addInterceptorIfAbsent，removeInterceptor 恢复旧方法并标为弃用
+* 修复 solon-rx Completable:doOnError 会中断传递的问题
+* 修复 solon-server-vertx VxWebSocketImpl:remoteAddress 转换失败的问题
+* 修复 solon-scheduling-simple 不能识别：`zone=+08` 配置问题
+* eggg 升为 1.0.8
+* snack4 升为 4.0.14
+
 ### v3.7.1
 
 * 添加 solon Router:add(clz) 方法

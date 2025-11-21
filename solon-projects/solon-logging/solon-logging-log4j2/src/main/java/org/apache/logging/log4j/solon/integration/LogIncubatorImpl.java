@@ -28,10 +28,6 @@ import org.noear.solon.logging.LogIncubator;
 import org.noear.solon.logging.LogOptions;
 import org.noear.solon.logging.model.LoggerLevelEntity;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
@@ -41,8 +37,6 @@ import java.net.URL;
  * @since 2.4
  */
 public class LogIncubatorImpl implements LogIncubator {
-    static final Logger log = LoggerFactory.getLogger(LogIncubatorImpl.class);
-
     @Override
     public void incubate() throws Throwable {
         if (JavaUtil.IS_WINDOWS && Solon.cfg().isFilesMode() == false) {
@@ -64,51 +58,13 @@ public class LogIncubatorImpl implements LogIncubator {
         //尝试从配置里获取
         URL url = getUrlOfConfig();
 
-        //尝试包内定制加载
-        if (url == null) {
-            //检查是否有原生配置文件
-            if (ResourceUtil.hasResource("log4j2.xml")) {
-                //如果有直接返回（不支持对它进行 Solon 扩展）
-                return;
-            }
-        }
-
-        //1::尝试应用环境加载
-        if (url == null) {
-            //尝试环境加载
-            if (Utils.isNotEmpty(Solon.cfg().env())) {
-                url = ResourceUtil.getResource("log4j2-solon-" + Solon.cfg().env() + ".xml");
-            }
-        }
-
-        //2::尝试应用加载
-        if (url == null) {
-            url = ResourceUtil.getResource("log4j2-solon.xml");
-        }
-
-        //3::尝试默认加载
-        if (url == null) {
-            boolean fileEnable = Solon.cfg().getBool("solon.logging.appender.file.enable", true);
-
-            if (fileEnable) {
-                url = ResourceUtil.getResource("META-INF/solon_def/log4j2-def.xml");
-            } else {
-                url = ResourceUtil.getResource("META-INF/solon_def/log4j2-def_nofile.xml");
-            }
-        }
-
-        initDo(url);
+        doLoadUrl(url);
+        doInit();
     }
 
 
-    private void initDo(URL url) {
-        if (url == null) {
-            return;
-        }
-
+    protected void doInit() {
         try {
-            Configurator.reconfigure(url.toURI());
-
             //同步 logger level 配置
             if (LogOptions.getLoggerLevels().size() > 0) {
                 LoggerContext context = LoggerContext.getContext(false);
@@ -127,10 +83,52 @@ public class LogIncubatorImpl implements LogIncubator {
         }
     }
 
+    protected void doLoadUrl(URL url) throws Exception {
+        //尝试包内定制加载
+        if (url == null) {
+            //检查是否有原生配置文件
+            if (ResourceUtil.hasResource("log4j2.xml")) {
+                //如果有直接返回（不支持对它进行 Solon 扩展）
+                return;
+            }
+
+            //1::尝试应用环境加载
+            if (url == null) {
+                //尝试环境加载
+                if (Utils.isNotEmpty(Solon.cfg().env())) {
+                    url = ResourceUtil.getResource("log4j2-solon-" + Solon.cfg().env() + ".xml");
+                }
+            }
+
+            //2::尝试应用加载
+            if (url == null) {
+                url = ResourceUtil.getResource("log4j2-solon.xml");
+            }
+        }
+
+        /// /////////////
+
+        if (url == null) {
+            //::尝试默认加载
+            boolean fileEnable = Solon.cfg().getBool("solon.logging.appender.file.enable", true);
+
+            if (fileEnable) {
+                url = ResourceUtil.getResource("META-INF/solon_def/log4j2-def.xml");
+            } else {
+                url = ResourceUtil.getResource("META-INF/solon_def/log4j2-def_nofile.xml");
+            }
+
+            Configurator.reconfigure(url.toURI());
+        } else {
+            //::加载 xml url
+            Configurator.reconfigure(url.toURI());
+        }
+    }
+
     /**
      * 基于配置，获取日志配置文件
      */
-    private URL getUrlOfConfig() throws MalformedURLException {
+    private URL getUrlOfConfig() {
         String logConfig = Solon.cfg().get("solon.logging.config");
 
         if (Utils.isNotEmpty(logConfig)) {
@@ -138,10 +136,7 @@ public class LogIncubatorImpl implements LogIncubator {
             if (logConfigUrl != null) {
                 return logConfigUrl;
             } else {
-                //改成异步，不然 log 初始化未完成
-                RunUtil.async(() -> {
-                    log.warn("Props: No log config file: " + logConfig);
-                });
+                System.err.println("Props: No logging config file exists: " + logConfig);
             }
         }
 

@@ -22,6 +22,7 @@ import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -29,20 +30,35 @@ import java.util.function.Supplier;
  *
  * @author noear
  * @since 2.9
+ * @since 3.7
  */
 public class CompletableImpl implements Completable, Subscription {
-    private final SimpleSubscriber<Object> subscriberBuilder;
     private final Throwable cause;
-    private Consumer<CompletableEmitter> emitterConsumer;
+    private volatile Consumer<CompletableEmitter> emitterConsumer;
+    private volatile boolean subscribed = false; // 添加订阅状态
+    private volatile boolean cancelled = false; // 添加取消状态
 
     public CompletableImpl(Throwable cause, Consumer<CompletableEmitter> emitterConsumer) {
-        this.subscriberBuilder = new SimpleSubscriber<>();
         this.cause = cause;
         this.emitterConsumer = emitterConsumer;
     }
 
     @Override
     public void subscribe(Subscriber<? super Void> subscriber) {
+        if (subscriber == null) {
+            throw new IllegalArgumentException("Subscriber cannot be null");
+        }
+
+        if (cancelled) {
+            throw new IllegalStateException("Completable has been cancelled");
+        }
+
+        if (subscribed) {
+            throw new IllegalStateException("Completable can only be subscribed once");
+        } else {
+            subscribed = true;
+        }
+
         //开始订阅
         subscriber.onSubscribe(this);
 
@@ -67,62 +83,159 @@ public class CompletableImpl implements Completable, Subscription {
 
     @Override
     public void cancel() {
-
+        cancelled = true;
+        emitterConsumer = null; // 帮助GC
     }
 
 
     @Override
     public Completable doOnError(Consumer<Throwable> doOnError) {
-        return Completable.create(emitter -> {
-            subscriberBuilder.doOnError(doOnError);
-            subscriberBuilder.doOnComplete(() -> {
-                emitter.onComplete();
-            });
+        if (doOnError == null) {
+            throw new IllegalArgumentException("doOnError consumer cannot be null");
+        }
 
-            subscribe();
+        return Completable.create(emitter -> {
+            subscribe(new SimpleSubscriber<Void>() {
+                @Override
+                public void onError(Throwable err) {
+                    try {
+                        doOnError.accept(err);
+                    } finally {
+                        emitter.onError(err);
+                    }
+                }
+
+                @Override
+                public void onComplete() {
+                    emitter.onComplete();
+                }
+            });
+        });
+    }
+
+    @Override
+    public Completable doOnErrorResume(Function<Throwable, Completable> doOnError) {
+        if (doOnError == null) {
+            throw new IllegalArgumentException("doOnErrorResume function cannot be null");
+        }
+
+        return Completable.create(emitter -> {
+            subscribe(new SimpleSubscriber<Void>() {
+                @Override
+                public void onError(Throwable err) {
+                    try {
+                        Completable resumed = doOnError.apply(err);
+
+                        if (resumed == null) {
+                            emitter.onError(err);
+                        } else {
+                            resumed.subscribe(new SimpleSubscriber<Void>() {
+                                @Override
+                                public void onComplete() {
+                                    emitter.onComplete();
+                                }
+
+                                @Override
+                                public void onError(Throwable err2) {
+                                    emitter.onError(err2);
+                                }
+                            });
+                        }
+                    } catch (Throwable t) {
+                        emitter.onError(t);
+                    }
+                }
+
+                @Override
+                public void onComplete() {
+                    emitter.onComplete();
+                }
+            });
         });
     }
 
     @Override
     public Completable doOnComplete(Runnable doOnComplete) {
+        if (doOnComplete == null) {
+            throw new IllegalArgumentException("doOnComplete runnable cannot be null");
+        }
+
         return Completable.create(emitter -> {
-            subscriberBuilder.doOnError(err -> {
-                emitter.onError(err);
-            }).doOnComplete(() -> {
-                try {
-                    doOnComplete.run();
-                } finally {
-                    emitter.onComplete();
+            subscribe(new SimpleSubscriber<Void>() {
+                @Override
+                public void onError(Throwable err) {
+                    emitter.onError(err);
+                }
+
+                @Override
+                public void onComplete() {
+                    try {
+                        doOnComplete.run();
+                    } finally {
+                        emitter.onComplete();
+                    }
                 }
             });
-            subscribe();
         });
     }
 
     @Override
     public Completable then(Supplier<Completable> otherSupplier) {
+        if (otherSupplier == null) {
+            throw new IllegalArgumentException("otherSupplier cannot be null");
+        }
+
         return Completable.create(emitter -> {
-            subscribe(subscriberBuilder.doOnError(err -> {
-                emitter.onError(err);
-            }).doOnComplete(() -> {
-                otherSupplier.get().doOnComplete(() -> {
-                    emitter.onComplete();
-                }).doOnError(err -> {
+            subscribe(new SimpleSubscriber<Void>() {
+                @Override
+                public void onError(Throwable err) {
                     emitter.onError(err);
-                }).subscribe();
-            }));
+                }
+
+                @Override
+                public void onComplete() {
+                    try {
+                        Completable other = otherSupplier.get();
+                        if (other == null) {
+                            emitter.onComplete();
+                        } else {
+                            other.subscribe(new SimpleSubscriber<Void>() {
+                                @Override
+                                public void onComplete() {
+                                    emitter.onComplete();
+                                }
+
+                                @Override
+                                public void onError(Throwable err2) {
+                                    emitter.onError(err2);
+                                }
+                            });
+                        }
+                    } catch (Throwable t) {
+                        emitter.onError(t);
+                    }
+                }
+            });
         });
     }
 
     @Override
     public void subscribe() {
-        subscribe(subscriberBuilder);
+        subscribe(new SimpleSubscriber<>());
     }
 
     @Override
     public void subscribe(CompletableEmitter emitter) {
-        subscriberBuilder.doOnError(emitter::onError);
-        subscriberBuilder.doOnComplete(emitter::onComplete);
-        subscribe();
+        subscribe(new SimpleSubscriber<Void>() {
+            @Override
+            public void onError(Throwable err) {
+                emitter.onError(err);
+            }
+
+            @Override
+            public void onComplete() {
+                emitter.onComplete();
+            }
+        });
     }
 }

@@ -18,8 +18,9 @@ package org.noear.solon.server.undertow.websocket;
 import io.undertow.websockets.core.WebSocketChannel;
 import io.undertow.websockets.core.WebSockets;
 import org.noear.solon.server.util.DecodeUtils;
-import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.net.websocket.WebSocketBase;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
 import java.net.URI;
@@ -31,6 +32,8 @@ import java.util.concurrent.Future;
  * @since 2.6
  */
 public class WebSocketImpl extends WebSocketBase {
+    private static final Logger log = LoggerFactory.getLogger(WebSocketImpl.class);
+
     private WebSocketChannel real;
 
     public WebSocketImpl(WebSocketChannel real) {
@@ -92,7 +95,30 @@ public class WebSocketImpl extends WebSocketBase {
         super.close();
 
         if (real.isOpen()) {
-            RunUtil.runAndTry(real::close);
+            try {
+                real.close();
+            } catch (Throwable ignore) {
+                if (log.isDebugEnabled()) {
+                    log.debug("Close failure: {}", ignore.getMessage());
+                }
+            }
+        }
+    }
+
+    @Override
+    public void close(int code, String reason) {
+        super.close(code, reason);
+
+        if (real.isOpen()) {
+            try {
+                real.setCloseCode(code);
+                real.setCloseReason(reason);
+                real.close();
+            } catch (Throwable ignore) {
+                if (log.isDebugEnabled()) {
+                    log.debug("Close failure: {}", ignore.getMessage());
+                }
+            }
         }
     }
 }

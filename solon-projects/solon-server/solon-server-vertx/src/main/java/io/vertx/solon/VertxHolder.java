@@ -17,37 +17,28 @@ package io.vertx.solon;
 
 import io.vertx.core.Vertx;
 import io.vertx.core.VertxOptions;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.event.EventBus;
 
 /**
- * Vertx 单例持有人
+ * Vertx 持有管理
  *
  * @author noear
- * @since 3.0
+ * @since 3.7
  */
 public class VertxHolder {
-    private static Vertx vertx;
+    public static Vertx getVertx(AppContext context) {
+        Vertx vertx = context.getBean(Vertx.class);
 
-    public static Vertx getVertx() {
         if (vertx == null) {
             VertxOptions vertxOptions = new VertxOptions();
-            //vertxOptions.setWorkerPoolSize(20);
-            //vertxOptions.setEventLoopPoolSize(2 * Runtime.getRuntime().availableProcessors());
-            //vertxOptions.setInternalBlockingPoolSize(20);
-
-            //添加总线扩展
-            EventBus.publish(vertxOptions);
+            EventBus.publish(vertxOptions); //添加总线扩展
 
             vertx = Vertx.vertx(vertxOptions);
+            context.wrapAndPut(Vertx.class, vertx);
+            context.lifecycle(new VertxLifecycle(vertx));
         }
 
         return vertx;
-    }
-
-    public static void tryClose() {
-        if (vertx != null) {
-            vertx.close();
-            vertx = null;
-        }
     }
 }

@@ -30,19 +30,19 @@ import java.io.File;
  */
 @Internal
 public class RuntimeService {
-    private static RuntimeService global;
+    private static RuntimeService singleton;
 
     static {
         //（静态扩展约定：org.noear.solon.extend.impl.XxxxExt）
-        global = ClassUtil.tryInstance("org.noear.solon.extend.impl.RuntimeServiceExt");
+        singleton = ClassUtil.tryInstance("org.noear.solon.extend.impl.RuntimeServiceExt");
 
-        if (global == null) {
-            global = new RuntimeService();
+        if (singleton == null) {
+            singleton = new RuntimeService();
         }
     }
 
-    public static RuntimeService global() {
-        return global;
+    public static RuntimeService singleton() {
+        return singleton;
     }
 
     public Reflection createReflection() {

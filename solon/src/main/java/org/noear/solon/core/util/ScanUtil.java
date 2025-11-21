@@ -19,6 +19,7 @@ import org.noear.solon.core.AppClassLoader;
 import org.noear.solon.core.runtime.RuntimeService;
 
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 /**
@@ -33,7 +34,7 @@ public class ScanUtil {
 
     static {
         //（静态扩展约定：org.noear.solon.extend.impl.XxxxExt）
-        global = RuntimeService.global().createScanner();
+        global = RuntimeService.singleton().createScanner();
     }
 
     /**
@@ -66,7 +67,20 @@ public class ScanUtil {
      * @param filter      过滤条件
      */
     public static Set<String> scan(ClassLoader classLoader, String path, Predicate<String> filter) {
-        return global.scan(classLoader, path, false, filter);
+        Set<String> set = new LinkedHashSet<>();
+        global.scan(classLoader, path, false, filter, set::add);
+        return set;
+    }
+
+    /**
+     * 扫描路径下的的资源（path 扫描路径）
+     *
+     * @param classLoader 类加载器
+     * @param path        路径
+     * @param filter      过滤条件
+     */
+    public static void scan(ClassLoader classLoader, String path, Predicate<String> filter, Consumer<String> consumer) {
+        global.scan(classLoader, path, false, filter, consumer);
     }
 
     /**
@@ -78,6 +92,8 @@ public class ScanUtil {
      * @param filter      过滤条件
      */
     public static Set<String> scan(ClassLoader classLoader, String path, boolean fileMode, Predicate<String> filter) {
-        return global.scan(classLoader, path, fileMode, filter);
+        Set<String> set = new LinkedHashSet<>();
+        global.scan(classLoader, path, fileMode, filter, set::add);
+        return set;
     }
 }
