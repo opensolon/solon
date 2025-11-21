@@ -28,7 +28,7 @@ import org.noear.solon.core.util.PathMatcher;
  * @since 3.4
  */
 public class RoutingDefault<T> implements Routing<T> {
-
+    
     public RoutingDefault(String path, String version, MethodType method, T target) {
         this(path, version, method, 0, target);
     }
@@ -40,9 +40,9 @@ public class RoutingDefault<T> implements Routing<T> {
         this.path = path;
 
         if (Utils.isEmpty(version)) {
-            this.version = null;
+            this.cachedVersion = null;
         } else {
-            this.version = version;
+            this.cachedVersion = Version.of(version); // 预编译版本对象
         }
 
         this.index = index;
@@ -53,7 +53,11 @@ public class RoutingDefault<T> implements Routing<T> {
 
     private final int index; //顺序
     private final String path; //path
-    private final String version;
+    /**
+     * 路由定义的版本（预编译版本对象）
+     */
+    private final Version cachedVersion;
+
     private final T target;//代理
     private final MethodType method; //方式
 
@@ -69,7 +73,7 @@ public class RoutingDefault<T> implements Routing<T> {
 
     @Override
     public String version() {
-        return version;
+        return cachedVersion==null ? null : cachedVersion.getOriginal();
     }
 
     @Override
@@ -83,75 +87,17 @@ public class RoutingDefault<T> implements Routing<T> {
     }
 
     /**
-     * 版本是否匹配（支持模式匹配）
+     * 版本是否匹配（高性能版本）
      * 
-     * @param routeVersion 路由定义的版本（如 "1.0", "1.0+"）
      * @param requestVersion 请求的版本（如 "1.0", "1.1", "1.2"）
      * @return 是否匹配
      */
-    private boolean matchesVersion(String routeVersion, String requestVersion) {
-        if (Utils.isEmpty(routeVersion) || Utils.isEmpty(requestVersion)) {
+    private boolean matchesVersion(String requestVersion) {
+        if (cachedVersion == null || Utils.isEmpty(requestVersion)) {
             return false;
         }
         
-        // 精确匹配
-        if (routeVersion.equals(requestVersion)) {
-            return true;
-        }
-        
-        // 模式匹配：支持 "1.0+" 格式
-        if (routeVersion.endsWith("+")) {
-            String baseVersion = routeVersion.substring(0, routeVersion.length() - 1);
-            return compareVersions(requestVersion, baseVersion) >= 0;
-        }
-        
-        // 不匹配
-        return false;
-    }
-    
-    /**
-     * 比较两个版本号
-     * 
-     * @param version1 版本1
-     * @param version2 版本2
-     * @return 返回值：<0 表示 version1 < version2；==0 表示 version1 == version2；>0 表示 version1 > version2
-     */
-    private int compareVersions(String version1, String version2) {
-        String[] v1Parts = version1.split("\\.");
-        String[] v2Parts = version2.split("\\.");
-        
-        int maxLength = Math.max(v1Parts.length, v2Parts.length);
-        
-        for (int i = 0; i < maxLength; i++) {
-            int v1Part = i < v1Parts.length ? parseVersionPart(v1Parts[i]) : 0;
-            int v2Part = i < v2Parts.length ? parseVersionPart(v2Parts[i]) : 0;
-            
-            int result = Integer.compare(v1Part, v2Part);
-            if (result != 0) {
-                return result;
-            }
-        }
-        
-        return 0;
-    }
-    
-    /**
-     * 解析版本号的部分
-     * 
-     * @param versionPart 版本号部分字符串
-     * @return 解析后的整数
-     */
-    private int parseVersionPart(String versionPart) {
-        try {
-            // 移除可能存在的非数字字符（如预发布版本标识）
-            String numericPart = versionPart.replaceAll("[^0-9]", "");
-            if (numericPart.isEmpty()) {
-                return 0;
-            }
-            return Integer.parseInt(numericPart);
-        } catch (NumberFormatException e) {
-            return 0;
-        }
+        return cachedVersion.matches(requestVersion);
     }
     
 
@@ -204,9 +150,9 @@ public class RoutingDefault<T> implements Routing<T> {
     }
 
     private boolean matches0(String path2, String version2) {
-        if (Utils.isNotEmpty(version)) {
+        if (cachedVersion != null) {
             //如果有版本申明
-            if (!matchesVersion(version, version2)) {
+            if (!matchesVersion(version2)) {
                 return false;
             }
         } else if (Utils.isNotEmpty(version2)) {
@@ -250,5 +196,12 @@ public class RoutingDefault<T> implements Routing<T> {
                 ", method=" + method +
                 ", path='" + path + '\'' +
                 '}';
+    }
+    
+    /**
+     * 获取缓存的版本对象（用于性能优化）
+     */
+    public Version getCachedVersion() {
+        return cachedVersion;
     }
 }
