@@ -17,6 +17,7 @@ package org.noear.solon.core.util;
 
 import org.noear.solon.core.InjectGather;
 import org.noear.solon.core.VarHolder;
+import org.noear.solon.lang.Internal;
 
 import java.util.HashSet;
 import java.util.List;
@@ -28,6 +29,7 @@ import java.util.Set;
  * @author noear
  * @since 2.5
  */
+@Internal
 public class IndexUtil {
     /**
      * 构建生命周期执行顺序位

@@ -20,7 +20,7 @@ import org.noear.solon.core.AppClassLoader;
 import org.noear.solon.core.exception.ConstructionException;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.UploadedFile;
-import org.noear.solon.core.runtime.IndexFileUtil;
+import org.noear.solon.core.runtime.IndexFiles;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.wrap.VarSpec;
 import org.slf4j.Logger;
@@ -404,7 +404,7 @@ public class ClassUtil {
         Objects.requireNonNull(clzExpr, "clzExpr");
         Objects.requireNonNull(clzConsumer, "clzConsumer");
 
-        String clzIndexFileName = clzExpr + "_scan";
+        String indexFileName = clzExpr + "_scan_clz";
 
         if (NativeDetector.isAotRuntime()) {
             if (clzFilter == null) {
@@ -417,7 +417,7 @@ public class ClassUtil {
                     clzConsumer.accept(clz);
                 });
 
-                IndexFileUtil.writeIndexFile(clzIndexFileName, clzNames);
+                IndexFiles.writeIndexFile(indexFileName, clzNames);
             } else {
                 doScanClasses0(classLoader, clzExpr, clzFilter, (name, clz) -> clzConsumer.accept(clz));
             }
@@ -425,7 +425,7 @@ public class ClassUtil {
             if (clzFilter == null) {
                 //没有过滤器，说明可缓存
                 clzFilter = SCAN_CLASSES_FILTER_DEF;
-                Collection<String> clzNames = IndexFileUtil.loadIndexFile(clzIndexFileName);
+                Collection<String> clzNames = IndexFiles.loadIndexFile(indexFileName);
 
                 if (clzNames != null) {
                     for (String clzName : clzNames) {

@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.noear.solon.annotation.Inject;
+import org.noear.solon.lang.Internal;
 
 /**
  * 顺序位构建器（构建类的依赖顺序）
@@ -29,6 +30,7 @@ import org.noear.solon.annotation.Inject;
  * @author cym1102
  * @since 1.6
  */
+@Internal
 public class IndexBuilder {
 	private final Map<String, Integer> map = new HashMap<>();
 	private final ArrayList<String> classStack = new ArrayList<>();

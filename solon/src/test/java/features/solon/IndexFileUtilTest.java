@@ -1,7 +1,7 @@
 package features.solon;
 
 import org.junit.jupiter.api.Test;
-import org.noear.solon.core.runtime.IndexFileUtil;
+import org.noear.solon.core.runtime.IndexFiles;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -15,7 +15,7 @@ class IndexFileUtilTest {
         String basePackage = "com.demo.app";
         String expected = "com-demo-app.index";
         
-        assertEquals(expected, IndexFileUtil.getIndexFileName(basePackage));
+        assertEquals(expected, IndexFiles.getIndexFileName(basePackage));
     }
 
     @Test
@@ -23,6 +23,6 @@ class IndexFileUtilTest {
         String basePackage = "app";
         String expected = "app.index";
         
-        assertEquals(expected, IndexFileUtil.getIndexFileName(basePackage));
+        assertEquals(expected, IndexFiles.getIndexFileName(basePackage));
     }
 }

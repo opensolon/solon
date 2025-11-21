@@ -27,7 +27,7 @@ import java.nio.file.Files;
 import java.util.*;
 
 /**
- * 索引文件工具类
+ * 索引文件工具
  * 
  * 编译时：借助AOT时机，生成（主要是类）索引文件
  * 启动时：查找包对应的类索引文件。如果有，使用类索引文件替代ScanUtil.scan机制
@@ -36,8 +36,8 @@ import java.util.*;
  * @since 3.7
  */
 @Internal
-public class IndexFileUtil {
-    private static final Logger log = LoggerFactory.getLogger(IndexFileUtil.class);
+public class IndexFiles {
+    private static final Logger log = LoggerFactory.getLogger(IndexFiles.class);
 
     //索引文件后缀名
     private static final String INDEX_FILE_SUFFIX = ".index";
@@ -60,16 +60,16 @@ public class IndexFileUtil {
                 return null;
             }
 
-            List<String> classNames = new ArrayList<>();
+            List<String> indexList = new ArrayList<>();
             try (InputStream inputStream = uri.openStream();
                  BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
                 String line;
                 while ((line = reader.readLine()) != null) {
-                    classNames.add(line.trim());
+                    indexList.add(line.trim());
                 }
             }
 
-            return classNames;
+            return indexList;
         } catch (IOException e) {
             // 索引文件读取失败，返回null
             log.warn("Failed to load class index file for package: {}", basePackage, e);
@@ -86,7 +86,7 @@ public class IndexFileUtil {
         }
 
         // 防止路径遍历攻击
-        if (basePackage.contains("..") || basePackage.contains("/") || basePackage.contains("\\")) {
+        if (basePackage.contains("..") || basePackage.contains(File.separator)) {
             throw new IllegalArgumentException("Invalid basePackage: contains path traversal characters");
         }
 
@@ -96,7 +96,7 @@ public class IndexFileUtil {
     /**
      * 写入索引文件
      */
-    public static void writeIndexFile(String basePackage, List<String> classNames) {
+    public static void writeIndexFile(String basePackage, List<String> indexList) {
         String indexFileName = getIndexFileName(basePackage);
 
         File indexFile = RuntimeService.singleton().createClassOutputFile(INDEX_FILE_DIR + indexFileName);
@@ -106,8 +106,8 @@ public class IndexFileUtil {
             indexFile.getParentFile().mkdirs();
 
             try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(Files.newOutputStream(indexFile.toPath()), StandardCharsets.UTF_8))) {
-                for (String className : classNames) {
-                    writer.write(className);
+                for (String idx : indexList) {
+                    writer.write(idx);
                     writer.newLine();
                 }
             }

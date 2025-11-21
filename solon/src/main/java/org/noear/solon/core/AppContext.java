@@ -27,7 +27,7 @@ import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.event.EventListener;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.route.RouterInterceptor;
-import org.noear.solon.core.runtime.IndexFileUtil;
+import org.noear.solon.core.runtime.IndexFiles;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.serialize.Serializer;
 import org.noear.solon.core.util.*;
@@ -753,13 +753,13 @@ public class AppContext extends BeanContainer {
                 // 排序，确保索引文件内容稳定
                 Collections.sort(clzIndexs);
                 // 写入索引文件
-                IndexFileUtil.writeIndexFile(basePackage, clzIndexs);
+                IndexFiles.writeIndexFile(basePackage, clzIndexs);
             }
         } else {
             //（非 aot 运行时） 优先使用类索引文件（如果存在）
             List<Class<?>> clzList = new ArrayList<>();
 
-            Collection<String> clzNames = IndexFileUtil.loadIndexFile(basePackage);
+            Collection<String> clzNames = IndexFiles.loadIndexFile(basePackage);
             if (clzNames != null) {
                 for (String clzName : clzNames) {
                     Class<?> clz = ClassUtil.loadClass(classLoader, clzName);
