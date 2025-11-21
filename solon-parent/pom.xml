@@ -65,6 +65,7 @@
         <hutool.version>5.8.36</hutool.version>
 
         <asm.version>9.8</asm.version>
+        <jspecify.version>1.0.0</jspecify.version>
 
         <r2dbc.version>1.0.0.RELEASE</r2dbc.version>
 

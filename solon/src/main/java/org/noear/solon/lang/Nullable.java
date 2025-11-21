@@ -23,8 +23,9 @@ import java.lang.annotation.*;
  * @author noear
  * @since 1.10
  */
-@Target({ElementType.METHOD, ElementType.PARAMETER, ElementType.FIELD, ElementType.LOCAL_VARIABLE})
-@Retention(RetentionPolicy.CLASS)
+@org.jspecify.annotations.Nullable
+@Target({ElementType.TYPE_USE})
+@Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Nullable {
 }

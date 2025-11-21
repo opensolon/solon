@@ -29,6 +29,7 @@
 
 ### v3.7.2
 
+* 引入 jspecify 的 `@Nullable`,`@NonNull` 注解
 * 新增 resilience4j-solon-cloud-plugin 插件
 * 新增 solon-cloud-gateway websocket 协议代理支持
 * 新增 solon 启动扫描类索引机制（由 solon aot 构建时自动生成）
