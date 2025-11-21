@@ -27,6 +27,8 @@ import java.util.regex.Pattern;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.AppClassLoader;
+import org.noear.solon.core.runtime.IndexFiles;
+import org.noear.solon.core.runtime.NativeDetector;
 
 /**
  * 资源工具
@@ -386,7 +388,27 @@ public class ResourceUtil {
      * @param resExpr     资源表达式
      */
     public static Collection<String> scanResources(ClassLoader classLoader, String resExpr) {
-        List<String> paths = new ArrayList<>();
+        String indexFileName = resExpr.replace('/', '-') + "_scan_res";
+
+        if (NativeDetector.isAotRuntime()) {
+            List<String> resList = doScanResources(classLoader, resExpr);
+
+            IndexFiles.writeIndexFile(indexFileName, resList);
+
+            return resList;
+        } else {
+            Collection<String> resList = IndexFiles.loadIndexFile(indexFileName);
+            if (resList == null) {
+                resList = doScanResources(classLoader, resExpr);
+            }
+
+            return resList;
+        }
+    }
+
+
+    private static List<String> doScanResources(ClassLoader classLoader, String resExpr) {
+        List<String> resList = new ArrayList<>();
 
         boolean fileMode = false;
         if (hasFile(resExpr)) {
@@ -406,8 +428,8 @@ public class ResourceUtil {
 
         int xinIdx = resExpr.indexOf('*');
         if (xinIdx < 0) { //说明没有*符
-            paths.add(resExpr);
-            return paths;
+            resList.add(resExpr);
+            return resList;
         }
 
         //确定没有星号的起始目录
@@ -465,10 +487,10 @@ public class ResourceUtil {
                 .forEach(uri -> {
                     //再进行表达式过滤
                     if (pattern.matcher(uri).find()) {
-                        paths.add(uri);
+                        resList.add(uri);
                     }
                 });
 
-        return paths;
+        return resList;
     }
 }
