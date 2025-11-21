@@ -227,7 +227,10 @@ public class RoutingTableDefault<T> implements RoutingTable<T> {
 
     @Override
     public Collection<Routing<T>> getBy(Class<?> controllerClz) {
-        return table.stream()
+        List<Routing<T>> matchedRoutes = new ArrayList<>();
+        
+        // 从普通路由表中查找
+        matchedRoutes.addAll(table.stream()
                 .filter(l -> {
                     if (l.target.target() instanceof Action) {
                         Action a = (Action) l.target.target();
@@ -238,7 +241,22 @@ public class RoutingTableDefault<T> implements RoutingTable<T> {
                     return false;
                 })
                 .map(l -> l.target)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
+        
+        // 从版本路由表中查找
+        for (LinkedList<RankEntity<Routing<T>>> entry : versionedTables.values()) {
+            matchedRoutes.addAll(entry.stream().filter(l -> {
+                if (l.target.target() instanceof Action) {
+                    Action a = (Action) l.target.target();
+                    if (a.controller().clz().equals(controllerClz)) {
+                        return true;
+                    }
+                }
+                return false;
+            }).map(l -> l.target).collect(Collectors.toList()));
+        }
+        
+        return matchedRoutes;
     }
 
     /**
