@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.regex.Pattern;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
@@ -389,15 +390,17 @@ public class ResourceUtil {
      */
     public static Collection<String> scanResources(ClassLoader classLoader, String resExpr) {
         if (NativeDetector.isAotRuntime()) {
-            List<String> resList = doScanResources(classLoader, resExpr);
+            List<String> resList = new ArrayList<>();
+            scanResources(classLoader, resExpr, resList::add);
 
             IndexFiles.writeIndexFile(resExpr, "scan_res", resList);
 
             return resList;
         } else {
-            Collection<String> resList = IndexFiles.loadIndexFile(resExpr, "scan_res");
+            List<String> resList = IndexFiles.loadIndexFile(resExpr, "scan_res");
             if (resList == null) {
-                resList = doScanResources(classLoader, resExpr);
+                resList = new ArrayList<>();
+                scanResources(classLoader, resExpr, resList::add);
             }
 
             return resList;
@@ -405,9 +408,7 @@ public class ResourceUtil {
     }
 
 
-    private static List<String> doScanResources(ClassLoader classLoader, String resExpr) {
-        List<String> resList = new ArrayList<>();
-
+    public static void scanResources(ClassLoader classLoader, String resExpr, Consumer<String> resConsumer) {
         boolean fileMode = false;
         if (hasFile(resExpr)) {
             //文件模式
@@ -426,8 +427,8 @@ public class ResourceUtil {
 
         int xinIdx = resExpr.indexOf('*');
         if (xinIdx < 0) { //说明没有*符
-            resList.add(resExpr);
-            return resList;
+            resConsumer.accept(resExpr);
+            return;
         }
 
         //确定没有星号的起始目录
@@ -485,10 +486,8 @@ public class ResourceUtil {
                 .forEach(uri -> {
                     //再进行表达式过滤
                     if (pattern.matcher(uri).find()) {
-                        resList.add(uri);
+                        resConsumer.accept(uri);
                     }
                 });
-
-        return resList;
     }
 }

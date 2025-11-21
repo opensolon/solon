@@ -489,7 +489,7 @@ public class ClassUtil {
         clzExpr = clzExpr.replace('.', '/');
         clzExpr = clzExpr + ".class"; //查找时要带 class
 
-        ResourceUtil.scanResources(classLoader, clzExpr).forEach(name -> {
+        ResourceUtil.scanResources(classLoader, clzExpr, name -> {
             String className = name.substring(0, name.length() - 6);
             className = className.replace('/', '.');
 

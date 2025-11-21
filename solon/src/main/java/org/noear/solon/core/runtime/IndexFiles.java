@@ -52,7 +52,7 @@ public class IndexFiles {
      * @param dir 目录
      * @return 类名列表，如果不存在索引文件则返回null
      */
-    public static Collection<String> loadIndexFile(String dir, String tag) {
+    public static List<String> loadIndexFile(String dir, String tag) {
         String indexFileName = getIndexFileName(dir, tag);
 
         try {

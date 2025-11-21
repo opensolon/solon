@@ -77,17 +77,6 @@ public class ScanUtil {
      *
      * @param classLoader 类加载器
      * @param path        路径
-     * @param filter      过滤条件
-     */
-    public static void scan(ClassLoader classLoader, String path, Predicate<String> filter, Consumer<String> consumer) {
-        global.scan(classLoader, path, false, filter, consumer);
-    }
-
-    /**
-     * 扫描路径下的的资源（path 扫描路径）
-     *
-     * @param classLoader 类加载器
-     * @param path        路径
      * @param fileMode    文件模式
      * @param filter      过滤条件
      */
@@ -95,5 +84,28 @@ public class ScanUtil {
         Set<String> set = new LinkedHashSet<>();
         global.scan(classLoader, path, fileMode, filter, set::add);
         return set;
+    }
+
+    /**
+     * 扫描路径下的的资源（path 扫描路径），消费时注意去除
+     *
+     * @param classLoader 类加载器
+     * @param path        路径
+     * @param filter      过滤条件
+     */
+    public static void scan(ClassLoader classLoader, String path, Predicate<String> filter, Consumer<String> consumer) {
+        global.scan(classLoader, path, false, filter, consumer);
+    }
+
+    /**
+     * 扫描路径下的的资源（path 扫描路径），消费时注意去除
+     *
+     * @param classLoader 类加载器
+     * @param path        路径
+     * @param fileMode    文件模式
+     * @param filter      过滤条件
+     */
+    public static void scan(ClassLoader classLoader, String path, boolean fileMode, Predicate<String> filter, Consumer<String> consumer) {
+        global.scan(classLoader, path, fileMode, filter, consumer);
     }
 }
