@@ -20,6 +20,7 @@ import org.noear.solon.core.AppClassLoader;
 import org.noear.solon.core.exception.ConstructionException;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.UploadedFile;
+import org.noear.solon.core.runtime.ClassIndexUtil;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.wrap.VarSpec;
 import org.slf4j.Logger;
@@ -27,6 +28,8 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.*;
 import java.util.*;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -315,7 +318,20 @@ public class ClassUtil {
      * @since 3.0
      */
     public static Collection<Class<?>> scanClasses(String clzExpr) {
-        return scanClasses(AppClassLoader.global(), clzExpr, SCAN_CLASSES_FILTER_DEF);
+        List<Class<?>> clzList = new ArrayList<>();
+        doScanClasses(AppClassLoader.global(), clzExpr, null, clzList::add);
+        return clzList;
+    }
+
+    /**
+     * 扫描类
+     *
+     * @param clzExpr     类名表达式（基于 import 表达式扩展）
+     * @param clzConsumer 类消费
+     * @since 3.7
+     */
+    public static void scanClasses(String clzExpr, Consumer<Class<?>> clzConsumer) {
+        doScanClasses(AppClassLoader.global(), clzExpr, null, clzConsumer);
     }
 
     /**
@@ -324,9 +340,13 @@ public class ClassUtil {
      * @param clzExpr   类名表达式（基于 import 表达式扩展）
      * @param clzFilter 类过滤器
      * @since 3.0
+     * @deprecated 3.7
      */
+    @Deprecated
     public static Collection<Class<?>> scanClasses(String clzExpr, Predicate<Class<?>> clzFilter) {
-        return scanClasses(AppClassLoader.global(), clzExpr, clzFilter);
+        List<Class<?>> clzList = new ArrayList<>();
+        doScanClasses(AppClassLoader.global(), clzExpr, clzFilter, clzList::add);
+        return clzList;
     }
 
     /**
@@ -337,7 +357,22 @@ public class ClassUtil {
      * @since 3.0
      */
     public static Collection<Class<?>> scanClasses(ClassLoader classLoader, String clzExpr) {
-        return scanClasses(classLoader, clzExpr, SCAN_CLASSES_FILTER_DEF);
+        List<Class<?>> clzList = new ArrayList<>();
+        doScanClasses(classLoader, clzExpr, null, clzList::add);
+        return clzList;
+    }
+
+
+    /**
+     * 扫描类
+     *
+     * @param classLoader 类加载器
+     * @param clzExpr     类名表达式（基于 import 表达式扩展）
+     * @param clzConsumer 类消费
+     * @since 3.7.2
+     */
+    public static void scanClasses(ClassLoader classLoader, String clzExpr, Consumer<Class<?>> clzConsumer) {
+        doScanClasses(classLoader, clzExpr, null, clzConsumer);
     }
 
     /**
@@ -347,10 +382,67 @@ public class ClassUtil {
      * @param clzExpr     类名表达式（基于 import 表达式扩展）
      * @param clzFilter   类过滤器
      * @since 3.0
+     * @deprecated 3.7
      */
+    @Deprecated
     public static Collection<Class<?>> scanClasses(ClassLoader classLoader, String clzExpr, Predicate<Class<?>> clzFilter) {
         List<Class<?>> clzList = new ArrayList<>();
+        doScanClasses(classLoader, clzExpr, clzFilter, clzList::add);
+        return clzList;
+    }
 
+    /**
+     * 扫描类
+     *
+     * @param classLoader 类加载器
+     * @param clzExpr     类名表达式（基于 import 表达式扩展）
+     * @param clzFilter   类过滤器
+     * @since 3.0
+     * @deprecated 3.7
+     */
+    private static void doScanClasses(ClassLoader classLoader, String clzExpr, Predicate<Class<?>> clzFilter, Consumer<Class<?>> clzConsumer) {
+        Objects.requireNonNull(clzExpr, "clzExpr");
+        Objects.requireNonNull(clzConsumer, "clzConsumer");
+
+        if (NativeDetector.isAotRuntime()) {
+            if (clzFilter == null) {
+                //没有过滤器，说明可缓存
+                clzFilter = SCAN_CLASSES_FILTER_DEF;
+                List<String> clzNames = new ArrayList<>();
+
+                doScanClasses0(classLoader, clzExpr, clzFilter, (name, clz) -> {
+                    clzNames.add(name);
+                    clzConsumer.accept(clz);
+                });
+
+                ClassIndexUtil.writeIndexFile(clzExpr, clzNames);
+            } else {
+                doScanClasses0(classLoader, clzExpr, clzFilter, (name, clz) -> clzConsumer.accept(clz));
+            }
+        } else {
+            if (clzFilter == null) {
+                //没有过滤器，说明可缓存
+                Collection<String> clzNames = ClassIndexUtil.loadClassIndex(clzExpr);
+
+                if (clzNames != null) {
+                    for (String clzName : clzNames) {
+                        Class<?> clz = ClassUtil.loadClass(classLoader, clzName);
+                        if (clz != null) {
+                            clzConsumer.accept(clz);
+                        }
+                    }
+
+                    return;
+                }
+
+                doScanClasses0(classLoader, clzExpr, clzFilter, (name, clz) -> clzConsumer.accept(clz));
+            } else {
+                doScanClasses0(classLoader, clzExpr, clzFilter, (name, clz) -> clzConsumer.accept(clz));
+            }
+        }
+    }
+
+    private static void doScanClasses0(ClassLoader classLoader, String clzExpr, final Predicate<Class<?>> clzFilter, BiConsumer<String, Class<?>> consumer) {
         if (clzExpr.indexOf('*') < 0) {
             if (clzExpr.endsWith(".class")) {
                 //说明是单个类
@@ -358,10 +450,10 @@ public class ClassUtil {
 
                 Class<?> clz = ClassUtil.loadClass(classLoader, clzExpr);
                 if (clz != null && clzFilter.test(clz)) {
-                    clzList.add(clz);
+                    consumer.accept(clzExpr, clz);
                 }
 
-                return clzList;
+                return;
             } else {
                 int idx = clzExpr.lastIndexOf('.');
                 if (idx > 0 && Character.isLowerCase(clzExpr.charAt(idx + 1))) { //44=$ 97=a
@@ -370,10 +462,10 @@ public class ClassUtil {
                 } else {
                     Class<?> clz = ClassUtil.loadClass(classLoader, clzExpr);
                     if (clz != null && clzFilter.test(clz)) {
-                        clzList.add(clz);
+                        consumer.accept(clzExpr, clz);
                     }
 
-                    return clzList;
+                    return;
                 }
             }
         }
@@ -402,11 +494,9 @@ public class ClassUtil {
 
             Class<?> clz = ClassUtil.loadClass(classLoader, className);
             if (clz != null && clzFilter.test(clz)) {
-                clzList.add(clz);
+                consumer.accept(className, clz);
             }
         });
-
-        return clzList;
     }
 
     /**
