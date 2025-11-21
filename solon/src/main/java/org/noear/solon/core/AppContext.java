@@ -27,7 +27,7 @@ import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.event.EventListener;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.route.RouterInterceptor;
-import org.noear.solon.core.runtime.ClassIndexUtil;
+import org.noear.solon.core.runtime.IndexFileUtil;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.serialize.Serializer;
 import org.noear.solon.core.util.*;
@@ -423,7 +423,7 @@ public class AppContext extends BeanContainer {
             //让注解产生的生命周期，排序晚1个点
             int index = bw.index();
             if (index == 0) {
-                index = IndexUtil.buildLifecycleIndex(bw.rawClz());
+                index = org.noear.solon.core.util.IndexUtil.buildLifecycleIndex(bw.rawClz());
             }
 
             lifecycle(index + 1, bw.raw());
@@ -753,13 +753,13 @@ public class AppContext extends BeanContainer {
                 // 排序，确保索引文件内容稳定
                 Collections.sort(clzIndexs);
                 // 写入索引文件
-                ClassIndexUtil.writeIndexFile(basePackage, clzIndexs);
+                IndexFileUtil.writeIndexFile(basePackage, clzIndexs);
             }
         } else {
             //（非 aot 运行时） 优先使用类索引文件（如果存在）
             List<Class<?>> clzList = new ArrayList<>();
 
-            Collection<String> clzNames = ClassIndexUtil.loadClassIndex(basePackage);
+            Collection<String> clzNames = IndexFileUtil.loadIndexFile(basePackage);
             if (clzNames != null) {
                 for (String clzName : clzNames) {
                     Class<?> clz = ClassUtil.loadClass(classLoader, clzName);
@@ -1350,7 +1350,7 @@ public class AppContext extends BeanContainer {
 
         if (gatherList.size() > 0) {
             for (InjectGather gather : gatherList) {
-                IndexUtil.buildGatherIndex(gather, gatherList);
+                org.noear.solon.core.util.IndexUtil.buildGatherIndex(gather, gatherList);
             }
 
             if (sel > 0) {

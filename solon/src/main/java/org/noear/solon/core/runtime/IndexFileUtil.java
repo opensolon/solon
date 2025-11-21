@@ -27,17 +27,17 @@ import java.nio.file.Files;
 import java.util.*;
 
 /**
- * 类索引工具类
+ * 索引文件工具类
  * 
- * 编译时：借助AOT时机，通过beanScan收集类索引，一个"basePackage"对应一个索引文件
+ * 编译时：借助AOT时机，生成（主要是类）索引文件
  * 启动时：查找包对应的类索引文件。如果有，使用类索引文件替代ScanUtil.scan机制
  *
  * @author noear
  * @since 3.7
  */
 @Internal
-public class ClassIndexUtil {
-    private static final Logger log = LoggerFactory.getLogger(ClassIndexUtil.class);
+public class IndexFileUtil {
+    private static final Logger log = LoggerFactory.getLogger(IndexFileUtil.class);
 
     //索引文件后缀名
     private static final String INDEX_FILE_SUFFIX = ".index";
@@ -51,7 +51,7 @@ public class ClassIndexUtil {
      * @param basePackage 基础包名
      * @return 类名列表，如果不存在索引文件则返回null
      */
-    public static Collection<String> loadClassIndex(String basePackage) {
+    public static Collection<String> loadIndexFile(String basePackage) {
         String indexFileName = getIndexFileName(basePackage);
 
         try {
