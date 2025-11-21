@@ -21,7 +21,7 @@ package org.noear.solon.core.runtime;
  * @author Sebastien Deleuze
  * @since 2.2
  */
-public abstract class NativeDetector {
+public final class NativeDetector {
     public static final String AOT_PROCESSING = "solon.aot.processing";
     public static final String AOT_IMAGECODE = "org.graalvm.nativeimage.imagecode";
 
@@ -37,7 +37,7 @@ public abstract class NativeDetector {
 
     /**
      * 是否不在原生镜像上执行
-     * */
+     */
     public static boolean notInNativeImage() {
         return !imageCode;
     }

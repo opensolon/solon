@@ -131,6 +131,18 @@ public class ChainManager {
 
     /**
      * 获取所有路由拦截器
+     *
+     * @deprecated 3.7 {@link #getRouterInterceptorNodes()}
+     */
+    @Deprecated
+    public Collection<RouterInterceptor> getInterceptorNodes() {
+        return getRouterInterceptorNodes();
+    }
+
+    /**
+     * 获取所有路由拦截器
+     *
+     * @since 3.7
      */
     public Collection<RouterInterceptor> getRouterInterceptorNodes() {
         List<RouterInterceptor> tmp = new ArrayList<>();
@@ -145,6 +157,16 @@ public class ChainManager {
         }
 
         return tmp;
+    }
+
+    /**
+     * 添加路由拦截器
+     *
+     * @deprecated 3.7 {@link #addRouterInterceptor(RouterInterceptor, int)}
+     */
+    @Deprecated
+    public void addInterceptor(RouterInterceptor interceptor, int index) {
+        addRouterInterceptor(interceptor, index);
     }
 
     /**
@@ -166,6 +188,18 @@ public class ChainManager {
 
     /**
      * 添加路由拦截器，如果有相同类的则不加
+     *
+     * @deprecated 3.7 {@link #addRouterInterceptorIfAbsent(RouterInterceptor, int)}
+     */
+    @Deprecated
+    public void addInterceptorIfAbsent(RouterInterceptor interceptor, int index) {
+        addRouterInterceptorIfAbsent(interceptor, index);
+    }
+
+    /**
+     * 添加路由拦截器，如果有相同类的则不加
+     *
+     * @since 3.7
      */
     public void addRouterInterceptorIfAbsent(RouterInterceptor interceptor, int index) {
         SYNC_LOCK.lock();
@@ -188,6 +222,18 @@ public class ChainManager {
 
     /**
      * 移除路由拦截器
+     *
+     * @deprecated 3.7 {@link #removeRouterInterceptor(Class)}
+     */
+    @Deprecated
+    public <T extends RouterInterceptor> void removeInterceptor(Class<T> clz) {
+        removeRouterInterceptor(clz);
+    }
+
+    /**
+     * 移除路由拦截器
+     *
+     * @since 3.7
      */
     public <T extends RouterInterceptor> void removeRouterInterceptor(Class<T> clz) {
         SYNC_LOCK.lock();

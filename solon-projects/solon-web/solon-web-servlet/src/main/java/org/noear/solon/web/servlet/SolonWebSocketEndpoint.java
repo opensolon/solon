@@ -171,11 +171,25 @@ public class SolonWebSocketEndpoint extends Endpoint {
         @Override
         public void close() {
             super.close();
+
             try {
                 real.close();
-            } catch (IOException e) {
+            } catch (Throwable ignore) {
                 if (log.isDebugEnabled()) {
-                    log.debug("{}", e);
+                    log.debug("Close failure: {}", ignore.getMessage());
+                }
+            }
+        }
+
+        @Override
+        public void close(int code, String reason) {
+            super.close(code, reason);
+
+            try {
+                real.close(new CloseReason(CloseReason.CloseCodes.getCloseCode(code), reason));
+            } catch (Throwable ignore) {
+                if (log.isDebugEnabled()) {
+                    log.debug("Close failure: {}", ignore.getMessage());
                 }
             }
         }

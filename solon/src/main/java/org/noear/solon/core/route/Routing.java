@@ -36,6 +36,11 @@ public interface Routing<T> {
     String path();
 
     /**
+     * 递归通配符位置（-1 没有, 0 根位, 0+ 子位）
+     */
+    int globstar();
+
+    /**
      * 版本号
      */
     String version();

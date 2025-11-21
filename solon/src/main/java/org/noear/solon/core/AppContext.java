@@ -41,7 +41,6 @@ import java.lang.reflect.*;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 /**
  * App 上下文（ 为全局对象；热插拨的插件，会产生独立的上下文）
@@ -568,7 +567,7 @@ public class AppContext extends BeanContainer {
      * @param tryProxy   尝试代理
      */
     public void beanExtractOrProxy(BeanWrap bw, boolean tryExtract, boolean tryProxy) {
-        if (bw == null) {
+        if (bw == null || bw.proxy() != null) { //如果代理不为 null，说明来过
             return;
         }
 
@@ -732,48 +731,70 @@ public class AppContext extends BeanContainer {
             return;
         }
 
-        // 如果在AOT编译时，生成类索引文件，并加载bean
         if (NativeDetector.isAotRuntime()) {
-            Set<String> classNames = ClassIndexUtil.scanClassGenerateIndex(classLoader, basePackage);
-            //按照配置类优先，其他类次之，两阶段加载
-            doMakeBean(classNames, classLoader);
-            return;
+            //（aot 运行时）
+            List<String> clzIndexs = new ArrayList<>();
+            List<Class<?>> clzList = new ArrayList<>();
+
+            String dir = basePackage.replace('.', '/');
+            ScanUtil.scan(classLoader, dir, n -> n.endsWith(".class"), name -> {
+                //直接回调可减少一次 HashSet 收集（提升性能）；tryBuildBeanOfClass 有重复过滤（不用担心重复）
+                String clzName = name.substring(0, name.length() - 6).replace('/', '.');
+
+                Class<?> clz = ClassUtil.loadClass(classLoader, clzName);
+                if (clz != null) {
+                    clzList.add(clz);
+                }
+            });
+
+            doBuildBeans(clzList, clzIndexs);
+
+            if (clzIndexs.size() > 0) {
+                // 排序，确保索引文件内容稳定
+                Collections.sort(clzIndexs);
+                // 写入索引文件
+                ClassIndexUtil.writeIndexFile(basePackage, clzIndexs);
+            }
+        } else {
+            //（非 aot 运行时） 优先使用类索引文件（如果存在）
+            List<Class<?>> clzList = new ArrayList<>();
+
+            Collection<String> clzNames = ClassIndexUtil.loadClassIndex(basePackage);
+            if (clzNames != null) {
+                for (String clzName : clzNames) {
+                    Class<?> clz = ClassUtil.loadClass(classLoader, clzName);
+                    if (clz != null) {
+                        clzList.add(clz);
+                    }
+                }
+            } else {
+                String dir = basePackage.replace('.', '/');
+                ScanUtil.scan(classLoader, dir, n -> n.endsWith(".class"), name -> {
+                    //直接回调可减少一次 HashSet 收集（提升性能）；tryBuildBeanOfClass 有重复过滤（不用担心重复）
+                    String clzName = name.substring(0, name.length() - 6).replace('/', '.');
+
+                    Class<?> clz = ClassUtil.loadClass(classLoader, clzName);
+                    if (clz != null) {
+                        clzList.add(clz);
+                    }
+                });
+            }
+
+            doBuildBeans(clzList, null);
         }
-
-        // 优先使用类索引文件（如果存在,加载到类文件）
-        Set<String> classNames = ClassIndexUtil.loadClassIndex(basePackage);
-        if (classNames != null && !classNames.isEmpty()) {
-            //按照配置类优先，其他类次之，两阶段加载
-            doMakeBean(classNames, classLoader);
-            return;
-        }
-
-        //默认加载策略 （没有类索引文件，也不是aot编译阶段）
-        String dir = basePackage.replace('.', '/');
-
-        //扫描类文件并分析（采用两段式加载，先处理配置类，再处理其他类）
-        Set<String> clzNames = ScanUtil.scan(classLoader, dir, n -> n.endsWith(".class"));
-
-        //按照配置类优先，其他类次之，两阶段加载
-        doMakeBean(clzNames, classLoader);
-
     }
 
     //两阶段加载
-    private void doMakeBean(Set<String> clzNames, ClassLoader classLoader) {
+    private void doBuildBeans(Collection<Class<?>> clzList, List<String> clzIndexs) {
         // 创建两个集合：配置类集合和其他类集合
         List<Class<?>> configClasses = new ArrayList<>();
         List<Class<?>> otherClasses = new ArrayList<>();
 
         // 先分析所有类，分类存储
-        for (String name : clzNames) {
-            String clzName = name.substring(0, name.length() - 6);
-            clzName = clzName.replace('/', '.');
-
-            Class<?> clz = ClassUtil.loadClass(classLoader, clzName);
+        for (Class<?> clz : clzList) {
             if (clz != null) {
                 // 检查是否为配置类（带有@Configuration注解）
-                if (clz.isAnnotationPresent(org.noear.solon.annotation.Configuration.class)) {
+                if (clz.isAnnotationPresent(Configuration.class)) {
                     configClasses.add(clz);
                 } else {
                     otherClasses.add(clz);
@@ -781,16 +802,29 @@ public class AppContext extends BeanContainer {
             }
         }
 
-        // 第一阶段：优先处理配置类
-        for (Class<?> clz : configClasses) {
-            tryBuildBeanOfClass(clz);
-        }
+        if (clzIndexs == null) {
+            for (Class<?> clz : configClasses) {
+                tryBuildBeanOfClass(clz);
+            }
 
-        // 第二阶段：处理其他类
-        for (Class<?> clz : otherClasses) {
-            tryBuildBeanOfClass(clz);
+            for (Class<?> clz : otherClasses) {
+                tryBuildBeanOfClass(clz);
+            }
+        } else { //for aot
+            for (Class<?> clz : configClasses) {
+                if (tryBuildBeanOfClass(clz) > build_bean_ofclass_state0) {
+                    clzIndexs.add(clz.getName());
+                }
+            }
+
+            for (Class<?> clz : otherClasses) {
+                if (tryBuildBeanOfClass(clz) > build_bean_ofclass_state0) {
+                    clzIndexs.add(clz.getName());
+                }
+            }
         }
     }
+
 
     /**
      * ::制造 bean 及对应处理
@@ -1292,19 +1326,27 @@ public class AppContext extends BeanContainer {
      */
     private void startInjectReview(int sel) throws Throwable {
         //全部跑完后，检查注入情况
-        List<InjectGather> gatherList = null;
+        List<InjectGather> gatherList = new ArrayList<>();
 
         if (sel == 0) {
-            gatherList = gatherSet.stream().filter(g1 -> g1.isDone() == false && g1.isMethod() == false)
-                    .collect(Collectors.toList());
+            for (InjectGather g1 : gatherSet) {
+                if (g1.isDone() == false && g1.isMethod() == false) {
+                    gatherList.add(g1);
+                }
+            }
         } else if (sel == 1) {
-            gatherList = gatherSet.stream().filter(g1 -> g1.isDone() == false && g1.isMethod() == true)
-                    .collect(Collectors.toList());
+            for (InjectGather g1 : gatherSet) {
+                if (g1.isDone() == false && g1.isMethod() == true) {
+                    gatherList.add(g1);
+                }
+            }
         } else {
-            gatherList = gatherSet.stream().filter(g1 -> g1.isDone() == false)
-                    .collect(Collectors.toList());
+            for (InjectGather g1 : gatherSet) {
+                if (g1.isDone() == false) {
+                    gatherList.add(g1);
+                }
+            }
         }
-
 
         if (gatherList.size() > 0) {
             for (InjectGather gather : gatherList) {

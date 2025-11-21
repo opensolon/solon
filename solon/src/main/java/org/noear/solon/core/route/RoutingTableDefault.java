@@ -85,12 +85,16 @@ public class RoutingTableDefault<T> implements RoutingTable<T> {
     private void addNormalRouting(Routing<T> routing) {
         String path = routing.path();
         int level = 0;
-        
-        if (path.indexOf('{') >= 0) {
-            level = 1;
-        }
-        if (path.indexOf('*') >= 0) {
+
+
+        if (routing.globstar() == 0) { // "/**"
+            level = 4;
+        } else if (routing.globstar() > 0) {  // "/a/**"
+            level = 3;
+        } else if (routing.path().indexOf('*') >= 0) { // "/a/*"
             level = 2;
+        } else if (routing.path().indexOf('{') >= 0) { // "/a/{x}"
+            level = 1;
         }
         
         RankEntity<Routing<T>> entity = new RankEntity<>(routing,level ,routing.index(), false);
