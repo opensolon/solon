@@ -34,6 +34,7 @@
 * 新增 solon 启动扫描类索引机制（由 solon aot 构建时自动生成）
 * 新增 aot 构建配置（在 native 基础上去除 graalvm.buildtools），任意 jdk 版本可用
 * 添加 solon RunUtil.io(),timer() 方便响应式使用
+* 添加 solon 启动资源索引机制（通过 aot 实现）
 * 添加 solon-rx Completable:doOnErrorResume 方法
 * 添加 solon-rx Completable:subscribeOn, delay 方法，方便同步io对接
 * 添加 solon-net WebSocket:colse(code,reason) 方法及相关适配
