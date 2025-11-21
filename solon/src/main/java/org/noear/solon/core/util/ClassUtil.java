@@ -422,6 +422,7 @@ public class ClassUtil {
         } else {
             if (clzFilter == null) {
                 //没有过滤器，说明可缓存
+                clzFilter = SCAN_CLASSES_FILTER_DEF;
                 Collection<String> clzNames = ClassIndexUtil.loadClassIndex(clzExpr);
 
                 if (clzNames != null) {
