@@ -15,10 +15,14 @@
  */
 package org.noear.solon.rx;
 
+import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.rx.impl.CompletableImpl;
 import org.reactivestreams.Publisher;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -29,26 +33,69 @@ import java.util.function.Supplier;
  */
 public interface Completable extends Publisher<Void> {
     /**
-     * 出错时
+     * 当出错时
      */
     Completable doOnError(Consumer<Throwable> doOnError);
 
     /**
-     * 完成时
+     * 当出错时，恢复为一个新流
+     *
+     * @since 3.7
+     */
+    Completable doOnErrorResume(Function<Throwable, Completable> doOnError);
+
+    /**
+     * 当完成时
      */
     Completable doOnComplete(Runnable doOnComplete);
 
+    /// /////////////
+
     /**
-     * 然后
+     * 创建
+     */
+    static Completable create(Consumer<CompletableEmitter> emitterConsumer) {
+        if (emitterConsumer == null) {
+            throw new IllegalArgumentException("emitterConsumer cannot be null");
+        }
+
+        return new CompletableImpl(null, emitterConsumer);
+    }
+
+    /**
+     * 当完成后（然后），下一个新流
      */
     Completable then(Supplier<Completable> otherSupplier);
 
     /**
-     * 然后
+     * 当完成后（然后），下一个新流
      */
     default Completable then(Completable other) {
         return then(() -> other);
     }
+
+    /**
+     * 订阅于
+     */
+    default Completable subscribeOn(Executor executor) {
+        return Completable.create(emitter -> {
+            executor.execute(() -> {
+                subscribe(emitter);
+            });
+        });
+    }
+
+    /**
+     * 订阅延时
+     */
+    default Completable delay(long delay, TimeUnit unit) {
+        return Completable.create(emitter -> {
+            RunUtil.delay(() -> {
+                subscribe(emitter);
+            }, unit.toMillis(delay));
+        });
+    }
+
 
     /**
      * 订阅
@@ -62,12 +109,8 @@ public interface Completable extends Publisher<Void> {
      */
     void subscribe(CompletableEmitter emitter);
 
-    /**
-     * 创建
-     */
-    static Completable create(Consumer<CompletableEmitter> emitterConsumer) {
-        return new CompletableImpl(null, emitterConsumer);
-    }
+
+    /// /////////////
 
     /**
      * 完成
@@ -77,9 +120,13 @@ public interface Completable extends Publisher<Void> {
     }
 
     /**
-     * 出错的完成
+     * 出错
      */
     static Completable error(Throwable cause) {
+        if (cause == null) {
+            throw new IllegalArgumentException("cause cannot be null");
+        }
+
         return new CompletableImpl(cause, null);
     }
 }
