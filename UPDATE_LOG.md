@@ -37,6 +37,7 @@
 ### 3.5.9
 
 * 添加 solon RunUtil.io(),timer() 方便响应式使用
+* 修复 solon-rx Completable:doOnError 会中断传递的问题
 
 ### 3.5.8
 
