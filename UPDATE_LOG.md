@@ -27,6 +27,12 @@
 * 使用 solon-expression 替代其它临时的表达式处理 //ok
 * 升级 mcp-java-sdk 为 0.14.x？？？
 
+### v3.7.3
+
+* eggg 升为 1.0.9
+* snack4 升为 4.0.15
+
+
 ### v3.7.2
 
 * 引入 jspecify 的 `@Nullable`,`@NonNull` 注解
