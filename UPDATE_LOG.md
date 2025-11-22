@@ -33,6 +33,7 @@
 * 修复 solon-rx Completable:doOnError 会中断传递的问题
 * 修复 solon-server-vertx VxWebSocketImpl:remoteAddress 转换失败的问题
 * 修复 solon-scheduling-simple 不能识别：`zone=+08` 配置问题
+* snack4 升为 4.0.14
 
 ### 3.6.4
 
