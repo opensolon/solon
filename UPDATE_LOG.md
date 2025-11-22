@@ -34,6 +34,10 @@
 * 引入 `solon-expression` 替代 `solon` 内的表达式
 
 
+### 3.5.9
+
+* 添加 solon RunUtil.io(),timer() 方便响应式使用
+
 ### 3.5.8
 
 * 修复 solon-ai parseToolCall 接收 stream 中间消息时可能会异常（添加 hasNestedJsonBlock 检测）
