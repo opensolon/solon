@@ -52,7 +52,7 @@
         <water.version>2.16.0</water.version>
         <luffy.version>1.9.5</luffy.version>
 
-        <java-cron.version>1.0.3</java-cron.version>
+        <java-cron.version>1.0.4</java-cron.version>
 
         <redisson.version>3.51.0</redisson.version>
         <lettuce.version>6.5.4.RELEASE</lettuce.version>
