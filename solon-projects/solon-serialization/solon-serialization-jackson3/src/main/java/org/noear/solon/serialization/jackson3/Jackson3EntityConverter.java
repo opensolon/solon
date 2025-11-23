@@ -36,6 +36,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 
 import tools.jackson.core.JsonParser;
+import tools.jackson.core.json.JsonReadFeature;
 import tools.jackson.databind.DeserializationFeature;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
@@ -82,8 +83,7 @@ public class Jackson3EntityConverter extends AbstractStringEntityConverter<Jacks
         mapper.deserializationConfig().without(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         MutableConfigOverride mco = new MutableConfigOverride();
         mco=mco.setVisibility(JsonAutoDetect.Value.construct(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY));
-        mapper.deserializationConfig().with(mco);
-        mapper.isEnabled(null)
+        
         mapper.activateDefaultTypingAsProperty(
                 mapper.getPolymorphicTypeValidator(),
                 ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT, "@type");
@@ -92,10 +92,9 @@ public class Jackson3EntityConverter extends AbstractStringEntityConverter<Jacks
         	mapper.registeredModules().add(m);        	
         }
         // 允许使用未带引号的字段名
-        
-        mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+        mapper.serializationConfig().with(JsonReadFeature.ALLOW_UNQUOTED_PROPERTY_NAMES);
         // 允许使用单引号
-        mapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
+        mapper.serializationConfig().with(JsonReadFeature.ALLOW_SINGLE_QUOTES);
 
         return mapper;
     }
