@@ -1,18 +1,19 @@
 package demo.serialization.jackson3;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import org.noear.solon.annotation.Bean;
-import org.noear.solon.annotation.Configuration;
-import org.noear.solon.serialization.jackson3.Jackson3StringSerializer;
-
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+
+import org.noear.solon.annotation.Bean;
+import org.noear.solon.annotation.Configuration;
+import org.noear.solon.serialization.jackson3.Jackson3StringSerializer;
+
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.ValueSerializer;
 
 /**
  * @author noear 2025/9/13 created
@@ -32,9 +33,9 @@ public class Demo4Config {
         serializer.addEncoder(BigDecimal.class, s -> s.toPlainString());
 
         //示例2：通过编码器，做复杂类型的原生定制（基于框架原生接口）
-        serializer.addEncoder(Date.class, new JsonSerializer<Date>() {
+        serializer.addEncoder(Date.class, new ValueSerializer<Date>() {
             @Override
-            public void serialize(Date date, JsonGenerator out, SerializerProvider sp) throws IOException {
+            public void serialize(Date date, JsonGenerator out, SerializationContext sp) throws JacksonException {
                 out.writeNumber(date.getTime());
             }
         });

@@ -15,21 +15,22 @@
  */
 package labs.serialization.jackson3;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import org.noear.solon.Solon;
-import org.noear.solon.annotation.Controller;
-import org.noear.solon.annotation.Mapping;
-import org.noear.solon.serialization.jackson3.Jackson3RenderFactory;
-
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import org.noear.solon.Solon;
+import org.noear.solon.annotation.Controller;
+import org.noear.solon.annotation.Mapping;
+import org.noear.solon.serialization.jackson3.Jackson3RenderFactory;
+
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.ValueSerializer;
 
 /**
  * @author noear 2021/10/12 created
@@ -53,9 +54,9 @@ public class TestApp {
 
         factory.addConvertor(LocalDateTime.class, s -> s.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
 
-        factory.addEncoder(Date.class, new JsonSerializer<Date>() {
+        factory.addEncoder(Date.class, new ValueSerializer<Date>() {
                     @Override
-                    public void serialize(Date date, JsonGenerator out, SerializerProvider sp) throws IOException {
+                    public void serialize(Date date, JsonGenerator out, SerializationContext sp) throws JacksonException {
                         out.writeNumber(date.getTime());
                     }
                 });

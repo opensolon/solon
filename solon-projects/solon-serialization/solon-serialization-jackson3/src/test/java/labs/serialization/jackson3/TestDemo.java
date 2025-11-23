@@ -15,11 +15,12 @@
  */
 package labs.serialization.jackson3;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.test.HttpTester;
 import org.noear.solon.test.SolonTest;
+
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 
 /**

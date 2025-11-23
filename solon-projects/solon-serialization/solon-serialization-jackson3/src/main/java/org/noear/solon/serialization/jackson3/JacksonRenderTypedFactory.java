@@ -25,7 +25,6 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import tools.jackson.databind.DefaultTyping;
 import tools.jackson.databind.DeserializationFeature;
 import tools.jackson.databind.ObjectMapper;
-import tools.jackson.databind.SerializationFeature;
 import tools.jackson.databind.cfg.DateTimeFeature;
 import tools.jackson.datatype.jsr310.JavaTimeModule;
 
@@ -42,14 +41,14 @@ public class JacksonRenderTypedFactory extends Jackson3RenderFactoryBase {
     public JacksonRenderTypedFactory() {
         super(new Jackson3StringSerializer());
         ObjectMapper mapper = serializer.getSerializeConfig().getMapper();
-        mapper.serializationConfig().with(DateTimeFeature.WRITE_DATES_AS_TIMESTAMPS);
-        mapper.deserializationConfig().without(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        serializer.getSerializeConfig().getMapper().setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-        serializer.getSerializeConfig().getMapper().activateDefaultTypingAsProperty(
-                serializer.getSerializeConfig().getMapper().getPolymorphicTypeValidator(),
-                DefaultTyping.JAVA_LANG_OBJECT, "@type");
-        mapper.registeredModules().add(new JavaTimeModule());
-        serializer.getSerializeConfig().setMapper(mapper);
+        ObjectMapper customMapper = mapper.rebuild()
+        		.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+        		.configure(DateTimeFeature.WRITE_DATES_AS_TIMESTAMPS, true)
+        		.changeDefaultVisibility(vc -> vc.withVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY))
+        		.activateDefaultTypingAsProperty(mapper._deserializationContext().getConfig().getPolymorphicTypeValidator(),
+        				DefaultTyping.JAVA_LANG_OBJECT, "@type")
+        		.addModule(new JavaTimeModule()).build();
+        serializer.getSerializeConfig().setMapper(customMapper);
     }
 
     /**

@@ -15,6 +15,10 @@
  */
 package features.serialization.jackson3.test1;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.jupiter.api.Test;
 import org.noear.snack4.ONode;
 import org.noear.solon.annotation.Import;
@@ -24,10 +28,6 @@ import org.noear.solon.serialization.jackson3.Jackson3RenderFactory;
 import org.noear.solon.test.SolonTest;
 
 import features.serialization.jackson3.model.UserDo;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author noear 2023/1/16 created

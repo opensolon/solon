@@ -38,6 +38,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import tools.jackson.core.JacksonException;
 import tools.jackson.core.JsonGenerator;
 import tools.jackson.core.JsonParser;
+import tools.jackson.core.json.JsonReadFeature;
 import tools.jackson.databind.DeserializationFeature;
 import tools.jackson.databind.MapperFeature;
 import tools.jackson.databind.ObjectMapper;
@@ -323,29 +324,30 @@ public class Jackson3StringSerializer implements EntityStringSerializer {
         }
 
         if (writeNulls == false) {
-        	JsonInclude.Value _val = JsonInclude.Value.construct(JsonInclude.Include.NON_NULL,null);
-        	JsonInclude.Value.construct(JsonInclude.Include.NON_NULL,null)
-//        	builder.changeDefaultPropertyInclusion();
-            getSerializeConfig().getMapper().setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        	builder.changeDefaultPropertyInclusion(v -> 
+        		        JsonInclude.Value.construct(JsonInclude.Include.NON_NULL, JsonInclude.Include.USE_DEFAULTS)
+        		    );
         }
 
         //启用 transient 关键字
-        getSerializeConfig().getMapper().configure(MapperFeature.PROPAGATE_TRANSIENT_MARKER, true);
+        builder.configure(MapperFeature.PROPAGATE_TRANSIENT_MARKER, true);
         //启用排序（即使用 LinkedHashMap）
-        getSerializeConfig().getMapper().configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true);
-        //是否识别不带引号的key
-        getSerializeConfig().getMapper().configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
-        //是否识别单引号的key
-        getSerializeConfig().getMapper().configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
+        builder.configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true);
         //浮点数默认类型（dubbod 转 BigDecimal）
-        getSerializeConfig().getMapper().configure(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS, true);
+        builder.configure(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS, true);
 
 
         //反序列化时候遇到不匹配的属性并不抛出异常
-        getSerializeConfig().getMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        builder.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         //序列化时候遇到空对象不抛出异常
-        getSerializeConfig().getMapper().configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        builder.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         //反序列化的时候如果是无效子类型,不抛出异常
-        getSerializeConfig().getMapper().configure(DeserializationFeature.FAIL_ON_INVALID_SUBTYPE, false);
+        builder.configure(DeserializationFeature.FAIL_ON_INVALID_SUBTYPE, false);
+        ObjectMapper customMapper = builder.build();
+        // 是否识别不带引号的key
+        customMapper.serializationConfig().with(JsonReadFeature.ALLOW_UNQUOTED_PROPERTY_NAMES);
+        // 是否识别单引号的key
+        customMapper.serializationConfig().with(JsonReadFeature.ALLOW_SINGLE_QUOTES);	
+        getSerializeConfig().setMapper(customMapper);
     }
 }

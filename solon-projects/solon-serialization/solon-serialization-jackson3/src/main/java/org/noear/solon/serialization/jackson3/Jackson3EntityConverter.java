@@ -22,8 +22,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import javax.naming.Context;
-
 import org.noear.solon.core.util.LazyReference;
 import org.noear.solon.core.wrap.MethodWrap;
 import org.noear.solon.core.wrap.ParamWrap;
@@ -33,18 +31,14 @@ import org.noear.solon.serialization.jackson3.impl.TimeDeserializer;
 import org.noear.solon.serialization.jackson3.impl.TypeReferenceImpl;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 
-import tools.jackson.core.JsonParser;
 import tools.jackson.core.json.JsonReadFeature;
 import tools.jackson.databind.DefaultTyping;
 import tools.jackson.databind.DeserializationFeature;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
-import tools.jackson.databind.SerializationFeature;
 import tools.jackson.databind.cfg.DateTimeFeature;
-import tools.jackson.databind.cfg.MutableConfigOverride;
 import tools.jackson.datatype.jsr310.JavaTimeModule;
 
 /**
@@ -94,7 +88,7 @@ public class Jackson3EntityConverter extends AbstractStringEntityConverter<Jacks
         		.addModules(modules).build();// 注册 JavaTimeModule ，以适配 java.time 下的时间类型
         // 允许使用未带引号的字段名
         customMapper.serializationConfig().with(JsonReadFeature.ALLOW_UNQUOTED_PROPERTY_NAMES);
-       // 允许使用单引号
+        // 允许使用单引号
         customMapper.serializationConfig().with(JsonReadFeature.ALLOW_SINGLE_QUOTES);	
         return customMapper;
     }
@@ -107,8 +101,8 @@ public class Jackson3EntityConverter extends AbstractStringEntityConverter<Jacks
      * @param mWrap 函数包装器
      */
     @Override
-    protected Object changeBody(Context ctx, MethodWrap mWrap) throws Exception {
-        return serializer.deserializeFromBody(ctx);
+    protected Object changeBody(org.noear.solon.core.handle.Context ctx, MethodWrap mWrap) throws Exception {
+    	 return serializer.deserializeFromBody(ctx);
     }
 
     /**
@@ -122,7 +116,7 @@ public class Jackson3EntityConverter extends AbstractStringEntityConverter<Jacks
      * @since 1.11 增加 requireBody 支持
      */
     @Override
-    protected Object changeValue(Context ctx, ParamWrap p, int pi, Class<?> pt, LazyReference bodyRef) throws Throwable {
+    protected Object changeValue(org.noear.solon.core.handle.Context ctx, ParamWrap p, int pi, Class<?> pt, LazyReference bodyRef) throws Throwable {
         if (p.spec().isRequiredPath() || p.spec().isRequiredCookie() || p.spec().isRequiredHeader()) {
             //如果是 path、cookie, header
             return super.changeValue(ctx, p, pi, pt, bodyRef);
