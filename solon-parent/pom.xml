@@ -107,6 +107,7 @@
         <therapi-runtime-javadoc.version>0.13.0</therapi-runtime-javadoc.version>
 
         <jackson.version>2.18.2</jackson.version>
+        <jackson3.version>3.0.2</jackson3.version>
         <gson.version>2.12.1</gson.version>
         <fury.version>0.10.3</fury.version>
         <hessian.version>4.0.66</hessian.version>
@@ -923,6 +924,11 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-serialization-jackson</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-serialization-jackson3</artifactId>
                 <version>${solon.version}</version>
             </dependency>
             <dependency>

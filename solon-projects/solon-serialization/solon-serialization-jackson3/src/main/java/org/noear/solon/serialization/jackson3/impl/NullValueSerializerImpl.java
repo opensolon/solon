@@ -1,0 +1,105 @@
+/*
+ * Copyright 2017-2025 noear.org and authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.noear.solon.serialization.jackson3.impl;
+
+import java.lang.reflect.Field;
+import java.util.Collection;
+
+import org.noear.solon.serialization.prop.JsonProps;
+
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.ValueSerializer;
+
+/**
+ * @author noear
+ * @since 1.12
+ */
+public class NullValueSerializerImpl extends ValueSerializer<Object> {
+    private JsonProps jsonProps;
+    public Class<?> type0;
+
+    public NullValueSerializerImpl(JsonProps jsonProps) {
+        this.jsonProps = jsonProps;
+    }
+
+    public NullValueSerializerImpl(JsonProps jsonProps, final JavaType type) {
+        this.jsonProps = jsonProps;
+        this.type0 = type == null ? Object.class : type.getRawClass();
+    }
+
+	@Override
+	public void serialize(Object value, JsonGenerator gen, SerializationContext ctxt) throws JacksonException {
+		 Class<?> type = type0;
+
+	        if (type == null) {
+	            try {
+	                if(gen.currentValue() != null) {
+	                    String fieldName = gen.streamWriteContext().currentName();
+	                    Field field = gen.currentValue().getClass().getDeclaredField(fieldName);
+	                    type = field.getType();
+	                }
+	            } catch (NoSuchFieldException e) {
+	            }
+	        }
+
+	        if (type != null) {
+	            if (jsonProps.nullStringAsEmpty && type == String.class) {
+	                gen.writeString("");
+	                return;
+	            }
+
+	            if (jsonProps.nullBoolAsFalse && type == Boolean.class) {
+	                if (jsonProps.boolAsInt) {
+	                    gen.writeNumber(0);
+	                } else {
+	                    gen.writeBoolean(false);
+	                }
+	                return;
+	            }
+
+	            if (jsonProps.nullNumberAsZero && Number.class.isAssignableFrom(type)) {
+	                if(jsonProps.longAsString && type == Long.class){
+	                    gen.writeString("0");
+	                }else{
+	                    if (type == Long.class) {
+	                        gen.writeNumber(0L);
+	                    } else if (type == Double.class) {
+	                        gen.writeNumber(0D);
+	                    } else if (type == Float.class) {
+	                        gen.writeNumber(0F);
+	                    } else {
+	                        gen.writeNumber(0);
+	                    }
+	                }
+
+	                return;
+	            }
+
+	            if (jsonProps.nullArrayAsEmpty) {
+	                if (Collection.class.isAssignableFrom(type) || type.isArray()) {
+	                    gen.writeStartArray();
+	                    gen.writeEndArray();
+	                    return;
+	                }
+	            }
+	        }
+
+	        gen.writeNull();
+	}
+}
