@@ -15,15 +15,19 @@
  */
 package org.noear.solon.serialization.jackson3;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.noear.solon.core.handle.Render;
 import org.noear.solon.serialization.SerializerNames;
 import org.noear.solon.serialization.StringSerializerRender;
+
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+
+import tools.jackson.databind.DefaultTyping;
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.SerializationFeature;
+import tools.jackson.databind.cfg.DateTimeFeature;
+import tools.jackson.datatype.jsr310.JavaTimeModule;
 
 /**
  * Json 类型化渲染器工厂
@@ -37,13 +41,15 @@ import org.noear.solon.serialization.StringSerializerRender;
 public class JacksonRenderTypedFactory extends Jackson3RenderFactoryBase {
     public JacksonRenderTypedFactory() {
         super(new Jackson3StringSerializer());
-        serializer.getSerializeConfig().getMapper().enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        serializer.getSerializeConfig().getMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        ObjectMapper mapper = serializer.getSerializeConfig().getMapper();
+        mapper.serializationConfig().with(DateTimeFeature.WRITE_DATES_AS_TIMESTAMPS);
+        mapper.deserializationConfig().without(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         serializer.getSerializeConfig().getMapper().setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
         serializer.getSerializeConfig().getMapper().activateDefaultTypingAsProperty(
                 serializer.getSerializeConfig().getMapper().getPolymorphicTypeValidator(),
-                ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT, "@type");
-        serializer.getSerializeConfig().getMapper().registerModule(new JavaTimeModule());
+                DefaultTyping.JAVA_LANG_OBJECT, "@type");
+        mapper.registeredModules().add(new JavaTimeModule());
+        serializer.getSerializeConfig().setMapper(mapper);
     }
 
     /**

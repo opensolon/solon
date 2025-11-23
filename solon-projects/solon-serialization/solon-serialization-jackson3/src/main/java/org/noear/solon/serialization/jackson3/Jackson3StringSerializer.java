@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.UnaryOperator;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.convert.Converter;
@@ -39,10 +40,12 @@ import tools.jackson.core.JsonGenerator;
 import tools.jackson.core.JsonParser;
 import tools.jackson.databind.DeserializationFeature;
 import tools.jackson.databind.MapperFeature;
+import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.SerializationContext;
 import tools.jackson.databind.SerializationFeature;
 import tools.jackson.databind.ValueSerializer;
-import tools.jackson.databind.ser.SerializationContextExt;
+import tools.jackson.databind.cfg.EnumFeature;
+import tools.jackson.databind.cfg.MapperBuilder;
 import tools.jackson.databind.ser.jdk.JavaUtilDateSerializer;
 
 /**
@@ -295,7 +298,8 @@ public class Jackson3StringSerializer implements EntityStringSerializer {
 
     protected void loadJsonProps(JsonProps jsonProps) {
         boolean writeNulls = false;
-
+        ObjectMapper mapper = getSerializeConfig().getMapper();
+        MapperBuilder builder = mapper.rebuild();
         if (jsonProps != null) {
             JsonPropsUtil2.dateAsFormat(this, jsonProps);
             JsonPropsUtil2.dateAsTicks(this, jsonProps);
@@ -308,19 +312,20 @@ public class Jackson3StringSerializer implements EntityStringSerializer {
                     jsonProps.nullBoolAsFalse ||
                     jsonProps.nullStringAsEmpty;
 
+            
             if (writeNulls) {
-            	getSerializeConfig().getMapper()._serializationContext().defaultSerializeNullValue(new NullValueSerializerImpl(jsonProps));
-                getSerializeConfig().getMapper()
-                        .getSerializerProvider()
-                        .setNullValueSerializer(new NullValueSerializerImpl(jsonProps));
+            	builder.serializerFactory().withNullValueSerializer(new NullValueSerializerImpl(jsonProps));
             }
 
             if (jsonProps.enumAsName) {
-                getSerializeConfig().getMapper().configure(SerializationFeature.WRITE_ENUMS_USING_TO_STRING, true);
+            	builder.configure(EnumFeature.WRITE_ENUMS_USING_TO_STRING, true);
             }
         }
 
         if (writeNulls == false) {
+        	JsonInclude.Value _val = JsonInclude.Value.construct(JsonInclude.Include.NON_NULL,null);
+        	JsonInclude.Value.construct(JsonInclude.Include.NON_NULL,null)
+//        	builder.changeDefaultPropertyInclusion();
             getSerializeConfig().getMapper().setSerializationInclusion(JsonInclude.Include.NON_NULL);
         }
 

@@ -33,14 +33,17 @@ import org.noear.solon.serialization.jackson3.impl.TimeDeserializer;
 import org.noear.solon.serialization.jackson3.impl.TypeReferenceImpl;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 
 import tools.jackson.core.JsonParser;
 import tools.jackson.core.json.JsonReadFeature;
+import tools.jackson.databind.DefaultTyping;
 import tools.jackson.databind.DeserializationFeature;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.SerializationFeature;
+import tools.jackson.databind.cfg.DateTimeFeature;
 import tools.jackson.databind.cfg.MutableConfigOverride;
 import tools.jackson.datatype.jsr310.JavaTimeModule;
 
@@ -61,8 +64,10 @@ public class Jackson3EntityConverter extends AbstractStringEntityConverter<Jacks
         serializer.getDeserializeConfig().getCustomModule().addDeserializer(LocalTime.class, new TimeDeserializer<>(LocalTime.class));
         serializer.getDeserializeConfig().getCustomModule().addDeserializer(Date.class, new TimeDeserializer<>(Date.class));
 
-        serializer.getSerializeConfig().addFeatures(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        serializer.getSerializeConfig().getMapper().registerModule(new JavaTimeModule());
+        ObjectMapper mapper = serializer.getSerializeConfig().getMapper();
+        mapper.serializationConfig().with(DateTimeFeature.WRITE_DATES_AS_TIMESTAMPS);
+        mapper.registeredModules().add(new JavaTimeModule());
+        serializer.getSerializeConfig().setMapper(mapper);
     }
 
     /**
@@ -72,7 +77,7 @@ public class Jackson3EntityConverter extends AbstractStringEntityConverter<Jacks
     public String[] mappings() {
         return new String[]{SerializerNames.AT_JSON};
     }
-
+    
     /**
      * 初始化
      *
@@ -80,24 +85,20 @@ public class Jackson3EntityConverter extends AbstractStringEntityConverter<Jacks
      */
     public ObjectMapper newMapper(tools.jackson.databind.JacksonModule... modules) {
         ObjectMapper mapper = new ObjectMapper();
-        mapper.deserializationConfig().without(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        MutableConfigOverride mco = new MutableConfigOverride();
-        mco=mco.setVisibility(JsonAutoDetect.Value.construct(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY));
-        
-        mapper.activateDefaultTypingAsProperty(
-                mapper.getPolymorphicTypeValidator(),
-                ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT, "@type");
-        // 注册 JavaTimeModule ，以适配 java.time 下的时间类型
-        for(tools.jackson.databind.JacksonModule m:modules) {
-        	mapper.registeredModules().add(m);        	
-        }
+     
+        ObjectMapper customMapper = mapper.rebuild()
+        		.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+        		.changeDefaultVisibility(vc -> vc.withVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY))
+        		.activateDefaultTypingAsProperty(mapper._deserializationContext().getConfig().getPolymorphicTypeValidator(),
+        				DefaultTyping.JAVA_LANG_OBJECT, "@type")
+        		.addModules(modules).build();// 注册 JavaTimeModule ，以适配 java.time 下的时间类型
         // 允许使用未带引号的字段名
-        mapper.serializationConfig().with(JsonReadFeature.ALLOW_UNQUOTED_PROPERTY_NAMES);
-        // 允许使用单引号
-        mapper.serializationConfig().with(JsonReadFeature.ALLOW_SINGLE_QUOTES);
-
-        return mapper;
+        customMapper.serializationConfig().with(JsonReadFeature.ALLOW_UNQUOTED_PROPERTY_NAMES);
+       // 允许使用单引号
+        customMapper.serializationConfig().with(JsonReadFeature.ALLOW_SINGLE_QUOTES);	
+        return customMapper;
     }
+
 
     /**
      * 转换 body
