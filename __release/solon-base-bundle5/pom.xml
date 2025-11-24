@@ -23,6 +23,7 @@
         <module>../../solon-projects/solon-serialization/solon-serialization-fastjson</module>
         <module>../../solon-projects/solon-serialization/solon-serialization-fastjson2</module>
         <module>../../solon-projects/solon-serialization/solon-serialization-jackson</module>
+        <module>../../solon-projects/solon-serialization/solon-serialization-jackson3</module>
         <module>../../solon-projects/solon-serialization/solon-serialization-jackson-xml</module>
         <module>../../solon-projects/solon-serialization/solon-serialization-gson</module>
         <module>../../solon-projects/solon-serialization/solon-serialization-fury</module>
