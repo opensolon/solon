@@ -60,7 +60,7 @@ public class Jackson3EntityConverter extends AbstractStringEntityConverter<Jacks
 
         ObjectMapper mapper = serializer.getSerializeConfig().getMapper();
         mapper.serializationConfig().with(DateTimeFeature.WRITE_DATES_AS_TIMESTAMPS);
-        mapper.registeredModules().add(new JavaTimeModule());
+//        mapper.registeredModules().add(new JavaTimeModule());
         serializer.getSerializeConfig().setMapper(mapper);
     }
 
