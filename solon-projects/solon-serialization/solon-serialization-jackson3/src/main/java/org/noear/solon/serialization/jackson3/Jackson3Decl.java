@@ -25,6 +25,7 @@ import tools.jackson.databind.DeserializationFeature;
 import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.SerializationFeature;
 import tools.jackson.databind.cfg.ConfigFeature;
+import tools.jackson.databind.cfg.MapperBuilder;
 import tools.jackson.databind.module.SimpleModule;
 
 /**
@@ -87,16 +88,19 @@ public class Jackson3Decl<F extends ConfigFeature> {
     }
 
     protected void refresh() {
+    	MapperBuilder builder  = mapper.rebuild();
         for (ConfigFeature f1 : featuresSet) {
             if (f1 instanceof SerializationFeature) {
-                mapper.isEnabled((SerializationFeature) f1);
+            	builder.configure((SerializationFeature)f1, true);
             } else if (f1 instanceof DeserializationFeature) {
-                mapper.isEnabled((DeserializationFeature) f1);
+            	builder.configure((DeserializationFeature) f1,true);
             }
         }
 
         if (customModule != null) {
-        	mapper.registeredModules().add(customModule);
+        	builder.addModule(customModule);
+//        	mapper.registeredModules().add(customModule);
         }
+        mapper = builder.build();
     }
 }
