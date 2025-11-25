@@ -15,6 +15,8 @@
  */
 package org.noear.solon.core.util;
 
+import org.noear.solon.Utils;
+
 import java.text.ParseException;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
@@ -25,7 +27,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 万能时间工具类 (Final Optimized Version)
+ * 万能时间工具类 (Final Optimized Version with Bucketing)
  *
  * @author noear
  * @since 2.8
@@ -55,7 +57,7 @@ public class DateUtil {
             DateTimeFormatter.RFC_1123_DATE_TIME
     );
 
-    // 自定义模式列表 (全量保留)
+    // 自定义模式列表
     private static final List<String> CUSTOM_PATTERNS = Arrays.asList(
             FMT_YMD_HMS,
             "yyyy/MM/dd HH:mm:ss",
@@ -96,16 +98,51 @@ public class DateUtil {
             "H:m"
     );
 
+    // 缓存区
     private static final Map<String, DateTimeFormatter> FORMATTER_CACHE = new ConcurrentHashMap<>();
+
+    // 核心优化：按长度分桶的 Formatter 列表
+    // Key: 字符串长度, Value: 该长度对应的 Formatter 列表
+    private static final Map<Integer, List<DateTimeFormatter>> FIXED_LEN_BUCKETS = new HashMap<>();
+
+    // 变长格式列表 (如 yyyy-M-d，无法按长度精确分桶，单独存放)
+    private static final List<DateTimeFormatter> VARIABLE_LEN_FORMATTERS = new ArrayList<>();
+
     private static final ZoneId SYSTEM_ZONE = ZoneId.systemDefault();
 
     static {
+        // 预热 Fast-Path Formatter
         getOrCreateFormatter(FMT_YMD_HMS);
         getOrCreateFormatter(FMT_YMD);
         getOrCreateFormatter(FMT_COMPACT_DT);
+
+        // 核心优化：初始化时进行分桶
         for (String pattern : CUSTOM_PATTERNS) {
-            getOrCreateFormatter(pattern);
+            DateTimeFormatter formatter = getOrCreateFormatter(pattern);
+
+            // 判断是否包含变长字符 (单个的 M, d, H, m, s)
+            // 如果模式是 "yyyy-M-d"，它匹配的长度可能是 8, 9, 10，这种放入变长列表
+            if (isVariableLength(pattern)) {
+                VARIABLE_LEN_FORMATTERS.add(formatter);
+            } else {
+                // 定长格式，计算长度 (去除单引号转义)
+                int len = pattern.replace("'", "").length();
+                FIXED_LEN_BUCKETS.computeIfAbsent(len, k -> new ArrayList<>()).add(formatter);
+            }
         }
+    }
+
+    // 判断模式是否产生变长字符串 (简单启发式判断)
+    private static boolean isVariableLength(String pattern) {
+        // 移除转义内容后检查
+        String clean = pattern.replaceAll("'[^']*'", "");
+        // 检查是否有单个的时间占位符，例如 "d" (1-31), "M" (1-12)
+        // 也就是检查前面没有相同字符，后面也没有相同字符的情况
+        // 简单做法：检查是否包含单字母模式。
+        // 为了安全起见，只要包含 "y-M", "y/M", "M-d" 这种分隔符紧挨着单字符的，视为变长
+        return clean.matches(".*\\b[Mdhms]\\b.*") ||
+                clean.contains("-M-") || clean.contains("/M/") || clean.contains(".M.") ||
+                clean.contains("-d") || clean.contains("/d") || clean.contains(".d");
     }
 
     public static Date parseTry(String dateStr) {
@@ -118,13 +155,12 @@ public class DateUtil {
 
     public static Date parse(String dateStr) throws ParseException {
         if (dateStr == null) return null;
-
         String trimmed = dateStr.trim();
         if (trimmed.isEmpty()) return null;
 
         int len = trimmed.length();
 
-        // 1. Fast-Path (长度 + 关键字符)
+        // 1. Fast-Path (Length + Char check) -> 命中率极高，0 Try-Catch
         try {
             if (len == 19) {
                 if (trimmed.charAt(4) == '-' && trimmed.charAt(7) == '-') {
@@ -144,13 +180,12 @@ public class DateUtil {
                 return parseLocal(trimmed, getOrCreateFormatter(FMT_COMPACT_DT));
             }
         } catch (Exception ignored) {
-            // Fast-Path 失败则继续
+            // Fast-Path failed, continue
         }
 
-        // 2. 特殊格式检查
+        // 2. 特殊格式检查 (Manual Parsing -> 0 Try-Catch for checks)
 
-        // 紧凑格式带时区: 20231025143045123+0800 (Len: 22)
-        // 修复：使用手动解析，不依赖 Formatter，确保绝对匹配
+        // 紧凑带时区: 20231025143045123+0800
         if (len == 22) {
             char sign = trimmed.charAt(17);
             if ((sign == '+' || sign == '-') && isNumeric(trimmed.substring(0, 17))) {
@@ -169,14 +204,14 @@ public class DateUtil {
         Date result = trySmartParse(trimmed);
         if (result != null) return result;
 
-        // ISO 标准格式尝试
+        // ISO 标准格式尝试 (已优化为 Single Parse)
         if (couldBeIso(trimmed)) {
             result = tryCommonFormatters(trimmed);
             if (result != null) return result;
         }
 
-        // 自定义格式全量尝试
-        result = tryCustomFormatters(trimmed);
+        // 自定义格式全量尝试 -> 优化为分桶查找
+        result = tryCustomFormatters(trimmed, len);
         if (result != null) return result;
 
         // 时间戳
@@ -189,6 +224,29 @@ public class DateUtil {
 
     // --- Parsing Logic ---
 
+    /**
+     * 优化后的自定义格式尝试：优先查桶
+     */
+    private static Date tryCustomFormatters(String dateStr, int len) {
+        // 1. 优先尝试定长桶 (精确匹配长度)
+        // 这消除了绝大多数因长度不一致导致的 parse 异常
+        List<DateTimeFormatter> bucket = FIXED_LEN_BUCKETS.get(len);
+        if (bucket != null) {
+            for (DateTimeFormatter formatter : bucket) {
+                Date d = parseWithFormatter(dateStr, formatter);
+                if (d != null) return d;
+            }
+        }
+
+        // 2. 尝试变长格式 (作为最后的手段)
+        for (DateTimeFormatter formatter : VARIABLE_LEN_FORMATTERS) {
+            Date d = parseWithFormatter(dateStr, formatter);
+            if (d != null) return d;
+        }
+
+        return null;
+    }
+
     private static Date trySmartParse(String dateStr) {
         int len = dateStr.length();
         boolean hasT = dateStr.indexOf('T') > 0;
@@ -200,12 +258,10 @@ public class DateUtil {
 
         if (len == 8 && isNumeric(dateStr)) return parseCompactDate(dateStr);
 
-        // 包含冒号，可能是时间
         if (dateStr.indexOf(':') > 0) {
             return parseTimeWithOptionalOffset(dateStr);
         }
 
-        // 分隔符日期
         if (dateStr.indexOf('-') > 0 || dateStr.indexOf('/') > 0 || dateStr.indexOf('.') > 0) {
             return parseDateWithVariousSeparators(dateStr);
         }
@@ -216,10 +272,6 @@ public class DateUtil {
     private static Date parseTimeWithOptionalOffset(String dateStr) {
         try {
             String tempStr = dateStr;
-
-            // 修复微秒/纳秒冲突问题：
-            // 1. 如果是微秒 (4-6位小数)，截断为3位 (毫秒)，使 Date 可以解析。
-            // 2. 如果是纳秒 (>6位小数)，不截断，交给 parse 逻辑去失败（因为 Date 不支持纳秒，且测试期望失败）。
             int dotIndex = tempStr.indexOf('.');
             if (dotIndex > 0) {
                 int endOfFraction = dotIndex + 1;
@@ -228,27 +280,25 @@ public class DateUtil {
                 }
 
                 int fractionLen = endOfFraction - (dotIndex + 1);
-                // 关键修复：只截断微秒 (4,5,6位)，不处理纳秒(7,8,9位)
+                // 仅截断微秒 (4-6位)，保留纳秒让其失败(符合单测预期)
                 if (fractionLen > 3 && fractionLen <= 6) {
-                    String pre = tempStr.substring(0, dotIndex + 4); // 保留 .SSS
-                    String post = tempStr.substring(endOfFraction);  // 保留后缀 (如时区)
-                    tempStr = pre + post;
+                    tempStr = tempStr.substring(0, dotIndex + 4) + tempStr.substring(endOfFraction);
                 }
             }
 
-            // 带时区处理
             if (tempStr.contains("+") || tempStr.contains("-")) {
                 try {
+                    // 尝试直接作为 OffsetDateTime 解析 (如果格式标准)
                     String fullDateTime = LocalDate.now().toString() + "T" + tempStr;
                     return Date.from(OffsetDateTime.parse(fullDateTime).toInstant());
                 } catch (Exception e) {
+                    // 尝试特定格式
                     DateTimeFormatter formatter = getOrCreateFormatter("HH:mm:ss.SSS+HH:mm");
                     LocalTime lt = LocalTime.parse(tempStr, formatter);
                     return Date.from(LocalDateTime.of(LocalDate.now(), lt).atZone(SYSTEM_ZONE).toInstant());
                 }
             }
 
-            // 普通时间
             DateTimeFormatter formatter = tempStr.contains(".") ?
                     getOrCreateFormatter("HH:mm:ss.SSS") : getOrCreateFormatter("HH:mm:ss");
 
@@ -259,13 +309,9 @@ public class DateUtil {
         }
     }
 
-    /**
-     * 手动解析紧凑带时区格式 (20231025143045123+0800)
-     * 比 Formatter 更可靠且快
-     */
+    // Manual parser remains same...
     private static Date parseCompactDateTimeWithTimezoneManual(String dateStr) throws ParseException {
         try {
-            // 2023 10 25 14 30 45 123 +0800
             int year = Integer.parseInt(dateStr.substring(0, 4));
             int month = Integer.parseInt(dateStr.substring(4, 6));
             int day = Integer.parseInt(dateStr.substring(6, 8));
@@ -273,26 +319,20 @@ public class DateUtil {
             int minute = Integer.parseInt(dateStr.substring(10, 12));
             int second = Integer.parseInt(dateStr.substring(12, 14));
             int millis = Integer.parseInt(dateStr.substring(14, 17));
-
-            String zonePart = dateStr.substring(17); // +0800
+            String zonePart = dateStr.substring(17);
 
             LocalDateTime ldt = LocalDateTime.of(year, month, day, hour, minute, second, millis * 1_000_000);
 
-            // 归一化时区: +0800 -> +08:00
             String normalizedZone = zonePart;
             if (zonePart.length() == 5 && zonePart.indexOf(':') < 0) {
                 normalizedZone = zonePart.substring(0, 3) + ":" + zonePart.substring(3);
             }
             ZoneOffset zoneOffset = ZoneOffset.of(normalizedZone);
-
-            OffsetDateTime offsetDateTime = OffsetDateTime.of(ldt, zoneOffset);
-            return Date.from(offsetDateTime.toInstant());
+            return Date.from(OffsetDateTime.of(ldt, zoneOffset).toInstant());
         } catch (Exception e) {
             throw new ParseException("Failed to parse compact TZ manual: " + dateStr, 0);
         }
     }
-
-    // --- Helper Methods ---
 
     private static boolean isNumeric(String str) {
         if (str == null || str.isEmpty()) return false;
@@ -333,24 +373,11 @@ public class DateUtil {
 
     private static Date parseISOWithOffset(String dateStr) {
         try {
-            // DateTimeFormatter.ISO_DATE_TIME 是一个“超集”解析器
-            // 它能同时识别:
-            // 1. 带偏移量的 (OffsetDateTime): 2023-10-25T14:30:00+08:00
-            // 2. 带时区的 (ZonedDateTime): 2023-10-25T14:30:00+08:00[Asia/Shanghai]
-            // 3. 标准 UTC (Instant 风格): 2023-10-25T14:30:00Z
             TemporalAccessor accessor = DateTimeFormatter.ISO_DATE_TIME.parse(dateStr);
-
-            // 核心检查：必须包含“偏移量” (Offset) 才能确定准确的时间点
-            // 如果字符串是 "2023-10-25T14:30:00" (无时区)，这里 isSupported 会返回 false，
-            // 从而优雅地返回 null，而不是抛出异常。
             if (accessor.isSupported(ChronoField.OFFSET_SECONDS)) {
                 return Date.from(Instant.from(accessor));
             }
-        } catch (DateTimeParseException e) {
-            // 格式完全不匹配，忽略
-        } catch (Exception e) {
-            // 其他异常，忽略
-        }
+        } catch (Exception ignored) { }
         return null;
     }
 
@@ -360,7 +387,6 @@ public class DateUtil {
 
     private static Date parseChineseTime(String timeStr) throws ParseException {
         try {
-            // Fast parse
             int hIdx = timeStr.indexOf("时");
             int mIdx = timeStr.indexOf("分");
             int sIdx = timeStr.indexOf("秒");
@@ -370,7 +396,6 @@ public class DateUtil {
                 int second = Integer.parseInt(timeStr.substring(mIdx+1, sIdx));
                 return Date.from(LocalDateTime.of(LocalDate.now(), LocalTime.of(hour, minute, second)).atZone(SYSTEM_ZONE).toInstant());
             }
-            // Fallback to split
             String[] parts = timeStr.split("[时分秒]");
             if (parts.length >= 3) {
                 return Date.from(LocalDateTime.of(LocalDate.now(),
@@ -383,38 +408,28 @@ public class DateUtil {
 
     private static Date parseDateWithVariousSeparators(String dateStr) {
         String normalized = dateStr.replace('/', '-').replace('.', '-');
-
-        // Fast path for standard normalized
         if (normalized.length() == 19 && normalized.charAt(13) == ':') {
             try { return parseLocal(normalized, getOrCreateFormatter(FMT_YMD_HMS)); } catch(Exception e){}
         }
-
         try {
             String[] parts = normalized.split(" ");
-            String datePart = parts[0];
-            String[] dItems = datePart.split("-");
-
-            if (dItems.length == 3) {
-                String year = dItems[0];
-                String month = String.format("%02d", Integer.parseInt(dItems[1]));
-                String day = String.format("%02d", Integer.parseInt(dItems[2]));
-                String stdDate = year + "-" + month + "-" + day;
-
-                if (parts.length > 1) {
-                    String timePart = parts[1];
-                    // Fix HH:mm -> HH:mm:00
-                    if (timePart.indexOf(':') == timePart.lastIndexOf(':')) {
-                        timePart += ":00";
+            if (parts.length >= 1) {
+                String[] dItems = parts[0].split("-");
+                if (dItems.length == 3) {
+                    String stdDate = dItems[0] + "-" + String.format("%02d", Integer.parseInt(dItems[1])) + "-" + String.format("%02d", Integer.parseInt(dItems[2]));
+                    if (parts.length > 1) {
+                        String tPart = parts[1];
+                        if (tPart.indexOf(':') == tPart.lastIndexOf(':')) tPart += ":00";
+                        String[] tItems = tPart.split(":");
+                        if(tItems.length>=2) {
+                            stdDate += " " + String.format("%02d", Integer.parseInt(tItems[0])) + ":" +
+                                    String.format("%02d", Integer.parseInt(tItems[1])) + ":" +
+                                    (tItems.length > 2 ? String.format("%02d", Integer.parseInt(tItems[2])) : "00");
+                        }
                     }
-                    String[] tItems = timePart.split(":");
-                    if(tItems.length >= 2){
-                        String h = String.format("%02d", Integer.parseInt(tItems[0]));
-                        String m = String.format("%02d", Integer.parseInt(tItems[1]));
-                        String s = tItems.length > 2 ? String.format("%02d", Integer.parseInt(tItems[2])) : "00";
-                        stdDate += " " + h + ":" + m + ":" + s;
-                    }
+                    // 递归调用优化后的分桶查找
+                    return tryCustomFormatters(stdDate, stdDate.length());
                 }
-                return tryCustomFormatters(stdDate);
             }
         } catch (Exception ignored) {}
         return null;
@@ -428,44 +443,24 @@ public class DateUtil {
         return null;
     }
 
-    private static Date tryCustomFormatters(String dateStr) {
-        for (String pattern : CUSTOM_PATTERNS) {
-            Date d = parseWithFormatter(dateStr, getOrCreateFormatter(pattern));
-            if (d != null) return d;
-        }
-        return null;
-    }
-
+    /**
+     * 核心通用解析逻辑：解析一次，按字段转换，避免异常
+     */
     private static Date parseWithFormatter(String dateStr, DateTimeFormatter formatter) {
         try {
-            // 1. 只解析一次，得到通用访问器 (这一步如果格式不匹配，依然会抛错，这是预期的)
-            // TemporalAccessor 就像一个 Map，里面存着解析出来的 Year, Month, Hour 等
             TemporalAccessor accessor = formatter.parse(dateStr);
-
-            // 2. 检查包含的字段信息，决定转换策略
-
-            // A. 如果包含“时区偏移” (Offset, e.g., +08:00)
-            if (accessor.isSupported(java.time.temporal.ChronoField.OFFSET_SECONDS)) {
+            if (accessor.isSupported(ChronoField.OFFSET_SECONDS)) {
                 return Date.from(OffsetDateTime.from(accessor).toInstant());
             }
-
-            // B. 如果包含“时间” (Hour, Minute)
-            // 只要有小时字段，我们就认为是日期+时间
-            if (accessor.isSupported(java.time.temporal.ChronoField.HOUR_OF_DAY)) {
+            if (accessor.isSupported(ChronoField.HOUR_OF_DAY)) {
                 return Date.from(LocalDateTime.from(accessor).atZone(SYSTEM_ZONE).toInstant());
             }
-
-            // C. 如果只有“日期” (Day)
-            if (accessor.isSupported(java.time.temporal.ChronoField.DAY_OF_MONTH)) {
+            if (accessor.isSupported(ChronoField.DAY_OF_MONTH)) {
                 return Date.from(LocalDate.from(accessor).atStartOfDay(SYSTEM_ZONE).toInstant());
             }
-
-            // D. 尝试作为 Instant (用于处理只包含 Instant 字段的特殊格式)
             return Date.from(Instant.from(accessor));
-
         } catch (DateTimeParseException ignored) {
-            // 只有当 dateStr 根本不符合 formatter 的格式时（例如用 yyyy去解析 "abc"），才会进这里
-            // 这是正常的解析失败，无法避免
+            // 格式不匹配，正常忽略
         } catch (Exception ignored) {
             // 兜底
         }
@@ -485,8 +480,6 @@ public class DateUtil {
                 p -> DateTimeFormatter.ofPattern(p).withZone(SYSTEM_ZONE));
     }
 
-    // --- Formatting Methods ---
-
     public static String format(Date date, String pattern) {
         if (date == null || pattern == null) return null;
         return getOrCreateFormatter(pattern).format(date.toInstant());
@@ -494,23 +487,16 @@ public class DateUtil {
 
     public static String format(Date date, String pattern, TimeZone timeZone) {
         if (date == null || pattern == null || timeZone == null) return null;
-        return DateTimeFormatter.ofPattern(pattern)
-                .withZone(timeZone.toZoneId())
-                .format(date.toInstant());
+        return DateTimeFormatter.ofPattern(pattern).withZone(timeZone.toZoneId()).format(date.toInstant());
     }
 
     public static String toISOString(Date date) {
         if (date == null) return null;
-        return DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
-                .withZone(ZoneId.of("UTC"))
-                .format(date.toInstant());
+        return DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'").withZone(ZoneId.of("UTC")).format(date.toInstant());
     }
 
     public static String toGmtString(Date date) {
         if (date == null) return null;
-        return DateTimeFormatter.RFC_1123_DATE_TIME
-                .withZone(ZoneId.of("GMT"))
-                .withLocale(Locale.US)
-                .format(date.toInstant());
+        return DateTimeFormatter.RFC_1123_DATE_TIME.withZone(ZoneId.of("GMT")).withLocale(Locale.US).format(date.toInstant());
     }
 }
