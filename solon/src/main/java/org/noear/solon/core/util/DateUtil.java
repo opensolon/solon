@@ -38,6 +38,7 @@ public class DateUtil {
     private static final String FORMAT_23_b = "yyyy-MM-dd HH:mm:ss.SSS";
     private static final String FORMAT_23_t = "yyyy-MM-dd'T'HH:mm:ss.SSS";
     private static final String FORMAT_22 = "yyyyMMddHHmmssSSSZ";//z: +0000
+    private static final String FORMAT_20 = "yyyy-MM-dd'T'HH:mm:ssZ";
     private static final String FORMAT_19_ISO = "yyyy-MM-dd'T'HH:mm:ss";
     private static final String FORMAT_19_a = "yyyy-MM-dd HH:mm:ss";
     private static final String FORMAT_19_b = "yyyy/MM/dd HH:mm:ss";
@@ -47,6 +48,7 @@ public class DateUtil {
     private static final String FORMAT_16_a = "yyyy-MM-dd HH:mm";
     private static final String FORMAT_16_b = "yyyy/MM/dd HH:mm";
     private static final String FORMAT_16_c = "yyyy.MM.dd HH:mm";
+    private static final String FORMAT_15 = "HH:mm:ss.SSSSSS";
     public static final String FORMAT_14_a = "yyyyMMddHHmmss";
     public static final String FORMAT_14_b = "HH:mm:ssXXX";//XXX: +08:00
     private static final String FORMAT_12 = "HH:mm:ss.SSS";
@@ -79,34 +81,50 @@ public class DateUtil {
 
         final int len = val.length();
 
-        if(len == 0){
+        if (len == 0) {
             return null;
         }
 
         String ft = null;
 
-        if (len == 29) {
+        if (len == 30) {
+            if (val.endsWith("Z")) {
+                ft = FORMAT_27;
+            }
+        } else if (len == 29) {
             if (val.charAt(26) == ':' && val.charAt(28) == '0') {
                 ft = FORMAT_29;
             }
-        } else if (len == 27 && val.charAt(4) == '-') {
-            ft = FORMAT_27;
-        } else if (len == 25 && val.charAt(4) == '-') {
-            ft = FORMAT_25;
-        } else if (len == 24 && val.charAt(4) == '-') {
-            if (val.charAt(10) == 'T') {
+        } else if (len == 27) {
+            if (val.charAt(4) == '-') {
+                ft = FORMAT_27;
+            }
+        } else if (len == 25) {
+            if (val.charAt(4) == '-') {
+                ft = FORMAT_25;
+            }
+        } else if (len == 24) {
+            if (val.charAt(4) == '-' && val.charAt(10) == 'T') {
                 ft = FORMAT_24_ISO08601;
             }
         } else if (len <= 23 && len >= 20 && val.charAt(4) == '-') {
             if (val.charAt(10) == 'T') {
-                ft = FORMAT_23_t;
+                if (val.endsWith("Z")) {
+                    ft = FORMAT_20;
+                } else{
+                    ft = FORMAT_23_t;
+                }
             } else if (val.charAt(19) == ',') {
                 ft = FORMAT_23_a;
-            } else {
+            } else if (val.charAt(19) == '.') {
                 ft = FORMAT_23_b;
             }
         } else if (len == 22) {
             ft = FORMAT_22;
+        } else if (len == 20) {
+            if (val.endsWith("Z")) {
+                ft = FORMAT_20;
+            }
         } else if (len == 19) {
             if (val.charAt(10) == 'T') {
                 ft = FORMAT_19_ISO;
@@ -124,6 +142,10 @@ public class DateUtil {
             ft = FORMAT_18;
         } else if (len == 17) {
             ft = FORMAT_17;
+        } else if (len == 15) {
+            if (val.charAt(2) == ':') {
+                ft = FORMAT_15;
+            }
         } else if (len == 16) {
             char c1 = val.charAt(4);
             if (c1 == '/') {
@@ -134,9 +156,9 @@ public class DateUtil {
                 ft = FORMAT_16_a;
             }
         } else if (len == 14) {
-            if(val.charAt(2) == ':'){
+            if (val.charAt(2) == ':') {
                 ft = FORMAT_14_b;
-            }else {
+            } else {
                 ft = FORMAT_14_a;
             }
         } else if (len == 12 && val.charAt(2) == ':') {
@@ -158,7 +180,7 @@ public class DateUtil {
                 ft = FORMAT_10_c;
             } else if (c1 == '-') {
                 ft = FORMAT_10_a;
-            } else {
+            } else if (val.charAt(2) == '时') {
                 ft = FORMAT_9;
             }
         } else if (len == 8) {
@@ -187,6 +209,7 @@ public class DateUtil {
             }
 
             df.setTimeZone(TimeZone.getDefault());
+            df.setLenient(false);
             return df.parse(val);
         } else {
             for (int i = 0; i < len; i++) {
