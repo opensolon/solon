@@ -45,17 +45,50 @@ public class DateUtil {
     };
 
     private static final String[] PATTERNS = {
-            "yyyy-MM-dd HH:mm:ss", "yyyy/MM/dd HH:mm:ss", "yyyy.MM.dd HH:mm:ss", "yyyy-MM-dd HH:mm:ss.S",
-            "yyyy-MM-dd", "yyyy/MM/dd", "yyyy.MM.dd", "yyyyMMddHHmmss", "yyyyMMdd",
-            "HH:mm:ss", "yyyy-MM-dd HH:mm:ss.SSS", "yyyy-MM-dd HH:mm:ss,SSS",
-            "yyyy-MM-dd'T'HH:mm:ss", "yyyy-MM-dd'T'HH:mm:ss.SSS",
-            "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX",
-            "yyyy-MM-dd'T'HH:mm:ss.SSSXXX'Z'", "yyyy-MM-dd'T'HH:mm:ssXXX",
-            "yyyy-MM-dd'T'HH:mm:ss'Z'", "yyyyMMddHHmmssSSS",
-            "HH:mm:ss.SSS", "HH:mm:ss.SSSSSS", "HH:mm:ssXXX", "HH:mm:ss.SSS+HH:mm",
-            "HH时mm分ss秒", "yyyy-MM-dd HH:mm", "yyyy/MM/dd HH:mm", "yyyy.MM.dd HH:mm",
-            "H:m:s", "yyyy-M-d H:m:s", "yyyy/M/d H:m:s", "yyyy.M.d H:m:s",
-            "yyyy-M-d", "yyyy/M/d", "yyyy.M.d", "H:m"
+            "yyyy-MM-dd'T'HH:mm:ss.SSSXXX'Z'",
+            "yyyy-MM-dd'T'HH:mm:ss.SSSXXX",
+            "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+            "yyyy-MM-dd'T'HH:mm:ss.SSS",
+            "yyyy-MM-dd'T'HH:mm:ssXXX",
+            "yyyy-MM-dd'T'HH:mm:ss'Z'",
+            "yyyy-MM-dd'T'HH:mm:ss",
+
+            "yyyy-MM-dd HH:mm:ss.SSS",
+            "yyyy-MM-dd HH:mm:ss,SSS",
+            "yyyy-MM-dd HH:mm:ss",
+            "yyyy/MM/dd HH:mm:ss",
+            "yyyy.MM.dd HH:mm:ss",
+            "yyyy-MM-dd HH:mm:ss.S",
+            "yyyy-MM-dd HH:mm",
+            "yyyy/MM/dd HH:mm",
+            "yyyy.MM.dd HH:mm",
+            "yyyy-MM-dd",
+            "yyyy/MM/dd",
+            "yyyy.MM.dd",
+
+            "yyyy-M-d H:m:s",
+            "yyyy/M/d H:m:s",
+            "yyyy.M.d H:m:s",
+            "yyyy-M-d",
+            "yyyy/M/d",
+            "yyyy.M.d",
+
+            "yyyyMMddHHmmssSSSZ",
+            "yyyyMMddHHmmssSSS",
+            "yyyyMMddHHmmss",
+            "yyyyMMdd",
+
+            "yyyy-MM-dd'T'HH:mm:ss+HH:mm",
+
+            "HH:mm:ss",
+            "HH:mm:ss.SSS",
+            "HH:mm:ss.SSSSSS",
+            "HH:mm:ssXXX",
+            "HH:mm:ss.SSS+HH:mm",
+            "HH时mm分ss秒",
+
+            "H:m:s",
+            "H:m"
     };
 
     static {
