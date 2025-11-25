@@ -126,20 +126,23 @@ public class DateUtil {
      * 解析日期字符串，支持多种格式
      */
     public static Date parse(String dateStr) throws ParseException {
-        if (dateStr == null || dateStr.trim().isEmpty()) {
+        if (dateStr == null) {
             return null;
         }
 
         String trimmed = dateStr.trim();
 
+        if(trimmed.isEmpty()) {
+            return null;
+        }
 
         // 1. 尝试中文时间格式
-        if (isChineseTimeFormat(trimmed)) {
+        if (CHINESE_TIME_PATTERN.matcher(trimmed).matches()) {
             return parseChineseTime(trimmed);
         }
 
         // 2. 尝试紧凑格式带时区 (FORMAT_22)
-        if (isCompactDateTimeWithTimezone(trimmed)) {
+        if (COMPACT_DATETIME_WITH_TIMEZONE.matcher(trimmed).matches()) {
             return parseCompactDateTimeWithTimezone(trimmed);
         }
 
@@ -162,32 +165,11 @@ public class DateUtil {
         }
 
         // 6. 首先尝试时间戳
-        if (isTimestamp(trimmed)) {
+        if (TIMESTAMP_PATTERN.matcher(trimmed).matches()) {
             return parseTimestamp(trimmed);
         }
 
         throw new ParseException("Unsupported date format: " + trimmed, 0);
-    }
-
-    /**
-     * 检查是否为时间戳
-     */
-    private static boolean isTimestamp(String str) {
-        return TIMESTAMP_PATTERN.matcher(str).matches();
-    }
-
-    /**
-     * 检查是否为中文时间格式
-     */
-    private static boolean isChineseTimeFormat(String str) {
-        return CHINESE_TIME_PATTERN.matcher(str).matches();
-    }
-
-    /**
-     * 检查是否为紧凑日期时间带时区格式 (FORMAT_22)
-     */
-    private static boolean isCompactDateTimeWithTimezone(String str) {
-        return COMPACT_DATETIME_WITH_TIMEZONE.matcher(str).matches();
     }
 
     /**
@@ -594,6 +576,19 @@ public class DateUtil {
     }
 
     /**
+     * 格式化为指定时区的字符串
+     */
+    public static String format(Date date, String pattern, TimeZone timeZone) {
+        if (date == null || pattern == null || timeZone == null) {
+            return null;
+        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern)
+                .withZone(timeZone.toZoneId());
+        return formatter.format(date.toInstant());
+    }
+
+    /**
      * 格式化为 ISO 8601 字符串 (UTC 时间)
      */
     public static String toISOString(Date date) {
@@ -617,33 +612,6 @@ public class DateUtil {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'")
                 .withZone(ZoneId.of("GMT"))
                 .withLocale(Locale.US);
-        return formatter.format(date.toInstant());
-    }
-
-    /**
-     * 格式化为 ISO 字符串（使用系统默认时区，为兼容某些单测）
-     * 注意：这不是标准的 ISO 格式，因为带 Z 应该表示 UTC 时间
-     */
-    public static String toLocalISOString(Date date) {
-        if (date == null) {
-            return null;
-        }
-        // 使用系统默认时区格式化为 ISO 字符串（为兼容单测）
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
-                .withZone(ZoneId.systemDefault());
-        return formatter.format(date.toInstant()) + "Z";
-    }
-
-    /**
-     * 格式化为指定时区的字符串
-     */
-    public static String format(Date date, String pattern, TimeZone timeZone) {
-        if (date == null || pattern == null || timeZone == null) {
-            return null;
-        }
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern)
-                .withZone(timeZone.toZoneId());
         return formatter.format(date.toInstant());
     }
 }
