@@ -15,8 +15,6 @@
  */
 package org.noear.solon.core.util;
 
-import org.noear.solon.Utils;
-
 import java.text.ParseException;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
@@ -27,14 +25,13 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 万能时间工具类 (Final Optimized Version with Bucketing)
+ * 万能时间工具类 (Compatible Optimized Version)
  *
  * @author noear
  * @since 2.8
  * @since 3.7
  */
 public class DateUtil {
-
     // 常用格式常量
     private static final String FMT_YMD_HMS = "yyyy-MM-dd HH:mm:ss";
     private static final String FMT_YMD = "yyyy-MM-dd";
@@ -42,6 +39,21 @@ public class DateUtil {
     private static final String FMT_YMD_SLASH = "yyyy/MM/dd";
     private static final String FMT_COMPACT_DT = "yyyyMMddHHmmss";
     private static final String FMT_COMPACT_D = "yyyyMMdd";
+
+    // 常用格式化器预缓存
+    private static final DateTimeFormatter FMT_19_A = DateTimeFormatter.ofPattern(FMT_YMD_HMS);
+    private static final DateTimeFormatter FMT_19_B = DateTimeFormatter.ofPattern(FMT_YMD_SLASH_HMS);
+    private static final DateTimeFormatter FMT_19_C = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss");
+    private static final DateTimeFormatter FMT_19_ISO = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+    private static final DateTimeFormatter FMT_10_A = DateTimeFormatter.ofPattern(FMT_YMD);
+    private static final DateTimeFormatter FMT_10_B = DateTimeFormatter.ofPattern(FMT_YMD_SLASH);
+    private static final DateTimeFormatter FMT_10_C = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+    private static final DateTimeFormatter FMT_14 = DateTimeFormatter.ofPattern(FMT_COMPACT_DT);
+    private static final DateTimeFormatter FMT_8_DATE = DateTimeFormatter.ofPattern(FMT_COMPACT_D);
+    private static final DateTimeFormatter FMT_8_TIME = DateTimeFormatter.ofPattern("HH:mm:ss");
+    private static final DateTimeFormatter FMT_23_A = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
+    private static final DateTimeFormatter FMT_23_B = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss,SSS");
+    private static final DateTimeFormatter FMT_23_T = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS");
 
     // 兜底常用格式列表
     private static final List<DateTimeFormatter> COMMON_FORMATTERS = Arrays.asList(
@@ -59,87 +71,44 @@ public class DateUtil {
 
     // 自定义模式列表
     private static final List<String> CUSTOM_PATTERNS = Arrays.asList(
-            FMT_YMD_HMS,
-            "yyyy/MM/dd HH:mm:ss",
-            "yyyy.MM.dd HH:mm:ss",
-            "yyyy-MM-dd HH:mm:ss.SSS",
-            "yyyy/MM/dd HH:mm:ss.SSS",
-            "yyyy.MM.dd HH:mm:ss.SSS",
-            "yyyy-MM-dd HH:mm:ss,SSS",
-            "yyyy-MM-dd'T'HH:mm:ss",
-            "yyyy-MM-dd'T'HH:mm:ss.SSS",
-            "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
-            "yyyy-MM-dd'T'HH:mm:ss.SSSXXX",
-            "yyyy-MM-dd'T'HH:mm:ss.SSSXXX'Z'",
-            "yyyy-MM-dd'T'HH:mm:ssXXX",
-            "yyyy-MM-dd'T'HH:mm:ss'Z'",
-            FMT_COMPACT_DT,
-            "yyyyMMddHHmmssSSS",
-            FMT_COMPACT_D,
-            FMT_YMD,
-            "yyyy/MM/dd",
-            "yyyy.MM.dd",
-            "HH:mm:ss",
-            "HH:mm:ss.SSS",
-            "HH:mm:ss.SSSSSS",
-            "HH:mm:ssXXX",
-            "HH:mm:ss.SSS+HH:mm",
-            "HH时mm分ss秒",
-            "yyyy-MM-dd HH:mm",
-            "yyyy/MM/dd HH:mm",
-            "yyyy.MM.dd HH:mm",
-            "H:m:s",
-            "yyyy-M-d H:m:s",
-            "yyyy/M/d H:m:s",
-            "yyyy.M.d H:m:s",
-            "yyyy-M-d",
-            "yyyy/M/d",
-            "yyyy.M.d",
-            "H:m"
+            FMT_YMD_HMS, "yyyy/MM/dd HH:mm:ss", "yyyy.MM.dd HH:mm:ss",
+            "yyyy-MM-dd HH:mm:ss.SSS", "yyyy/MM/dd HH:mm:ss.SSS", "yyyy.MM.dd HH:mm:ss.SSS",
+            "yyyy-MM-dd HH:mm:ss,SSS", "yyyy-MM-dd'T'HH:mm:ss", "yyyy-MM-dd'T'HH:mm:ss.SSS",
+            "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX'Z'",
+            "yyyy-MM-dd'T'HH:mm:ssXXX", "yyyy-MM-dd'T'HH:mm:ss'Z'", FMT_COMPACT_DT,
+            "yyyyMMddHHmmssSSS", FMT_COMPACT_D, FMT_YMD, "yyyy/MM/dd", "yyyy.MM.dd",
+            "HH:mm:ss", "HH:mm:ss.SSS", "HH:mm:ss.SSSSSS", "HH:mm:ssXXX", "HH:mm:ss.SSS+HH:mm",
+            "HH时mm分ss秒", "yyyy-MM-dd HH:mm", "yyyy/MM/dd HH:mm", "yyyy.MM.dd HH:mm",
+            "H:m:s", "yyyy-M-d H:m:s", "yyyy/M/d H:m:s", "yyyy.M.d H:m:s",
+            "yyyy-M-d", "yyyy/M/d", "yyyy.M.d", "H:m"
     );
 
     // 缓存区
     private static final Map<String, DateTimeFormatter> FORMATTER_CACHE = new ConcurrentHashMap<>();
 
     // 核心优化：按长度分桶的 Formatter 列表
-    // Key: 字符串长度, Value: 该长度对应的 Formatter 列表
     private static final Map<Integer, List<DateTimeFormatter>> FIXED_LEN_BUCKETS = new HashMap<>();
-
-    // 变长格式列表 (如 yyyy-M-d，无法按长度精确分桶，单独存放)
     private static final List<DateTimeFormatter> VARIABLE_LEN_FORMATTERS = new ArrayList<>();
 
     private static final ZoneId SYSTEM_ZONE = ZoneId.systemDefault();
 
     static {
-        // 预热 Fast-Path Formatter
-        getOrCreateFormatter(FMT_YMD_HMS);
-        getOrCreateFormatter(FMT_YMD);
-        getOrCreateFormatter(FMT_COMPACT_DT);
-
-        // 核心优化：初始化时进行分桶
+        // 预加载所有格式化器
         for (String pattern : CUSTOM_PATTERNS) {
             DateTimeFormatter formatter = getOrCreateFormatter(pattern);
 
-            // 判断是否包含变长字符 (单个的 M, d, H, m, s)
-            // 如果模式是 "yyyy-M-d"，它匹配的长度可能是 8, 9, 10，这种放入变长列表
             if (isVariableLength(pattern)) {
                 VARIABLE_LEN_FORMATTERS.add(formatter);
             } else {
-                // 定长格式，计算长度 (去除单引号转义)
                 int len = pattern.replace("'", "").length();
                 FIXED_LEN_BUCKETS.computeIfAbsent(len, k -> new ArrayList<>()).add(formatter);
             }
         }
     }
 
-    // 判断模式是否产生变长字符串 (简单启发式判断)
+    // 判断模式是否产生变长字符串
     private static boolean isVariableLength(String pattern) {
-        // 移除转义内容后检查
         String clean = pattern.replaceAll("'[^']*'", "");
-        // 检查是否有单个的时间占位符，例如 "d" (1-31), "M" (1-12)
-        // 也就是检查前面没有相同字符，后面也没有相同字符的情况
-        // 简单做法：检查是否包含单字母模式。
-        // 为了安全起见，只要包含 "y-M", "y/M", "M-d" 这种分隔符紧挨着单字符的，视为变长
         return clean.matches(".*\\b[Mdhms]\\b.*") ||
                 clean.contains("-M-") || clean.contains("/M/") || clean.contains(".M.") ||
                 clean.contains("-d") || clean.contains("/d") || clean.contains(".d");
@@ -160,61 +129,29 @@ public class DateUtil {
 
         int len = trimmed.length();
 
-        // 1. Fast-Path (Length + Char check) -> 命中率极高，0 Try-Catch
-        try {
-            if (len == 19) {
-                if (trimmed.charAt(4) == '-' && trimmed.charAt(7) == '-') {
-                    return parseLocal(trimmed, getOrCreateFormatter(FMT_YMD_HMS));
-                }
-                if (trimmed.charAt(4) == '/' && trimmed.charAt(7) == '/') {
-                    return parseLocal(trimmed, getOrCreateFormatter(FMT_YMD_SLASH_HMS));
-                }
-            } else if (len == 10) {
-                if (trimmed.charAt(4) == '-' && trimmed.charAt(7) == '-') {
-                    return parseLocalDate(trimmed, getOrCreateFormatter(FMT_YMD));
-                }
-                if (trimmed.charAt(4) == '/' && trimmed.charAt(7) == '/') {
-                    return parseLocalDate(trimmed, getOrCreateFormatter(FMT_YMD_SLASH));
-                }
-            } else if (len == 14 && isNumeric(trimmed)) {
-                return parseLocal(trimmed, getOrCreateFormatter(FMT_COMPACT_DT));
-            }
-        } catch (Exception ignored) {
-            // Fast-Path failed, continue
-        }
-
-        // 2. 特殊格式检查 (Manual Parsing -> 0 Try-Catch for checks)
-
-        // 紧凑带时区: 20231025143045123+0800
-        if (len == 22) {
-            char sign = trimmed.charAt(17);
-            if ((sign == '+' || sign == '-') && isNumeric(trimmed.substring(0, 17))) {
-                try { return parseCompactDateTimeWithTimezoneManual(trimmed); } catch (Exception ignored) {}
-            }
-        }
-
-        // 中文格式
-        if (hasChineseTimeChar(trimmed)) {
-            try { return parseChineseTime(trimmed); } catch (Exception ignored) {}
-        }
-
-        // 3. 兜底逻辑
-
-        // 智能解析 (处理微秒、ISO变体等)
-        Date result = trySmartParse(trimmed);
+        // 1. 超快速路径：手动解析最高频格式（保持完全兼容）
+        Date result = parseUltraFast(trimmed, len);
         if (result != null) return result;
 
-        // ISO 标准格式尝试 (已优化为 Single Parse)
+        // 2. 特殊格式检查
+        result = parseSpecialFormats(trimmed, len);
+        if (result != null) return result;
+
+        // 3. 智能解析
+        result = trySmartParse(trimmed);
+        if (result != null) return result;
+
+        // 4. ISO 标准格式尝试
         if (couldBeIso(trimmed)) {
             result = tryCommonFormatters(trimmed);
             if (result != null) return result;
         }
 
-        // 自定义格式全量尝试 -> 优化为分桶查找
+        // 5. 自定义格式分桶查找
         result = tryCustomFormatters(trimmed, len);
         if (result != null) return result;
 
-        // 时间戳
+        // 6. 时间戳
         if (isNumeric(trimmed)) {
             return parseTimestamp(trimmed);
         }
@@ -222,26 +159,86 @@ public class DateUtil {
         throw new ParseException("Unsupported date format: " + trimmed, 0);
     }
 
-    // --- Parsing Logic ---
+    /**
+     * 超快速路径：完全兼容的手动解析
+     */
+    private static Date parseUltraFast(String str, int len) {
+        try {
+            switch (len) {
+                case 19:
+                    if (str.charAt(4) == '-' && str.charAt(7) == '-') {
+                        if (str.charAt(10) == ' ') {
+                            return parseWithFormatter(str, FMT_19_A);
+                        } else if (str.charAt(10) == 'T') {
+                            return parseWithFormatter(str, FMT_19_ISO);
+                        }
+                    } else if (str.charAt(4) == '/' && str.charAt(7) == '/') {
+                        return parseWithFormatter(str, FMT_19_B);
+                    } else if (str.charAt(4) == '.' && str.charAt(7) == '.') {
+                        return parseWithFormatter(str, FMT_19_C);
+                    }
+                    break;
+
+                case 10:
+                    if (str.charAt(4) == '-' && str.charAt(7) == '-') {
+                        return parseWithFormatter(str, FMT_10_A);
+                    } else if (str.charAt(4) == '/' && str.charAt(7) == '/') {
+                        return parseWithFormatter(str, FMT_10_B);
+                    } else if (str.charAt(4) == '.' && str.charAt(7) == '.') {
+                        return parseWithFormatter(str, FMT_10_C);
+                    }
+                    break;
+
+                case 14:
+                    if (isNumeric(str)) {
+                        return parseWithFormatter(str, FMT_14);
+                    }
+                    break;
+
+                case 8:
+                    if (isNumeric(str)) {
+                        return parseWithFormatter(str, FMT_8_DATE);
+                    } else if (str.charAt(2) == ':' && str.charAt(5) == ':') {
+                        return parseWithFormatter(str, FMT_8_TIME);
+                    }
+                    break;
+
+                case 23:
+                    if (str.charAt(10) == 'T') {
+                        return parseWithFormatter(str, FMT_23_T);
+                    } else if (str.charAt(19) == ',') {
+                        return parseWithFormatter(str, FMT_23_B);
+                    } else if (str.charAt(19) == '.') {
+                        return parseWithFormatter(str, FMT_23_A);
+                    }
+                    break;
+            }
+        } catch (Exception ignored) {
+        }
+        return null;
+    }
 
     /**
-     * 优化后的自定义格式尝试：优先查桶
+     * 特殊格式处理
      */
-    private static Date tryCustomFormatters(String dateStr, int len) {
-        // 1. 优先尝试定长桶 (精确匹配长度)
-        // 这消除了绝大多数因长度不一致导致的 parse 异常
-        List<DateTimeFormatter> bucket = FIXED_LEN_BUCKETS.get(len);
-        if (bucket != null) {
-            for (DateTimeFormatter formatter : bucket) {
-                Date d = parseWithFormatter(dateStr, formatter);
-                if (d != null) return d;
+    private static Date parseSpecialFormats(String str, int len) {
+        // 紧凑带时区: 20231025143045123+0800
+        if (len == 22) {
+            char sign = str.charAt(17);
+            if ((sign == '+' || sign == '-') && isNumeric(str.substring(0, 17))) {
+                try {
+                    return parseCompactDateTimeWithTimezoneManual(str);
+                } catch (Exception ignored) {
+                }
             }
         }
 
-        // 2. 尝试变长格式 (作为最后的手段)
-        for (DateTimeFormatter formatter : VARIABLE_LEN_FORMATTERS) {
-            Date d = parseWithFormatter(dateStr, formatter);
-            if (d != null) return d;
+        // 中文格式
+        if (hasChineseTimeChar(str)) {
+            try {
+                return parseChineseTime(str);
+            } catch (Exception ignored) {
+            }
         }
 
         return null;
@@ -255,8 +252,6 @@ public class DateUtil {
             if (dateStr.indexOf('Z') > 0) return parseISOWithZ(dateStr);
             if (dateStr.indexOf('+') > 0 || dateStr.indexOf('-') > 0) return parseISOWithOffset(dateStr);
         }
-
-        if (len == 8 && isNumeric(dateStr)) return parseCompactDate(dateStr);
 
         if (dateStr.indexOf(':') > 0) {
             return parseTimeWithOptionalOffset(dateStr);
@@ -280,7 +275,6 @@ public class DateUtil {
                 }
 
                 int fractionLen = endOfFraction - (dotIndex + 1);
-                // 仅截断微秒 (4-6位)，保留纳秒让其失败(符合单测预期)
                 if (fractionLen > 3 && fractionLen <= 6) {
                     tempStr = tempStr.substring(0, dotIndex + 4) + tempStr.substring(endOfFraction);
                 }
@@ -288,11 +282,9 @@ public class DateUtil {
 
             if (tempStr.contains("+") || tempStr.contains("-")) {
                 try {
-                    // 尝试直接作为 OffsetDateTime 解析 (如果格式标准)
                     String fullDateTime = LocalDate.now().toString() + "T" + tempStr;
                     return Date.from(OffsetDateTime.parse(fullDateTime).toInstant());
                 } catch (Exception e) {
-                    // 尝试特定格式
                     DateTimeFormatter formatter = getOrCreateFormatter("HH:mm:ss.SSS+HH:mm");
                     LocalTime lt = LocalTime.parse(tempStr, formatter);
                     return Date.from(LocalDateTime.of(LocalDate.now(), lt).atZone(SYSTEM_ZONE).toInstant());
@@ -309,7 +301,6 @@ public class DateUtil {
         }
     }
 
-    // Manual parser remains same...
     private static Date parseCompactDateTimeWithTimezoneManual(String dateStr) throws ParseException {
         try {
             int year = Integer.parseInt(dateStr.substring(0, 4));
@@ -334,30 +325,58 @@ public class DateUtil {
         }
     }
 
-    private static boolean isNumeric(String str) {
-        if (str == null || str.isEmpty()) return false;
-        for (int i = 0; i < str.length(); i++) {
-            if (!Character.isDigit(str.charAt(i))) return false;
-        }
-        return true;
-    }
-
-    private static boolean hasChineseTimeChar(String str) {
-        return str.indexOf('时') > 0 || str.indexOf('分') > 0;
-    }
-
-    private static boolean couldBeIso(String str) {
-        return str.indexOf('-') > 0 || str.indexOf(':') > 0 || str.indexOf('T') > 0;
-    }
-
-    private static Date parseTimestamp(String timestampStr) throws ParseException {
+    private static Date parseChineseTime(String timeStr) throws ParseException {
         try {
-            long timestamp = Long.parseLong(timestampStr);
-            if (timestampStr.length() <= 10) timestamp *= 1000;
-            return new Date(timestamp);
-        } catch (NumberFormatException e) {
-            throw new ParseException("Invalid timestamp: " + timestampStr, 0);
+            int hIdx = timeStr.indexOf("时");
+            int mIdx = timeStr.indexOf("分");
+            int sIdx = timeStr.indexOf("秒");
+            if (hIdx > 0 && mIdx > hIdx && sIdx > mIdx) {
+                int hour = Integer.parseInt(timeStr.substring(0, hIdx));
+                int minute = Integer.parseInt(timeStr.substring(hIdx + 1, mIdx));
+                int second = Integer.parseInt(timeStr.substring(mIdx + 1, sIdx));
+                return Date.from(LocalDateTime.of(LocalDate.now(), LocalTime.of(hour, minute, second)).atZone(SYSTEM_ZONE).toInstant());
+            }
+            String[] parts = timeStr.split("[时分秒]");
+            if (parts.length >= 3) {
+                return Date.from(LocalDateTime.of(LocalDate.now(),
+                                LocalTime.of(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]), Integer.parseInt(parts[2])))
+                        .atZone(SYSTEM_ZONE).toInstant());
+            }
+        } catch (Exception ignored) {
         }
+        throw new ParseException("Invalid Chinese time: " + timeStr, 0);
+    }
+
+    private static Date parseDateWithVariousSeparators(String dateStr) {
+        String normalized = dateStr.replace('/', '-').replace('.', '-');
+        if (normalized.length() == 19 && normalized.charAt(13) == ':') {
+            try {
+                return parseWithFormatter(normalized, FMT_19_A);
+            } catch (Exception e) {
+            }
+        }
+        try {
+            String[] parts = normalized.split(" ");
+            if (parts.length >= 1) {
+                String[] dItems = parts[0].split("-");
+                if (dItems.length == 3) {
+                    String stdDate = dItems[0] + "-" + String.format("%02d", Integer.parseInt(dItems[1])) + "-" + String.format("%02d", Integer.parseInt(dItems[2]));
+                    if (parts.length > 1) {
+                        String tPart = parts[1];
+                        if (tPart.indexOf(':') == tPart.lastIndexOf(':')) tPart += ":00";
+                        String[] tItems = tPart.split(":");
+                        if (tItems.length >= 2) {
+                            stdDate += " " + String.format("%02d", Integer.parseInt(tItems[0])) + ":" +
+                                    String.format("%02d", Integer.parseInt(tItems[1])) + ":" +
+                                    (tItems.length > 2 ? String.format("%02d", Integer.parseInt(tItems[2])) : "00");
+                        }
+                    }
+                    return tryCustomFormatters(stdDate, stdDate.length());
+                }
+            }
+        } catch (Exception ignored) {
+        }
+        return null;
     }
 
     private static Date parseISOWithZ(String dateStr) {
@@ -377,61 +396,30 @@ public class DateUtil {
             if (accessor.isSupported(ChronoField.OFFSET_SECONDS)) {
                 return Date.from(Instant.from(accessor));
             }
-        } catch (Exception ignored) { }
+        } catch (Exception ignored) {
+        }
         return null;
     }
 
-    private static Date parseCompactDate(String dateStr) {
-        return parseLocalDate(dateStr, getOrCreateFormatter(FMT_COMPACT_D));
-    }
-
-    private static Date parseChineseTime(String timeStr) throws ParseException {
-        try {
-            int hIdx = timeStr.indexOf("时");
-            int mIdx = timeStr.indexOf("分");
-            int sIdx = timeStr.indexOf("秒");
-            if (hIdx > 0 && mIdx > hIdx && sIdx > mIdx) {
-                int hour = Integer.parseInt(timeStr.substring(0, hIdx));
-                int minute = Integer.parseInt(timeStr.substring(hIdx+1, mIdx));
-                int second = Integer.parseInt(timeStr.substring(mIdx+1, sIdx));
-                return Date.from(LocalDateTime.of(LocalDate.now(), LocalTime.of(hour, minute, second)).atZone(SYSTEM_ZONE).toInstant());
+    /**
+     * 优化后的自定义格式尝试：优先查桶
+     */
+    private static Date tryCustomFormatters(String dateStr, int len) {
+        // 1. 优先尝试定长桶
+        List<DateTimeFormatter> bucket = FIXED_LEN_BUCKETS.get(len);
+        if (bucket != null) {
+            for (DateTimeFormatter formatter : bucket) {
+                Date d = parseWithFormatter(dateStr, formatter);
+                if (d != null) return d;
             }
-            String[] parts = timeStr.split("[时分秒]");
-            if (parts.length >= 3) {
-                return Date.from(LocalDateTime.of(LocalDate.now(),
-                                LocalTime.of(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]), Integer.parseInt(parts[2])))
-                        .atZone(SYSTEM_ZONE).toInstant());
-            }
-        } catch (Exception ignored) {}
-        throw new ParseException("Invalid Chinese time: " + timeStr, 0);
-    }
-
-    private static Date parseDateWithVariousSeparators(String dateStr) {
-        String normalized = dateStr.replace('/', '-').replace('.', '-');
-        if (normalized.length() == 19 && normalized.charAt(13) == ':') {
-            try { return parseLocal(normalized, getOrCreateFormatter(FMT_YMD_HMS)); } catch(Exception e){}
         }
-        try {
-            String[] parts = normalized.split(" ");
-            if (parts.length >= 1) {
-                String[] dItems = parts[0].split("-");
-                if (dItems.length == 3) {
-                    String stdDate = dItems[0] + "-" + String.format("%02d", Integer.parseInt(dItems[1])) + "-" + String.format("%02d", Integer.parseInt(dItems[2]));
-                    if (parts.length > 1) {
-                        String tPart = parts[1];
-                        if (tPart.indexOf(':') == tPart.lastIndexOf(':')) tPart += ":00";
-                        String[] tItems = tPart.split(":");
-                        if(tItems.length>=2) {
-                            stdDate += " " + String.format("%02d", Integer.parseInt(tItems[0])) + ":" +
-                                    String.format("%02d", Integer.parseInt(tItems[1])) + ":" +
-                                    (tItems.length > 2 ? String.format("%02d", Integer.parseInt(tItems[2])) : "00");
-                        }
-                    }
-                    // 递归调用优化后的分桶查找
-                    return tryCustomFormatters(stdDate, stdDate.length());
-                }
-            }
-        } catch (Exception ignored) {}
+
+        // 2. 尝试变长格式
+        for (DateTimeFormatter formatter : VARIABLE_LEN_FORMATTERS) {
+            Date d = parseWithFormatter(dateStr, formatter);
+            if (d != null) return d;
+        }
+
         return null;
     }
 
@@ -444,7 +432,7 @@ public class DateUtil {
     }
 
     /**
-     * 核心通用解析逻辑：解析一次，按字段转换，避免异常
+     * 核心通用解析逻辑
      */
     private static Date parseWithFormatter(String dateStr, DateTimeFormatter formatter) {
         try {
@@ -460,19 +448,36 @@ public class DateUtil {
             }
             return Date.from(Instant.from(accessor));
         } catch (DateTimeParseException ignored) {
-            // 格式不匹配，正常忽略
         } catch (Exception ignored) {
-            // 兜底
         }
         return null;
     }
 
-    private static Date parseLocal(String str, DateTimeFormatter formatter) {
-        return Date.from(LocalDateTime.parse(str, formatter).atZone(SYSTEM_ZONE).toInstant());
+    private static Date parseTimestamp(String timestampStr) throws ParseException {
+        try {
+            long timestamp = Long.parseLong(timestampStr);
+            if (timestampStr.length() <= 10) timestamp *= 1000;
+            return new Date(timestamp);
+        } catch (NumberFormatException e) {
+            throw new ParseException("Invalid timestamp: " + timestampStr, 0);
+        }
     }
 
-    private static Date parseLocalDate(String str, DateTimeFormatter formatter) {
-        return Date.from(LocalDate.parse(str, formatter).atStartOfDay(SYSTEM_ZONE).toInstant());
+    // ========== 工具方法 ==========
+    private static boolean isNumeric(String str) {
+        if (str == null || str.isEmpty()) return false;
+        for (int i = 0; i < str.length(); i++) {
+            if (!Character.isDigit(str.charAt(i))) return false;
+        }
+        return true;
+    }
+
+    private static boolean hasChineseTimeChar(String str) {
+        return str.indexOf('时') > 0 || str.indexOf('分') > 0;
+    }
+
+    private static boolean couldBeIso(String str) {
+        return str.indexOf('-') > 0 || str.indexOf(':') > 0 || str.indexOf('T') > 0;
     }
 
     private static DateTimeFormatter getOrCreateFormatter(String pattern) {
@@ -480,6 +485,7 @@ public class DateUtil {
                 p -> DateTimeFormatter.ofPattern(p).withZone(SYSTEM_ZONE));
     }
 
+    // ========== 格式化方法 ==========
     public static String format(Date date, String pattern) {
         if (date == null || pattern == null) return null;
         return getOrCreateFormatter(pattern).format(date.toInstant());
