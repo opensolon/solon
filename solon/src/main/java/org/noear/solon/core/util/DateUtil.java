@@ -19,6 +19,8 @@ import java.text.ParseException;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoField;
+import java.time.temporal.TemporalAccessor;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -331,16 +333,25 @@ public class DateUtil {
 
     private static Date parseISOWithOffset(String dateStr) {
         try {
-            return Date.from(OffsetDateTime.parse(dateStr).toInstant());
-        } catch (Exception e1) {
-            try {
-                return Date.from(ZonedDateTime.parse(dateStr).toInstant());
-            } catch (Exception e2) {
-                try {
-                    return Date.from(Instant.parse(dateStr));
-                } catch (Exception e3) { return null; }
+            // DateTimeFormatter.ISO_DATE_TIME 是一个“超集”解析器
+            // 它能同时识别:
+            // 1. 带偏移量的 (OffsetDateTime): 2023-10-25T14:30:00+08:00
+            // 2. 带时区的 (ZonedDateTime): 2023-10-25T14:30:00+08:00[Asia/Shanghai]
+            // 3. 标准 UTC (Instant 风格): 2023-10-25T14:30:00Z
+            TemporalAccessor accessor = DateTimeFormatter.ISO_DATE_TIME.parse(dateStr);
+
+            // 核心检查：必须包含“偏移量” (Offset) 才能确定准确的时间点
+            // 如果字符串是 "2023-10-25T14:30:00" (无时区)，这里 isSupported 会返回 false，
+            // 从而优雅地返回 null，而不是抛出异常。
+            if (accessor.isSupported(ChronoField.OFFSET_SECONDS)) {
+                return Date.from(Instant.from(accessor));
             }
+        } catch (DateTimeParseException e) {
+            // 格式完全不匹配，忽略
+        } catch (Exception e) {
+            // 其他异常，忽略
         }
+        return null;
     }
 
     private static Date parseCompactDate(String dateStr) {
@@ -429,7 +440,7 @@ public class DateUtil {
         try {
             // 1. 只解析一次，得到通用访问器 (这一步如果格式不匹配，依然会抛错，这是预期的)
             // TemporalAccessor 就像一个 Map，里面存着解析出来的 Year, Month, Hour 等
-            java.time.temporal.TemporalAccessor accessor = formatter.parse(dateStr);
+            TemporalAccessor accessor = formatter.parse(dateStr);
 
             // 2. 检查包含的字段信息，决定转换策略
 
@@ -450,14 +461,12 @@ public class DateUtil {
             }
 
             // D. 尝试作为 Instant (用于处理只包含 Instant 字段的特殊格式)
-            try {
-                return Date.from(Instant.from(accessor));
-            } catch (Exception ignored) {}
+            return Date.from(Instant.from(accessor));
 
-        } catch (DateTimeParseException e) {
+        } catch (DateTimeParseException ignored) {
             // 只有当 dateStr 根本不符合 formatter 的格式时（例如用 yyyy去解析 "abc"），才会进这里
             // 这是正常的解析失败，无法避免
-        } catch (Exception e) {
+        } catch (Exception ignored) {
             // 兜底
         }
         return null;
