@@ -45,7 +45,7 @@ public class DateUtil {
     };
 
     private static final String[] PATTERNS = {
-            "yyyy-MM-dd HH:mm:ss", "yyyy/MM/dd HH:mm:ss", "yyyy.MM.dd HH:mm:ss",
+            "yyyy-MM-dd HH:mm:ss", "yyyy/MM/dd HH:mm:ss", "yyyy.MM.dd HH:mm:ss", "yyyy-MM-dd HH:mm:ss.S",
             "yyyy-MM-dd", "yyyy/MM/dd", "yyyy.MM.dd", "yyyyMMddHHmmss", "yyyyMMdd",
             "HH:mm:ss", "yyyy-MM-dd HH:mm:ss.SSS", "yyyy-MM-dd HH:mm:ss,SSS",
             "yyyy-MM-dd'T'HH:mm:ss", "yyyy-MM-dd'T'HH:mm:ss.SSS",
@@ -109,12 +109,12 @@ public class DateUtil {
                     if (s.charAt(4) == '-' && s.charAt(7) == '-') {
                         if (s.charAt(10) == ' ') {
                             return Date.from(LocalDateTime.of(
-                                    (s.charAt(0)-'0')*1000+(s.charAt(1)-'0')*100+(s.charAt(2)-'0')*10+(s.charAt(3)-'0'),
-                                    (s.charAt(5)-'0')*10+(s.charAt(6)-'0'),
-                                    (s.charAt(8)-'0')*10+(s.charAt(9)-'0'),
-                                    (s.charAt(11)-'0')*10+(s.charAt(12)-'0'),
-                                    (s.charAt(14)-'0')*10+(s.charAt(15)-'0'),
-                                    (s.charAt(17)-'0')*10+(s.charAt(18)-'0')
+                                    (s.charAt(0) - '0') * 1000 + (s.charAt(1) - '0') * 100 + (s.charAt(2) - '0') * 10 + (s.charAt(3) - '0'),
+                                    (s.charAt(5) - '0') * 10 + (s.charAt(6) - '0'),
+                                    (s.charAt(8) - '0') * 10 + (s.charAt(9) - '0'),
+                                    (s.charAt(11) - '0') * 10 + (s.charAt(12) - '0'),
+                                    (s.charAt(14) - '0') * 10 + (s.charAt(15) - '0'),
+                                    (s.charAt(17) - '0') * 10 + (s.charAt(18) - '0')
                             ).atZone(SYSTEM_ZONE).toInstant());
                         } else if (s.charAt(10) == 'T') {
                             return parseWithFormatter(s, getFormatter("yyyy-MM-dd'T'HH:mm:ss"));
@@ -124,13 +124,14 @@ public class DateUtil {
                 case 10:
                     if (s.charAt(4) == '-' && s.charAt(7) == '-') {
                         return Date.from(LocalDate.of(
-                                (s.charAt(0)-'0')*1000+(s.charAt(1)-'0')*100+(s.charAt(2)-'0')*10+(s.charAt(3)-'0'),
-                                (s.charAt(5)-'0')*10+(s.charAt(6)-'0'),
-                                (s.charAt(8)-'0')*10+(s.charAt(9)-'0')
+                                (s.charAt(0) - '0') * 1000 + (s.charAt(1) - '0') * 100 + (s.charAt(2) - '0') * 10 + (s.charAt(3) - '0'),
+                                (s.charAt(5) - '0') * 10 + (s.charAt(6) - '0'),
+                                (s.charAt(8) - '0') * 10 + (s.charAt(9) - '0')
                         ).atStartOfDay(SYSTEM_ZONE).toInstant());
                     }
                     break;
-                case 14: case 8:
+                case 14:
+                case 8:
                     if (isNumeric(s)) {
                         return parseWithFormatter(s, getFormatter(len == 14 ? "yyyyMMddHHmmss" : "yyyyMMdd"));
                     }
@@ -145,21 +146,23 @@ public class DateUtil {
                     }
                     break;
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
         return null;
     }
 
-    private static Date parseSpecial(String s, int len) {
+    private static Date parseSpecial(String s, int len) throws ParseException{
         // 紧凑带时区: 20231025143045123+0800 (FORMAT_22)
         if (len == 22 && (s.charAt(17) == '+' || s.charAt(17) == '-') && isNumeric(s.substring(0, 17))) {
             try {
                 return Date.from(OffsetDateTime.of(
-                        parseInt(s,0,4), parseInt(s,4,6), parseInt(s,6,8),
-                        parseInt(s,8,10), parseInt(s,10,12), parseInt(s,12,14),
-                        parseInt(s,14,17)*1_000_000,
-                        ZoneOffset.of(s.substring(17).length()==5 ? s.substring(17,20)+":"+s.substring(20) : s.substring(17))
+                        parseInt(s, 0, 4), parseInt(s, 4, 6), parseInt(s, 6, 8),
+                        parseInt(s, 8, 10), parseInt(s, 10, 12), parseInt(s, 12, 14),
+                        parseInt(s, 14, 17) * 1_000_000,
+                        ZoneOffset.of(s.substring(17).length() == 5 ? s.substring(17, 20) + ":" + s.substring(20) : s.substring(17))
                 ).toInstant());
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) {
+            }
         }
 
         // 中文时间: 14时30分45秒 (FORMAT_9)
@@ -170,14 +173,14 @@ public class DateUtil {
                     LocalTime time = LocalTime.of(parseInt(parts[0]), parseInt(parts[1]), parseInt(parts[2]));
                     return Date.from(LocalDateTime.of(LocalDate.now(), time).atZone(SYSTEM_ZONE).toInstant());
                 }
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) {
+            }
         }
 
         return null;
     }
 
-    private static Date parseSmart(String s) {
-        // ISO 格式处理 (修复 FORMAT_27: 2023-10-25T14:30:45.123+00:00Z)
+    private static Date parseSmart(String s) throws ParseException {
         if (s.indexOf('T') > 0) {
             try {
                 // 处理混合格式: 2023-10-25T14:30:45.123+00:00Z
@@ -187,7 +190,8 @@ public class DateUtil {
                 }
                 if (s.indexOf('Z') > 0) return Date.from(Instant.parse(s));
                 if (s.indexOf('+') > 0 || s.indexOf('-') > 0) return Date.from(OffsetDateTime.parse(s).toInstant());
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) {
+            }
         }
 
         // 时间格式处理
@@ -205,7 +209,7 @@ public class DateUtil {
         return null;
     }
 
-    private static Date parseTime(String s) {
+    private static Date parseTime(String s) throws ParseException {
         try {
             String normalized = s;
             int dotIdx = s.indexOf('.');
@@ -219,7 +223,7 @@ public class DateUtil {
                 }
                 // 纳秒位数过多应该抛出异常
                 else if (fractionLen > 6) {
-                    throw new DateTimeException("Fraction seconds too long");
+                    throw new ParseException("Fraction seconds too long", 0);
                 }
             }
 
@@ -237,7 +241,11 @@ public class DateUtil {
             DateTimeFormatter fmt = normalized.contains(".") ?
                     getFormatter("HH:mm:ss.SSS") : getFormatter("HH:mm:ss");
             LocalTime time = LocalTime.parse(normalized, fmt);
-            return Date.from(LocalDateTime.of(LocalDate.now(), time).atZone(SYSTEM_ZONE).toInstant());
+            return Date.from(LocalDateTime.of(LocalDate.of(1970, 1, 1), time)
+                    .atZone(SYSTEM_ZONE)
+                    .toInstant());
+        } catch (ParseException e) {
+            throw e;
         } catch (Exception e) {
             return null;
         }
@@ -257,7 +265,7 @@ public class DateUtil {
 
                 // 基本日期验证 (帮助无效日期测试用例抛出异常)
                 if (month < 1 || month > 12 || day < 1 || day > 31) {
-                    throw new DateTimeException("Invalid date");
+                    throw new ParseException("Invalid date", 0);
                 }
 
                 StringBuilder std = new StringBuilder()
@@ -273,7 +281,7 @@ public class DateUtil {
                     int second = timeParts.length > 2 ? parseInt(timeParts[2]) : 0;
 
                     if (hour < 0 || hour > 23 || minute < 0 || minute > 59 || second < 0 || second > 59) {
-                        throw new DateTimeException("Invalid time");
+                        throw new ParseException("Invalid time", 0);
                     }
 
                     std.append(" ").append(String.format("%02d", hour))
@@ -283,7 +291,8 @@ public class DateUtil {
 
                 return parseFormatters(std.toString(), std.length());
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
         return null;
     }
 
@@ -313,18 +322,40 @@ public class DateUtil {
     }
 
     private static Date parseWithFormatter(String s, DateTimeFormatter fmt) {
+        Instant instant = parseWithFormatter(s, fmt, SYSTEM_ZONE);
+
+        if (instant != null) {
+            return Date.from(instant);
+        } else {
+            return null;
+        }
+    }
+
+    private static Instant parseWithFormatter(String s, DateTimeFormatter fmt, ZoneId zoneId) {
         try {
             TemporalAccessor accessor = fmt.parse(s);
-            if (accessor.isSupported(ChronoField.OFFSET_SECONDS)) {
-                return Date.from(OffsetDateTime.from(accessor).toInstant());
+
+            if (accessor.isSupported(ChronoField.OFFSET_SECONDS) || accessor.isSupported(ChronoField.INSTANT_SECONDS)) {
+                return Instant.from(accessor);
             }
-            if (accessor.isSupported(ChronoField.HOUR_OF_DAY)) {
-                return Date.from(LocalDateTime.from(accessor).atZone(SYSTEM_ZONE).toInstant());
+
+            if (accessor.isSupported(ChronoField.YEAR) && accessor.isSupported(ChronoField.HOUR_OF_DAY)) {
+                return LocalDateTime.from(accessor).atZone(zoneId).toInstant();
             }
+
             if (accessor.isSupported(ChronoField.DAY_OF_MONTH)) {
-                return Date.from(LocalDate.from(accessor).atStartOfDay(SYSTEM_ZONE).toInstant());
+                return LocalDate.from(accessor).atStartOfDay(zoneId).toInstant();
             }
-            return Date.from(Instant.from(accessor));
+
+            if (accessor.isSupported(ChronoField.HOUR_OF_DAY)) {
+                return LocalDate.of(1970, 1, 1)
+                        .atTime(LocalTime.from(accessor))
+                        .atZone(zoneId)
+                        .toInstant();
+            }
+
+            return Instant.from(accessor);
+
         } catch (Exception e) {
             return null;
         }
@@ -372,7 +403,20 @@ public class DateUtil {
     // ========== 格式化方法 ==========
     public static String format(Date date, String pattern) {
         return date == null || pattern == null ? null :
-                getFormatter(pattern).format(date.toInstant());
+                getFormatter(pattern)
+                        .format(date.toInstant());
+    }
+
+    public static String format(Date date, String pattern, ZoneId zoneId) {
+        return date == null || pattern == null ? null :
+                getFormatter(pattern)
+                        .withZone(zoneId)
+                        .format(date.toInstant());
+    }
+
+    public static String format(Date date, String pattern, TimeZone timeZone) {
+        return date == null || pattern == null ? null :
+                getFormatter(pattern).withZone(timeZone.toZoneId()).format(date.toInstant());
     }
 
     public static String toISOString(Date date) {
