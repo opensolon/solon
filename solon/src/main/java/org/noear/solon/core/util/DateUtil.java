@@ -427,26 +427,40 @@ public class DateUtil {
 
     private static Date parseWithFormatter(String dateStr, DateTimeFormatter formatter) {
         try {
-            return Date.from(LocalDateTime.parse(dateStr, formatter).atZone(SYSTEM_ZONE).toInstant());
-        } catch (DateTimeParseException e) {
-            try {
-                return Date.from(LocalDate.parse(dateStr, formatter).atStartOfDay(SYSTEM_ZONE).toInstant());
-            } catch (DateTimeParseException e2) {
-                try {
-                    return Date.from(ZonedDateTime.parse(dateStr, formatter).toInstant());
-                } catch (DateTimeParseException e3) {
-                    try {
-                        return Date.from(OffsetDateTime.parse(dateStr, formatter).toInstant());
-                    } catch (DateTimeParseException e4) {
-                        try {
-                            return Date.from(Instant.parse(dateStr));
-                        } catch (DateTimeParseException e5) {
-                            return null;
-                        }
-                    }
-                }
+            // 1. 只解析一次，得到通用访问器 (这一步如果格式不匹配，依然会抛错，这是预期的)
+            // TemporalAccessor 就像一个 Map，里面存着解析出来的 Year, Month, Hour 等
+            java.time.temporal.TemporalAccessor accessor = formatter.parse(dateStr);
+
+            // 2. 检查包含的字段信息，决定转换策略
+
+            // A. 如果包含“时区偏移” (Offset, e.g., +08:00)
+            if (accessor.isSupported(java.time.temporal.ChronoField.OFFSET_SECONDS)) {
+                return Date.from(OffsetDateTime.from(accessor).toInstant());
             }
+
+            // B. 如果包含“时间” (Hour, Minute)
+            // 只要有小时字段，我们就认为是日期+时间
+            if (accessor.isSupported(java.time.temporal.ChronoField.HOUR_OF_DAY)) {
+                return Date.from(LocalDateTime.from(accessor).atZone(SYSTEM_ZONE).toInstant());
+            }
+
+            // C. 如果只有“日期” (Day)
+            if (accessor.isSupported(java.time.temporal.ChronoField.DAY_OF_MONTH)) {
+                return Date.from(LocalDate.from(accessor).atStartOfDay(SYSTEM_ZONE).toInstant());
+            }
+
+            // D. 尝试作为 Instant (用于处理只包含 Instant 字段的特殊格式)
+            try {
+                return Date.from(Instant.from(accessor));
+            } catch (Exception ignored) {}
+
+        } catch (DateTimeParseException e) {
+            // 只有当 dateStr 根本不符合 formatter 的格式时（例如用 yyyy去解析 "abc"），才会进这里
+            // 这是正常的解析失败，无法避免
+        } catch (Exception e) {
+            // 兜底
         }
+        return null;
     }
 
     private static Date parseLocal(String str, DateTimeFormatter formatter) {
