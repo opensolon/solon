@@ -50,7 +50,7 @@ class DateUtilTest {
     @Test
     @DisplayName("测试纯数字但包含非数字字符")
     void testParseWithInvalidDigits() throws ParseException {
-        assertNull(DateUtil.parse("123abc456"));
+        assertThrows(ParseException.class, () -> DateUtil.parse("123abc456"));
     }
 
     // ========== 格式符覆盖测试 ==========
@@ -192,13 +192,12 @@ class DateUtilTest {
     @Test
     @DisplayName("测试 toGmtString 方法")
     void testToGmtString() {
-        Date date = new Date(1698215445123L); // 固定时间戳，便于断言
+        Date date = new Date(1698215445123L);
         String gmtString = DateUtil.toGmtString(date);
 
         assertNotNull(gmtString);
-        assertTrue(gmtString.contains("T"));
-        assertTrue(gmtString.endsWith("Z"));
-        assertTrue(gmtString.matches("\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z"));
+        assertTrue(gmtString.contains("GMT")); // 标准 GMT 格式应该包含 GMT
+        assertTrue(gmtString.matches("^[A-Za-z]{3}, \\d{2} [A-Za-z]{3} \\d{4} \\d{2}:\\d{2}:\\d{2} GMT$"));
     }
 
     @Test
