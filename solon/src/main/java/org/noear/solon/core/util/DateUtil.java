@@ -24,10 +24,11 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 万能时间工具类 (Compact Optimized Version)
+ * 万能时间工具类
  *
  * @author noear
  * @since 2.8
+ * @since 3.7
  */
 public class DateUtil {
     private static final ZoneId SYSTEM_ZONE = ZoneId.systemDefault();
