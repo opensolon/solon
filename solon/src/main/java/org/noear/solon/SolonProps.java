@@ -619,7 +619,7 @@ public final class SolonProps extends Props {
      * 应用版本
      * */
     public String appVersion(){
-        return get("solon.app.version");
+        return get("solon.app.version","1.0.0");
     }
 
     /**
