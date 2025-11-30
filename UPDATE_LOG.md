@@ -29,6 +29,8 @@
 
 ### v3.7.3
 
+* 新增 solon-cloud-telemetry 插件
+* 新增 opentelemetry-solon-cloud-plugin 插件
 * eggg 升为 1.0.10
 * snack4 升为 4.0.17
 * fastjson2 升为 2.0.60

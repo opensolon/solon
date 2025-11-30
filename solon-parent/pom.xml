@@ -1729,6 +1729,12 @@
                 <version>${solon-cloud.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>opentelemetry-solon-cloud-plugin</artifactId>
+                <version>${solon-cloud.version}</version>
+            </dependency>
+
             <!-- solon-cloud:: end -->
 
             <dependency>
