@@ -616,6 +616,13 @@ public final class SolonProps extends Props {
     }
 
     /**
+     * 应用版本
+     * */
+    public String appVersion(){
+        return get("solon.app.version");
+    }
+
+    /**
      * 应用许可证
      * */
     public String appLicence(){
