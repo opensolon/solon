@@ -60,9 +60,9 @@
         <lettuce.version>6.5.4.RELEASE</lettuce.version>
 
         <fastjson.version>1.2.83</fastjson.version>
-        <fastjson2.version>2.0.58</fastjson2.version>
+        <fastjson2.version>2.0.60</fastjson2.version>
         <okhttp.version>4.12.0</okhttp.version>
-        <hutool.version>5.8.36</hutool.version>
+        <hutool.version>5.8.41</hutool.version>
 
         <asm.version>9.8</asm.version>
         <jspecify.version>1.0.0</jspecify.version>
@@ -80,7 +80,7 @@
         <undertow.jastow.version>2.1.0.Final</undertow.jastow.version>
         <undertow.jboss-metadata.version>13.4.0.Final</undertow.jboss-metadata.version>
         <undertow.jboss-jsp.version>2.0.1.Final</undertow.jboss-jsp.version>
-        <tomcat.version>9.0.109</tomcat.version>
+        <tomcat.version>9.0.112</tomcat.version>
         <vertx.version>4.5.14</vertx.version>
         <rxjava.version>3.1.9</rxjava.version>
         <netty.version>4.1.118.Final</netty.version>
@@ -119,7 +119,7 @@
         <chronicle-bytes.version>2.27ea0</chronicle-bytes.version>
 
         <apache.pdfbox.version>2.0.29</apache.pdfbox.version>
-        <apache.poi.version>5.4.0</apache.poi.version>
+        <apache.poi.version>5.5.0</apache.poi.version>
         <commonmark.version>0.20.0</commonmark.version>
         <jsoup.version>1.18.3</jsoup.version>
 
@@ -131,7 +131,7 @@
         <hikaricp.version>4.0.3</hikaricp.version>
         <hikaricp5.version>5.1.0</hikaricp5.version>
 
-        <guava.version>33.4.8-jre</guava.version>
+        <guava.version>33.5.0-jre</guava.version>
 
         <slf4j.version>2.0.17</slf4j.version>
         <log4j.version>2.25.2</log4j.version>

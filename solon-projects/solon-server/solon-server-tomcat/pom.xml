@@ -31,6 +31,19 @@
             <artifactId>tomcat-embed-core</artifactId>
             <version>${tomcat.version}</version>
         </dependency>
+        
+        <!--jsp-->
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-jasper</artifactId>
+            <version>${tomcat.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <scope>provided</scope>
+        </dependency>
 
         <dependency>
             <groupId>org.noear</groupId>
@@ -41,6 +54,12 @@
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon-logging-simple</artifactId>
+            <scope>test</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-view-jsp</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
