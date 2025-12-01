@@ -83,7 +83,9 @@ public class UndertowServerAddJsp extends UndertowServer {
             throw new FileNotFoundException("Unable to find root");
         }
 
-        if (Solon.cfg().isDebugMode() && (rootURL.getProtocol().equals("jar") == false)) {
+        if (Solon.cfg().testing() == false && Solon.cfg().isDebugMode()
+                && (rootURL.getProtocol().equals("jar") == false)
+                && (rootURL.getProtocol().equals("zip") == false)) {
             //ps: 此处要使用 path
             int endIndex = rootURL.getPath().indexOf("target");
 
