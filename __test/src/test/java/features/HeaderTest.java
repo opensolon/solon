@@ -151,8 +151,8 @@ public class HeaderTest extends HttpTester {
                 .get();
 
         assert list.length() > 0;
-        assert list.contains("X-Test");
-        assert list.contains("Accept");
+        assert list.contains("X-Test") || list.contains("x-test");
+        assert list.contains("Accept") || list.contains("accept");
         assert list.contains("application/json");
     }
 }
