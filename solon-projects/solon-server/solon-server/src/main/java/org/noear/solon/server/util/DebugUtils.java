@@ -15,6 +15,7 @@
  */
 package org.noear.solon.server.util;
 
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.util.ResourceUtil;
 
@@ -31,6 +32,20 @@ import java.net.URL;
  */
 public class DebugUtils {
     /**
+     * 是否为测试地址
+     *
+     * @since 3.7
+     */
+    public static boolean isTestLocation(URL url) {
+        if (url.getPath().contains("/target/test-classes/") ||
+                url.getPath().contains("/build/classes/test/")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * 获取视图调试位置
      *
      * @param classLoader 类加载器
@@ -46,39 +61,42 @@ public class DebugUtils {
         }
 
         //添加调试模式
-        URL rooturi = ResourceUtil.getResource(classLoader, "/");
-        if (rooturi == null) {
+        URL sourceLocation = null;
+
+        if (Solon.app() == null) {
+            sourceLocation = ResourceUtil.getResource(classLoader, "/");
+        } else {
+            sourceLocation = Solon.app().sourceLocation();
+        }
+
+        if (sourceLocation == null) {
             return null;
         }
 
-        String rootdir = rooturi.toString();
-
-        if (rootdir.contains("target/classes/")) {
-            //兼容 maven
-            rootdir = rootdir.replace("target/classes/", "");
-        } else if (rootdir.contains("build/classes/main/")) {
-            //兼容 gradle
-            rootdir = rootdir.replace("build/classes/main/", "");
-        } else if (rootdir.contains("target/test-classes/")) {
-            //兼容 maven test
-            rootdir = rootdir.replace("target/test-classes/", "");
-        } else if (rootdir.contains("build/classes/test/")) {
-            //兼容 gradle test
-            rootdir = rootdir.replace("build/classes/test/", "");
-        }
-
+        String userdir = System.getProperty("user.dir");
         File dir = null;
 
-        if (rootdir.startsWith("file:")) {
-            if (pathPrefix.charAt(0) != '/') {
-                pathPrefix = "/" + pathPrefix;
+        if (pathPrefix.charAt(0) != '/') {
+            pathPrefix = "/" + pathPrefix;
+        }
+
+        if (isTestLocation(sourceLocation)) {
+            String dir_str = userdir + "/src/test/resources" + pathPrefix;
+            dir = new File(dir_str);
+            if (dir.exists() == false) {
+                dir_str = userdir + "/src/test/webapp" + pathPrefix;
+                dir = new File(dir_str);
             }
 
-            String dir_str = rootdir + "src/main/resources" + pathPrefix;
-            dir = new File(URI.create(dir_str));
             if (dir.exists() == false) {
-                dir_str = rootdir + "src/main/webapp" + pathPrefix;
-                dir = new File(URI.create(dir_str));
+                return null;
+            }
+        } else {
+            String dir_str = userdir + "/src/main/resources" + pathPrefix;
+            dir = new File(dir_str);
+            if (dir.exists() == false) {
+                dir_str = userdir + "/src/main/webapp" + pathPrefix;
+                dir = new File(dir_str);
             }
 
             if (dir.exists() == false) {

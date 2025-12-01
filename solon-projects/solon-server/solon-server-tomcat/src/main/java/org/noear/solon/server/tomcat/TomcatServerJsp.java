@@ -1,8 +1,10 @@
 package org.noear.solon.server.tomcat;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,10 +20,12 @@ import org.apache.jasper.servlet.JasperInitializer;
 import org.apache.jasper.servlet.JspServlet;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.core.AppClassLoader;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.server.prop.impl.HttpServerProps;
 import org.noear.solon.server.tomcat.jsp.JspTldLocator;
+import org.noear.solon.server.util.DebugUtils;
 
 public class TomcatServerJsp extends TomcatServer {
 
@@ -35,11 +39,9 @@ public class TomcatServerJsp extends TomcatServer {
 
         //jsp
         try {
-            String resourcePath = getResourceRoot();
-            if (Utils.isBlank(resourcePath)) {
-                resourcePath = getClass().getClassLoader().getResource("").getPath();
-            }
-            ctx.setDocBase(resourcePath);
+            String resRoot = getResourceRoot();
+            ctx.setDocBase(resRoot);
+
             addJspSupport(ctx);
             addTldSupport(ctx);
         } catch (Exception e) {
@@ -81,6 +83,7 @@ public class TomcatServerJsp extends TomcatServer {
 
     private String getResourceRoot() throws FileNotFoundException {
         URL rootURL = getRootPath();
+
         if (rootURL == null) {
             if (NativeDetector.inNativeImage()) {
                 return "";
@@ -89,20 +92,12 @@ public class TomcatServerJsp extends TomcatServer {
             throw new FileNotFoundException("Unable to find root");
         }
 
-//        if (Solon.cfg().testing() == false && Solon.cfg().isDebugMode()
-//                && (rootURL.getProtocol().equals("jar") == false)
-//                && (rootURL.getProtocol().equals("zip") == false)) {
-//            //ps: 此处要使用 path
-//            int endIndex = rootURL.getPath().indexOf("target");
-//
-//            if (endIndex > 0) {
-//                if (rootURL.getPath().indexOf("/test-classes/") > 0) {
-//                    return rootURL.getPath().substring(0, endIndex) + "src/test/resources/";
-//                } else {
-//                    return rootURL.getPath().substring(0, endIndex) + "src/main/resources/";
-//                }
-//            }
-//        }
+        if (Solon.cfg().isDebugMode() && Solon.cfg().isFilesMode()) {
+            File dir = DebugUtils.getDebugLocation(AppClassLoader.global(), "/");
+            if (dir != null) {
+                dir.toURI().getPath();
+            }
+        }
 
         return rootURL.getPath();
     }

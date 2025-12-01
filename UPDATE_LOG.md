@@ -32,6 +32,7 @@
 * 新增 solon-cloud-telemetry 插件
 * 新增 opentelemetry-solon-cloud-plugin 插件
 * 添加 solon SolonProps:appVersion "solon.app.version" 本置支持
+* 优化 solon-server DebugUtils 支持 jetty,tomcat,undertow jsp 调试目录构建
 * eggg 升为 1.0.10
 * snack4 升为 4.0.17
 * fastjson2 升为 2.0.60

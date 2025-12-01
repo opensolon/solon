@@ -44,8 +44,12 @@ public class JtFunctionLoaderFile implements JtFunctionLoader {
 
     static JtFunctionLoaderFile ofDebug() {
         //调试模式（直接连接源码资源目录）
-        File dir = DebugUtils.getDebugLocation(AppClassLoader.global(), debug_dir);
-        return new JtFunctionLoaderFile(dir, false);
+        if (Solon.cfg().isDebugMode() && Solon.cfg().isFilesMode()) {
+            File dir = DebugUtils.getDebugLocation(AppClassLoader.global(), debug_dir);
+            return new JtFunctionLoaderFile(dir, false);
+        }
+
+        return null;
     }
 
     private final Map<String, AFileModel> fileCached = new LinkedHashMap<>();

@@ -311,22 +311,22 @@
 <!--            <artifactId>solon-server-grizzly-add-webscoket</artifactId>-->
 <!--        </dependency>-->
 
+                <dependency>
+                    <groupId>org.noear</groupId>
+                    <artifactId>solon-server-smarthttp</artifactId>
+                </dependency>
+
 <!--                <dependency>-->
 <!--                    <groupId>org.noear</groupId>-->
-<!--                    <artifactId>solon-server-smarthttp</artifactId>-->
+<!--                    <artifactId>solon-server-tomcat</artifactId>-->
+<!--                    <version>${solon.version}</version>-->
 <!--                </dependency>-->
 
-                <dependency>
-                    <groupId>org.noear</groupId>
-                    <artifactId>solon-server-tomcat</artifactId>
-                    <version>${solon.version}</version>
-                </dependency>
-
-                <dependency>
-                    <groupId>org.noear</groupId>
-                    <artifactId>solon-server-tomcat-add-jsp</artifactId>
-                    <version>${solon.version}</version>
-                </dependency>
+<!--                <dependency>-->
+<!--                    <groupId>org.noear</groupId>-->
+<!--                    <artifactId>solon-server-tomcat-add-jsp</artifactId>-->
+<!--                    <version>${solon.version}</version>-->
+<!--                </dependency>-->
 
         <!--        <dependency>-->
         <!--            <groupId>org.noear</groupId>-->
@@ -334,31 +334,31 @@
         <!--        </dependency>-->
 
 
-        <!--                <dependency>-->
-        <!--                    <groupId>org.noear</groupId>-->
-        <!--                    <artifactId>solon-server-undertow</artifactId>-->
-        <!--                </dependency>-->
+<!--                        <dependency>-->
+<!--                            <groupId>org.noear</groupId>-->
+<!--                            <artifactId>solon-server-undertow</artifactId>-->
+<!--                        </dependency>-->
 
-        <!--                <dependency>-->
-        <!--                    <groupId>org.noear</groupId>-->
-        <!--                    <artifactId>solon-server-undertow-add-jsp</artifactId>-->
-        <!--                </dependency>-->
+<!--                        <dependency>-->
+<!--                            <groupId>org.noear</groupId>-->
+<!--                            <artifactId>solon-server-undertow-add-jsp</artifactId>-->
+<!--                        </dependency>-->
 
 
-        <!--                <dependency>-->
-        <!--                    <groupId>org.noear</groupId>-->
-        <!--                    <artifactId>solon-server-jetty</artifactId>-->
-        <!--                </dependency>-->
+<!--                        <dependency>-->
+<!--                            <groupId>org.noear</groupId>-->
+<!--                            <artifactId>solon-server-jetty</artifactId>-->
+<!--                        </dependency>-->
 
-        <!--                <dependency>-->
-        <!--                    <groupId>org.noear</groupId>-->
-        <!--                    <artifactId>solon-server-jetty-add-websocket</artifactId>-->
-        <!--                </dependency>-->
+<!--                        <dependency>-->
+<!--                            <groupId>org.noear</groupId>-->
+<!--                            <artifactId>solon-server-jetty-add-websocket</artifactId>-->
+<!--                        </dependency>-->
 
-        <!--                <dependency>-->
-        <!--                    <groupId>org.noear</groupId>-->
-        <!--                    <artifactId>solon-server-jetty-add-jsp</artifactId>-->
-        <!--                </dependency>-->
+<!--                        <dependency>-->
+<!--                            <groupId>org.noear</groupId>-->
+<!--                            <artifactId>solon-server-jetty-add-jsp</artifactId>-->
+<!--                        </dependency>-->
 
 
         <dependency>

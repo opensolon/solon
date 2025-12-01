@@ -30,9 +30,12 @@ import org.noear.solon.server.undertow.jsp.JspResourceManager;
 import org.noear.solon.server.undertow.jsp.JspServletEx;
 import org.noear.solon.server.undertow.jsp.JspTldLocator;
 import org.noear.solon.core.AppClassLoader;
+import org.noear.solon.server.util.DebugUtils;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -52,9 +55,10 @@ public class UndertowServerAddJsp extends UndertowServer {
         DeploymentInfo builder = initDeploymentInfo();
 
         //添加jsp处理
-        String fileRoot = getResourceRoot();
-        builder.setResourceManager(new JspResourceManager(AppClassLoader.global(), fileRoot))
-                .addServlet(new ServletInfo("ACTServlet", UtHttpContextServletHandler.class)
+        String resRoot = getResourceRoot();
+        builder.setResourceManager(new JspResourceManager(AppClassLoader.global(), resRoot));
+
+        builder.addServlet(new ServletInfo("ACTServlet", UtHttpContextServletHandler.class)
                         .addMapping("/")
                         .setAsyncSupported(true))
                 .addServlet(JspServletEx.createServlet("JSPServlet", "*.jsp"));
@@ -75,26 +79,19 @@ public class UndertowServerAddJsp extends UndertowServer {
 
     protected String getResourceRoot() throws FileNotFoundException {
         URL rootURL = getRootPath();
+
         if (rootURL == null) {
             if (NativeDetector.inNativeImage()) {
-                return "";
+                return null;
             }
 
             throw new FileNotFoundException("Unable to find root");
         }
 
-        if (Solon.cfg().testing() == false && Solon.cfg().isDebugMode()
-                && (rootURL.getProtocol().equals("jar") == false)
-                && (rootURL.getProtocol().equals("zip") == false)) {
-            //ps: 此处要使用 path
-            int endIndex = rootURL.getPath().indexOf("target");
-
-            if (endIndex > 0) {
-                if (rootURL.getPath().indexOf("/test-classes/") > 0) {
-                    return rootURL.getPath().substring(0, endIndex) + "src/test/resources/";
-                } else {
-                    return rootURL.getPath().substring(0, endIndex) + "src/main/resources/";
-                }
+        if (Solon.cfg().isDebugMode() && Solon.cfg().isFilesMode()) {
+            File dir = DebugUtils.getDebugLocation(AppClassLoader.global(), "/");
+            if (dir != null) {
+                dir.toURI().getPath();
             }
         }
 

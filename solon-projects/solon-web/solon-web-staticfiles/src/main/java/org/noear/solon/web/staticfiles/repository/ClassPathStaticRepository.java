@@ -71,7 +71,7 @@ public class ClassPathStaticRepository implements StaticRepository {
 
         this.location = location;
 
-        if (Solon.cfg().isDebugMode()) {
+        if (Solon.cfg().isDebugMode() && Solon.cfg().isFilesMode()) {
             this.locationDebug = DebugUtils.getDebugLocation(classLoader, location);
         }
     }

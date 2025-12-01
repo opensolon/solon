@@ -94,7 +94,7 @@ public class JtExecutorAdapter implements IJtExecutorAdapter, IJtConfigAdapter {
     public AFileModel fileGet(String path) throws Exception {
         AFileModel file = null;
 
-        if (Solon.cfg().isDebugMode()) {
+        if (Solon.cfg().isDebugMode() && forDebug != null) {
             file = forDebug.fileGet(path);
         }
 
