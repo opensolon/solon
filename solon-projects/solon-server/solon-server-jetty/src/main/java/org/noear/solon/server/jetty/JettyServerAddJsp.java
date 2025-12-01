@@ -109,7 +109,7 @@ public class JettyServerAddJsp extends JettyServer {
         if (Solon.cfg().isDebugMode() && Solon.cfg().isFilesMode()) {
             File dir = DebugUtils.getDebugLocation(AppClassLoader.global(), "/");
             if (dir != null) {
-                dir.toURI().getPath();
+                return dir.toURI().getPath();
             }
         }
 

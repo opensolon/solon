@@ -91,7 +91,7 @@ public class UndertowServerAddJsp extends UndertowServer {
         if (Solon.cfg().isDebugMode() && Solon.cfg().isFilesMode()) {
             File dir = DebugUtils.getDebugLocation(AppClassLoader.global(), "/");
             if (dir != null) {
-                dir.toURI().getPath();
+                return dir.toURI().getPath();
             }
         }
 
