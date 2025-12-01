@@ -76,11 +76,11 @@ public class UndertowServer extends UndertowServerBase implements ServerLifecycl
         }
 
         if (ServerProps.request_maxBodySize > 0) {
-            builder.setServerOption(UndertowOptions.MAX_ENTITY_SIZE, ServerProps.request_maxBodySize);
+            builder.setServerOption(UndertowOptions.MAX_ENTITY_SIZE, ServerProps.request_maxFileRequestSize());
         }
 
         if (ServerProps.request_maxFileSize > 0) {
-            builder.setServerOption(UndertowOptions.MULTIPART_MAX_ENTITY_SIZE, ServerProps.request_maxFileSize);
+            builder.setServerOption(UndertowOptions.MULTIPART_MAX_ENTITY_SIZE, ServerProps.request_maxFileRequestSize());
         }
 
 
