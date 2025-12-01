@@ -56,9 +56,15 @@ public class DebugUtils {
         if (rootdir.contains("target/classes/")) {
             //兼容 maven
             rootdir = rootdir.replace("target/classes/", "");
-        } else if (rootdir.contains("build/classes/java/main/")) {
+        } else if (rootdir.contains("build/classes/main/")) {
             //兼容 gradle
-            rootdir = rootdir.replace("build/classes/java/main/", "");
+            rootdir = rootdir.replace("build/classes/main/", "");
+        } else if (rootdir.contains("target/test-classes/")) {
+            //兼容 maven test
+            rootdir = rootdir.replace("target/test-classes/", "");
+        } else if (rootdir.contains("build/classes/test/")) {
+            //兼容 gradle test
+            rootdir = rootdir.replace("build/classes/test/", "");
         }
 
         File dir = null;
