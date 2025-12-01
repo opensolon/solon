@@ -17,6 +17,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-server-jetty</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
         </dependency>
@@ -39,6 +44,23 @@
             <version>${jetty.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-view-jsp</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-logging-simple</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 </project>

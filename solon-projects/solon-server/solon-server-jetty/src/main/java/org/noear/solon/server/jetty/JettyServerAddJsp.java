@@ -20,6 +20,8 @@ import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.resource.PathResource;
+import org.noear.solon.Solon;
+import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.server.jetty.jsp.JspLifeCycle;
 import org.noear.solon.server.jetty.jsp.JspTldLocator;
@@ -27,7 +29,9 @@ import org.noear.solon.server.prop.impl.HttpServerProps;
 
 import javax.servlet.ServletContext;
 import javax.servlet.descriptor.TaglibDescriptor;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -47,7 +51,7 @@ public class JettyServerAddJsp extends JettyServer {
         ServletContextHandler handler = getServletHandler();
 
         //jsp 资源的根目录
-        handler.setBaseResource(new PathResource(ResourceUtil.getResource("/")));
+        handler.setResourceBase(getResourceRoot());
 
         addJspSupport(handler);
         addTdlSupport(handler.getServletContext());
@@ -87,6 +91,57 @@ public class JettyServerAddJsp extends JettyServer {
             for (TaglibDescriptor descriptor : tagLibInfos.values()) {
                 jspConfig.addTaglibDescriptor(descriptor);
             }
+        }
+    }
+
+    private String getResourceRoot() throws FileNotFoundException {
+        URL rootURL = getRootPath();
+        if (rootURL == null) {
+            if (NativeDetector.inNativeImage()) {
+                return "";
+            }
+
+            throw new FileNotFoundException("Unable to find root");
+        }
+
+        if (Solon.cfg().isDebugMode() && (rootURL.getProtocol().equals("jar") == false)) {
+            //ps: 此处要使用 path
+            int endIndex = rootURL.getPath().indexOf("target");
+
+            if (endIndex > 0) {
+                if (rootURL.getPath().indexOf("/test-classes/") > 0) {
+                    return rootURL.getPath().substring(0, endIndex) + "src/test/resources/";
+                } else {
+                    return rootURL.getPath().substring(0, endIndex) + "src/main/resources/";
+                }
+            }
+        }
+
+        return rootURL.getPath();
+    }
+
+    private URL getRootPath() {
+        URL root = ResourceUtil.getResource("/");
+        if (root != null) {
+            return root;
+        }
+
+        try {
+            URL temp = ResourceUtil.getResource(""); //有些环境，/ 取不到根
+            if (temp == null) {
+                return null;
+            }
+
+            String path = temp.toString();
+            if (path.startsWith("jar:")) {
+                int endIndex = path.indexOf("!");
+                path = path.substring(0, endIndex + 1) + "/";
+            } else {
+                return null;
+            }
+            return new URL(path);
+        } catch (MalformedURLException e) {
+            return null;
         }
     }
 }
