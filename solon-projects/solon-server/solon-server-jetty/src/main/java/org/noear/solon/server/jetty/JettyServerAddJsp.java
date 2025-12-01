@@ -100,7 +100,7 @@ public class JettyServerAddJsp extends JettyServer {
 
         if (rootURL == null) {
             if (NativeDetector.inNativeImage()) {
-                return null;
+                return "";
             }
 
             throw new FileNotFoundException("Unable to find root");
