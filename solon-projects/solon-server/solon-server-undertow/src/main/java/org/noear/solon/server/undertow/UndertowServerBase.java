@@ -123,48 +123,4 @@ abstract class UndertowServerBase implements ServerLifecycle, HttpServerConfigur
 
         return builder;
     }
-
-    protected String getResourceRoot() throws FileNotFoundException {
-        URL rootURL = getRootPath();
-        if (rootURL == null) {
-            if (NativeDetector.inNativeImage()) {
-                return "";
-            }
-
-            throw new FileNotFoundException("Unable to find root");
-        }
-
-        String resURL = rootURL.toString();
-
-        if (Solon.cfg().isDebugMode() && (resURL.startsWith("jar:") == false)) {
-            int endIndex = resURL.indexOf("target");
-            return resURL.substring(0, endIndex) + "src/main/resources/";
-        }
-
-        return "";
-    }
-
-    protected URL getRootPath() {
-        URL root = ResourceUtil.getResource("/");
-        if (root != null) {
-            return root;
-        }
-        try {
-            URL temp = ResourceUtil.getResource("");
-            if (temp == null) {
-                return null;
-            }
-
-            String path = temp.toString();
-            if (path.startsWith("jar:")) {
-                int endIndex = path.indexOf("!");
-                path = path.substring(0, endIndex + 1) + "/";
-            } else {
-                return null;
-            }
-            return new URL(path);
-        } catch (MalformedURLException e) {
-            return null;
-        }
-    }
 }

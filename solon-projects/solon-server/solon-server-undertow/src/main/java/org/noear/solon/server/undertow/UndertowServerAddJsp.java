@@ -21,6 +21,9 @@ import io.undertow.server.HttpHandler;
 import io.undertow.servlet.api.*;
 import org.apache.jasper.deploy.JspPropertyGroup;
 import org.apache.jasper.deploy.TagLibraryInfo;
+import org.noear.solon.Solon;
+import org.noear.solon.core.runtime.NativeDetector;
+import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.server.prop.impl.HttpServerProps;
 import org.noear.solon.server.undertow.http.UtHttpContextServletHandler;
 import org.noear.solon.server.undertow.jsp.JspResourceManager;
@@ -28,6 +31,9 @@ import org.noear.solon.server.undertow.jsp.JspServletEx;
 import org.noear.solon.server.undertow.jsp.JspTldLocator;
 import org.noear.solon.core.AppClassLoader;
 
+import java.io.FileNotFoundException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,7 +54,9 @@ public class UndertowServerAddJsp extends UndertowServer {
         //添加jsp处理
         String fileRoot = getResourceRoot();
         builder.setResourceManager(new JspResourceManager(AppClassLoader.global(), fileRoot))
-                .addServlet(new ServletInfo("ACTServlet", UtHttpContextServletHandler.class).addMapping("/").setAsyncSupported(true))
+                .addServlet(new ServletInfo("ACTServlet", UtHttpContextServletHandler.class)
+                        .addMapping("/")
+                        .setAsyncSupported(true))
                 .addServlet(JspServletEx.createServlet("JSPServlet", "*.jsp"));
 
 
@@ -63,5 +71,55 @@ public class UndertowServerAddJsp extends UndertowServer {
         manager.deploy();
 
         return manager.start();
+    }
+
+    protected String getResourceRoot() throws FileNotFoundException {
+        URL rootURL = getRootPath();
+        if (rootURL == null) {
+            if (NativeDetector.inNativeImage()) {
+                return "";
+            }
+
+            throw new FileNotFoundException("Unable to find root");
+        }
+
+        if (Solon.cfg().isDebugMode() && (rootURL.getProtocol().equals("jar") == false)) {
+            //ps: 此处要使用 path
+            int endIndex = rootURL.getPath().indexOf("target");
+
+            if (endIndex > 0) {
+                if (rootURL.getPath().indexOf("/test-classes/") > 0) {
+                    return rootURL.getPath().substring(0, endIndex) + "src/test/resources/";
+                } else {
+                    return rootURL.getPath().substring(0, endIndex) + "src/main/resources/";
+                }
+            }
+        }
+
+        return rootURL.getPath();
+    }
+
+    protected URL getRootPath() {
+        URL root = ResourceUtil.getResource("/");
+        if (root != null) {
+            return root;
+        }
+        try {
+            URL temp = ResourceUtil.getResource("");
+            if (temp == null) {
+                return null;
+            }
+
+            String path = temp.toString();
+            if (path.startsWith("jar:")) {
+                int endIndex = path.indexOf("!");
+                path = path.substring(0, endIndex + 1) + "/";
+            } else {
+                return null;
+            }
+            return new URL(path);
+        } catch (MalformedURLException e) {
+            return null;
+        }
     }
 }
