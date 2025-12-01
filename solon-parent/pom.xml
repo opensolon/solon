@@ -73,7 +73,7 @@
         <jakarta.servlet.version>5.0.0</jakarta.servlet.version>
 
         <smartsocket.version>1.7.4</smartsocket.version>
-        <smarthttp.version>2.5.16</smarthttp.version>
+        <smarthttp.version>2.5.17</smarthttp.version>
         <grizzly.version>3.0.1</grizzly.version>
         <jetty.version>9.4.58.v20250814</jetty.version>
         <undertow.version>2.2.38.Final</undertow.version>

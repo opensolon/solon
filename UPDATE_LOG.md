@@ -36,6 +36,7 @@
 * snack4 升为 4.0.17
 * fastjson2 升为 2.0.60
 * hutool 升为 5.8.41
+* smarthttp 升为 2.5.17
 * tomcat 升为 9.0.112
 
 
