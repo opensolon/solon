@@ -89,20 +89,20 @@ public class TomcatServerJsp extends TomcatServer {
             throw new FileNotFoundException("Unable to find root");
         }
 
-        if (Solon.cfg().testing() == false && Solon.cfg().isDebugMode()
-                && (rootURL.getProtocol().equals("jar") == false)
-                && (rootURL.getProtocol().equals("zip") == false)) {
-            //ps: 此处要使用 path
-            int endIndex = rootURL.getPath().indexOf("target");
-
-            if (endIndex > 0) {
-                if (rootURL.getPath().indexOf("/test-classes/") > 0) {
-                    return rootURL.getPath().substring(0, endIndex) + "src/test/resources/";
-                } else {
-                    return rootURL.getPath().substring(0, endIndex) + "src/main/resources/";
-                }
-            }
-        }
+//        if (Solon.cfg().testing() == false && Solon.cfg().isDebugMode()
+//                && (rootURL.getProtocol().equals("jar") == false)
+//                && (rootURL.getProtocol().equals("zip") == false)) {
+//            //ps: 此处要使用 path
+//            int endIndex = rootURL.getPath().indexOf("target");
+//
+//            if (endIndex > 0) {
+//                if (rootURL.getPath().indexOf("/test-classes/") > 0) {
+//                    return rootURL.getPath().substring(0, endIndex) + "src/test/resources/";
+//                } else {
+//                    return rootURL.getPath().substring(0, endIndex) + "src/main/resources/";
+//                }
+//            }
+//        }
 
         return rootURL.getPath();
     }
