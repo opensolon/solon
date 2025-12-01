@@ -39,6 +39,7 @@
             <version>${tomcat.version}</version>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
@@ -56,13 +57,5 @@
             <artifactId>solon-logging-simple</artifactId>
             <scope>test</scope>
         </dependency>
-        
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-view-jsp</artifactId>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
-
-
 </project>
