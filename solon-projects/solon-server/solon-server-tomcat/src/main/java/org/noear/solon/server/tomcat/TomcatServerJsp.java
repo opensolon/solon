@@ -56,7 +56,7 @@ public class TomcatServerJsp extends TomcatServer {
         Wrapper jspServlet = Tomcat.addServlet(context, "jsp", new JspServlet());
         jspServlet.addInitParameter("fork", "false");
         jspServlet.addInitParameter("xpoweredBy", "false");
-
+        jspServlet.setLoadOnStartup(3);
         if (Solon.cfg().isDebugMode()) {
             jspServlet.addInitParameter("development", "true"); // 开发模式，便于调试
         }
