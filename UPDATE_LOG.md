@@ -29,10 +29,26 @@
 
 ### v3.7.3
 
-* 新增 solon-cloud-telemetry 插件
-* 新增 opentelemetry-solon-cloud-plugin 插件
-* 添加 solon SolonProps:appVersion "solon.app.version" 本置支持
-* 优化 solon-server DebugUtils 支持 jetty,tomcat,undertow jsp 调试目录构建
+* 插件 `solon-flow` 第五次预览
+* 新增 `solon-cloud-telemetry` 插件
+* 新增 `opentelemetry-solon-cloud-plugin` 插件
+* 添加 `solon` SolonProps:appVersion "solon.app.version" 本置支持
+* 添加 `solon-server-tomcat` jsp 适配支持
+* 添加 `solon-flow` Node:task 硬编码能力（直接设置 TaskComponent），支持多租全动态场景
+* 添加 `solon-flow` Node:when 硬编码能力（直接设置 ConditionComponent），支持多租全动态场景
+* 添加 `solon-flow` Link:when 硬编码能力（直接设置 ConditionComponent），支持多租全动态场景
+* 添加 `solon-flow` StateResult ，在计算方面比 StatefulTask 更适合语义
+* 添加 `solon-flow` FlowContext:stop(),interrupt() 方法
+* 添加 `solon-flow` Graph 快捷创建方法
+* 添加 `solon-flow` FlowStatefulService:eval 方法
+* 添加 `solon-server-tomcat-jakarta` jsp 支持
+* 优化 `solon-server` DebugUtils 支持 jetty,tomcat,undertow jsp 调试目录构建
+* 优化 `solon-server-undertow` 请求大小控制
+* 优化 `solon-server-jetty` jsp 适配
+* 优化 `solon-ai-core` ToolSchemaUtil 扩展能力，支持注解处理定制（方便第三方集成）
+* 优化 `solon-ai-mcp` MCP 客户端与服务端异常链接状态 立即返回
+* 调整 `mybatis-solon-plugin` 当配置的 mapper 没有对应注册时改为 warn 日志打印（之前为异常）
+* 修复 `solon-server-jetty-jakarta` jsp 支持
 * eggg 升为 1.0.10
 * snack4 升为 4.0.17
 * fastjson2 升为 2.0.60
