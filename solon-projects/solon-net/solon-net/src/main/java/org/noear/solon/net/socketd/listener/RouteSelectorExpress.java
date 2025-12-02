@@ -18,8 +18,6 @@ package org.noear.solon.net.socketd.listener;
 import org.noear.socketd.transport.core.Listener;
 import org.noear.socketd.transport.core.listener.RouteSelector;
 import org.noear.solon.core.handle.MethodType;
-import org.noear.solon.core.route.Routing;
-import org.noear.solon.core.route.RoutingDefault;
 import org.noear.solon.core.route.RoutingTable;
 import org.noear.solon.core.route.RoutingTableDefault;
 
@@ -40,9 +38,7 @@ public class RouteSelectorExpress implements RouteSelector<Listener> {
 
     @Override
     public void put(String path, Listener listener) {
-        Routing<Listener> routing = new RoutingDefault<>(path, null, MethodType.SOCKET, 0, listener);
-
-        inner.add(routing);
+        inner.add(path, MethodType.SOCKET, 0, null, listener);
     }
 
     @Override

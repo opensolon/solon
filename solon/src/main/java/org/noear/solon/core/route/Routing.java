@@ -17,6 +17,8 @@ package org.noear.solon.core.route;
 
 import org.noear.solon.core.handle.MethodType;
 
+import java.util.List;
+
 /**
  * 路由记录
  *
@@ -41,32 +43,52 @@ public interface Routing<T> {
     int globstar();
 
     /**
-     * 版本号
-     */
-    String version();
-
-    /**
      * 方法
      */
     MethodType method();
 
     /**
      * 路由目标
+     *
+     * @deprecated 3.7
      */
-    T target();
+    @Deprecated
+    default T target() {
+        return target(null);
+    }
+
+    /**
+     * 获取所有目标
+     *
+     * @since 3.7
+     */
+    List<VersionedTarget<T>> targets();
+
+    /**
+     * 匹配版本目标
+     *
+     * @param version2 版本
+     * @since 3.7
+     */
+    T target(Version version2);
 
     /**
      * 是否匹配
+     *
+     * @since 2.5
+     * @since 3.4
+     * @since 3.7
      */
-    boolean matches(MethodType method2, String path2, String version2);
+    boolean matches(MethodType method2, String path2);
 
     /**
      * 匹配程度（0,不匹配；1,匹配路径；2,完全匹配）
      *
      * @since 2.5
      * @since 3.4
+     * @since 3.7
      */
-    int degrees(MethodType method2, String path2, String version2);
+    int degrees(MethodType method2, String path2);
 
 
     /**
@@ -74,6 +96,7 @@ public interface Routing<T> {
      *
      * @since 2.6
      * @since 3.4
+     * @since 3.7
      */
-    boolean test(String path2, String version2);
+    boolean test(String path2);
 }

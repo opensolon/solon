@@ -15,10 +15,13 @@
  */
 package org.noear.solon.core.route;
 
-import org.noear.solon.Utils;
 import org.noear.solon.core.SignalType;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.util.PathMatcher;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * 路由默认实现
@@ -28,13 +31,8 @@ import org.noear.solon.core.util.PathMatcher;
  * @since 3.4
  */
 public class RoutingDefault<T> implements Routing<T> {
-    
-    public RoutingDefault(String path, String version, MethodType method, T target) {
-        this(path, version, method, 0, target);
-    }
-
-    public RoutingDefault(String path, String version, MethodType method, int index, T target) {
-        if(path.startsWith("/") == false){
+    public RoutingDefault(String path, MethodType method, int index) {
+        if (path.startsWith("/") == false) {
             path = "/" + path;
         }
 
@@ -44,28 +42,35 @@ public class RoutingDefault<T> implements Routing<T> {
         this.path = path;
         this.globstar = path.indexOf("/**");
 
-        if (Utils.isEmpty(version)) {
-            this.cachedVersion = null;
-        } else {
-            this.cachedVersion = Version.of(version); // 预编译版本对象
-        }
 
         this.index = index;
-        this.target = target;
     }
 
     private final PathMatcher rule; //path rule 规则
 
     private final int index; //顺序
     private final String path; //path
-    /**
-     * 路由定义的版本（预编译版本对象）
-     */
-    private final Version cachedVersion;
-
-    private final T target;//代理
     private final MethodType method; //方式
     private final int globstar;
+
+    private VersionedTarget<T> versionedTargetNull;//目标
+    private List<VersionedTarget<T>> versionedTargets = new ArrayList<>();
+
+    public RoutingDefault<T> addVersionTarget(Version version, T target) {
+        VersionedTarget tmp = new VersionedTarget<>(version, target);
+
+        if (tmp.getVersion() == null) {
+            versionedTargetNull = tmp;
+        }
+
+        versionedTargets.add(tmp);
+
+        if (versionedTargets.size() > 1) {
+            Collections.sort(versionedTargets);
+        }
+
+        return this;
+    }
 
     @Override
     public int index() {
@@ -82,14 +87,35 @@ public class RoutingDefault<T> implements Routing<T> {
         return globstar;
     }
 
-    @Override
-    public String version() {
-        return cachedVersion==null ? null : cachedVersion.getOriginal();
+    /**
+     * 获取所有目标
+     *
+     * @since 3.7
+     */
+    public List<VersionedTarget<T>> targets() {
+        return versionedTargets;
     }
 
+    /**
+     * 匹配版本目标
+     *
+     * @since 3.7
+     */
     @Override
-    public T target() {
-        return target;
+    public T target(Version version2) {
+        if (version2 == null) {
+            if (versionedTargetNull != null) {
+                return versionedTargetNull.getTarget();
+            }
+        }
+
+        for (VersionedTarget<T> tmp : versionedTargets) {
+            if (tmp.getVersion() != null && tmp.getVersion().includes(version2)) {
+                return tmp.getTarget();
+            }
+        }
+
+        return null;
     }
 
     @Override
@@ -98,34 +124,18 @@ public class RoutingDefault<T> implements Routing<T> {
     }
 
     /**
-     * 版本是否匹配（高性能版本）
-     * 
-     * @param requestVersion 请求的版本（如 "1.0", "1.1", "1.2"）
-     * @return 是否匹配
-     */
-    private boolean matchesVersion(String requestVersion) {
-        if (cachedVersion == null || Utils.isEmpty(requestVersion)) {
-            return false;
-        }
-        
-        return cachedVersion.matches(requestVersion);
-    }
-    
-
-
-    /**
      * 是否匹配
      */
     @Override
-    public boolean matches(MethodType method2, String path2, String version2) {
+    public boolean matches(MethodType method2, String path2) {
         if (MethodType.ALL == method) {
-            return matches0(path2, version2);
+            return matches0(path2);
         } else if (MethodType.HTTP == method) { //不是null时，不能用==
             if (method2.signal == SignalType.HTTP) {
-                return matches0(path2, version2);
+                return matches0(path2);
             }
         } else if (method2 == method) {
-            return matches0(path2, version2);
+            return matches0(path2);
         }
 
         return false;
@@ -137,8 +147,8 @@ public class RoutingDefault<T> implements Routing<T> {
      * @since 2.5
      */
     @Override
-    public int degrees(MethodType method2, String path2, String version2) {
-        if (matches0(path2, version2)) {
+    public int degrees(MethodType method2, String path2) {
+        if (matches0(path2)) {
             if (MethodType.ALL == method) {
                 return 2;
             } else if (MethodType.HTTP == method) { //不是null时，不能用==
@@ -156,21 +166,11 @@ public class RoutingDefault<T> implements Routing<T> {
     }
 
     @Override
-    public boolean test(String path2, String version2) {
-        return matches0(path2, version2);
+    public boolean test(String path2) {
+        return matches0(path2);
     }
 
-    private boolean matches0(String path2, String version2) {
-        if (cachedVersion != null) {
-            //如果有版本申明
-            if (!matchesVersion(version2)) {
-                return false;
-            }
-        } else if (Utils.isNotEmpty(version2)) {
-            //如果有版本要求
-            return false;
-        }
-
+    private boolean matches0(String path2) {
         //1.如果当前为 /**，任何路径都可命中
         if (globstar == 0) {
             return true;
@@ -192,12 +192,5 @@ public class RoutingDefault<T> implements Routing<T> {
                 ", method=" + method +
                 ", path='" + path + '\'' +
                 '}';
-    }
-    
-    /**
-     * 获取缓存的版本对象（用于性能优化）
-     */
-    public Version getCachedVersion() {
-        return cachedVersion;
     }
 }

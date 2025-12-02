@@ -38,6 +38,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.route.Routing;
+import org.noear.solon.core.route.VersionedTarget;
 import org.noear.solon.core.util.EgggUtil;
 import org.noear.solon.core.util.NameUtil;
 import org.noear.solon.core.util.PathUtil;
@@ -195,16 +196,20 @@ public class OpenApi2Builder {
         //@since 3.0
         Collection<Routing<Handler>> routingCollection = Solon.app().router().findAll();
         for (Routing<Handler> routing : routingCollection) {
-            if (routing.target() instanceof Action) {
-                //如果是 Action
-                resolveAction(apiMap, routing);
-            }
+            for (VersionedTarget<Handler> vt : routing.targets()) {
+                if (vt.getTarget() instanceof Action) {
+                    //如果是 Action
+                    resolveAction(apiMap, routing, (Action) vt.getTarget());
+                }
 
-            if (routing.target() instanceof Gateway) {
-                //如果是 Gateway (网关)
-                for (Routing<Handler> routing2 : ((Gateway) routing.target()).getMainRouting().getAll()) {
-                    if (routing2.target() instanceof Action) {
-                        resolveAction(apiMap, routing2);
+                if (vt.getTarget() instanceof Gateway) {
+                    //如果是 Gateway (网关)
+                    for (Routing<Handler> routing2 : ((Gateway) vt.getTarget()).getMainRouting().getAll()) {
+                        for (VersionedTarget<Handler> vt2 : routing2.targets()) {
+                            if (vt2.getTarget() instanceof Action) {
+                                resolveAction(apiMap, routing2,  (Action) vt2.getTarget());
+                            }
+                        }
                     }
                 }
             }
@@ -223,8 +228,7 @@ public class OpenApi2Builder {
         return result;
     }
 
-    private void resolveAction(Map<Class<?>, List<ActionHolder>> apiMap, Routing<Handler> routing) {
-        Action action = (Action) routing.target();
+    private void resolveAction(Map<Class<?>, List<ActionHolder>> apiMap, Routing<Handler> routing, Action action) {
         Class<?> controller = action.controller().clz();
 
         boolean matched = docket.apis().stream().anyMatch(res -> res.test(action));

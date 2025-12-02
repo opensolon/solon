@@ -33,6 +33,7 @@
 * 新增 `solon-cloud-telemetry` 插件
 * 新增 `opentelemetry-solon-cloud-plugin` 插件
 * 添加 `solon` SolonProps:appVersion `solon.app.version` 配置支持
+* 添加 `solon` 接口版本的模式匹配支持（`1.0+`）
 * 添加 `solon-server-tomcat` jsp 适配支持
 * 添加 `solon-flow` Node:task 硬编码能力（直接设置 TaskComponent），支持多租全动态场景
 * 添加 `solon-flow` Node:when 硬编码能力（直接设置 ConditionComponent），支持多租全动态场景

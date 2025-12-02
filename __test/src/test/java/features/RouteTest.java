@@ -34,13 +34,15 @@ public class RouteTest {
     @Test
     public void routingDefault() {
         //Mvc 里用的 Mapping 路由记录
-        RoutingDefault routingDefault = new RoutingDefault("/captchaImage", null, MethodType.GET, null);
-        assert routingDefault.matches(MethodType.GET, "/captchaImage", null);
-        assert routingDefault.matches(MethodType.GET, "/captchaimage", null) == false;
+        RoutingDefault routingDefault = new RoutingDefault("/captchaImage", MethodType.GET, 0)
+                .addVersionTarget(null, null);
 
-        routingDefault = new RoutingDefault("/captchaimage", null, MethodType.GET, null);
-        assert routingDefault.matches(MethodType.GET, "/captchaImage", null) == false;
-        assert routingDefault.matches(MethodType.GET, "/captchaimage", null);
+        assert routingDefault.matches(MethodType.GET, "/captchaImage");
+        assert routingDefault.matches(MethodType.GET, "/captchaimage") == false;
+
+        routingDefault = new RoutingDefault("/captchaimage", MethodType.GET, 0);
+        assert routingDefault.matches(MethodType.GET, "/captchaImage") == false;
+        assert routingDefault.matches(MethodType.GET, "/captchaimage");
     }
 
     @Test

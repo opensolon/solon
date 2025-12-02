@@ -60,9 +60,7 @@ public class PathWebSocketListener implements WebSocketListener {
      */
     public PathWebSocketListener of(String path, int index, WebSocketListener listener) {
         WebSocketListener lh = new ExpressWebSocketListener(path, listener);
-        Routing<WebSocketListener> routing = new RoutingDefault<>(path, null, MethodType.SOCKET, index, lh);
-
-        routingTable.add(routing);
+        routingTable.add(path, MethodType.SOCKET, index, null, lh);
 
         return this;
     }

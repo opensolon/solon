@@ -60,8 +60,7 @@ public class RouterDefault implements Router, HandlerSlots {
     }
 
     private void doAdd(String path, MethodType method, int index, Handler handler) {
-        RoutingDefault routing = new RoutingDefault<>(path, handler.version(), method, index, handler);
-        table.add(routing);
+        table.add(path, method, index, handler.version(), handler);
     }
 
     private String doGetPathPrefix(Class<?> clz) {
@@ -169,7 +168,6 @@ public class RouterDefault implements Router, HandlerSlots {
     public Collection<Routing<Handler>> findBy(Class<?> controllerClz) {
         return table.getBy(controllerClz);
     }
-
 
     /**
      * 移除路由关系

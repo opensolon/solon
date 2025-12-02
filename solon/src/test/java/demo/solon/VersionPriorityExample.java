@@ -1,4 +1,4 @@
-package org.noear.solon.core.route;
+package demo.solon;
 
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;

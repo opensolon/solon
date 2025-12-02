@@ -18,9 +18,11 @@ package org.noear.solon.core.route;
 import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.handle.Result;
+import org.noear.solon.core.util.Assert;
 import org.noear.solon.core.util.RankEntity;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 /**
@@ -31,59 +33,43 @@ import java.util.stream.Collectors;
  * @since 3.4
  * */
 public class RoutingTableDefault<T> implements RoutingTable<T> {
-    /**
-     * 普通路由表（无版本）
-     */
-    private LinkedList<RankEntity<Routing<T>>> table = new LinkedList<>();
-    
-    /**
-     * 版本路由表（按版本号排序）
-     */
-    private Map<String, LinkedList<RankEntity<Routing<T>>>> versionedTables = new HashMap<>();
+    private final LinkedList<RankEntity<Routing<T>>> table = new LinkedList<>();
+    private final Map<String, RoutingDefault<T>> routingCache = new ConcurrentHashMap<>();
+    private final Map<String, Version> versionCache = new ConcurrentHashMap<>();
 
+
+    /**
+     * 获取版本对象（带缓存）
+     */
+    private Version versionOf(String versionStr) {
+        if (Assert.isEmpty(versionStr)) {
+            return null;
+        }
+
+        return versionCache.computeIfAbsent(versionStr, Version::new);
+    }
 
     /**
      * 添加路由记录
      *
-     * @param routing 路由
+     * @param path       路径
+     * @param method     方式
+     * @param index      序位
+     * @param versionStr 版本字符串（x.y.z）
+     * @param target     目标
      */
     @Override
-    public void add(Routing<T> routing) {
-        String version = routing.version();
-        
-        if (version != null && !version.isEmpty()) {
-            // 有版本的路由：按路径+版本分组
-            addVersionedRouting(routing);
-        } else {
-            // 普通路由：使用原有逻辑
-            addNormalRouting(routing);
-        }
+    public void add(String path, MethodType method, int index, String versionStr, T target) {
+        String key = path + ":" + method.name;
+
+        routingCache.computeIfAbsent(key, k -> {
+            RoutingDefault<T> routing = new RoutingDefault<>(path, method, index);
+            doAdd(routing);
+            return routing;
+        }).addVersionTarget(versionOf(versionStr), target);
     }
-    
-    /**
-     * 添加版本化路由
-     */
-    private void addVersionedRouting(Routing<T> routing) {
-        String path = routing.path();
-        
-        // 获取或创建该路径的版本路由表
-        LinkedList<RankEntity<Routing<T>>> versionTable = versionedTables.computeIfAbsent(path, k -> new LinkedList<>());
-        
-        // 计算版本优先级
-        int versionLevel = getVersionPriority(routing);
-        
-        RankEntity<Routing<T>> entity = new RankEntity<>(routing, routing.index(), versionLevel, true);
-        versionTable.add(entity);
-        
-        // 按版本优先级排序（从高到低）
-        Collections.sort(versionTable);
-    }
-    
-    /**
-     * 添加普通路由
-     */
-    private void addNormalRouting(Routing<T> routing) {
-        String path = routing.path();
+
+    private void doAdd(Routing<T> routing) {
         int level = 0;
 
 
@@ -96,44 +82,15 @@ public class RoutingTableDefault<T> implements RoutingTable<T> {
         } else if (routing.path().indexOf('{') >= 0) { // "/a/{x}"
             level = 1;
         }
-        
-        RankEntity<Routing<T>> entity = new RankEntity<>(routing,level ,routing.index(), false);
-        
+
+        RankEntity<Routing<T>> entity = new RankEntity<>(routing, level, routing.index(), false);
+
         if (level != 0 || routing.index() != 0) {
             //有 * 号的 或有 index 的；排序下
             table.addLast(entity);
             Collections.sort(table);
         } else {
             table.addFirst(entity);
-        }
-    }
-    
-    /**
-     * 计算版本优先级
-     * 返回值越大，优先级越高
-     * 
-     * @param routing 路由
-     * @return 版本优先级值
-     */
-    public int getVersionPriority(Routing<T> routing) {
-        String versionStr = routing.version();
-        Version version = Version.of(versionStr);
-        
-        if (version == null) {
-            return 0;
-        }
-        
-        // 计算版本数值：major * 1000000 + minor * 1000 + patch
-        int versionValue = version.getMajor() * 1000000 + 
-                         version.getMinor() * 1000 + 
-                         version.getPatch();
-        
-        if (version.isPattern()) {
-            // 模式匹配：基础值
-            return versionValue;
-        } else {
-            // 精确匹配：加分确保精确匹配优先
-            return versionValue + 10000;
         }
     }
 
@@ -144,11 +101,14 @@ public class RoutingTableDefault<T> implements RoutingTable<T> {
      */
     @Override
     public void remove(String pathPrefix) {
-        // 从普通路由表中移除
-        table.removeIf(l -> l.target.path().startsWith(pathPrefix));
-        
-        // 从版本路由表中移除
-        versionedTables.entrySet().removeIf(entry -> entry.getKey().startsWith(pathPrefix));
+        table.removeIf(l -> {
+            if (l.target.path().startsWith(pathPrefix)) {
+                routingCache.remove(l.target.path() + ":" + l.target.method().name());
+                return true;
+            } else {
+                return false;
+            }
+        });
     }
 
     /**
@@ -158,109 +118,54 @@ public class RoutingTableDefault<T> implements RoutingTable<T> {
      */
     @Override
     public void remove(Class<?> controllerClz) {
-        // 从普通路由表中移除
         table.removeIf(l -> {
-            if (l.target.target() instanceof Action) {
-                Action a = (Action) l.target.target();
-                if (a.controller().clz().equals(controllerClz)) {
-                    return true;
-                }
-            }
-            return false;
-        });
-        
-        // 从版本路由表中移除
-        versionedTables.values().forEach(versionTable -> {
-            versionTable.removeIf(l -> {
-                if (l.target.target() instanceof Action) {
-                    Action a = (Action) l.target.target();
+            l.target.targets().removeIf(vt -> {
+                if (vt.getTarget() instanceof Action) {
+                    Action a = (Action) vt.getTarget();
                     if (a.controller().clz().equals(controllerClz)) {
                         return true;
                     }
                 }
+
                 return false;
             });
+
+            return l.target.targets().size() == 0;
         });
     }
 
     @Override
     public int count() {
-        int count = table.size();
-        for (LinkedList<RankEntity<Routing<T>>> versionTable : versionedTables.values()) {
-            count += versionTable.size();
-        }
-        return count;
+        return table.size();
     }
 
     @Override
     public Collection<Routing<T>> getAll() {
-        List<Routing<T>> allRoutes = new ArrayList<>();
-
-        // 添加普通路由
-        allRoutes.addAll(table.stream().map(l -> l.target).collect(Collectors.toList()));
-        
-        // 添加版本路由
-        for (LinkedList<RankEntity<Routing<T>>> versionTable : versionedTables.values()) {
-            allRoutes.addAll(versionTable.stream().map(l -> l.target).collect(Collectors.toList()));
-        }
-        
-        return allRoutes;
+        return table.stream().map(l -> l.target).collect(Collectors.toList());
     }
 
     @Override
     public Collection<Routing<T>> getBy(String pathPrefix) {
-        List<Routing<T>> matchedRoutes = new ArrayList<>();
-        
-        // 从普通路由表中查找
-        matchedRoutes.addAll(table.stream()
+        return table.stream()
                 .filter(l -> l.target.path().startsWith(pathPrefix))
                 .map(l -> l.target)
-                .collect(Collectors.toList()));
-        
-        // 从版本路由表中查找
-        for (Map.Entry<String, LinkedList<RankEntity<Routing<T>>>> entry : versionedTables.entrySet()) {
-            if (entry.getKey().startsWith(pathPrefix)) {
-                matchedRoutes.addAll(entry.getValue().stream()
-                        .map(l -> l.target)
-                        .collect(Collectors.toList()));
-            }
-        }
-        
-        return matchedRoutes;
+                .collect(Collectors.toList());
     }
 
     @Override
     public Collection<Routing<T>> getBy(Class<?> controllerClz) {
-        List<Routing<T>> matchedRoutes = new ArrayList<>();
-        
-        // 从普通路由表中查找
-        matchedRoutes.addAll(table.stream()
-                .filter(l -> {
-                    if (l.target.target() instanceof Action) {
-                        Action a = (Action) l.target.target();
+        return table.stream()
+                .filter(l -> l.target.targets().stream().anyMatch(vt -> {
+                    if (vt.getTarget() instanceof Action) {
+                        Action a = (Action) vt.getTarget();
                         if (a.controller().clz().equals(controllerClz)) {
                             return true;
                         }
                     }
                     return false;
-                })
+                }))
                 .map(l -> l.target)
-                .collect(Collectors.toList()));
-        
-        // 从版本路由表中查找
-        for (LinkedList<RankEntity<Routing<T>>> entry : versionedTables.values()) {
-            matchedRoutes.addAll(entry.stream().filter(l -> {
-                if (l.target.target() instanceof Action) {
-                    Action a = (Action) l.target.target();
-                    if (a.controller().clz().equals(controllerClz)) {
-                        return true;
-                    }
-                }
-                return false;
-            }).map(l -> l.target).collect(Collectors.toList()));
-        }
-        
-        return matchedRoutes;
+                .collect(Collectors.toList());
     }
 
     /**
@@ -270,20 +175,12 @@ public class RoutingTableDefault<T> implements RoutingTable<T> {
      * @param method 方法
      * @return 一个区配的目标
      */
-    public T matchOne(String path, String version, MethodType method) {
-        // 优先匹配版本化路由
-        if (version != null && !version.isEmpty()) {
-            LinkedList<RankEntity<Routing<T>>> versionTable = versionedTables.get(path);
-            T result = VersionRoutingMatcher.matchOne(versionTable, path, version, method);
-            if (result != null) {
-                return result;
-            }
-        }
-        
-        // 回退到普通路由表
+    public T matchOne(String path, String versionStr, MethodType method) {
+        Version version2 = versionOf(versionStr);
+
         for (RankEntity<Routing<T>> l : table) {
-            if (l.target.matches(method, path, version)) {
-                return l.target.target();
+            if (l.target.matches(method, path)) {
+                return l.target.target(version2);
             }
         }
 
@@ -298,22 +195,14 @@ public class RoutingTableDefault<T> implements RoutingTable<T> {
      * @return 一个区配的目标
      */
     @Override
-    public Result<T> matchOneAndStatus(String path, String version, MethodType method) {
-        // 优先匹配版本化路由
-        if (version != null && !version.isEmpty()) {
-            LinkedList<RankEntity<Routing<T>>> versionTable = versionedTables.get(path);
-            Result<T> result = VersionRoutingMatcher.matchOneAndStatus(versionTable, path, version, method);
-            if (result.getData() != null || result.getCode() != 404) {
-                return result;
-            }
-        }
-        
-        // 回退到普通路由表
+    public Result<T> matchOneAndStatus(String path, String versionStr, MethodType method) {
+        Version version2 = versionOf(versionStr);
+
         int degrees = 0;
         for (RankEntity<Routing<T>> l : table) {
-            int tmp = l.target.degrees(method, path, version);
+            int tmp = l.target.degrees(method, path);
             if (tmp == 2) {
-                return Result.succeed(l.target.target());
+                return Result.succeed(l.target.target(version2));
             } else {
                 if (tmp > degrees) {
                     degrees = tmp;
@@ -336,27 +225,17 @@ public class RoutingTableDefault<T> implements RoutingTable<T> {
      * @return 一批区配的目标
      */
     @Override
-    public List<T> matchMore(String path, String version, MethodType method) {
-        List<T> matchedTargets = new ArrayList<>();
-        
-        // 优先从版本路由表中查找
-        if (version != null && !version.isEmpty()) {
-            LinkedList<RankEntity<Routing<T>>> versionTable = versionedTables.get(path);
-            matchedTargets.addAll(VersionRoutingMatcher.matchMore(versionTable, path, version, method));
-        }
-        
-        // 从普通路由表中查找
-        matchedTargets.addAll(table.stream()
-                .filter(l -> l.target.matches(method, path, version))
-                .map(l -> l.target.target())
-                .collect(Collectors.toList()));
-        
-        return matchedTargets;
+    public List<T> matchMore(String path, String versionStr, MethodType method) {
+        Version version2 = versionOf(versionStr);
+
+        return table.stream()
+                .filter(l -> l.target.matches(method, path))
+                .map(l -> l.target.target(version2))
+                .collect(Collectors.toList());
     }
 
     @Override
     public void clear() {
         table.clear();
-        versionedTables.clear();
     }
 }

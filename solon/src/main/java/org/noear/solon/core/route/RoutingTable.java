@@ -32,9 +32,13 @@ public interface RoutingTable<T> {
     /**
      * 添加路由记录
      *
-     * @param routing 路由
+     * @param path    路径
+     * @param method  方式
+     * @param index   序位
+     * @param version 版本
+     * @param target  目标
      */
-    void add(Routing<T> routing);
+    void add(String path, MethodType method, int index, String version, T target);
 
     /**
      * 移除路由记录
