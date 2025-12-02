@@ -30,6 +30,7 @@ import org.noear.solon.server.handle.SessionProps;
 import org.noear.solon.server.prop.impl.HttpServerProps;
 import org.noear.solon.server.tomcat.http.TCHttpContextHandler;
 import org.noear.solon.server.tomcat.ssl.TomcatSslContext;
+import org.noear.solon.server.tomcat.websocket.TcWebSocketManager;
 
 import javax.net.ssl.SSLContext;
 import javax.servlet.MultipartConfigElement;
@@ -85,6 +86,10 @@ public class TomcatServer extends TomcatServerBase {
         servlet.setMultipartConfigElement(multipartConfig);
 
         context.addServletMappingDecoded("/", "solon");//Servlet与对应uri映射
+        
+        if(enableWebSocket) {
+        	TcWebSocketManager.init(context);
+        }
 
         return context;
     }
