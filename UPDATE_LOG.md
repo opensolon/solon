@@ -30,6 +30,10 @@
 ### v3.7.3
 
 * 插件 `solon-flow` 第五次预览
+* 新增 `solon-server-tomcat-add-jsp` 插件
+* 新增 `solon-server-tomcat-add-websocket` 插件
+* 新增 `solon-server-tomcat-add-jsp-jakarta` 插件
+* 新增 `solon-server-tomcat-add-websocket-jakarta` 插件
 * 新增 `solon-cloud-telemetry` 插件
 * 新增 `opentelemetry-solon-cloud-plugin` 插件
 * 添加 `solon` SolonProps:appVersion `solon.app.version` 配置支持
