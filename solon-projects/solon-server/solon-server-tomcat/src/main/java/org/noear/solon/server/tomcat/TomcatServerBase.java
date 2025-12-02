@@ -24,6 +24,7 @@ import org.noear.solon.server.ServerLifecycle;
 import org.noear.solon.server.http.HttpServerConfigure;
 import org.noear.solon.server.prop.impl.HttpServerProps;
 import org.noear.solon.server.ssl.SslConfig;
+import org.noear.solon.server.tomcat.websocket.TcWebSocketManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -103,7 +104,7 @@ public abstract class TomcatServerBase implements ServerLifecycle, HttpServerCon
         }
 
         //初始化上下文
-        initContext();
+        Context _context = initContext();
 
         //添加连接端口
         addConnector(port, true);
@@ -114,6 +115,10 @@ public abstract class TomcatServerBase implements ServerLifecycle, HttpServerCon
         }
 
         _server.start();
+        
+        if(TcWebSocketManager.isEnableWebSocket()) {
+        	TcWebSocketManager.registerEndpoints(_context);        	
+        }
     }
 
 
