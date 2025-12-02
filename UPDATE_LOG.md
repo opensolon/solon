@@ -47,6 +47,9 @@
 * 优化 `solon-server-jetty` jsp 适配
 * 优化 `solon-ai-core` ToolSchemaUtil 扩展能力，支持注解处理定制（方便第三方集成）
 * 优化 `solon-ai-mcp` MCP 客户端与服务端异常链接状态 立即返回
+* 调整 `solon-flow` “链”概念改为“图”（更符合实际结构）
+* 调整 `solon-flow` Chain 更名为 Graph，ChainDecl 更名为 GraphDecl
+* 调整 `solon-flow` ChainInterceptor,ChainInvocation 更名为 FlowInterceptor,FlowInvocation
 * 调整 `mybatis-solon-plugin` 当配置的 mapper 没有对应注册时改为 warn 日志打印（之前为异常）
 * 修复 `solon-server-jetty-jakarta` jsp 支持
 * eggg 升为 1.0.10
@@ -55,6 +58,23 @@
 * hutool 升为 5.8.41
 * smarthttp 升为 2.5.17
 * tomcat 升为 9.0.112
+
+
+solon-flow 兼容说明：
+
+```
+现有应用如果没有用 ChainDecl 动态构建，不会受影响。。。如果有？需要换个类名。
+```
+
+solon-flow 硬编码更简便：
+
+```java
+Graph graph = Graph.create("demo1", decl -> {
+    decl.addActivity("n1").task(new Draft()).linkAdd("n2");
+    decl.addActivity("n2").task(new Review()).linkAdd("n3");
+    decl.addActivity("n3").task(new Confirm());
+});
+```
 
 
 ### v3.7.2
