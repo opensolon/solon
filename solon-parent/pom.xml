@@ -1949,7 +1949,25 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon-server-undertow-add-jsp-jakarta</artifactId>
+                <version>${solon-jakarta.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon-server-tomcat-jakarta</artifactId>
+                <version>${solon-jakarta.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-server-tomcat-add-jsp-jakarta</artifactId>
+                <version>${solon-jakarta.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-server-tomcat-add-websocket-jakarta</artifactId>
                 <version>${solon-jakarta.version}</version>
             </dependency>
 
