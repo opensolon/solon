@@ -1,6 +1,8 @@
-package features.undertow;
+package features.undertow.http;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
+import org.noear.solon.Solon;
 import org.noear.solon.core.util.MimeType;
 import org.noear.solon.core.util.MultiMap;
 import org.noear.solon.net.http.HttpResponse;
@@ -49,5 +51,13 @@ public class ServerTest extends HttpTester {
     public void ct1() {
         assert path("/hello").exec("GET").contentType()
                 .startsWith(MimeType.TEXT_PLAIN_VALUE);
+    }
+
+    @AfterAll
+    public static void allAft() {
+        //避免与同项目的，边上的 app 冲突
+        if (Solon.app() != null) {
+            Solon.stopBlock();
+        }
     }
 }

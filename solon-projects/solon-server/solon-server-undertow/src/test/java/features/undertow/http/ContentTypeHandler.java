@@ -1,4 +1,4 @@
-package features.undertow;
+package features.undertow.http;
 
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Mapping;

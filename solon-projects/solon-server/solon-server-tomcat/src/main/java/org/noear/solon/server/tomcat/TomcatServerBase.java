@@ -125,7 +125,7 @@ public abstract class TomcatServerBase implements ServerLifecycle, HttpServerCon
     @Override
     public void stop() throws Throwable {
         if (_server != null) {
-            _server.destroy();
+            _server.stop();
             _server = null;
         }
     }

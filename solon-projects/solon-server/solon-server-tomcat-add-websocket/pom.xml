@@ -17,9 +17,33 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-server-tomcat</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-websocket</artifactId>
             <version>${tomcat.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-logging-simple</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>java-websocket-ns</artifactId>
+            <version>${java-websocket-ns.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
