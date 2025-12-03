@@ -41,6 +41,7 @@ public class RoutingDefault<T> implements Routing<T> {
         this.method = method;
         this.path = path;
         this.globstar = path.indexOf("/**");
+        this.matchall = path.equals("/**");
 
 
         this.index = index;
@@ -52,6 +53,7 @@ public class RoutingDefault<T> implements Routing<T> {
     private final String path; //path
     private final MethodType method; //方式
     private final int globstar;
+    private final boolean matchall;
 
     private VersionedTarget<T> versionedTargetNull;//目标
     private List<VersionedTarget<T>> versionedTargets = new ArrayList<>();
@@ -172,7 +174,7 @@ public class RoutingDefault<T> implements Routing<T> {
 
     private boolean matches0(String path2) {
         //1.如果当前为 /**，任何路径都可命中
-        if (globstar == 0) {
+        if (matchall) {
             return true;
         }
 
