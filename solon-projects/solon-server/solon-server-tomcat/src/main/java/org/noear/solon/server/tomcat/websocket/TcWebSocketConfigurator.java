@@ -15,6 +15,7 @@
  */
 package org.noear.solon.server.tomcat.websocket;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -53,7 +54,7 @@ public class TcWebSocketConfigurator extends ServerEndpointConfig.Configurator {
                 String protocols = subProtocolCapable.getSubProtocols(clientProtocols);
                 
                 if (Utils.isNotEmpty(protocols)) {
-                    response.getHeaders().put("Sec-WebSocket-Protocol", List.of(protocols));
+                    response.getHeaders().put("Sec-WebSocket-Protocol", Arrays.asList(protocols));
                 }
             }
         }

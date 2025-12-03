@@ -62,6 +62,7 @@
 * snack4 升为 4.0.17
 * wood 升为 1.4.3
 * luffy 升为 1.11.1
+* folkmq 升为 1.7.13
 * fastjson2 升为 2.0.60
 * hutool 升为 5.8.41
 * smarthttp 升为 2.5.17
