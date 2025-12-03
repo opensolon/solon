@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>3.7.3-SNAPSHOT</version>
+    <version>3.7.3</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -20,7 +20,8 @@
 
         <java.version>1.8</java.version>
 
-        <maven.compiler.release>${java.version}</maven.compiler.release>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.encoding>${project.build.sourceEncoding}</maven.compiler.encoding>
 
         <maven-compiler.version>3.14.0</maven-compiler.version>
@@ -29,20 +30,20 @@
 
         <maven-war.version>3.4.0</maven-war.version>
 
-        <solon.version>3.7.3-SNAPSHOT</solon.version>
-        <solon-ai.version>3.7.3-SNAPSHOT</solon-ai.version>
-        <solon-flow.version>3.7.3-SNAPSHOT</solon-flow.version>
-        <solon-expression.version>3.7.2</solon-expression.version>
-        <solon-cloud.version>3.7.3-SNAPSHOT</solon-cloud.version>
-        <solon-admin.version>3.7.2</solon-admin.version>
-        <solon-integration.version>3.7.3-SNAPSHOT</solon-integration.version>
-        <solon-jakarta.version>3.7.3-SNAPSHOT</solon-jakarta.version>
+        <solon.version>3.7.3</solon.version>
+        <solon-ai.version>3.7.3</solon-ai.version>
+        <solon-flow.version>3.7.3</solon-flow.version>
+        <solon-expression.version>3.7.3</solon-expression.version>
+        <solon-cloud.version>3.7.3</solon-cloud.version>
+        <solon-admin.version>3.7.3</solon-admin.version>
+        <solon-integration.version>3.7.3</solon-integration.version>
+        <solon-jakarta.version>3.7.3</solon-jakarta.version>
 
-        <solonx.version>1.3.0</solonx.version>
+        <solonx.version>1.3.1</solonx.version>
 
         <eggg.version>1.0.10</eggg.version>
         <snack4.version>4.0.17</snack4.version>
-        <wood.version>1.4.2</wood.version>
+        <wood.version>1.4.3</wood.version>
         <redisx.version>1.8.2</redisx.version>
         <socketd.version>2.5.20</socketd.version>
         <liquor.version>1.6.3</liquor.version>
@@ -51,8 +52,8 @@
         <weed3.version>3.4.33</weed3.version>
 
         <folkmq.version>1.7.12</folkmq.version>
-        <water.version>2.19.0</water.version>
-        <luffy.version>1.11.0</luffy.version>
+        <water.version>2.19.1</water.version>
+        <luffy.version>1.11.1</luffy.version>
 
         <java-cron.version>1.0.3</java-cron.version>
 
@@ -2183,7 +2184,8 @@
                     <version>${maven-compiler.version}</version>
                     <configuration>
                         <compilerArgument>-parameters</compilerArgument>
-                        <release>${maven.compiler.release}</release>
+                        <source>${maven.compiler.source}</source>
+                        <target>${maven.compiler.target}</target>
                         <encoding>${maven.compiler.encoding}</encoding>
                     </configuration>
                 </plugin>
