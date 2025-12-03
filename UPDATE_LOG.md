@@ -56,7 +56,7 @@
 * 调整 `solon-flow` Chain 更名为 Graph，ChainDecl 更名为 GraphDecl
 * 调整 `solon-flow` ChainInterceptor,ChainInvocation 更名为 FlowInterceptor,FlowInvocation
 * 调整 `mybatis-solon-plugin` 当配置的 mapper 没有对应注册时改为 warn 日志打印（之前为异常）
-* 修复 `solon` router 多个双星通配符冲突的问题（v3.7.2 出现）
+* 修复 `solon` RoutingDefault 多个双星通配符冲突的问题（v3.7.2 出现）
 * 修复 `solon-server-jetty-jakarta` jsp 支持
 * eggg 升为 1.0.10
 * snack4 升为 4.0.17
