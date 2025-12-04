@@ -13,6 +13,9 @@ import java.util.Map;
 public class ComplexDemoProp {
 
     private Map<String, AConfig> aConfigMap;
+    /**
+     * 名字
+     * */
     private String name;
 
     private AConfig aConfig;

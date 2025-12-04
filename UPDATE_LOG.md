@@ -38,6 +38,7 @@
 * 新增 `opentelemetry-solon-cloud-plugin` 插件
 * 添加 `solon` SolonProps:appVersion `solon.app.version` 配置支持
 * 添加 `solon` 接口版本的模式匹配支持（`1.0+`）
+* 添加 `solon-scheduling` IJobManager:jobAdd(name,scheduled,handler,data) 方法
 * 添加 `solon-server-tomcat` jsp 适配支持
 * 添加 `solon-flow` Node:task 硬编码能力（直接设置 TaskComponent），支持多租全动态场景
 * 添加 `solon-flow` Node:when 硬编码能力（直接设置 ConditionComponent），支持多租全动态场景
@@ -58,6 +59,7 @@
 * 调整 `mybatis-solon-plugin` 当配置的 mapper 没有对应注册时改为 warn 日志打印（之前为异常）
 * 修复 `solon` RoutingDefault 多个双星通配符冲突的问题（v3.7.2 出现）
 * 修复 `solon-server-jetty-jakarta` jsp 支持
+* 修复 `solon-configuration-processor` 失效的问题（v3.6.1 出现）
 * eggg 升为 1.0.10
 * snack4 升为 4.0.17
 * wood 升为 1.4.3
