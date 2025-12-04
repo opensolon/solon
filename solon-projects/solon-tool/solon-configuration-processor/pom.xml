@@ -26,53 +26,20 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven-compiler.version}</version>
                 <executions>
-                    <!-- 禁用默认编译 -->
                     <execution>
                         <id>default-compile</id>
-                        <phase>none</phase>
+                        <configuration>
+                            <compilerArgument>-proc:none</compilerArgument>
+                            <source>${maven.compiler.source}</source>
+                            <target>${maven.compiler.target}</target>
+                        </configuration>
                     </execution>
-                    <!-- 自定义编译，禁用注解处理 -->
                     <execution>
-                        <id>compile-sources</id>
+                        <id>compile-project</id>
                         <phase>compile</phase>
                         <goals>
                             <goal>compile</goal>
                         </goals>
-                        <configuration>
-                            <proc>none</proc>
-                            <compilerArgs>
-                                <arg>-proc:none</arg>
-                            </compilerArgs>
-                            <excludes>
-                                <exclude>**/resources/gradle</exclude>
-                                <exclude>**/resources/services</exclude>
-                            </excludes>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <version>3.1.0</version>
-                <executions>
-                    <execution>
-                        <id>copy-processor-service</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <configuration>
-                            <target>
-                                <mkdir dir="${project.build.outputDirectory}/META-INF/services"/>
-                                <mkdir dir="${project.build.outputDirectory}/META-INF/gradle"/>
-                                <copy file="src/main/META-INF/services/javax.annotation.processing.Processor"
-                                      tofile="${project.build.outputDirectory}/META-INF/services/javax.annotation.processing.Processor"/>
-                                <copy file="src/main/META-INF/gradle/incremental.annotation.processors"
-                                      tofile="${project.build.outputDirectory}/META-INF/gradle/incremental.annotation.processors"/>
-                            </target>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
