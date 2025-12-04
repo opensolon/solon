@@ -44,7 +44,6 @@ import java.io.IOException;
  */
 public class TomcatServer extends TomcatServerBase {
     protected boolean isSecure;
-    protected boolean enableWebSocket;
 
     public boolean isSecure() {
         return isSecure;

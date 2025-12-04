@@ -49,6 +49,7 @@ public abstract class TomcatServerBase implements ServerLifecycle, HttpServerCon
 
     protected Set<Integer> addHttpPorts = new LinkedHashSet<>();
 
+    protected boolean enableWebSocket;
     protected boolean enableHttp2 = false;
 
     public TomcatServerBase(HttpServerProps props) {
@@ -115,9 +116,9 @@ public abstract class TomcatServerBase implements ServerLifecycle, HttpServerCon
         }
 
         _server.start();
-        
-        if(TcWebSocketManager.isEnableWebSocket()) {
-        	TcWebSocketManager.registerEndpoints(_context);        	
+
+        if(enableWebSocket) {
+            TcWebSocketManager.registerEndpoints(_context);
         }
     }
 
