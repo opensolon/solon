@@ -20,6 +20,9 @@
         <module>../../solon-shortcuts/solon-lib</module>
         <module>../../solon-shortcuts/solon-web</module>
 
+        <module>../../solon-projects/solon-tool/solon-maven-plugin</module>
+        <module>../../solon-projects/solon-tool/solon-configuration-processor</module>
+
         <!-- 弃用 -->
         <module>../../solon-projects/solon-boot/solon-boot</module>
         <module>../../solon-projects/solon-boot/solon-boot-jdkhttp</module>
