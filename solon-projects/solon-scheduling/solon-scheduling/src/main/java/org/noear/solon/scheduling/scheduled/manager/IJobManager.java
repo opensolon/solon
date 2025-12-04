@@ -52,6 +52,11 @@ public interface IJobManager extends Lifecycle {
     JobHolder jobAdd(String name, Scheduled scheduled, JobHandler handler);
 
     /**
+     * 任务添加
+     */
+    JobHolder jobAdd(String name, Scheduled scheduled, JobHandler handler, Map<String, String> data);
+
+    /**
      * 任务是否存在
      */
     boolean jobExists(String name);

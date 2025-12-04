@@ -74,6 +74,14 @@ public abstract class AbstractJobManager implements IJobManager {
      */
     @Override
     public JobHolder jobAdd(String name, Scheduled scheduled, JobHandler handler) {
+        return jobAdd(name, scheduled, handler, null);
+    }
+
+    /**
+     * 任务添加
+     */
+    @Override
+    public JobHolder jobAdd(String name, Scheduled scheduled, JobHandler handler, Map<String, String> data) {
         jobAddCheckDo(name, scheduled);
 
         JobHolder jobHolder;
@@ -84,9 +92,11 @@ public abstract class AbstractJobManager implements IJobManager {
             jobMap.put(name, jobHolder);
         }
 
+        jobHolder.setData(data);
+
         if (isStarted()) {
             //如果已启动，则直接运行
-            jobStart(name, null);
+            jobStart(name, data);
         }
 
         return jobHolder;
