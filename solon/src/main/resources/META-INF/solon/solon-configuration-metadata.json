@@ -21,6 +21,11 @@
       "description": "应用标题"
     },
     {
+      "name": "solon.app.version",
+      "type": "java.lang.String",
+      "description": "应用版本号"
+    },
+    {
       "name": "solon.app.enabled",
       "type": "java.lang.Boolean",
       "defaultValue": true,
