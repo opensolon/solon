@@ -69,6 +69,7 @@
 * hutool 升为 5.8.41
 * smarthttp 升为 2.5.17
 * tomcat 升为 9.0.112
+* vert.x 升为 4.5.22
 
 
 solon-flow 兼容说明：

@@ -82,7 +82,7 @@
         <undertow.jboss-metadata.version>13.4.0.Final</undertow.jboss-metadata.version>
         <undertow.jboss-jsp.version>2.0.1.Final</undertow.jboss-jsp.version>
         <tomcat.version>9.0.112</tomcat.version>
-        <vertx.version>4.5.14</vertx.version>
+        <vertx.version>4.5.22</vertx.version>
         <rxjava.version>3.1.9</rxjava.version>
         <netty.version>4.1.118.Final</netty.version>
         <reactor-core.version>3.7.4</reactor-core.version>
