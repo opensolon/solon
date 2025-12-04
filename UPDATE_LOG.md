@@ -70,6 +70,9 @@
 * smarthttp 升为 2.5.17
 * tomcat 升为 9.0.112
 * vert.x 升为 4.5.22
+* jetty.jakarta 升为 12.1.4
+* undertow.jakarta 升为 2.3.20.Final
+* logback.jakarta 升为 1.5.21
 
 
 solon-flow 兼容说明：
