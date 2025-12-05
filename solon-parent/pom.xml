@@ -37,7 +37,7 @@
         <solon-cloud.version>3.7.3</solon-cloud.version>
         <solon-admin.version>3.7.3</solon-admin.version>
         <solon-integration.version>3.7.3</solon-integration.version>
-        <solon-jakarta.version>3.7.3</solon-jakarta.version>
+        <solon-jakarta.version>3.7.4-SNAPSHOT</solon-jakarta.version>
 
         <solonx.version>1.3.1</solonx.version>
 
