@@ -13,7 +13,6 @@
 
 ### 待议
 * 增加 quartz jdbc 及时更新支持（数据库里变了，它马上变） ???
-* 调整 使用更多的 slf4j 替换 LogUtil ???
 * 调整 取消启动参数简写模式，保持与应用参数相同的名字 ???
 * 调整 solon-docs-openapi2 合并 solon-docs-openapi2-javadoc ???
 * 
@@ -24,8 +23,7 @@
 * 优化 solon-flow （有包含结构的）网关的流入流出架构，使不再需要记录栈和计数器???
 * 添加 Plugin postStart 事件???
 * 调整 Plugin 统一交给 AppContext 管理（之前由 SolonApp 或 PluginPackage 管理）？？
-* 使用 solon-expression 替代其它临时的表达式处理 //ok
-* 升级 mcp-java-sdk 为 0.14.x？？？
+* 升级 mcp-java-sdk 为 0.17.x？？？
 
 ### v3.7.4
 
