@@ -27,6 +27,10 @@
 * 使用 solon-expression 替代其它临时的表达式处理 //ok
 * 升级 mcp-java-sdk 为 0.14.x？？？
 
+### v3.7.4
+
+* 修复 `solon` IndexFiles 对 '*' 路径表达式的兼容问题（自动转换为'-'）
+
 ### v3.7.3
 
 * 插件 `solon-flow` 第五次预览

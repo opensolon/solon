@@ -98,7 +98,9 @@ public class IndexFiles {
             throw new IllegalArgumentException("Invalid dir: contains path traversal characters");
         }
 
-        return dir.replace('/', '-').replace('.', '-') +
+        return dir.replace('/', '-')
+                .replace('.', '-')
+                .replace('*', '-') +
                 "_" +
                 tag +
                 INDEX_FILE_SUFFIX;
