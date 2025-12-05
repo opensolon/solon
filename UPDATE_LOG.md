@@ -26,6 +26,9 @@
 * 调整 Plugin 统一交给 AppContext 管理（之前由 SolonApp 或 PluginPackage 管理）？？
 * 使用 solon-expression 替代其它临时的表达式处理 //ok
 
+### 3.6.6
+
+* 修复 solon-configuration-processor 失效的问题（v3.6.1 出现）
 
 ### 3.6.5
 

@@ -18,7 +18,7 @@
 
 package org.noear.solon.configurationprocessor;
 
-import org.noear.snack.core.utils.StringUtil;
+import org.noear.solon.Utils;
 
 import javax.lang.model.element.*;
 import javax.lang.model.type.TypeMirror;
@@ -94,7 +94,7 @@ class PropertyDescriptorResolver {
     }
 
     private String getPropertyName(VariableElement parameter, String fallback) {
-        if (StringUtil.isEmpty(fallback)) {
+        if (Utils.isEmpty(fallback)) {
             return fallback;
         }
         if (Objects.nonNull(parameter)) {
