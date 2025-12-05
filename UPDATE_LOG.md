@@ -29,6 +29,7 @@
 ### 3.6.6
 
 * 修复 solon-configuration-processor 失效的问题（v3.6.1 出现）
+* snack4 升为 4.0.17
 
 ### 3.6.5
 
