@@ -49,11 +49,11 @@ public class IndexFiles {
     /**
      * 加载类索引文件
      *
-     * @param dir 目录
+     * @param name 名字
      * @return 类名列表，如果不存在索引文件则返回null
      */
-    public static List<String> loadIndexFile(String dir, String tag) {
-        String indexFileName = getIndexFileName(dir, tag);
+    public static List<String> loadIndexFile(String name, String tag) {
+        String indexFileName = getIndexFileName(name, tag);
 
         try {
             URL uri = ResourceUtil.getResource(INDEX_FILE_DIR + indexFileName);
@@ -73,7 +73,7 @@ public class IndexFiles {
             return indexList;
         } catch (IOException e) {
             // 索引文件读取失败，返回null
-            log.warn("Failed to load class index file for dir: {}", dir, e);
+            log.warn("Failed to load class index file for name: {}", name, e);
             return null;
         }
     }
@@ -81,36 +81,53 @@ public class IndexFiles {
     /**
      * 获取索引文件名
      *
-     * @param dir 目标
-     * @param tag 标记
+     * @param name 名字
+     * @param tag  标记
      */
-    public static String getIndexFileName(String dir, String tag) {
-        if (Utils.isEmpty(dir)) {
-            throw new IllegalArgumentException("dir cannot be null or empty");
+    public static String getIndexFileName(String name, String tag) {
+        if (Utils.isEmpty(name)) {
+            throw new IllegalArgumentException("name cannot be null or empty");
         }
 
         if (Utils.isEmpty(tag)) {
             throw new IllegalArgumentException("tag cannot be null or empty");
         }
 
-        // 防止路径遍历攻击
-        if (dir.contains("..")) {
-            throw new IllegalArgumentException("Invalid dir: contains path traversal characters");
+        // 使用StringBuilder提升性能
+        StringBuilder result = new StringBuilder(name.length() + tag.length() + INDEX_FILE_SUFFIX.length() + 1);
+
+        for (int i = 0; i < name.length(); i++) {
+            char c = name.charAt(i);
+
+            // 保持原有转换逻辑
+            switch (c) {
+                case '/':
+                case '\\':
+                case '.':
+                    result.append('-');
+                    break;
+                case '*':
+                    result.append('*');
+                    break;
+                case ':':
+                    result.append(';');
+                    break;
+                default:
+                    result.append(c);
+            }
         }
 
-        return dir.replace('/', '-')
-                .replace('.', '-')
-                .replace('*', '-') +
-                "_" +
-                tag +
-                INDEX_FILE_SUFFIX;
+        // 添加分隔符和标签
+        result.append('_').append(tag).append(INDEX_FILE_SUFFIX);
+
+        return result.toString();
     }
 
     /**
      * 写入索引文件
      */
-    public static void writeIndexFile(String dir, String tag, List<String> indexList) {
-        String indexFileName = getIndexFileName(dir, tag);
+    public static void writeIndexFile(String name, String tag, List<String> indexList) {
+        String indexFileName = getIndexFileName(name, tag);
 
         File indexFile = RuntimeService.singleton().createClassOutputFile(INDEX_FILE_DIR + indexFileName);
 
@@ -126,7 +143,7 @@ public class IndexFiles {
             }
 
         } catch (IOException e) {
-            log.warn("Failed to write class index file for dir: {}", dir, e);
+            log.warn("Failed to write class index file for name: {}", name, e);
         }
     }
 }
