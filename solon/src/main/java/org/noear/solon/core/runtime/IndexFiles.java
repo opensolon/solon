@@ -110,7 +110,7 @@ public class IndexFiles {
                     result.append('@');
                     break;
                 case ':':
-                    result.append(';');
+                    result.append('!');
                     break;
                 default:
                     result.append(c);
