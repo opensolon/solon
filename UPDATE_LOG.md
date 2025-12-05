@@ -28,6 +28,8 @@
 
 ### 3.6.6
 
+* 优化 solon-ai-mcp MCP 客户端与服务端异常链接状态 立即返回
+* 调整 mybatis-solon-plugin 当配置的 mapper 没有对应注册时改为 warn 日志打印（之前为异常）
 * 修复 solon-configuration-processor 失效的问题（v3.6.1 出现）
 * snack4 升为 4.0.17
 
