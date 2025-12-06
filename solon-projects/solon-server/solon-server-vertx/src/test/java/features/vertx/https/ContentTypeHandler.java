@@ -1,4 +1,4 @@
-package features.vertx;
+package features.vertx.https;
 
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Mapping;

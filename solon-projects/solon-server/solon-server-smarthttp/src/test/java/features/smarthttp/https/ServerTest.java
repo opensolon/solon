@@ -1,4 +1,4 @@
-package features.vertx;
+package features.smarthttp.https;
 
 import org.junit.jupiter.api.Test;
 import org.noear.solon.core.util.MimeType;
@@ -8,9 +8,14 @@ import org.noear.solon.test.SolonTest;
 @SolonTest(App.class)
 public class ServerTest extends HttpTester {
 
+    @Override
+    public String defaultProtocol() {
+        return "https";
+    }
+
     @Test
-    public void test() throws Exception {
-        assert "hello".equals(path("/hello").get());
+    public void hello() throws Exception {
+        assert "hello null".equals(path("/hello").get());
     }
 
     @Test

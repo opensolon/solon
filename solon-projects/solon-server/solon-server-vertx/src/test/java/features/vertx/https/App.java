@@ -1,4 +1,4 @@
-package features.grizzly;
+package features.vertx.https;
 
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Body;
@@ -6,24 +6,18 @@ import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.annotation.Post;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.core.handle.Filter;
-import org.noear.solon.core.handle.FilterChain;
+import org.noear.solon.core.util.MultiMap;
 
 /**
  * @author noear 2024/10/1 created
  */
 @Controller
 public class App {
-    public static void main(String[] args) throws Exception {
-        Solon.start(App.class, args, app -> {
-            app.filter((ctx, chain) -> {
-                try {
-                    chain.doFilter(ctx);
-                } catch (Throwable ex) {
-                    ex.printStackTrace();
-                }
-            });
-        });
+    public static void main(String[] args) {
+        Solon.start(
+                App.class,
+                MultiMap.from(args).then(x -> x.add("cfg", "app-https.yml"))
+        );
     }
 
     @Mapping("hello")

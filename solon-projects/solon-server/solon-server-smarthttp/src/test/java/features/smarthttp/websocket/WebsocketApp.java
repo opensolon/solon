@@ -1,6 +1,6 @@
 package features.smarthttp.websocket;
 
-import features.smarthttp.ServerTest;
+import features.smarthttp.http.ServerTest;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;

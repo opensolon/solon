@@ -1,4 +1,4 @@
-package features.grizzly;
+package features.grizzly.http;
 
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Mapping;
