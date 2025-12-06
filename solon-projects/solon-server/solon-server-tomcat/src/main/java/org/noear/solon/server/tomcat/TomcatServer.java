@@ -161,37 +161,8 @@ public class TomcatServer extends TomcatServerBase {
 
         final SSLHostConfigCertificate sslHostConfigCertificate =
                 new SSLHostConfigCertificate(sslHostConfig, SSLHostConfigCertificate.Type.RSA);
-        
-        if (sslContext != null) {
-            sslHostConfigCertificate.setSslContext(new TomcatSslContext(sslContext));
-        } else if (sslConfig.isSslEnable() && sslConfig.getProps() != null) {
-            // 从sslConfig加载证书配置，参考Jetty的实现方式
-            try {
-                String sslKeyStore = sslConfig.getProps().getSslKeyStore();
-                String sslKeyStoreType = sslConfig.getProps().getSslKeyType();
-                String sslKeyStorePassword = sslConfig.getProps().getSslKeyPassword();
-                
-                // 查找资源文件
-                if (Utils.isNotEmpty(sslKeyStore)) {
-                    URL url = ResourceUtil.findResource(sslKeyStore);
-                    if (url != null) {
-                        sslKeyStore = url.toString();
-                    }
-                    
-                    sslHostConfig.setCertificateKeystoreFile(sslKeyStore);
-                }
-                
-                if (Utils.isNotEmpty(sslKeyStorePassword)) {
-                    sslHostConfig.setCertificateKeystorePassword(sslKeyStorePassword);
-                }
-                
-                if (Utils.isNotEmpty(sslKeyStoreType)) {
-                    sslHostConfig.setCertificateKeystoreType(sslKeyStoreType);
-                }
-            } catch (Exception e) {
-                throw new RuntimeException("Failed to setup SSL configuration", e);
-            }
-        }
+
+        sslHostConfigCertificate.setSslContext(new TomcatSslContext(sslContext));
 
         sslHostConfig.addCertificate(sslHostConfigCertificate);
         return sslHostConfig;

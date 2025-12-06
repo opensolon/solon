@@ -1,16 +1,28 @@
 package features.jdkhttp.https;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.core.util.MimeType;
+import org.noear.solon.core.util.ResourceUtil;
+import org.noear.solon.net.http.HttpSslSupplier;
+import org.noear.solon.net.http.HttpUtils;
+import org.noear.solon.net.http.impl.HttpSslSupplierAny;
+import org.noear.solon.net.http.ssl.SslAnyTrustManager;
+import org.noear.solon.net.http.ssl.SslContextBuilder;
 import org.noear.solon.test.HttpTester;
 import org.noear.solon.test.SolonTest;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.X509TrustManager;
+import java.net.URL;
 
 @SolonTest(App.class)
 public class ServerTest extends HttpTester {
 
     @Override
-    public String defaultProtocol() {
-        return "https";
+    public HttpUtils path(String path) {
+        return super.path("https", path).ssl(HttpSslSupplierAny.getInstance());
     }
 
     @Test

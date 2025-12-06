@@ -30,12 +30,14 @@ import java.security.cert.CertificateException;
  * @author noear
  * @since 1.6
  * @since 3.5
+ * @deprecated 3.7.4 {@link SslContextBuilder}
  */
+@Deprecated
 public class SslContextFactory {
     public static SSLContext create(ServerSslProps serverSslProps) throws IOException {
         String sslKeyStore = serverSslProps.getSslKeyStore();
         String sslKeyType = serverSslProps.getSslKeyStoreType();
-        String sslKeyPassword = serverSslProps.getSslKeyPassword();
+        String sslKeyPassword = serverSslProps.getSslKeyStorePassword();
 
         if(Utils.isEmpty(sslKeyType)){
             sslKeyType = "jks";

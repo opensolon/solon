@@ -28,25 +28,27 @@ import org.noear.solon.server.ServerConstants;
  */
 class ServerSslPropsImpl implements ServerSslProps {
     private String PROP_SSL_ENABLE = "server.@@.ssl.enable";
+
     private String PROP_SSL_KEY_TYPE = "server.@@.ssl.keyType";//old
+    private String PROP_SSL_KEY_PASSWORD = "server.@@.ssl.keyPassword";//old
 
-    private String PROP_SSL_KEY_STORE_TYPE = "server.@@.ssl.keyStoreType"; //new v3.7.4
     private String PROP_SSL_KEY_STORE = "server.@@.ssl.keyStore";
-    private String PROP_SSL_KEY_PASSWORD = "server.@@.ssl.keyPassword";
+    private String PROP_SSL_KEY_STORE_TYPE = "server.@@.ssl.keyStoreType";
+    private String PROP_SSL_KEY_STORE_PASSWORD = "server.@@.ssl.keyStorePassword";
 
-    private String PROP_SSL_TRUST_STORE_TYPE = "server.@@.ssl.trustStoreType"; //new v3.7.4
     private String PROP_SSL_TRUST_STORE = "server.@@.ssl.trustStore";
-    private String PROP_SSL_TRUST_PASSWORD = "server.@@.ssl.trustPassword";
+    private String PROP_SSL_TRUST_STORE_TYPE = "server.@@.ssl.trustStoreType";
+    private String PROP_SSL_TRUST_STORE_PASSWORD = "server.@@.ssl.trustStorePassword";
 
     private boolean enable;
 
     private String sslKeyStore;
     private String sslKeyStoreType;
-    private String sslKeyPassword;
+    private String sslKeyStorePassword;
 
     private String sslTrustStore;
     private String sslTrustStoreType;
-    private String sslTrustPassword;
+    private String sslTrustStorePassword;
 
     public ServerSslPropsImpl(String signalName) {
         PROP_SSL_ENABLE = PROP_SSL_ENABLE.replace("@@", signalName);
@@ -56,31 +58,32 @@ class ServerSslPropsImpl implements ServerSslProps {
         sslKeyStore = Solon.cfg().getByKeys(PROP_SSL_KEY_STORE, ServerConstants.SERVER_SSL_KEY_STORE);
 
         if (Utils.isNotEmpty(sslKeyStore)) {
-            PROP_SSL_KEY_TYPE = PROP_SSL_KEY_TYPE.replace("@@", signalName);
+            PROP_SSL_KEY_TYPE = PROP_SSL_KEY_TYPE.replace("@@", signalName); //old
+            PROP_SSL_KEY_PASSWORD= PROP_SSL_KEY_PASSWORD.replace("@@", signalName);//old
+
             PROP_SSL_KEY_STORE_TYPE = PROP_SSL_KEY_STORE_TYPE.replace("@@", signalName);
-            PROP_SSL_KEY_PASSWORD = PROP_SSL_KEY_PASSWORD.replace("@@", signalName);
+            PROP_SSL_KEY_STORE_PASSWORD = PROP_SSL_KEY_STORE_PASSWORD.replace("@@", signalName);
 
             sslKeyStoreType = Solon.cfg().getByKeys(
-                    PROP_SSL_KEY_STORE_TYPE, ServerConstants.SERVER_SSL_KEY_STORE_TYPE,
-                    PROP_SSL_KEY_TYPE, ServerConstants.SERVER_SSL_KEY_TYPE);
-            sslKeyPassword = Solon.cfg().getByKeys(
-                    PROP_SSL_KEY_PASSWORD, ServerConstants.SERVER_SSL_KEY_PASSWORD);
+                    PROP_SSL_KEY_STORE_TYPE, PROP_SSL_KEY_TYPE,
+                    ServerConstants.SERVER_SSL_KEY_STORE_TYPE, ServerConstants.SERVER_SSL_KEY_TYPE);
+            sslKeyStorePassword = Solon.cfg().getByKeys(
+                    PROP_SSL_KEY_STORE_PASSWORD, PROP_SSL_KEY_PASSWORD,
+                    ServerConstants.SERVER_SSL_KEY_PASSWORD, ServerConstants.SERVER_SSL_KEY_STORE_PASSWORD);
 
-            //-----------------
+        }
 
-            PROP_SSL_TRUST_STORE = PROP_SSL_TRUST_STORE.replace("@@", signalName);
+        PROP_SSL_TRUST_STORE = PROP_SSL_TRUST_STORE.replace("@@", signalName);
 
-            sslTrustStore = Solon.cfg().getByKeys(
-                    PROP_SSL_TRUST_STORE, ServerConstants.SERVER_SSL_TRUST_STORE);
-            if (Utils.isNotEmpty(sslTrustStore)) {
-                PROP_SSL_TRUST_STORE_TYPE = PROP_SSL_TRUST_STORE_TYPE.replace("@@", signalName);
-                PROP_SSL_TRUST_PASSWORD = PROP_SSL_TRUST_PASSWORD.replace("@@", signalName);
+        sslTrustStore = Solon.cfg().getByKeys(PROP_SSL_TRUST_STORE, ServerConstants.SERVER_SSL_TRUST_STORE);
+        if (Utils.isNotEmpty(sslTrustStore)) {
+            PROP_SSL_TRUST_STORE_TYPE = PROP_SSL_TRUST_STORE_TYPE.replace("@@", signalName);
+            PROP_SSL_TRUST_STORE_PASSWORD = PROP_SSL_TRUST_STORE_PASSWORD.replace("@@", signalName);
 
-                sslTrustStoreType = Solon.cfg().getByKeys(
-                        PROP_SSL_TRUST_STORE_TYPE, ServerConstants.SERVER_SSL_TRUST_STORE_TYPE);
-                sslTrustPassword = Solon.cfg().getByKeys(
-                        PROP_SSL_TRUST_PASSWORD, ServerConstants.SERVER_SSL_TRUST_PASSWORD);
-            }
+            sslTrustStoreType = Solon.cfg().getByKeys(
+                    PROP_SSL_TRUST_STORE_TYPE, ServerConstants.SERVER_SSL_TRUST_STORE_TYPE);
+            sslTrustStorePassword = Solon.cfg().getByKeys(
+                    PROP_SSL_TRUST_STORE_PASSWORD, ServerConstants.SERVER_SSL_TRUST_STORE_PASSWORD);
         }
     }
 
@@ -100,8 +103,8 @@ class ServerSslPropsImpl implements ServerSslProps {
     }
 
     @Override
-    public String getSslKeyPassword() {
-        return sslKeyPassword;
+    public String getSslKeyStorePassword() {
+        return sslKeyStorePassword;
     }
 
     @Override
@@ -116,6 +119,6 @@ class ServerSslPropsImpl implements ServerSslProps {
 
     @Override
     public String getSslTrustStorePassword() {
-        return sslTrustPassword;
+        return sslTrustStorePassword;
     }
 }

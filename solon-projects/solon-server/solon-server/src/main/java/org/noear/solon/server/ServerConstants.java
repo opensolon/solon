@@ -26,14 +26,15 @@ public interface ServerConstants {
 
 
     String SERVER_SSL_KEY_TYPE = "server.ssl.keyType"; //old
+    String SERVER_SSL_KEY_PASSWORD = "server.ssl.keyPassword"; //old
 
-    String SERVER_SSL_KEY_STORE_TYPE = "server.ssl.keyStoreType";//new v3.7.4
     String SERVER_SSL_KEY_STORE = "server.ssl.keyStore";
-    String SERVER_SSL_KEY_PASSWORD = "server.ssl.keyPassword";
+    String SERVER_SSL_KEY_STORE_TYPE = "server.ssl.keyStoreType";
+    String SERVER_SSL_KEY_STORE_PASSWORD = "server.ssl.keyStorePassword";
 
-    String SERVER_SSL_TRUST_STORE_TYPE = "server.ssl.trustStoreType"; //new v3.7.4
     String SERVER_SSL_TRUST_STORE = "server.ssl.trustStore";
-    String SERVER_SSL_TRUST_PASSWORD = "server.ssl.trustPassword";
+    String SERVER_SSL_TRUST_STORE_TYPE = "server.ssl.trustStoreType";
+    String SERVER_SSL_TRUST_STORE_PASSWORD = "server.ssl.trustStorePassword";
 
     String SERVER_HTTP_GZIP_ENABLE = "server.http.gzip.enable";
     String SERVER_HTTP_GZIP_MINSIZE = "server.http.gzip.minSize";

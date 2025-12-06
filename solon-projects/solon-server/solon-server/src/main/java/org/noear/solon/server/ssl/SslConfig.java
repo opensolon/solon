@@ -91,7 +91,7 @@ public class SslConfig {
         if (sslContext != null) {
             return sslContext;
         } else {
-            return SslContextFactory.create(sslProps);
+            return new SslContextBuilder().props(sslProps).build();
         }
     }
 }

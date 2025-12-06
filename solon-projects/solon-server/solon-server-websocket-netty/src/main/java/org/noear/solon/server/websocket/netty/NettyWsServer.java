@@ -33,7 +33,7 @@ import org.noear.solon.server.ServerConstants;
 import org.noear.solon.server.ServerLifecycle;
 import org.noear.solon.server.prop.ServerSslProps;
 import org.noear.solon.server.prop.impl.WebSocketServerProps;
-import org.noear.solon.server.ssl.SslContextFactory;
+import org.noear.solon.server.ssl.SslContextBuilder;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLEngine;
@@ -68,7 +68,7 @@ public class NettyWsServer implements ServerLifecycle {
 
         try {
             if(supportSsl()){
-                sslContext = SslContextFactory.create(sslProps);
+                sslContext = new SslContextBuilder().props(sslProps).build();
             }
 
             ServerBootstrap bootstrap = new ServerBootstrap();

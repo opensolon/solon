@@ -46,9 +46,9 @@ public interface ServerSslProps {
     String getSslKeyStoreType();
 
     /**
-     * key 密钥密码
+     * key 密钥库密码
      */
-    String getSslKeyPassword();
+    String getSslKeyStorePassword();
 
     /**
      * trust 信任库
@@ -74,5 +74,16 @@ public interface ServerSslProps {
     @Deprecated
     default String getSslKeyType() {
         return getSslKeyStoreType();
+    }
+
+
+    /**
+     * key 密钥库密码
+     *
+     * @deprecated 3.7.4 {@link #getSslKeyStorePassword()}
+     */
+    @Deprecated
+    default String getSslKeyPassword() {
+        return getSslKeyStorePassword();
     }
 }

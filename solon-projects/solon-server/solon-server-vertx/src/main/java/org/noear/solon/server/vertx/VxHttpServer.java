@@ -22,6 +22,7 @@ import io.vertx.core.net.JksOptions;
 import io.vertx.solon.VertxHolder;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.server.ServerConstants;
 import org.noear.solon.server.ServerLifecycle;
 import org.noear.solon.server.ServerProps;
@@ -35,6 +36,7 @@ import org.noear.solon.lang.Nullable;
 import org.noear.solon.web.vertx.VxHandler;
 
 import javax.net.ssl.SSLContext;
+import java.net.URL;
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 
@@ -106,11 +108,35 @@ public class VxHttpServer implements ServerLifecycle {
 
         //配置 ssl
         if (sslConfig.isSslEnable()) {
-            _serverOptions
-                    .setSsl(true)
-                    .setKeyCertOptions(new JksOptions()
-                            .setPath(sslConfig.getProps().getSslKeyStore())
-                            .setPassword(sslConfig.getProps().getSslKeyPassword()));
+            String sslKeyStore = sslConfig.getProps().getSslKeyStore();
+            String sslKeyStorePassword = sslConfig.getProps().getSslKeyStorePassword();
+
+            String sslTrustStore = sslConfig.getProps().getSslTrustStore();
+            String sslTrustStorePassword = sslConfig.getProps().getSslTrustStorePassword();
+
+            _serverOptions.setSsl(true);
+
+            if (Utils.isNotEmpty(sslKeyStore)) {
+                URL tmp = ResourceUtil.findResource(sslKeyStore);
+                if (tmp != null) {
+                    sslKeyStore = tmp.toString();
+                }
+
+                _serverOptions.setKeyCertOptions(new JksOptions()
+                        .setPath(sslKeyStore)
+                        .setPassword(sslKeyStorePassword));
+            }
+
+            if (Utils.isNotEmpty(sslTrustStore)) {
+                URL tmp = ResourceUtil.findResource(sslTrustStore);
+                if (tmp != null) {
+                    sslTrustStore = tmp.toString();
+                }
+
+                _serverOptions.setTrustOptions(new JksOptions()
+                        .setPath(sslTrustStore)
+                        .setPassword(sslTrustStorePassword));
+            }
 
 
             if (enableHttp2) {

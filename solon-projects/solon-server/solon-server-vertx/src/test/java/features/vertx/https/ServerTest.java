@@ -2,6 +2,8 @@ package features.vertx.https;
 
 import org.junit.jupiter.api.Test;
 import org.noear.solon.core.util.MimeType;
+import org.noear.solon.net.http.HttpUtils;
+import org.noear.solon.net.http.impl.HttpSslSupplierAny;
 import org.noear.solon.test.HttpTester;
 import org.noear.solon.test.SolonTest;
 
@@ -9,8 +11,8 @@ import org.noear.solon.test.SolonTest;
 public class ServerTest extends HttpTester {
 
     @Override
-    public String defaultProtocol() {
-        return "https";
+    public HttpUtils path(String path) {
+        return super.path("https", path).ssl(HttpSslSupplierAny.getInstance());
     }
 
     @Test
