@@ -34,19 +34,40 @@ public interface ServerSslProps {
     boolean isEnable();
 
     /**
-     * Ssl 密钥文件
+     * key 密钥库
      *
      */
     String getSslKeyStore();
 
     /**
-     * Ssl 密钥类型
+     * key 密钥库类型
      *
      */
     String getSslKeyStoreType();
 
     /**
-     * Ssl 密钥类型
+     * key 密钥密码
+     */
+    String getSslKeyPassword();
+
+    /**
+     * trust 信任库
+     */
+    String getSslTrustStore();
+
+    /**
+     * trust 信任库类型
+     */
+    String getSslTrustStoreType();
+
+    /**
+     * trust 信任库密码
+     */
+    String getSslTrustStorePassword();
+
+
+    /**
+     * key 密钥库类型
      *
      * @deprecated 3.7.4 {@link #getSslKeyStoreType()}
      */
@@ -54,10 +75,4 @@ public interface ServerSslProps {
     default String getSslKeyType() {
         return getSslKeyStoreType();
     }
-
-    /**
-     * Ssl 密钥密码
-     *
-     */
-    String getSslKeyPassword();
 }
