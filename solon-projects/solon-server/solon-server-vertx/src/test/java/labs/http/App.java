@@ -1,4 +1,4 @@
-package features.vertx.http;
+package labs.http;
 
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Controller;

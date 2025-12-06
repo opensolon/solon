@@ -1,4 +1,4 @@
-package features.vertx.http;
+package labs.http;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
