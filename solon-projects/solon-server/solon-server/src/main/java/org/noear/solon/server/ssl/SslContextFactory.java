@@ -34,7 +34,7 @@ import java.security.cert.CertificateException;
 public class SslContextFactory {
     public static SSLContext create(ServerSslProps serverSslProps) throws IOException {
         String sslKeyStore = serverSslProps.getSslKeyStore();
-        String sslKeyType = serverSslProps.getSslKeyType();
+        String sslKeyType = serverSslProps.getSslKeyStoreType();
         String sslKeyPassword = serverSslProps.getSslKeyPassword();
 
         if(Utils.isEmpty(sslKeyType)){

@@ -23,25 +23,41 @@ package org.noear.solon.server.prop;
  * @since 3.5
  */
 public interface ServerSslProps {
-    static ServerSslProps of(String signalName){
+    static ServerSslProps of(String signalName) {
         return new ServerSslPropsImpl(signalName);
     }
 
     /**
      * 是否启用
-     * */
+     *
+     */
     boolean isEnable();
 
     /**
      * Ssl 密钥文件
-     * */
+     *
+     */
     String getSslKeyStore();
+
     /**
      * Ssl 密钥类型
-     * */
-    String getSslKeyType();
+     *
+     */
+    String getSslKeyStoreType();
+
+    /**
+     * Ssl 密钥类型
+     *
+     * @deprecated 3.7.4 {@link #getSslKeyStoreType()}
+     */
+    @Deprecated
+    default String getSslKeyType() {
+        return getSslKeyStoreType();
+    }
+
     /**
      * Ssl 密钥密码
-     * */
+     *
+     */
     String getSslKeyPassword();
 }
