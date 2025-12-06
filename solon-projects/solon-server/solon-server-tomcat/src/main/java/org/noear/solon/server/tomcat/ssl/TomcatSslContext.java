@@ -55,6 +55,8 @@ public class TomcatSslContext implements SSLContext {
 
     @Override
     public void destroy() {
+        this.kms = null;
+        this.tms = null;
     }
 
     @Override
