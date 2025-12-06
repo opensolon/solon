@@ -29,7 +29,6 @@ public class HttpTester {
         return true;
     }
 
-
     /**
      * 请求当前服务
      */
@@ -45,10 +44,31 @@ public class HttpTester {
     }
 
     /**
+     * 请求当前服务
+     */
+    public HttpUtils path(String protocol, String path) {
+        return path(protocol, Solon.cfg().serverPort(), path);
+    }
+
+    /**
+     * 请求本机服务
+     */
+    public HttpUtils path(String protocol, int port, String path) {
+        return http(protocol + "://localhost:" + port + path);
+    }
+
+    /**
      * 请求本机服务
      */
     public HttpUtils http(int port) {
-        return HttpUtils.http("http://localhost:" + port).enablePrintln(enablePrint());
+        return http("http", port);
+    }
+
+    /**
+     * 请求本机服务
+     */
+    public HttpUtils http(String protocol, int port) {
+        return http(protocol + "://localhost:" + port);
     }
 
     /**

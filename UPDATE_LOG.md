@@ -27,6 +27,7 @@
 
 ### v3.7.4
 
+* 添加 `solon-test` HttpTester protocol 参数支持（方便 https 或 http 切换测试）
 * 修复 `solon` IndexFiles 路径表达式的兼容问题（添加转换 `*->@`、`:->!`）
 
 ### v3.7.3
