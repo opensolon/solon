@@ -68,24 +68,19 @@ public class SslContextBuilder {
             if (Utils.isNotEmpty(sslKeyStore)) {
                 URL tmp = ResourceUtil.findResource(sslKeyStore);
                 if (tmp != null) {
-                    sslKeyStore = tmp.toString();
+                    keyManager(tmp, sslKeyStorePassword, sslKeyStorePassword);
                 }
-
-                keyManager(sslKeyStore, sslKeyStorePassword, sslKeyStorePassword);
             }
 
             if (Utils.isNotEmpty(sslTrustStore)) {
                 URL tmp = ResourceUtil.findResource(sslTrustStore);
                 if (tmp != null) {
-                    sslTrustStore = tmp.toString();
+                    trustManager(tmp, sslTrustStorePassword);
                 }
-
-                trustManager(sslTrustStore, sslTrustStorePassword);
             }
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
-
 
         return this;
     }
@@ -121,6 +116,12 @@ public class SslContextBuilder {
         }
     }
 
+    public SslContextBuilder keyManager(URL keyStoreUrl, String keyStorePassword, String keyPassword) throws UnrecoverableKeyException, KeyStoreException, NoSuchAlgorithmException, IOException, CertificateException {
+        try (InputStream inputStream = keyStoreUrl.openStream()) {
+            return keyManager(inputStream, keyStorePassword, keyPassword);
+        }
+    }
+
     public SslContextBuilder keyManager(InputStream keyStoreInputStream, String keyStorePassword, String keyPassword) throws UnrecoverableKeyException, KeyStoreException, NoSuchAlgorithmException, IOException, CertificateException {
         KeyStore ks = loadKeyStore(keyType, keyStoreInputStream, keyStorePassword.toCharArray());
         KeyManagerFactory kmf = KeyManagerFactory.getInstance(algorithm);
@@ -131,6 +132,12 @@ public class SslContextBuilder {
 
     public SslContextBuilder trustManager(String trustStoreFile, String trustStorePassword) throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException {
         try (InputStream inputStream = new FileInputStream(trustStoreFile)) {
+            return trustManager(inputStream, trustStorePassword);
+        }
+    }
+
+    public SslContextBuilder trustManager(URL trustStoreUrl, String trustStorePassword) throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException {
+        try (InputStream inputStream = trustStoreUrl.openStream()) {
             return trustManager(inputStream, trustStorePassword);
         }
     }

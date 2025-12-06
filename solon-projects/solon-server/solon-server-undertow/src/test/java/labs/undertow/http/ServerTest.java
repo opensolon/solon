@@ -1,4 +1,4 @@
-package features.undertow.http;
+package labs.undertow.http;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
@@ -11,6 +11,12 @@ import org.noear.solon.test.SolonTest;
 
 @SolonTest(App.class)
 public class ServerTest extends HttpTester {
+    @AfterAll
+    public static void aftAll() {
+        if (Solon.app() != null) {
+            Solon.stopBlock();
+        }
+    }
 
     @Test
     public void test() throws Exception {

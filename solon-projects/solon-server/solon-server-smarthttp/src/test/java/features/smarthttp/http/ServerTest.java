@@ -1,12 +1,21 @@
 package features.smarthttp.http;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
+import org.noear.solon.Solon;
 import org.noear.solon.core.util.MimeType;
+import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.test.HttpTester;
 import org.noear.solon.test.SolonTest;
 
 @SolonTest(App.class)
 public class ServerTest extends HttpTester {
+    @AfterAll
+    public static void aftAll() {
+        if (Solon.app() != null) {
+            Solon.stopBlock();
+        }
+    }
 
     @Test
     public void test() throws Exception {

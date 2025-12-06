@@ -110,7 +110,6 @@ abstract class JettyServerBase implements ServerLifecycle , HttpServerConfigure 
 
         if (sslConfig.isSslEnable() && autoSsl) {
             SslConnectionFactory sslFactory = getSslConnectionFactory();
-
             serverConnector = new ServerConnector(server, executor, null, null, -1, -1, sslFactory, httpFactory);
             //this(server, (Executor)null, (Scheduler)null, (ByteBufferPool)null, -1, -1, factories);
             isSecure = true;
@@ -142,7 +141,7 @@ abstract class JettyServerBase implements ServerLifecycle , HttpServerConfigure 
         if (Utils.isNotEmpty(sslKeyStore)) {
             URL url = ResourceUtil.findResource(sslKeyStore);
             if (url != null) {
-                sslKeyStore = url.toString();
+                sslKeyStore = url.getFile();
             }
 
             contextFactory.setKeyStorePath(sslKeyStore);
@@ -159,7 +158,7 @@ abstract class JettyServerBase implements ServerLifecycle , HttpServerConfigure 
         if (Utils.isNotEmpty(sslTrustStore)) {
             URL url = ResourceUtil.findResource(sslTrustStore);
             if (url != null) {
-                sslTrustStore = url.toString();
+                sslTrustStore = url.getFile();
             }
 
             contextFactory.setTrustStorePath(sslTrustStore);

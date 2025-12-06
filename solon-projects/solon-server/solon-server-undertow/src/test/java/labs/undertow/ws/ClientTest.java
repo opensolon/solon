@@ -1,4 +1,4 @@
-package features.undertow.ws;
+package labs.undertow.ws;
 
 import org.java_websocket.client.WebSocketClient;
 import org.junit.jupiter.api.AfterAll;

@@ -1,7 +1,9 @@
 package features.jdkhttp.https;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.noear.solon.Solon;
 import org.noear.solon.core.util.MimeType;
 import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.net.http.HttpSslSupplier;
@@ -19,6 +21,12 @@ import java.net.URL;
 
 @SolonTest(App.class)
 public class ServerTest extends HttpTester {
+    @AfterAll
+    public static void aftAll() {
+        if (Solon.app() != null) {
+            Solon.stopBlock();
+        }
+    }
 
     @Override
     public HttpUtils path(String path) {

@@ -1,7 +1,9 @@
 package features.httputils;
 
 import features.jdkhttp.http.App;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
+import org.noear.solon.Solon;
 import org.noear.solon.net.http.HttpResponse;
 import org.noear.solon.net.http.HttpUtils;
 import org.noear.solon.net.http.impl.okhttp.OkHttpUtilsFactory;
@@ -15,6 +17,13 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 @SolonTest(App.class)
 public class DataOkTest {
+    @AfterAll
+    public static void aftAll() {
+        if (Solon.app() != null) {
+            Solon.stopBlock();
+        }
+    }
+
     public static HttpUtils http(String url) {
         return  OkHttpUtilsFactory.getInstance().http(url);
     }

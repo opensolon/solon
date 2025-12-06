@@ -119,7 +119,7 @@ public class VxHttpServer implements ServerLifecycle {
             if (Utils.isNotEmpty(sslKeyStore)) {
                 URL tmp = ResourceUtil.findResource(sslKeyStore);
                 if (tmp != null) {
-                    sslKeyStore = tmp.toString();
+                    sslKeyStore = tmp.getFile();
                 }
 
                 _serverOptions.setKeyCertOptions(new JksOptions()
@@ -130,7 +130,7 @@ public class VxHttpServer implements ServerLifecycle {
             if (Utils.isNotEmpty(sslTrustStore)) {
                 URL tmp = ResourceUtil.findResource(sslTrustStore);
                 if (tmp != null) {
-                    sslTrustStore = tmp.toString();
+                    sslTrustStore = tmp.getFile();
                 }
 
                 _serverOptions.setTrustOptions(new JksOptions()
