@@ -1,4 +1,4 @@
-package features.jetty;
+package features.jetty.http;
 
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Mapping;

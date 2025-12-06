@@ -1,4 +1,4 @@
-package features.jetty;
+package features.jetty.https;
 
 import org.junit.jupiter.api.Test;
 import org.noear.solon.core.util.MimeType;
@@ -9,6 +9,11 @@ import org.noear.solon.test.SolonTest;
 
 @SolonTest(App.class)
 public class ServerTest extends HttpTester {
+
+    @Override
+    public String defaultProtocol() {
+        return "https";
+    }
 
     @Test
     public void test() throws Exception {

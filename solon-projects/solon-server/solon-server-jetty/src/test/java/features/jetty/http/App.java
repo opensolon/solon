@@ -1,10 +1,11 @@
-package features.jetty;
+package features.jetty.http;
 
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.annotation.Param;
 import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.util.MultiMap;
 
 import javax.servlet.http.HttpSession;
 
@@ -14,7 +15,10 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class App {
     public static void main(String[] args) {
-        Solon.start(ServerTest.class, args);
+        Solon.start(
+                ServerTest.class,
+                MultiMap.from(args).then(x -> x.add("cfg", "app-http.yml"))
+        );
     }
 
     @Mapping("hello")
