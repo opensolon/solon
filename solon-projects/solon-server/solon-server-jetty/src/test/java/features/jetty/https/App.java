@@ -1,6 +1,5 @@
 package features.jetty.https;
 
-import features.jetty.http.ServerTest;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
