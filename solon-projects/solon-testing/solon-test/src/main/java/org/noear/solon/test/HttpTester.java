@@ -30,6 +30,13 @@ public class HttpTester {
     }
 
     /**
+     * @since 3.7.4
+     */
+    public String defaultProtocol() {
+        return "http";
+    }
+
+    /**
      * 请求当前服务
      */
     public HttpUtils path(String path) {
@@ -40,7 +47,7 @@ public class HttpTester {
      * 请求本机服务
      */
     public HttpUtils path(int port, String path) {
-        return http("http://localhost:" + port + path);
+        return path(defaultProtocol(), port, path);
     }
 
     /**
@@ -61,7 +68,7 @@ public class HttpTester {
      * 请求本机服务
      */
     public HttpUtils http(int port) {
-        return http("http", port);
+        return http(defaultProtocol(), port);
     }
 
     /**
