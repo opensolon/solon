@@ -2,9 +2,9 @@
 server.contextPath: "!/test/"
 
 server.ssl.keyStoreType: "JKS"
-server.ssl.keyStore: "classpath:ssl/jks/keystore.jks" #（本地绝对位置）或 "classpath:demo.pfx"（资源目录位置）
+server.ssl.keyStore: "classpath:ssl_jks/keystore.jks" #（本地绝对位置）或 "classpath:demo.pfx"（资源目录位置）
 server.ssl.keyPassword: "123456"
 
 #server.ssl.trustStoreType: "JKS"
-#server.ssl.trustStore: "classpath:ssl/jks/trustKeystore.jks" #（本地绝对位置）或 "classpath:demo.pfx"（资源目录位置）
+#server.ssl.trustStore: "classpath:ssl_jks/trustKeystore.jks" #（本地绝对位置）或 "classpath:demo.pfx"（资源目录位置）
 #server.ssl.trustPassword: "123456"
