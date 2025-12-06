@@ -52,7 +52,7 @@ public class RunUtil {
      */
     @Deprecated
     public static void setParallelExecutor(ExecutorService parallelExecutor) {
-
+        runHolder.setAsyncExecutor(parallelExecutor);
     }
 
     /**
