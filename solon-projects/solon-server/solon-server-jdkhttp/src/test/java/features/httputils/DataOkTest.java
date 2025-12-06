@@ -1,6 +1,6 @@
 package features.httputils;
 
-import features.jdkhttp.App;
+import features.jdkhttp.http.App;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.net.http.HttpResponse;
 import org.noear.solon.net.http.HttpUtils;

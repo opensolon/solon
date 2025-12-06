@@ -1,4 +1,4 @@
-package features.jdkhttp;
+package features.jdkhttp.https;
 
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Mapping;
