@@ -187,6 +187,17 @@ public class Solon {
     /**
      * 启动应用（全局只启动一个）
      *
+     * @param source 主应用包（用于定制Bean所在包）
+     * @param argx   启动参数
+     */
+    public static SolonApp start(Class<?> source, MultiMap<String> argx) {
+        return start(source, argx, null);
+    }
+
+
+    /**
+     * 启动应用（全局只启动一个）
+     *
      * @param source     主应用包（用于定制Bean所在包）
      * @param argx       启动参数
      * @param initialize 实始化函数

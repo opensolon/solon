@@ -110,9 +110,12 @@ abstract class JettyServerBase implements ServerLifecycle , HttpServerConfigure 
 
         if (sslConfig.isSslEnable() && autoSsl) {
 
+            String sslKeyStoreType = sslConfig.getProps().getSslKeyStoreType();
             String sslKeyStore = sslConfig.getProps().getSslKeyStore();
-            String sslKeyStoreType = sslConfig.getProps().getSslKeyType();
             String sslKeyStorePassword = sslConfig.getProps().getSslKeyPassword();
+            String sslTrustStore = sslConfig.getProps().getSslTrustStore();
+            String sslTrustStorePassword = sslConfig.getProps().getSslTrustStorePassword();
+            String sslTrustStoreType = sslConfig.getProps().getSslTrustStoreType();
 
             SslContextFactory.Server contextFactory = new SslContextFactory.Server();
 
@@ -132,6 +135,25 @@ abstract class JettyServerBase implements ServerLifecycle , HttpServerConfigure 
             if (Utils.isNotEmpty(sslKeyStorePassword)) {
                 contextFactory.setKeyStorePassword(sslKeyStorePassword);
             }
+
+            if (Utils.isNotEmpty(sslTrustStore)) {
+                URL url = ResourceUtil.findResource(sslTrustStore);
+                if (url != null) {
+                    sslTrustStore = url.toString();
+                }
+
+                contextFactory.setTrustStorePath(sslTrustStore);
+            }
+
+            if (Utils.isNotEmpty(sslTrustStoreType)) {
+                contextFactory.setTrustStoreType(sslTrustStoreType);
+            }
+
+            if (Utils.isNotEmpty(sslTrustStorePassword)) {
+                contextFactory.setTrustStorePassword(sslTrustStorePassword);
+            }
+
+            /// //////////
 
             SslConnectionFactory sslFactory = new SslConnectionFactory(contextFactory, HttpVersion.HTTP_1_1.asString());
 
