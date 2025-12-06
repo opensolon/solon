@@ -33,10 +33,11 @@ import java.security.SecureRandom;
  * */
 public class SslContextBuilder {
     private String protocol = SslVersions.TLS;
+    private Provider provider = null;
+    private SecureRandom secureRandom = null;
+
     private KeyManager[] keyManagers;
     private TrustManager[] trustManagers;
-    private SecureRandom secureRandom;
-    private Provider provider;
 
 
     /**
@@ -50,11 +51,26 @@ public class SslContextBuilder {
      * 配置协议
      */
     public SslContextBuilder protocol(final String protocol) {
-        if (Utils.isNotBlank(protocol)) {
-            this.protocol = protocol;
-        }
+        this.protocol = protocol;
         return this;
     }
+
+    /**
+     * 配置提供者
+     */
+    public SslContextBuilder provider(final Provider provider) {
+        this.provider = provider;
+        return this;
+    }
+
+    /**
+     * 配置安全随机
+     */
+    public SslContextBuilder secureRandom(final SecureRandom secureRandom) {
+        this.secureRandom = secureRandom;
+        return this;
+    }
+
 
     /**
      * 配置信任信息
@@ -76,23 +92,6 @@ public class SslContextBuilder {
         return this;
     }
 
-    /**
-     * 配置安全随机
-     */
-    public SslContextBuilder secureRandom(final SecureRandom secureRandom) {
-        if (null != secureRandom) {
-            this.secureRandom = secureRandom;
-        }
-        return this;
-    }
-
-    /**
-     * 配置提供者
-     */
-    public SslContextBuilder provider(final Provider provider) {
-        this.provider = provider;
-        return this;
-    }
 
     /**
      * 构建
