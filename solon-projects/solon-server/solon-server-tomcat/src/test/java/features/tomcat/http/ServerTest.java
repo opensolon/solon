@@ -1,4 +1,4 @@
-package features.tomcat;
+package features.tomcat.http;
 
 import org.junit.jupiter.api.Test;
 import org.noear.solon.core.util.MimeType;
