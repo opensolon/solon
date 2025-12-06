@@ -20,43 +20,32 @@ import org.noear.solon.net.http.ssl.SslAnyHostnameVerifier;
 import org.noear.solon.net.http.ssl.SslAnyTrustManager;
 import org.noear.solon.net.http.ssl.SslContextBuilder;
 
-import javax.net.ssl.*;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.X509TrustManager;
 
 /**
  * SSL 客户端
  *
- * @author desire
  * @author noear
+ * @since 3.7
  * */
-public class HttpSslSupplierDefault implements HttpSslSupplier {
-    private static HttpSslSupplier instance = new HttpSslSupplierDefault();
+public class HttpSslSupplierAny implements HttpSslSupplier {
+    private static HttpSslSupplier instance = new HttpSslSupplierAny();
 
     public static HttpSslSupplier getInstance() {
         return instance;
     }
 
-    /**
-     * 获取默认ssl上下文
-     *
-     */
-    protected SSLContext getDefSslContext() {
-        try {
-            return SSLContext.getDefault();
-        } catch (Exception e) {
-            throw new IllegalStateException(e);
-        }
-    }
 
-    /**
-     * 获取任意信任ssl上下文
-     */
     private SSLContext anySslContext;
 
-    protected SSLContext getAnySslContext() {
+    @Override
+    public SSLContext getSslContext() {
         if (anySslContext == null) {
             try {
                 anySslContext = SslContextBuilder.of()
-                        .trustManagers(SslAnyTrustManager.INSTANCE)
+                        .trustManagers(getX509TrustManager())
                         .build();
             } catch (Exception e) {
                 throw new IllegalStateException(e);
@@ -64,16 +53,6 @@ public class HttpSslSupplierDefault implements HttpSslSupplier {
         }
 
         return anySslContext;
-    }
-
-    @Override
-    public SSLContext getSslContext() {
-        return getDefSslContext();
-    }
-
-    @Override
-    public SSLSocketFactory getSocketFactory() {
-        return getSslContext().getSocketFactory();
     }
 
     @Override

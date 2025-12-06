@@ -51,7 +51,10 @@ public class SslContextBuilder {
      * 配置协议
      */
     public SslContextBuilder protocol(final String protocol) {
-        this.protocol = protocol;
+        if (protocol != null) {
+            this.protocol = protocol;
+        }
+
         return this;
     }
 
