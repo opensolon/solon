@@ -16,7 +16,7 @@ import javax.servlet.http.HttpSession;
 public class App {
     public static void main(String[] args) {
         Solon.start(
-                ServerTest.class,
+                App.class,
                 MultiMap.from(args).then(x -> x.add("cfg", "app-http.yml"))
         );
     }

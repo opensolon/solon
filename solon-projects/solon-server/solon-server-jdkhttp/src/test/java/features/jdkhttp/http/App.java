@@ -6,6 +6,7 @@ import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.annotation.Post;
 import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.util.MultiMap;
 
 /**
  * @author noear 2024/10/1 created
@@ -13,7 +14,10 @@ import org.noear.solon.core.handle.Context;
 @Controller
 public class App {
     public static void main(String[] args) {
-        Solon.start(App.class, args);
+        Solon.start(
+                App.class,
+                MultiMap.from(args).then(x -> x.add("cfg", "app-http.yml"))
+        );
     }
 
     @Mapping("hello")
