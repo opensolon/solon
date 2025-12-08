@@ -57,7 +57,7 @@
         <!-- server core end -->
 
         <!--jsp try start-->
-        <dependency>
+        <!--<dependency>
             <groupId>io.undertow.jastow</groupId>
             <artifactId>jastow</artifactId>
             <version>${undertow.jastow.version}</version>
@@ -109,8 +109,24 @@
             <artifactId>jboss-jsp-api_2.3_spec</artifactId>
             <version>${undertow.jboss-jsp.version}</version>
             <scope>provided</scope>
+        </dependency>-->
+		<dependency>
+		    <groupId>org.mortbay.jasper</groupId>
+		    <artifactId>mortbay-apache-jsp</artifactId>
+		    <version>9.0.111</version>
+		    <scope>provided</scope>
+		</dependency>
+		<!--<dependency>
+		    <groupId>javax.servlet.jsp.jstl</groupId>
+		    <artifactId>jstl</artifactId>
+		    <version>1.2</version>
+		    <scope>provided</scope>
+		</dependency>-->
+		<dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <scope>provided</scope>
         </dependency>
-
         <!--jsp try end-->
 
         <dependency>

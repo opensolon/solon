@@ -15,30 +15,31 @@
  */
 package org.noear.solon.server.undertow;
 
-import io.undertow.jsp.HackInstanceManager;
-import io.undertow.jsp.JspServletBuilder;
-import io.undertow.server.HttpHandler;
-import io.undertow.servlet.api.*;
-import org.apache.jasper.deploy.JspPropertyGroup;
-import org.apache.jasper.deploy.TagLibraryInfo;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Collections;
+
+import org.apache.jasper.servlet.JasperInitializer;
+import org.apache.tomcat.InstanceManager;
+import org.apache.tomcat.SimpleInstanceManager;
 import org.noear.solon.Solon;
+import org.noear.solon.core.AppClassLoader;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.server.prop.impl.HttpServerProps;
 import org.noear.solon.server.undertow.http.UtHttpContextServletHandler;
 import org.noear.solon.server.undertow.jsp.JspResourceManager;
 import org.noear.solon.server.undertow.jsp.JspServletEx;
-import org.noear.solon.server.undertow.jsp.JspTldLocator;
-import org.noear.solon.core.AppClassLoader;
 import org.noear.solon.server.util.DebugUtils;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
+import io.undertow.server.HttpHandler;
+import io.undertow.servlet.api.DeploymentInfo;
+import io.undertow.servlet.api.DeploymentManager;
+import io.undertow.servlet.api.ServletContainer;
+import io.undertow.servlet.api.ServletContainerInitializerInfo;
+import io.undertow.servlet.api.ServletInfo;
 
 /**
  * @author by: Yukai
@@ -65,9 +66,9 @@ public class UndertowServerAddJsp extends UndertowServer {
 
 
         //添加taglib支持
-        Map<String, TagLibraryInfo> tagLibraryMap = JspTldLocator.createTldInfos("WEB-INF", "templates");
-        JspServletBuilder.setupDeployment(builder, new HashMap<String, JspPropertyGroup>(), tagLibraryMap, new HackInstanceManager());
-
+//        Map<String, TagLibraryInfo> tagLibraryMap = JspTldLocator.createTldInfos("WEB-INF", "templates");
+//        JspServletBuilder.setupDeployment(builder, new HashMap<String, JspPropertyGroup>(), tagLibraryMap, new HackInstanceManager());
+        setupDeployment(builder,new SimpleInstanceManager());
 
         //开始部署
         final ServletContainer container = ServletContainer.Factory.newInstance();
@@ -76,6 +77,12 @@ public class UndertowServerAddJsp extends UndertowServer {
 
         return manager.start();
     }
+    
+    private static void setupDeployment(final DeploymentInfo deploymentInfo, final InstanceManager instanceManager) {
+		deploymentInfo.addServletContextAttribute(InstanceManager.class.getName(), instanceManager);
+		deploymentInfo.addServletContainerInitializers(
+				new ServletContainerInitializerInfo(JasperInitializer.class, Collections.emptySet()));
+	}
 
     protected String getResourceRoot() throws FileNotFoundException {
         URL rootURL = getRootPath();
