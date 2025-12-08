@@ -47,11 +47,24 @@ public class JspResourceManager implements ResourceManager {
 
     @Override
     public Resource getResource(String path) throws IOException {
-        if (path == null || path.endsWith(".jsp") == false) {
+    	if (path == null) {
             return null;
         }
+    	if(path.endsWith(".jsp")) {
+        	return getJspResource(path);
+        }
+        if(path.endsWith(".tld")) {
+        	return getTldResource(path);
+        }
 
-        if(Context.current() == null){
+       return null;
+    }
+    
+    /**
+     * 获取JSP资源
+     */
+    private Resource getJspResource(String path) throws IOException {
+    	if(Context.current() == null){
             //说明先走的是jsp请求 //禁止
             return null;
         }
@@ -68,8 +81,27 @@ public class JspResourceManager implements ResourceManager {
         } else {
             resource = this.classLoader.getResource(realPath);
         }
-
+        if(resource == null) {
+        	resource = this.classLoader.getResource(path);
+        }
         return resource == null ? null : new URLResource(resource, path);
+    }
+    
+    /**
+     * 获取TLD资源或TLD映射对应的资源
+     */
+    private Resource getTldResource(String path) throws IOException {
+    	URL resource = this.classLoader.getResource(path);
+        if (resource != null) {
+            try {
+                resource.toURI();
+                return new URLResource(resource, path);
+            } catch (Exception e) {
+                System.err.println("URI conversion failed for " + path + ": " + e.getMessage());
+            }
+        }
+        
+        return null;
     }
 
     @Override
