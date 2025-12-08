@@ -53,7 +53,7 @@ Solon
 <hr />
 
 <p align="center">
-并发高 700%；内存省 50%；启动快 10 倍；打包小 90%；同时支持 java8 ~ java24, native 运行时。
+并发高 700%；内存省 50%；启动快 10 倍；打包小 90%；同时支持 java8 ~ java25, native 运行时。
 <br/>
 从零开始构建，有更灵活的接口规范与开放生态
 </p>
@@ -67,7 +67,7 @@ Solon
 | 更高的计算性价比   | 并发高 700%（[techempower](https://www.techempower.com/benchmarks/#hw=ph&test=plaintext&section=data-r23)）；内存省 50% |
 | 更快的开发效率    | 代码少；入门简单；启动快 10倍（调试快）                                                                                          |
 | 更好的生产与部署体验 | 打包小 90%                                                                                                        |
-| 更大的兼容范围    | 非 java-ee 架构；同时支持 java8 ～ java24，graalvm native image                                                          |
+| 更大的兼容范围    | 非 java-ee 架构；同时支持 java8 ～ java25，graalvm native image                                                          |
 
 
 ## 主要代码仓库
