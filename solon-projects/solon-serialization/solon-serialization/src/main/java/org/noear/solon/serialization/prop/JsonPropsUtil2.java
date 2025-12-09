@@ -110,6 +110,16 @@ public class JsonPropsUtil2 {
                 return df.format(e);
             });
 
+            serializer.addEncoder(java.sql.Timestamp.class, e -> {
+                DateFormat df = new SimpleDateFormat(jsonProps.dateAsFormat);
+
+                if (Utils.isNotEmpty(jsonProps.dateAsTimeZone)) {
+                    df.setTimeZone(TimeZone.getTimeZone(ZoneId.of(jsonProps.dateAsTimeZone)));
+                }
+
+                return df.format(e);
+            });
+
             serializer.addEncoder(OffsetDateTime.class, e -> {
                 DateTimeFormatter df = DateTimeFormatter.ofPattern(jsonProps.dateAsFormat);
                 if (Utils.isNotEmpty(jsonProps.dateAsTimeZone)) {
