@@ -27,7 +27,13 @@
 
 ### v3.7.4
 
+* 添加 `solon` Solon.start(Class, MultiMap) 方法
 * 添加 `solon-test` HttpTester protocol 参数支持（方便 https 或 http 切换测试）
+* 添加 `solon-serialization` JsonPropsUtil2.dateAsFormat 添加 java.sql.Timestamp 类型支持
+* 添加 `solon-config-yaml` 依赖 solon-config-snack4 避免单个引入时啦掉
+* 添加 `solon-net-httputils` HttpSslSupplierAny
+* 添加 `solon-server-tomcat` ssl 适配支持
+* 优化 `solon-net-httputils` SslContextBuilder
 * 修复 `solon` IndexFiles 路径表达式的兼容问题（添加转换 `*->@`、`:->!`）
 * snack4 升为 4.0.18
 
