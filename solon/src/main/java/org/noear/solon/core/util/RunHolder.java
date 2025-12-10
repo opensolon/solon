@@ -71,9 +71,13 @@ public class RunHolder {
             Utils.locker().lock();
             try {
                 if (scheduledExecutor == null) {
-                    int scheduledPoolSize = Runtime.getRuntime().availableProcessors() * 2;
-                    scheduledExecutor = new ScheduledThreadPoolExecutor(scheduledPoolSize,
-                            new NamedThreadFactory("Solon-scheduledExecutor-"));
+                    if (Solon.appIf(app -> app.cfg().isEnabledVirtualThreads())) {
+                        scheduledExecutor = Executors.newScheduledThreadPool(0, ThreadsUtil.newVirtualThreadFactory());
+                    } else {
+                        int scheduledPoolSize = Runtime.getRuntime().availableProcessors() * 2;
+                        scheduledExecutor = new ScheduledThreadPoolExecutor(scheduledPoolSize,
+                                new NamedThreadFactory("Solon-scheduledExecutor-"));
+                    }
                 }
             } finally {
                 Utils.locker().unlock();

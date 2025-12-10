@@ -18,6 +18,7 @@ package org.noear.solon.core.util;
 import java.lang.reflect.Method;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 
 /**
  * 线程工具
@@ -27,6 +28,7 @@ import java.util.concurrent.Executors;
  */
 public class ThreadsUtil {
     private static Method method_newVirtualThreadPerTaskExecutor;
+    private static Method method_newVirtualThreadFactory;
 
     public static ExecutorService newVirtualThreadPerTaskExecutor() {
         try {
@@ -35,6 +37,20 @@ public class ThreadsUtil {
             }
 
             return (ExecutorService) method_newVirtualThreadPerTaskExecutor.invoke(Executors.class);
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    public static ThreadFactory newVirtualThreadFactory() {
+        try {
+            if (method_newVirtualThreadFactory == null) {
+                method_newVirtualThreadFactory = Thread.class.getDeclaredMethod("ofVirtual");
+            }
+
+            Object ofVirtual = method_newVirtualThreadFactory.invoke(Thread.class);
+
+            return (ThreadFactory) ofVirtual.getClass().getDeclaredMethod("factory").invoke(ofVirtual);
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
