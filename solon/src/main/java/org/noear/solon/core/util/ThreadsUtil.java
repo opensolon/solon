@@ -28,7 +28,8 @@ import java.util.concurrent.ThreadFactory;
  */
 public class ThreadsUtil {
     private static Method method_newVirtualThreadPerTaskExecutor;
-    private static Method method_newVirtualThreadFactory;
+    private static Method method_newVirtualOfVirtual;
+    private static Method method_newVirtualFactory;
 
     public static ExecutorService newVirtualThreadPerTaskExecutor() {
         try {
@@ -44,13 +45,16 @@ public class ThreadsUtil {
 
     public static ThreadFactory newVirtualThreadFactory() {
         try {
-            if (method_newVirtualThreadFactory == null) {
-                method_newVirtualThreadFactory = Thread.class.getDeclaredMethod("ofVirtual");
+            if (method_newVirtualOfVirtual == null) {
+                method_newVirtualOfVirtual = Thread.class.getDeclaredMethod("ofVirtual");
+
+                Class<?> threadBuilderClass = Class.forName("java.lang.Thread$Builder");
+                method_newVirtualFactory = threadBuilderClass.getMethod("factory");
             }
 
-            Object ofVirtual = method_newVirtualThreadFactory.invoke(Thread.class);
+            Object ofVirtual = method_newVirtualOfVirtual.invoke(Thread.class);
 
-            return (ThreadFactory) ofVirtual.getClass().getDeclaredMethod("factory").invoke(ofVirtual);
+            return (ThreadFactory) method_newVirtualFactory.invoke(ofVirtual);
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
