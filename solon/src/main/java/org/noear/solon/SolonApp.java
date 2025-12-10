@@ -615,55 +615,52 @@ public class SolonApp extends RouterWrapper {
      * 应用请求处理入口(异常时，自动500处理)
      */
     public void tryHandle(Context x) {
-        try {
-            //设置当前线程上下文
-            ContextHolder.currentSet(x);
-
-            if (stopping) {
-                x.status(503);
-            } else {
-                chains().doFilter(x, _handler);
-            }
-
-            //40x,50x...
-            doStatus(x);
-        } catch (Throwable ex) {
-            ex = Utils.throwableUnwrap(ex);
-
-            //如果未处理，尝试处理
-            if (ex instanceof StatusException) {
-                StatusException se = (StatusException) ex;
-                x.status(se.getCode());
-
-                if (se.getCode() != 404 && se.getCode() != 405) {
-                    log.warn("SolonApp tryHandle failed, code=" + se.getCode(), ex);
+        //使用当前线程上下文
+        ContextHolder.currentUse(x, () -> {
+            try {
+                if (stopping) {
+                    x.status(503);
+                } else {
+                    chains().doFilter(x, _handler);
                 }
-            } else {
-                //推送异常事件 //todo: Action -> Gateway? -> RouterHandler -> Filter -> SolonApp!
-                log.warn("SolonApp tryHandle failed!", ex);
 
-                x.status(500);
-            }
-
-            //如果未渲染，尝试渲染
-            if (x.getRendered() == false) {
                 //40x,50x...
-                try {
-                    if (doStatus(x) == false) {
-                        if (this.cfg().isDebugMode()) {
-                            x.output(ex);
-                        }
+                doStatus(x);
+            } catch (Throwable ex) {
+                ex = Utils.throwableUnwrap(ex);
+
+                //如果未处理，尝试处理
+                if (ex instanceof StatusException) {
+                    StatusException se = (StatusException) ex;
+                    x.status(se.getCode());
+
+                    if (se.getCode() != 404 && se.getCode() != 405) {
+                        log.warn("SolonApp tryHandle failed, code=" + se.getCode(), ex);
                     }
-                } catch (RuntimeException e) {
-                    throw e;
-                } catch (Throwable e) {
-                    throw new RuntimeException(e);
+                } else {
+                    //推送异常事件 //todo: Action -> Gateway? -> RouterHandler -> Filter -> SolonApp!
+                    log.warn("SolonApp tryHandle failed!", ex);
+
+                    x.status(500);
+                }
+
+                //如果未渲染，尝试渲染
+                if (x.getRendered() == false) {
+                    //40x,50x...
+                    try {
+                        if (doStatus(x) == false) {
+                            if (this.cfg().isDebugMode()) {
+                                x.output(ex);
+                            }
+                        }
+                    } catch (RuntimeException e) {
+                        throw e;
+                    } catch (Throwable e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
-        } finally {
-            //移除当前线程上下文
-            ContextHolder.currentRemove();
-        }
+        });
     }
 
     protected boolean doStatus(Context x) throws Throwable {
