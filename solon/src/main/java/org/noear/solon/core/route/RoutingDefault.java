@@ -18,10 +18,14 @@ package org.noear.solon.core.route;
 import org.noear.solon.core.SignalType;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.util.PathMatcher;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 路由默认实现
@@ -31,6 +35,7 @@ import java.util.List;
  * @since 3.4
  */
 public class RoutingDefault<T> implements Routing<T> {
+    private static final Logger log = LoggerFactory.getLogger(RoutingDefault.class);
     public RoutingDefault(String path, MethodType method, int index) {
         if (path.startsWith("/") == false) {
             path = "/" + path;
@@ -57,8 +62,27 @@ public class RoutingDefault<T> implements Routing<T> {
 
     private VersionedTarget<T> versionedTargetNull;//目标
     private List<VersionedTarget<T>> versionedTargets = new ArrayList<>();
+    private Set<String> versionSet; //用于快速检测重复版本
 
     public RoutingDefault<T> addVersionTarget(Version version, T target) {
+        // 检测重复
+        if (version == null) {
+            if (versionedTargetNull != null) {
+                log.warn("The routing repeated: '{}'", path);
+            }
+        } else {
+            if(versionSet == null){
+                //懒加载，减少内存点用
+                versionSet = new HashSet<>();
+            }
+
+            String versionKey = version.getOriginal();
+            if (!versionSet.add(versionKey)) {
+                log.warn("The routing repeated: '{}' - '{}'", path, versionKey);
+            }
+        }
+
+        // 添加目标
         VersionedTarget tmp = new VersionedTarget<>(version, target);
 
         if (tmp.getVersion() == null) {
