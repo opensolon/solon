@@ -84,7 +84,7 @@ public class ForwardStompListener implements StompListener {
         Handler handler = Solon.app().router().matchMain(ctx);
 
         if (handler != null) {
-            ContextHolder.currentUse(ctx, () -> {
+            ContextHolder.currentWith(ctx, () -> {
                 handler.handle(ctx);
 
                 if (ctx.asyncStarted() == false) {

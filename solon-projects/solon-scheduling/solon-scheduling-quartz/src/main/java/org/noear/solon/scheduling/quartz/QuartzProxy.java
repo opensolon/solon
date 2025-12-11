@@ -38,7 +38,7 @@ public class QuartzProxy implements Job {
         if (jobHolder != null) {
             Context ctx = QuartzContext.getContext(jc);
 
-            ContextHolder.currentUse(ctx, () -> {
+            ContextHolder.currentWith(ctx, () -> {
                 try {
                     jobHolder.handle(ctx);
 

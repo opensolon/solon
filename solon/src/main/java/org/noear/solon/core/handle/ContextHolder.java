@@ -39,7 +39,7 @@ public class ContextHolder {
      *
      * @since 3.7.4
      */
-    public static void currentUse(Context context, Runnable runnable) {
+    public static void currentWith(Context context, Runnable runnable) {
         SCOPE_LOCAL.with(context, runnable);
     }
 
@@ -48,7 +48,7 @@ public class ContextHolder {
      *
      * @since 3.7.4
      */
-    public static <R, X extends Throwable> R currentUse(Context context, CallableTx<R, X> callable) throws X {
+    public static <R, X extends Throwable> R currentWith(Context context, CallableTx<R, X> callable) throws X {
         return SCOPE_LOCAL.with(context, callable);
     }
 
@@ -74,7 +74,7 @@ public class ContextHolder {
     /**
      * 设置当前域的上下文
      *
-     * @deprecated 3.7.4 {@link #currentUse(Context, Runnable)}
+     * @deprecated 3.7.4 {@link #currentWith(Context, Runnable)}
      */
     @Deprecated
     public static void currentSet(Context context) {
@@ -84,7 +84,7 @@ public class ContextHolder {
     /**
      * 移除当前域的上下文
      *
-     * @deprecated 3.7.4 {@link #currentUse(Context, Runnable)}
+     * @deprecated 3.7.4 {@link #currentWith(Context, Runnable)}
      */
     @Deprecated
     public static void currentRemove() {

@@ -53,7 +53,7 @@ public class SolonServletFilter implements Filter {
             //
             Context ctx = new SolonServletContext((HttpServletRequest) request, (HttpServletResponse) response);
 
-            ContextHolder.currentUse(ctx, () -> {
+            ContextHolder.currentWith(ctx, () -> {
                 try {
                     //过滤开始
                     doFilterStart(ctx);
