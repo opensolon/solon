@@ -127,9 +127,10 @@ public class JtRun {
         if (ctx == null) {
             ctx = ContextEmpty.create();
 
-            ContextHolder.currentSet(ctx);
-            ExecutorFactory.execOnly(file, ctx);
-            ContextHolder.currentRemove();
+            ContextHolder.currentUse(ctx, () -> {
+                ExecutorFactory.execOnly(file, ContextHolder.current());
+                return null;
+            });
         } else {
             ExecutorFactory.execOnly(file, ctx);
         }

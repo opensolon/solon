@@ -34,7 +34,6 @@ public class QuartzContext {
         Context ctx = Context.current(); //可能是从上层代理已生成, v1.11
         if (ctx == null) {
             ctx = new ContextEmpty();
-            ContextHolder.currentSet(ctx);
         }
 
         //设置请求对象（mvc 时，可以被注入）

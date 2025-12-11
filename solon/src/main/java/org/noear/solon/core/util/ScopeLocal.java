@@ -15,15 +15,44 @@
  */
 package org.noear.solon.core.util;
 
+import org.noear.solon.core.FactoryManager;
+
 /**
- * 可运行
+ * 作用域变量
  *
- * @author noear
  * @since 3.7.4
  * */
-public interface RunnableTx<X extends Throwable> {
+public interface ScopeLocal<T> {
+    static <T> ScopeLocal<T> newInstance() {
+        return FactoryManager.getGlobal().newScopeLocal(ScopeLocal.class);
+    }
+
     /**
-     * 运行
+     * 获取
      */
-    void run() throws X;
+    T get();
+
+    /**
+     * 使用值并运行
+     */
+    void with(T value, Runnable runnable);
+
+    /**
+     * 使用值并调用
+     */
+    <R, X extends Throwable> R with(T value, CallableTx<? extends R, X> callable) throws X;
+
+    /// ////////////////////////////
+
+    /**
+     * @deprecated 3.7.4
+     */
+    @Deprecated
+    ScopeLocal<T> set(T value);
+
+    /**
+     * @deprecated 3.7.4
+     */
+    @Deprecated
+    void remove();
 }

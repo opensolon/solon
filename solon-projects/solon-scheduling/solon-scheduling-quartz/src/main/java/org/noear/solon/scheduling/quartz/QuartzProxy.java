@@ -16,6 +16,7 @@
 package org.noear.solon.scheduling.quartz;
 
 import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.handle.ContextHolder;
 import org.noear.solon.scheduling.scheduled.JobHolder;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
@@ -37,11 +38,15 @@ public class QuartzProxy implements Job {
         if (jobHolder != null) {
             Context ctx = QuartzContext.getContext(jc);
 
-            try {
-                jobHolder.handle(ctx);
-            } catch (Throwable e) {
-                throw new JobExecutionException("Job execution failed: " + name, e);
-            }
+            ContextHolder.currentUse(ctx, () -> {
+                try {
+                    jobHolder.handle(ctx);
+
+                    return null;
+                } catch (Throwable e) {
+                    throw new JobExecutionException("Job execution failed: " + name, e);
+                }
+            });
         }
     }
 }

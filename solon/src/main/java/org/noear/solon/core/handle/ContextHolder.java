@@ -18,7 +18,9 @@ package org.noear.solon.core.handle;
 
 import org.noear.solon.Solon;
 import org.noear.solon.core.FactoryManager;
-import org.noear.solon.core.util.RunnableTx;
+import org.noear.solon.core.util.CallableTx;
+import org.noear.solon.core.util.JavaUtil;
+import org.noear.solon.core.util.ScopeLocal;
 
 /**
  * 上下文状态处理工具（独立出来，可为别的业务服务）
@@ -29,50 +31,63 @@ import org.noear.solon.core.util.RunnableTx;
  * @since 3.0
  * */
 public class ContextHolder {
-    private final static ThreadLocal<Context> threadLocal = FactoryManager.getGlobal().newThreadLocal(ContextHolder.class, false);
+    private final static ScopeLocal<Context> SCOPE_LOCAL = FactoryManager.getGlobal().newScopeLocal(ContextHolder.class);
+
 
     /**
-     * 设置当前线程的上下文
-     *
-     * @deprecated 3.7.4 {@link #currentUse(Context, RunnableTx)}
-     */
-    @Deprecated
-    public static void currentSet(Context context) {
-        threadLocal.set(context);
-    }
-
-    /**
-     * 使用当前线程的上下文
+     * 使用当前域的上下文
      *
      * @since 3.7.4
      */
-    public static <T extends Throwable> void currentUse(Context context, RunnableTx<T> runnable) throws T {
-        try {
-            threadLocal.set(context);
-            runnable.run();
-        } finally {
-            threadLocal.remove();
-        }
+    public static void currentUse(Context context, Runnable runnable) {
+        SCOPE_LOCAL.with(context, runnable);
     }
 
     /**
-     * 移除当前线程的上下文
+     * 使用当前域的上下文
+     *
+     * @since 3.7.4
      */
-    public static void currentRemove() {
-        threadLocal.remove();
+    public static <R, X extends Throwable> R currentUse(Context context, CallableTx<R, X> callable) throws X {
+        return SCOPE_LOCAL.with(context, callable);
     }
 
+
     /**
-     * 获取当前线程的上下文
+     * 获取当前线域的上下文
      */
     public static Context current() {
-        Context tmp = threadLocal.get();
+        Context tmp = SCOPE_LOCAL.get();
 
         if (tmp == null && Solon.appIf(app -> app.cfg().testing())) {
-            tmp = new ContextEmpty();
-            threadLocal.set(tmp);
+            if (JavaUtil.JAVA_MAJOR_VERSION < 21) {
+                tmp = new ContextEmpty();
+                SCOPE_LOCAL.set(tmp);
+            }
         }
 
         return tmp;
+    }
+
+    /// /////////////////
+
+    /**
+     * 设置当前域的上下文
+     *
+     * @deprecated 3.7.4 {@link #currentUse(Context, Runnable)}
+     */
+    @Deprecated
+    public static void currentSet(Context context) {
+        SCOPE_LOCAL.set(context);
+    }
+
+    /**
+     * 移除当前域的上下文
+     *
+     * @deprecated 3.7.4 {@link #currentUse(Context, Runnable)}
+     */
+    @Deprecated
+    public static void currentRemove() {
+        SCOPE_LOCAL.remove();
     }
 }

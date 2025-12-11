@@ -53,32 +53,30 @@ public class SolonServletFilter implements Filter {
             //
             Context ctx = new SolonServletContext((HttpServletRequest) request, (HttpServletResponse) response);
 
-            try {
-                ContextHolder.currentSet(ctx);
+            ContextHolder.currentUse(ctx, () -> {
+                try {
+                    //过滤开始
+                    doFilterStart(ctx);
 
-                //过滤开始
-                doFilterStart(ctx);
+                    //Solon处理(可能是空处理)
+                    Solon.app().tryHandle(ctx);
 
-                //Solon处理(可能是空处理)
-                Solon.app().tryHandle(ctx);
+                    if (ctx.getHandled() == false && ctx.status() == 200) { //说明未处理，且状态未变
+                        //如果未处理，则传递过滤链
+                        filterChain.doFilter(request, response);
+                    }
 
-                //重新设置当前上下文（上面会清掉）
-                ContextHolder.currentSet(ctx);
+                    return null;
+                } catch (Throwable e) {
+                    ctx.errors = e;
+                    doFilterError(ctx);
 
-                if (ctx.getHandled() == false && ctx.status() == 200) { //说明未处理，且状态未变
-                    //如果未处理，则传递过滤链
-                    filterChain.doFilter(request, response);
+                    throw new IllegalStateException(e);
+                } finally {
+                    //过滤结束
+                    doFilterEnd(ctx);
                 }
-            } catch (Throwable e) {
-                ctx.errors = e;
-                doFilterError(ctx);
-
-                throw e;
-            } finally {
-                //过滤结束
-                doFilterEnd(ctx);
-                ContextHolder.currentRemove();
-            }
+            });
 
         } else {
             filterChain.doFilter(request, response);
@@ -97,7 +95,7 @@ public class SolonServletFilter implements Filter {
         doHandler(onFilterEnd, ctx);
     }
 
-    protected void doHandler(Handler h, Context ctx){
+    protected void doHandler(Handler h, Context ctx) {
         if (h != null) {
             try {
                 h.handle(ctx);

@@ -17,9 +17,12 @@ package org.noear.solon.core;
 
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.util.ClassUtil;
+import org.noear.solon.core.util.ScopeLocal;
+import org.noear.solon.core.util.ScopeLocalByThreadLocal;
 
 import java.lang.reflect.AnnotatedElement;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 
 /**
  * 工厂管理器（后续会迁入更多的工厂管理）
@@ -53,7 +56,7 @@ public final class FactoryManager {
     /**
      * 配置线程状态管理工厂
      */
-    public <T> void threadLocalFactory(BiFunction<Class<?>, Boolean, ThreadLocal> factory) {
+    public void threadLocalFactory(BiFunction<Class<?>, Boolean, ThreadLocal> factory) {
         if (factory != null) {
             threadLocalFactory = factory;
         }
@@ -67,6 +70,25 @@ public final class FactoryManager {
      */
     public <T> ThreadLocal<T> newThreadLocal(Class<?> applyFor, boolean inheritance0) {
         return threadLocalFactory.apply(applyFor, inheritance0);
+    }
+
+    /// ///////
+    //
+    // scopeLocalFactory 对接
+    //
+
+    private Function<Class<?>, ScopeLocal> scopeLocalFactory = (applyFor) -> {
+        return new ScopeLocalByThreadLocal<>();
+    };
+
+    public void scopeLocalFactory(Function<Class<?>, ScopeLocal> factory) {
+        if (factory != null) {
+            this.scopeLocalFactory = factory;
+        }
+    }
+
+    public <T> ScopeLocal<T> newScopeLocal(Class<?> applyFor) {
+        return scopeLocalFactory.apply(applyFor);
     }
 
     /// ///////
