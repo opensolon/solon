@@ -78,7 +78,7 @@ public class RoutingDefault<T> implements Routing<T> {
 
             String versionKey = version.getOriginal();
             if (!versionSet.add(versionKey)) {
-                log.warn("The routing repeated: '{}' - '{}'", path, versionKey);
+                log.warn("The routing version({}) repeated: '{}'", versionKey, path);
             }
         }
 
