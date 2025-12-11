@@ -69,6 +69,7 @@ public class RoutingDefault<T> implements Routing<T> {
         if (version == null) {
             if (versionedTargetNull != null) {
                 log.warn("The routing repeated: '{}'", path);
+                return this;
             }
         } else {
             if(versionSet == null){
@@ -79,6 +80,7 @@ public class RoutingDefault<T> implements Routing<T> {
             String versionKey = version.getOriginal();
             if (!versionSet.add(versionKey)) {
                 log.warn("The routing version({}) repeated: '{}'", versionKey, path);
+                return this;
             }
         }
 
