@@ -16,6 +16,7 @@
 package org.noear.solon.data.dynamicds;
 
 import org.noear.solon.Utils;
+import org.noear.solon.core.util.RunnableEx;
 import org.noear.solon.data.datasource.AbstractRoutingDataSource;
 import org.noear.solon.data.datasource.DsUtils;
 import org.noear.solon.lang.Nullable;
@@ -123,7 +124,10 @@ public class DynamicDataSource extends AbstractRoutingDataSource implements Data
 
     /**
      * 设置当前数据源名
+     *
+     * @deprecated 3.7.4 请使用 {@link DynamicDsKey#use(String, RunnableEx)}
      * */
+    @Deprecated
     public void setCurrentKey(String name){
         DynamicDsKey.use(name);
     }

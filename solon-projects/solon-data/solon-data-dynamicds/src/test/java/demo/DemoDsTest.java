@@ -71,13 +71,11 @@ public class DemoDsTest {
             userMapper.selectUserList();
         }
 
-        public void getUserList2() {
-            DynamicDsKey.use("db_user_2"); //使用 db_user_2 源
-            try {
+        public void getUserList2() throws Throwable{
+            //使用 db_user_2 源
+            DynamicDsKey.use("db_user_2", () -> {
                 userMapper.selectUserList();
-            } finally {
-                DynamicDsKey.remove();
-            }
+            });
         }
     }
 }

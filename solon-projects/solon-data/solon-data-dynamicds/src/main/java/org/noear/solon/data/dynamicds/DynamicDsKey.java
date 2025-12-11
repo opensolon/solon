@@ -17,6 +17,7 @@ package org.noear.solon.data.dynamicds;
 
 import org.noear.solon.core.FactoryManager;
 import org.noear.solon.core.util.RunnableEx;
+import org.noear.solon.core.util.ScopeLocal;
 import org.noear.solon.core.util.SupplierEx;
 
 /**
@@ -27,48 +28,49 @@ import org.noear.solon.core.util.SupplierEx;
  * @since 3.1
  */
 public class DynamicDsKey {
-    static ThreadLocal<String> targetThreadLocal = FactoryManager.getGlobal().newThreadLocal(DynamicDsKey.class, false);
-
-    /**
-     * 移除 key
-     */
-    public static void remove() {
-        targetThreadLocal.remove();
-    }
+    static ScopeLocal<String> targetLocal = FactoryManager.getGlobal().newScopeLocal(DynamicDsKey.class);
 
     /**
      * 获取当前 key
      */
     public static String current() {
-        return targetThreadLocal.get();
+        return targetLocal.get();
+    }
+
+
+    public static void use(String name, RunnableEx runnable) throws Throwable {
+        targetLocal.with(name, () -> {
+            runnable.run();
+            return null;
+        });
+    }
+
+    public static <T> T use(String name, SupplierEx<T> supplier) throws Throwable {
+       return targetLocal.with(name, supplier::get);
+    }
+
+
+    /**
+     * 移除 key
+     *
+     * @deprecated 3.7.4 请使用 {@link #use(String, RunnableEx)} ()}
+     */
+    @Deprecated
+    public static void remove() {
+        targetLocal.remove();
     }
 
     /**
      * 使用 key
+     *
+     * @deprecated 3.7.4 请使用 {@link #use(String, RunnableEx)}
      */
+    @Deprecated
     public static void use(String name) {
         if (name == null) {
-            targetThreadLocal.remove();
+            targetLocal.remove();
         } else {
-            targetThreadLocal.set(name);
-        }
-    }
-
-    public static void use(String name, RunnableEx runnable) throws Throwable {
-        try {
-            targetThreadLocal.set(name);
-            runnable.run();
-        } finally {
-            targetThreadLocal.remove();
-        }
-    }
-
-    public static <T> T use(String name, SupplierEx<T> supplier) throws Throwable {
-        try {
-            targetThreadLocal.set(name);
-            return supplier.get();
-        } finally {
-            targetThreadLocal.remove();
+            targetLocal.set(name);
         }
     }
 

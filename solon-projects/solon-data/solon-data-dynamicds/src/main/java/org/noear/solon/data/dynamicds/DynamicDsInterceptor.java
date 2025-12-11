@@ -30,25 +30,15 @@ public class DynamicDsInterceptor implements MethodInterceptor {
     public Object doIntercept(Invocation inv) throws Throwable {
         DynamicDs anno = inv.getMethodAnnotation(DynamicDs.class);
 
-        if(anno == null){
+        if (anno == null) {
             anno = inv.getTargetAnnotation(DynamicDs.class);
         }
 
         if (anno == null) {
             return inv.invoke();
         } else {
-            //备份
-            String backup = DynamicDsKey.current();
-
-            try {
-                String dsName = SnelUtil.evalTmpl(anno.value(), inv);
-
-                DynamicDsKey.use(dsName);
-                return inv.invoke();
-            } finally {
-                //还原
-                DynamicDsKey.use(backup);
-            }
+            String dsName = SnelUtil.evalTmpl(anno.value(), inv);
+            return DynamicDsKey.use(dsName, inv::invoke);
         }
     }
 }

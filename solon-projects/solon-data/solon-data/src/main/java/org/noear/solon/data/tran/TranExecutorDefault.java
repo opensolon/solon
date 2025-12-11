@@ -16,6 +16,7 @@
 package org.noear.solon.data.tran;
 
 import org.noear.solon.core.FactoryManager;
+import org.noear.solon.core.util.ScopeLocal;
 import org.noear.solon.data.annotation.Transaction;
 import org.noear.solon.data.tran.impl.*;
 import org.noear.solon.core.util.RunnableEx;
@@ -40,7 +41,7 @@ public class TranExecutorDefault implements TranExecutor {
 
     }
 
-    protected ThreadLocal<Stack<TranEntity>> local = FactoryManager.getGlobal().newThreadLocal(TranExecutorDefault.class, false);
+    protected ScopeLocal<Stack<TranEntity>> local = FactoryManager.getGlobal().newScopeLocal(TranExecutorDefault.class);
 
     /**
      * 是否在事务中

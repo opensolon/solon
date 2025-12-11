@@ -16,6 +16,7 @@
 package org.noear.solon.data.tran;
 
 import org.noear.solon.core.FactoryManager;
+import org.noear.solon.core.util.ScopeLocal;
 import org.noear.solon.data.datasource.RoutingDataSourceMapping;
 import org.noear.solon.data.tran.impl.DbTran;
 
@@ -31,7 +32,7 @@ import java.util.Map;
  * */
 public final class TranManager {
     private static final Map<Class<?>, RoutingDataSourceMapping> DS_ROUTING = new HashMap<>();
-    private static final ThreadLocal<DbTran> TL_TRAN = FactoryManager.getGlobal().newThreadLocal(TranManager.class, false);
+    private static final ScopeLocal<DbTran> TL_TRAN = FactoryManager.getGlobal().newScopeLocal(TranManager.class);
 
     /**
      * 路由记录登记
