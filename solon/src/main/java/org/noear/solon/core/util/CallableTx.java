@@ -16,14 +16,14 @@
 package org.noear.solon.core.util;
 
 /**
- * 可运行
+ * 可调用
  *
  * @author noear
  * @since 3.7.4
  * */
-public interface RunnableTx<X extends Throwable> {
+public interface CallableTx<T, X extends Throwable> {
     /**
-     * 运行
+     * 调用
      */
-    void run() throws X;
+    T call() throws X;
 }
