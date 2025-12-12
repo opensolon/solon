@@ -35,7 +35,7 @@ public class InitAsyncTest {
 
         System.out.printf("[InitAsyncTest] 测试完成，总初始化时间:%d ms%n", totalTime);
 
-        // 验证异步执行是否生效 1秒同步方法 + 2秒异步方法，总时间应该在3秒左右
+        // 验证异步执行是否生效 1秒同步方法 + 5秒异步方法，总时间应该在6秒左右
         assertTrue(totalTime >= 6000 && totalTime < 7000, 
             "异步执行功能未按预期工作，总时间: " + totalTime + " ms");
     }
