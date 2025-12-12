@@ -44,6 +44,7 @@ class BeanWrapLifecycle implements LifecycleBean {
     private int initIndex;
     private MethodEggg destroyMethod;
     private String destroyMethodName;
+    private boolean isAsyncInit = false;
 
     public BeanWrapLifecycle(BeanWrap bw, String initMethodName, String destroyMethodName) {
         this.bw = bw;
@@ -60,6 +61,10 @@ class BeanWrapLifecycle implements LifecycleBean {
         } else {
             return initMethod.getMethod();
         }
+    }
+    
+    public boolean isAsyncInit() {
+        return isAsyncInit;
     }
 
     /**
@@ -110,6 +115,7 @@ class BeanWrapLifecycle implements LifecycleBean {
                             initMethod = m;
                             ClassUtil.accessibleAsTrue(m.getMethod());
                             initIndex = initAnno.index();
+                            isAsyncInit = initAnno.async();
                         }
                     } else {
                         Destroy destroyAnno = m.getMethod().getAnnotation(Destroy.class);
@@ -158,7 +164,8 @@ class BeanWrapLifecycle implements LifecycleBean {
 
     @Override
     public void start() throws Throwable {
-        if (initMethod != null) {
+        // 只执行非异步的初始化方法
+        if (initMethod != null && !isAsyncInit) {
             try {
                 initMethod.invoke(bw.raw());
             } catch (InvocationTargetException e) {
@@ -173,6 +180,21 @@ class BeanWrapLifecycle implements LifecycleBean {
         if (destroyMethod != null) {
             try {
                 destroyMethod.invoke(bw.raw());
+            } catch (InvocationTargetException e) {
+                Throwable e2 = e.getTargetException();
+                throw Utils.throwableUnwrap(e2);
+            }
+        }
+    }
+    
+    /**
+     * 执行异步初始化方法
+     */
+    public void startAsync() throws Throwable {
+        // 只执行异步的初始化方法
+        if (initMethod != null && isAsyncInit) {
+            try {
+                initMethod.invoke(bw.raw());
             } catch (InvocationTargetException e) {
                 Throwable e2 = e.getTargetException();
                 throw Utils.throwableUnwrap(e2);

@@ -56,4 +56,10 @@ public @interface Init {
      * 排序（0表示自动）
      * */
     int index() default 0;
+    
+    /**
+     * 是否异步执行
+     * 当设置为true时，该初始化方法将在所有同步初始化完成后并行执行
+     */
+    boolean async() default false;
 }
