@@ -39,6 +39,7 @@ import org.slf4j.LoggerFactory;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
@@ -57,6 +58,8 @@ import java.util.function.Consumer;
  * */
 public class AppContext extends BeanContainer {
     static final Logger log = LoggerFactory.getLogger(AppContext.class);
+
+    private volatile boolean asyncInitCompleted = false;
 
     public AppContext() {
         this(new Props());
@@ -163,6 +166,7 @@ public class AppContext extends BeanContainer {
         lifecycleBeans.clear();
 
         started = false;
+        asyncInitCompleted = false;
     }
 
     /**
@@ -1283,6 +1287,9 @@ public class AppContext extends BeanContainer {
 
             //再次审查（审查后可能会产生二次处理）
             startInjectReview(2);
+            
+            // 执行异步初始化任务
+            executeAsyncInitTasks();
 
             //开始之后
             postStartBeanLifecycle();
@@ -1425,5 +1432,59 @@ public class AppContext extends BeanContainer {
         } catch (Throwable ignored) {
             log.warn("AppContext stop error", ignored);
         }
+    }
+
+    /**
+     * 执行异步初始化任务
+     */
+    private void executeAsyncInitTasks() {
+        // 收集所有异步初始化任务
+        List<BeanWrapLifecycle> asyncInitTasks = new ArrayList<>();
+        
+        for (RankEntity<Lifecycle> lifecycle : lifecycleBeans) {
+            if (lifecycle.target instanceof BeanWrapLifecycle) {
+                BeanWrapLifecycle beanLifecycle = (BeanWrapLifecycle) lifecycle.target;
+                if (beanLifecycle.isAsyncInit()) {
+                    asyncInitTasks.add(beanLifecycle);
+                }
+            }
+        }
+        
+        if (asyncInitTasks.isEmpty()) {
+            asyncInitCompleted = true;
+            return;
+        }
+        
+        log.info("Starting {} async initialization tasks...", asyncInitTasks.size());
+        
+        List<CompletableFuture<Void>> futures = new ArrayList<>();
+        
+        for (BeanWrapLifecycle task : asyncInitTasks) {
+            CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
+                try {
+                    log.debug("Executing async init method: {}.{}",
+                            task.getClass().getSimpleName(),
+                            task.initMethod().getName());
+                    task.startAsync();
+                    log.debug("Completed async init method: {}.{}",
+                            task.getClass().getSimpleName(),
+                            task.initMethod().getName());
+                } catch (Throwable e) {
+                    log.error("Error executing async init method: {}", task.initMethod().getName(), e);
+                    throw new RuntimeException(e);
+                }
+            });
+            futures.add(future);
+        }
+        
+        // 等待所有异步任务完成
+        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+
+        asyncInitCompleted = true;
+        log.info("All async initialization tasks completed.");
+    }
+    
+    public boolean isAsyncInitCompleted() {
+        return asyncInitCompleted;
     }
 }
