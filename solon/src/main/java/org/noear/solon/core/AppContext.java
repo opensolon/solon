@@ -1456,7 +1456,7 @@ public class AppContext extends BeanContainer {
 
         for (BeanWrapLifecycle task : asynInitTasks) {
             if (task.isAsyncInit()) {
-                CompletableFuture<Void> future = RunUtil.async(() -> {
+                CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
                     try {
                         task.startAsync();
                     } catch (Throwable e) {
