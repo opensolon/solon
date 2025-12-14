@@ -60,6 +60,8 @@ public @interface Init {
     /**
      * 是否异步执行
      * 当设置为true时，该初始化方法将在所有同步初始化完成后并行执行
+     *
+     * @since 3.7.4
      */
     boolean async() default false;
 }

@@ -59,8 +59,6 @@ import java.util.function.Consumer;
 public class AppContext extends BeanContainer {
     static final Logger log = LoggerFactory.getLogger(AppContext.class);
 
-    private volatile boolean asyncInitCompleted = false;
-
     public AppContext() {
         this(new Props());
     }
@@ -166,7 +164,6 @@ public class AppContext extends BeanContainer {
         lifecycleBeans.clear();
 
         started = false;
-        asyncInitCompleted = false;
     }
 
     /**
@@ -1277,7 +1274,7 @@ public class AppContext extends BeanContainer {
 
         try {
             //开始执行生命周期bean（侧重做初始化） //支持排序
-            startBeanLifecycle();
+            Collection<BeanWrapLifecycle> asynInitTasks = startBeanLifecycle();
 
             //标为已开始（Bean 生周期已启动）
             started = true;
@@ -1287,9 +1284,9 @@ public class AppContext extends BeanContainer {
 
             //再次审查（审查后可能会产生二次处理）
             startInjectReview(2);
-            
+
             // 执行异步初始化任务
-            executeAsyncInitTasks();
+            executeAsyncInitTasks(asynInitTasks);
 
             //开始之后
             postStartBeanLifecycle();
@@ -1303,15 +1300,27 @@ public class AppContext extends BeanContainer {
     /**
      * 开始Bean生命周期（支持排序）
      */
-    private void startBeanLifecycle() throws Throwable {
+    private Collection<BeanWrapLifecycle> startBeanLifecycle() throws Throwable {
         //执行生命周期bean //支持排序
         List<RankEntity<Lifecycle>> beans = new ArrayList<>(lifecycleBeans);
         Collections.sort(beans);
 
+        List<BeanWrapLifecycle> asynInitTasks = new ArrayList<>();
+
         //start
         for (RankEntity<Lifecycle> b : beans) {
+            if (b.target instanceof BeanWrapLifecycle) {
+                BeanWrapLifecycle task = (BeanWrapLifecycle) b.target;
+                if (task.isAsyncInit()) {
+                    asynInitTasks.add(task);
+                    continue;
+                }
+            }
+
             b.target.start();
         }
+
+        return asynInitTasks;
     }
 
     /**
@@ -1437,54 +1446,29 @@ public class AppContext extends BeanContainer {
     /**
      * 执行异步初始化任务
      */
-    private void executeAsyncInitTasks() {
-        // 收集所有异步初始化任务
-        List<BeanWrapLifecycle> asyncInitTasks = new ArrayList<>();
-        
-        for (RankEntity<Lifecycle> lifecycle : lifecycleBeans) {
-            if (lifecycle.target instanceof BeanWrapLifecycle) {
-                BeanWrapLifecycle beanLifecycle = (BeanWrapLifecycle) lifecycle.target;
-                if (beanLifecycle.isAsyncInit()) {
-                    asyncInitTasks.add(beanLifecycle);
-                }
-            }
-        }
-        
-        if (asyncInitTasks.isEmpty()) {
-            asyncInitCompleted = true;
+    private void executeAsyncInitTasks(Collection<BeanWrapLifecycle> asynInitTasks) {
+        if (asynInitTasks.isEmpty()) {
             return;
         }
-        
-        log.info("Starting {} async initialization tasks...", asyncInitTasks.size());
-        
+
+        // 收集所有异步初始化任务
         List<CompletableFuture<Void>> futures = new ArrayList<>();
-        
-        for (BeanWrapLifecycle task : asyncInitTasks) {
-            CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
-                try {
-                    log.debug("Executing async init method: {}.{}",
-                            task.getClass().getSimpleName(),
-                            task.initMethod().getName());
-                    task.startAsync();
-                    log.debug("Completed async init method: {}.{}",
-                            task.getClass().getSimpleName(),
-                            task.initMethod().getName());
-                } catch (Throwable e) {
-                    log.error("Error executing async init method: {}", task.initMethod().getName(), e);
-                    throw new RuntimeException(e);
-                }
-            });
-            futures.add(future);
+
+        for (BeanWrapLifecycle task : asynInitTasks) {
+            if (task.isAsyncInit()) {
+                CompletableFuture<Void> future = RunUtil.async(() -> {
+                    try {
+                        task.startAsync();
+                    } catch (Throwable e) {
+                        log.error("Lifecycle async init failed: {}", task.initMethod().getName(), e);
+                        throw new RuntimeException(e);
+                    }
+                });
+                futures.add(future);
+            }
         }
-        
+
         // 等待所有异步任务完成
         CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
-
-        asyncInitCompleted = true;
-        log.info("All async initialization tasks completed.");
-    }
-    
-    public boolean isAsyncInitCompleted() {
-        return asyncInitCompleted;
     }
 }

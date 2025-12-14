@@ -20,9 +20,11 @@ import org.noear.eggg.MethodEggg;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Destroy;
 import org.noear.solon.annotation.Init;
+import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.bean.LifecycleBean;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.IndexUtil;
+import org.noear.solon.lang.Internal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,6 +37,7 @@ import java.lang.reflect.Method;
  * @author noear
  * @since 2.8
  */
+@Internal
 class BeanWrapLifecycle implements LifecycleBean {
     static final Logger log = LoggerFactory.getLogger(BeanWrapLifecycle.class);
 
@@ -62,7 +65,7 @@ class BeanWrapLifecycle implements LifecycleBean {
             return initMethod.getMethod();
         }
     }
-    
+
     public boolean isAsyncInit() {
         return isAsyncInit;
     }
@@ -166,12 +169,16 @@ class BeanWrapLifecycle implements LifecycleBean {
     public void start() throws Throwable {
         // 只执行非异步的初始化方法
         if (initMethod != null && !isAsyncInit) {
-            try {
-                initMethod.invoke(bw.raw());
-            } catch (InvocationTargetException e) {
-                Throwable e2 = e.getTargetException();
-                throw Utils.throwableUnwrap(e2);
-            }
+            doStart();
+        }
+    }
+
+    private void doStart() throws Throwable{
+        try {
+            initMethod.invoke(bw.raw());
+        } catch (InvocationTargetException e) {
+            Throwable e2 = e.getTargetException();
+            throw Utils.throwableUnwrap(e2);
         }
     }
 
@@ -186,19 +193,14 @@ class BeanWrapLifecycle implements LifecycleBean {
             }
         }
     }
-    
+
     /**
      * 执行异步初始化方法
      */
     public void startAsync() throws Throwable {
         // 只执行异步的初始化方法
         if (initMethod != null && isAsyncInit) {
-            try {
-                initMethod.invoke(bw.raw());
-            } catch (InvocationTargetException e) {
-                Throwable e2 = e.getTargetException();
-                throw Utils.throwableUnwrap(e2);
-            }
+            doStart();
         }
     }
 }
