@@ -21,7 +21,7 @@ import java.util.concurrent.*;
 import java.util.function.Supplier;
 
 /**
- * 运行工具
+ * 运行工具（默认为用户线程池）
  *
  * @author noear
  * @since 1.12
