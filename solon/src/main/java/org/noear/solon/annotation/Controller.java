@@ -15,6 +15,8 @@
  */
 package org.noear.solon.annotation;
 
+import org.noear.solon.lang.Preview;
+
 import java.lang.annotation.*;
 
 /**
@@ -44,5 +46,11 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Controller {
-
+    /**
+     * 远程模式（可以不用加 Mapping 注解）
+     *
+     * @since 3.7.4
+     */
+    @Preview("3.7.4")
+    boolean remoting() default false;
 }

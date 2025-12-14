@@ -266,6 +266,13 @@ public class AppContext extends BeanContainer {
 
         //注册 @Controller 构建器
         beanBuilderAdd(Controller.class, (clz, bw, anno) -> {
+            if (anno.remoting()) {
+                //设置remoting状态
+                bw.remotingSet(true);
+                //注册到容器
+                beanRegister(bw, "", false);
+            }
+
             if (app() != null) {
                 app().router().add(bw);
             }
