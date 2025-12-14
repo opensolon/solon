@@ -148,6 +148,11 @@ public class Version implements Comparable<Version> {
             return minorDiff <= 0;
         }
 
+        int patchDiff = Integer.compare(this.patch, requestVersion.patch);
+        if (patchDiff != 0) {
+            return patchDiff <= 0;
+        }
+
         // 如果主次版本号都相同，则任何修订版本号都匹配
         return true;
     }
