@@ -17,7 +17,7 @@ package org.noear.solon.core.route;
 
 import org.noear.solon.core.handle.MethodType;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * 路由记录
@@ -62,7 +62,7 @@ public interface Routing<T> {
      *
      * @since 3.7
      */
-    List<VersionedTarget<T>> targets();
+    Collection<VersionedTarget<T>> targets();
 
     /**
      * 匹配版本目标

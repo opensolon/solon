@@ -23,6 +23,8 @@ package org.noear.solon.core.route;
  * @since 3.7
  */
 public class Version implements Comparable<Version> {
+    public static final Version EMPTY = new Version();
+
     //主版本号
     private final int major;
     //次版本号
@@ -33,6 +35,17 @@ public class Version implements Comparable<Version> {
     private final boolean isPattern;
     //原始版本字符串
     private final String original;
+
+    private final boolean isEmpty;
+
+    private Version() {
+        this.major = 0;
+        this.minor = 0;
+        this.patch = 0;
+        this.isPattern = false;
+        this.original = "0.0.0";
+        this.isEmpty = true;
+    }
 
     public Version(String version) {
         this.original = version;
@@ -50,6 +63,12 @@ public class Version implements Comparable<Version> {
         this.major = parts[0];
         this.minor = parts[1];
         this.patch = parts[2];
+        this.isEmpty = (major == 0 && minor == 0 && patch == 0 && isPattern == false);
+    }
+
+
+    public boolean isEmpty() {
+        return isEmpty;
     }
 
     /**
@@ -107,12 +126,12 @@ public class Version implements Comparable<Version> {
      * 如果路由版本是 1.0.0，请求版本是 1.2.0，则匹配（1.2.0 >= 1.0.0）。
      */
     public boolean includes(Version requestVersion) {
-        if (requestVersion == null) {
+        if (requestVersion == null || requestVersion.isEmpty()) {
             // 如果请求没有版本号，通常认为是匹配（或根据业务逻辑决定）
             return true;
         }
 
-        if (!this.isPattern) {
+        if (this.isPattern == false) {
             // 如果不是模式，只匹配完全相同或更高的版本（等同于 matches 方法）
             return this.compareTo(requestVersion) == 0;
         }
@@ -135,7 +154,7 @@ public class Version implements Comparable<Version> {
 
     @Override
     public int compareTo(Version other) {
-        if (other == null) {
+        if (other == null || other.isEmpty()) {
             return -1;
         }
 
@@ -152,8 +171,12 @@ public class Version implements Comparable<Version> {
 
         int patchDiff = Integer.compare(other.patch, this.patch);
         if (patchDiff == 0) {
-            if (other.isPattern) {
-                return -1;
+            if (other.isPattern != this.isPattern) {
+                if (this.isPattern) {
+                    return -1;
+                } else {
+                    return 1;
+                }
             }
         }
 
@@ -166,6 +189,7 @@ public class Version implements Comparable<Version> {
         return original;
     }
 
-    // Getters
-    public String getOriginal() { return original; }
+    public String getOriginal() {
+        return original;
+    }
 }

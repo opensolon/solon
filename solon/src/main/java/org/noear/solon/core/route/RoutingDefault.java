@@ -21,11 +21,7 @@ import org.noear.solon.core.util.PathMatcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 路由默认实现
@@ -61,25 +57,22 @@ public class RoutingDefault<T> implements Routing<T> {
     private final boolean matchall;
 
     private VersionedTarget<T> versionedTargetNull;//目标
-    private List<VersionedTarget<T>> versionedTargets = new ArrayList<>();
-    private Set<String> versionSet; //用于快速检测重复版本
+    private TreeMap<Version,VersionedTarget<T>> versionedTargets = new TreeMap<>();
 
     public RoutingDefault<T> addVersionTarget(Version version, T target) {
         // 检测重复
-        if (version == null) {
+        if(version == null){
+            version = Version.EMPTY;
+        }
+
+        if (version.isEmpty()) {
             if (versionedTargetNull != null) {
                 log.error("The routing repeated: '{}'", path);
                 //return this;
             }
         } else {
-            if(versionSet == null){
-                //懒加载，减少内存点用
-                versionSet = new HashSet<>();
-            }
-
-            String versionKey = version.getOriginal();
-            if (!versionSet.add(versionKey)) {
-                log.error("The routing version({}) repeated: '{}'", versionKey, path);
+            if (versionedTargets.containsKey(version)) {
+                log.error("The routing version({}) repeated: '{}'", version.getOriginal(), path);
                 //return this;
             }
         }
@@ -87,15 +80,11 @@ public class RoutingDefault<T> implements Routing<T> {
         // 添加目标
         VersionedTarget tmp = new VersionedTarget<>(version, target);
 
-        if (tmp.getVersion() == null) {
+        if (version.isEmpty()) {
             versionedTargetNull = tmp;
         }
 
-        versionedTargets.add(tmp);
-
-        if (versionedTargets.size() > 1) {
-            Collections.sort(versionedTargets);
-        }
+        versionedTargets.put(version, tmp);
 
         return this;
     }
@@ -120,8 +109,9 @@ public class RoutingDefault<T> implements Routing<T> {
      *
      * @since 3.7
      */
-    public List<VersionedTarget<T>> targets() {
-        return versionedTargets;
+    @Override
+    public Collection<VersionedTarget<T>> targets() {
+        return versionedTargets.values();
     }
 
     /**
@@ -134,12 +124,19 @@ public class RoutingDefault<T> implements Routing<T> {
         if (version2 == null) {
             if (versionedTargetNull != null) {
                 return versionedTargetNull.getTarget();
+            } else {
+                version2 = Version.EMPTY;
             }
         }
 
-        for (VersionedTarget<T> tmp : versionedTargets) {
-            if (tmp.getVersion() != null && tmp.getVersion().includes(version2)) {
-                return tmp.getTarget();
+        VersionedTarget<T> exact = versionedTargets.get(version2);
+        if (exact != null) {
+            return exact.getTarget();
+        }
+
+        for(Map.Entry<Version, VersionedTarget<T>> entry : versionedTargets.entrySet()) {
+            if (entry.getKey().includes(version2)) {
+                return entry.getValue().getTarget();
             }
         }
 

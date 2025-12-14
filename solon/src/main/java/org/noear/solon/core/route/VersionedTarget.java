@@ -15,6 +15,8 @@
  */
 package org.noear.solon.core.route;
 
+import org.noear.solon.lang.NonNull;
+
 /**
  * 有版本的目标
  *
@@ -22,11 +24,11 @@ package org.noear.solon.core.route;
  * @since 3.7
  */
 public class VersionedTarget<T> implements Comparable<VersionedTarget> {
-    private Version version;
-    private T target;
+    private final @NonNull Version version;
+    private final T target;
 
     public VersionedTarget(Version version, T target) {
-        this.version = version;
+        this.version = (version == null ? Version.EMPTY : version);
         this.target = target;
     }
 
@@ -40,7 +42,7 @@ public class VersionedTarget<T> implements Comparable<VersionedTarget> {
 
     @Override
     public int compareTo(VersionedTarget o) {
-        if (this.version == null) {
+        if (version == null || version.isEmpty()) {
             return 1;
         }
 
@@ -49,10 +51,6 @@ public class VersionedTarget<T> implements Comparable<VersionedTarget> {
 
     @Override
     public String toString() {
-        if (version == null) {
-            return "";
-        } else {
-            return version.toString();
-        }
+        return version.getOriginal();
     }
 }
