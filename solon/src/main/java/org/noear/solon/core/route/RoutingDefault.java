@@ -67,13 +67,13 @@ public class RoutingDefault<T> implements Routing<T> {
 
         if (version.isEmpty()) {
             if (versionedTargetNull != null) {
-                log.error("The routing repeated: '{}'", path);
-                //return this;
+                //可以被替换，但要有日志提示
+                log.error("The routing replaced: '{}'", path);
             }
         } else {
             if (versionedTargets.containsKey(version)) {
-                log.error("The routing version({}) repeated: '{}'", version.getOriginal(), path);
-                //return this;
+                //可以被替换，但要有日志提示
+                log.error("The routing version({}) replaced: '{}'", version.getOriginal(), path);
             }
         }
 

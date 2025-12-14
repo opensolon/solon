@@ -15,16 +15,14 @@
  */
 package org.noear.solon.core.route;
 
-import org.noear.solon.lang.NonNull;
-
 /**
  * 有版本的目标
  *
  * @author noear
  * @since 3.7
  */
-public class VersionedTarget<T> implements Comparable<VersionedTarget> {
-    private final @NonNull Version version;
+public class VersionedTarget<T> {
+    private final Version version;
     private final T target;
 
     public VersionedTarget(Version version, T target) {
@@ -38,15 +36,6 @@ public class VersionedTarget<T> implements Comparable<VersionedTarget> {
 
     public Version getVersion() {
         return version;
-    }
-
-    @Override
-    public int compareTo(VersionedTarget o) {
-        if (version == null || version.isEmpty()) {
-            return 1;
-        }
-
-        return this.version.compareTo(o.version);
     }
 
     @Override
