@@ -17,6 +17,7 @@ package org.noear.solon.core.util;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.lang.Internal;
 
 import java.util.concurrent.*;
 
@@ -26,11 +27,12 @@ import java.util.concurrent.*;
  * @author noear
  * @since 1.12
  */
+@Internal
 public class RunHolder {
     /**
      * 异步执行器（一般用于执行 @Async 注解任务）
      */
-    private ExecutorService asyncExecutor;
+    private ExecutorService parallelExecutor;
     /**
      * 调度执行器（一般用于延时任务）
      */
@@ -38,20 +40,18 @@ public class RunHolder {
 
 
     /**
-     * 获取异步执行器
+     * 获取并行执行器
      */
-    public ExecutorService getAsyncExecutor() {
-        if (asyncExecutor == null) {
+    public ExecutorService getParallelExecutor() {
+        if (parallelExecutor == null) {
             Utils.locker().lock();
             try {
-                if (asyncExecutor == null) {
+                if (parallelExecutor == null) {
                     if (Solon.appIf(app -> app.cfg().isEnabledVirtualThreads())) {
-                        asyncExecutor = ThreadsUtil.newVirtualThreadPerTaskExecutor();
+                        parallelExecutor = ThreadsUtil.newVirtualThreadPerTaskExecutor();
                     } else {
                         int asyncPoolSize = Runtime.getRuntime().availableProcessors() * 2;
-                        asyncExecutor = new ThreadPoolExecutor(0, asyncPoolSize,
-                                60L, TimeUnit.SECONDS,
-                                new LinkedBlockingQueue<Runnable>(),
+                        parallelExecutor = Executors.newFixedThreadPool(asyncPoolSize,
                                 new NamedThreadFactory("Solon-executor-"));
                     }
                 }
@@ -60,7 +60,7 @@ public class RunHolder {
             }
         }
 
-        return asyncExecutor;
+        return parallelExecutor;
     }
 
     /**
@@ -75,7 +75,7 @@ public class RunHolder {
                         scheduledExecutor = Executors.newScheduledThreadPool(0, ThreadsUtil.newVirtualThreadFactory());
                     } else {
                         int scheduledPoolSize = Runtime.getRuntime().availableProcessors() * 2;
-                        scheduledExecutor = new ScheduledThreadPoolExecutor(scheduledPoolSize,
+                        scheduledExecutor = Executors.newScheduledThreadPool(scheduledPoolSize,
                                 new NamedThreadFactory("Solon-scheduledExecutor-"));
                     }
                 }
@@ -102,12 +102,12 @@ public class RunHolder {
     }
 
     /**
-     * 设置异步执行器
+     * 设置并行执行器
      */
-    public void setAsyncExecutor(ExecutorService executor) {
+    public void setParallelExecutor(ExecutorService executor) {
         if (executor != null) {
-            ExecutorService old = asyncExecutor;
-            asyncExecutor = executor;
+            ExecutorService old = parallelExecutor;
+            parallelExecutor = executor;
 
             if (old != null) {
                 old.shutdown();
@@ -124,9 +124,9 @@ public class RunHolder {
             scheduledExecutor = null; //置 null 后，获取时可以重新生成
         }
 
-        if (asyncExecutor != null) {
-            asyncExecutor.shutdown();
-            asyncExecutor = null;
+        if (parallelExecutor != null) {
+            parallelExecutor.shutdown();
+            parallelExecutor = null;
         }
     }
 }

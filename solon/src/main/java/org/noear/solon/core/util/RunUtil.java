@@ -43,7 +43,7 @@ public class RunUtil {
      * 预热（初始化线程池）
      */
     public static void preheat() {
-        runHolder.getAsyncExecutor();
+        runHolder.getParallelExecutor();
         runHolder.getScheduledExecutor();
     }
 
@@ -52,7 +52,7 @@ public class RunUtil {
      */
     @Deprecated
     public static void setParallelExecutor(ExecutorService parallelExecutor) {
-        runHolder.setAsyncExecutor(parallelExecutor);
+        runHolder.setParallelExecutor(parallelExecutor);
     }
 
     /**
@@ -66,14 +66,14 @@ public class RunUtil {
      * 设置异步执行器
      */
     public static void setAsyncExecutor(ExecutorService asyncExecutor) {
-        runHolder.setAsyncExecutor(asyncExecutor);
+        runHolder.setParallelExecutor(asyncExecutor);
     }
 
     /**
      * io 执行器
      */
     public static ExecutorService io() {
-        return runHolder.getAsyncExecutor();
+        return runHolder.getParallelExecutor();
     }
 
     /**
@@ -129,7 +129,7 @@ public class RunUtil {
      */
     @Deprecated
     public static Future<?> parallel(Runnable task) {
-        return runHolder.getAsyncExecutor().submit(task);
+        return runHolder.getParallelExecutor().submit(task);
     }
 
     /**
@@ -139,21 +139,21 @@ public class RunUtil {
      */
     @Deprecated
     public static <T> Future<T> parallel(Callable<T> task) {
-        return runHolder.getAsyncExecutor().submit(task);
+        return runHolder.getParallelExecutor().submit(task);
     }
 
     /**
      * 异步执行
      */
     public static CompletableFuture<Void> async(Runnable task) {
-        return CompletableFuture.runAsync(task, runHolder.getAsyncExecutor());
+        return CompletableFuture.runAsync(task, runHolder.getParallelExecutor());
     }
 
     /**
      * 异步执行
      */
     public static <U> CompletableFuture<U> async(Supplier<U> task) {
-        return CompletableFuture.supplyAsync(task, runHolder.getAsyncExecutor());
+        return CompletableFuture.supplyAsync(task, runHolder.getParallelExecutor());
     }
 
     /**
@@ -162,7 +162,7 @@ public class RunUtil {
     public static CompletableFuture<Void> asyncAndTry(RunnableEx task) {
         return CompletableFuture.runAsync(() -> {
             runAndTry(task);
-        }, runHolder.getAsyncExecutor());
+        }, runHolder.getParallelExecutor());
     }
 
     /**
