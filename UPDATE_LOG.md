@@ -38,6 +38,7 @@
 * 添加 `solon-server-tomcat` ssl 适配支持
 * 优化 `solon-net-httputils` SslContextBuilder
 * 修复 `solon` IndexFiles 路径表达式的兼容问题（添加转换 `*->@`、`:->!`）
+* 调整 `solon` RunHolder：parallelExecutor 改为 newFixedThreadPool
 * snack4 升为 4.0.18
 
 ### v3.7.3
