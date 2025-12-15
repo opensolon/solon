@@ -38,7 +38,6 @@
 * 添加 `solon-config-yaml` 依赖 solon-config-snack4 避免单个引入时啦掉
 * 添加 `solon-net-httputils` HttpSslSupplierAny
 * 添加 `solon-server-tomcat` ssl 适配支持
-* 添加 `nami` NamiScope 替代 NamiAttachment（标为弃用）
 * 添加 `solon-flow` Graph:create(id,title,consumer) 方法
 * 添加 `solon-flow` GraphDecl:addLoop 方法替代 addLooping（后者标为弃用）
 * 添加 `solon-flow` Evaluation:runCondition 方法替代 runTest（后者标为弃用）
@@ -52,9 +51,12 @@
 * 优化 `solon-flow` eval(Node startNode) 处理，改为从 root 开始恢复到 start 再开始执行（恢复过程中，不会执行任务）
 * 优化 `solon-flow` stateful 允许 stateController 独立使用（即可以没有 stateRepository）
 * 优化 `solon-net-httputils` SslContextBuilder
-* 修复 `solon` IndexFiles 路径表达式的兼容问题（添加转换 `*->@`、`:->!`）
+* 调整 `nami` NamiAttachment 切换为 ScopeLocal 接口实现
+* 调整 `solon` ContextHolder 切换为 ScopeLocal 接口实现
+* 调整 `solon-data` TranExecutorDefault 切换为 ScopeLocal 接口实现
 * 调整 `solon` RunHolder：parallelExecutor 改为 newFixedThreadPool
 * 调整 `solon-flow` FlowStatefulService:evel、stepForward、stepBack 标为弃用
+* 修复 `solon` IndexFiles 路径表达式的兼容问题（添加转换 `*->@`、`:->!`）
 * snack4 升为 4.0.18
 * liquor 升为 1.6.4
 
