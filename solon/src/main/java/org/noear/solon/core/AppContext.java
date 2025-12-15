@@ -1458,7 +1458,7 @@ public class AppContext extends BeanContainer {
             if (task.isAsyncInit()) {
                 CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
                     try {
-                        task.startAsync();
+                        task.start();
                     } catch (Throwable e) {
                         log.error("Lifecycle async init failed: {}", task.initMethod().getName(), e);
                         throw new RuntimeException(e);
