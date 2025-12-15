@@ -15,11 +15,13 @@
  */
 package org.noear.nami;
 
-import org.noear.solon.core.FactoryManager;
+import org.noear.solon.core.util.CallableTx;
+import org.noear.solon.core.util.ScopeLocal;
+import org.noear.solon.lang.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -27,52 +29,70 @@ import java.util.Map;
  *
  * @author noear
  * @since 1.4
- * @deprecated 3.7.4 {@link NamiScope}
  */
-@Deprecated
 public final class NamiAttachment {
     private final static Logger log = LoggerFactory.getLogger(NamiAttachment.class);
-    private final static ThreadLocal<Map<String, String>> threadMap = FactoryManager.getGlobal().newThreadLocal(NamiAttachment.class, false);
+    private final static ScopeLocal<Map<String, String>> LOCAL = ScopeLocal.newInstance(NamiAttachment.class);
 
-    private static Map<String, String> getContextMap0() {
-        Map<String, String> tmp = threadMap.get();
-        if (tmp == null) {
-            tmp = new LinkedHashMap<>();
-            threadMap.set(tmp);
+
+    /**
+     * @since 3.7.4
+     */
+    public static void with(Runnable runnable) {
+        Map<String, String> data = LOCAL.get();
+        if (data == null) {
+            data = new HashMap<>();
         }
 
-        return tmp;
+        LOCAL.with(data, runnable);
     }
 
-    public static Map<String, String> getDataOrNull() {
-        return threadMap.get();
+    /**
+     * @since 3.7.4
+     */
+    public static <R, X extends Throwable> R with(CallableTx<R, X> callable) throws X {
+        Map<String, String> data = LOCAL.get();
+        if (data == null) {
+            data = new HashMap<>();
+        }
+
+        return LOCAL.with(data, callable);
     }
 
-    public static Map<String, String> getData() {
-        log.warn("NamiAttachment is deprecated, please use NamiScope.with");
 
-        return getContextMap0();
+    public static @Nullable Map<String, String> getData() {
+        return LOCAL.get();
     }
 
     public static void put(String name, String value) {
-        log.warn("NamiAttachment is deprecated, please use NamiScope.with");
-
-        getContextMap0().put(name, value);
+        Map<String, String> data = LOCAL.get();
+        if (data != null) {
+            data.put(name, value);
+        } else {
+            log.error("Attachment is null, please use `NamiAttachment.with(() -> NamiAttachment.put(k, v))`");
+        }
     }
 
     public static String get(String name) {
-        log.warn("NamiAttachment is deprecated, please use NamiScope.with");
-
-        return getContextMap0().get(name);
+        Map<String, String> data = LOCAL.get();
+        if (data != null) {
+            return data.get(name);
+        } else {
+            log.error("Attachment is null, please use `NamiAttachment.with(() -> NamiAttachment.get(k))`");
+            return null;
+        }
     }
 
     public static void remove(String name) {
-        log.warn("NamiAttachment is deprecated, please use NamiScope.with");
-
-        getContextMap0().remove(name);
+        Map<String, String> data = LOCAL.get();
+        if (data != null) {
+            data.remove(name);
+        } else {
+            log.error("Attachment is null, please use `NamiAttachment.with(() -> NamiAttachment.remove(k))`");
+        }
     }
 
     public static void clear() {
-        threadMap.set(null);
+        LOCAL.set(null);
     }
 }
