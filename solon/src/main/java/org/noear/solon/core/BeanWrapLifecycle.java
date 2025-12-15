@@ -168,16 +168,12 @@ class BeanWrapLifecycle implements LifecycleBean {
     @Override
     public void start() throws Throwable {
         if (initMethod != null) {
-            doStart();
-        }
-    }
-
-    private void doStart() throws Throwable{
-        try {
-            initMethod.invoke(bw.raw());
-        } catch (InvocationTargetException e) {
-            Throwable e2 = e.getTargetException();
-            throw Utils.throwableUnwrap(e2);
+            try {
+                initMethod.invoke(bw.raw());
+            } catch (InvocationTargetException e) {
+                Throwable e2 = e.getTargetException();
+                throw Utils.throwableUnwrap(e2);
+            }
         }
     }
 
