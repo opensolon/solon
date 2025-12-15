@@ -36,7 +36,7 @@ public class RockService implements RockApi {
 
         System.out.println("=============NameContext.Header: user_name: " + ctx.header("user_name"));
 
-        return ctx.method() + "::test1=" + a;
+        return ctx.method() + "::test1=" + a + "::user_name=" + ctx.header("user_name");
     }
 
     @Override

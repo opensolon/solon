@@ -16,7 +16,7 @@ public class RpcTest {
 
     @Test
     public void case1() {
-        assert rockApi.test1(1).toString().endsWith("=1");
+        assert rockApi.test1(1).toString().contains("=1");
     }
 
     @Test

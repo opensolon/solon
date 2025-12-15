@@ -34,10 +34,12 @@ public class RpcTest implements Handler {
     public void handle(Context ctx) throws Throwable {
         Map<String, Object> map = new HashMap<>();
 
-        NamiAttachment.put("user_name", "noear");
+        NamiAttachment.with(() -> {
+            NamiAttachment.put("user_name", "noear");
 
-        map.put("HttpChannel", httpOf());
-        map.put("SocketChannel", socketOf());
+            map.put("HttpChannel", httpOf());
+            map.put("SocketChannel", socketOf());
+        });
 
         ctx.render(map);
     }
