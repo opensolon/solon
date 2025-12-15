@@ -167,8 +167,7 @@ class BeanWrapLifecycle implements LifecycleBean {
 
     @Override
     public void start() throws Throwable {
-        // 只执行非异步的初始化方法
-        if (initMethod != null && !isAsyncInit) {
+        if (initMethod != null) {
             doStart();
         }
     }
@@ -191,16 +190,6 @@ class BeanWrapLifecycle implements LifecycleBean {
                 Throwable e2 = e.getTargetException();
                 throw Utils.throwableUnwrap(e2);
             }
-        }
-    }
-
-    /**
-     * 执行异步初始化方法
-     */
-    public void startAsync() throws Throwable {
-        // 只执行异步的初始化方法
-        if (initMethod != null && isAsyncInit) {
-            doStart();
         }
     }
 }
