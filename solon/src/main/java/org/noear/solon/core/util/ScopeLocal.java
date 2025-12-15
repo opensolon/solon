@@ -20,12 +20,26 @@ import org.noear.solon.core.FactoryManager;
 /**
  * 作用域变量
  *
+ * <pre>{@code
+ * static ScopeLocal<User> LOCAL = ScopeLocal.newInstance();
+ *
+ * LOCAL.with(new User(), () -> {
+ *     String name = LOCAL.get().getName();
+ * });
+ * }</pre>
  * @since 3.7.4
  * */
 public interface ScopeLocal<T> {
     static <T> ScopeLocal<T> newInstance() {
-        return FactoryManager.getGlobal().newScopeLocal(ScopeLocal.class);
+        return newInstance(ScopeLocal.class);
     }
+
+    static <T> ScopeLocal<T> newInstance(Class<?> applyFor) {
+        return FactoryManager.getGlobal().newScopeLocal(applyFor);
+    }
+
+    /// //////////////////////////
+
 
     /**
      * 获取

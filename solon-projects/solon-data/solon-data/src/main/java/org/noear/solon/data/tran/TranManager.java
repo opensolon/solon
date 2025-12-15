@@ -32,7 +32,7 @@ import java.util.Map;
  * */
 public final class TranManager {
     private static final Map<Class<?>, RoutingDataSourceMapping> DS_ROUTING = new HashMap<>();
-    private static final ScopeLocal<DbTran> TL_TRAN = FactoryManager.getGlobal().newScopeLocal(TranManager.class);
+    private static final ScopeLocal<DbTran> TL_TRAN = ScopeLocal.newInstance(TranManager.class);
 
     /**
      * 路由记录登记

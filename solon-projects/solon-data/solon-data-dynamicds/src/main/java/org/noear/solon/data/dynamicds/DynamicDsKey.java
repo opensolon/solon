@@ -15,10 +15,11 @@
  */
 package org.noear.solon.data.dynamicds;
 
-import org.noear.solon.core.FactoryManager;
 import org.noear.solon.core.util.RunnableEx;
 import org.noear.solon.core.util.ScopeLocal;
 import org.noear.solon.core.util.SupplierEx;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 动态数据源 Key 管理
@@ -28,49 +29,60 @@ import org.noear.solon.core.util.SupplierEx;
  * @since 3.1
  */
 public class DynamicDsKey {
-    static ScopeLocal<String> targetLocal = FactoryManager.getGlobal().newScopeLocal(DynamicDsKey.class);
+    private static final Logger log = LoggerFactory.getLogger(DynamicDsKey.class);
+    private static final ScopeLocal<String> LOCAL = ScopeLocal.newInstance(DynamicDsKey.class);
+
 
     /**
-     * 获取当前 key
-     */
-    public static String current() {
-        return targetLocal.get();
-    }
-
-
-    public static void use(String name, RunnableEx runnable) throws Throwable {
-        targetLocal.with(name, () -> {
+     * @since 3.7.4
+     * */
+    public static void with(String name, RunnableEx runnable) throws Throwable {
+        LOCAL.with(name, () -> {
             runnable.run();
             return null;
         });
     }
 
-    public static <T> T use(String name, SupplierEx<T> supplier) throws Throwable {
-       return targetLocal.with(name, supplier::get);
+    /**
+     * @since 3.7.4
+     * */
+    public static <T> T with(String name, SupplierEx<T> supplier) throws Throwable {
+        return LOCAL.with(name, supplier::get);
+    }
+
+    /**
+     * 获取当前 key
+     */
+    public static String current() {
+        return LOCAL.get();
     }
 
 
     /**
      * 移除 key
      *
-     * @deprecated 3.7.4 请使用 {@link #use(String, RunnableEx)} ()}
+     * @deprecated 3.7.4 请使用 {@link #with(String, RunnableEx)} ()}
      */
     @Deprecated
     public static void remove() {
-        targetLocal.remove();
+        log.warn("DynamicDsKey.remove will be removed, please use DynamicDsKey.with");
+
+        LOCAL.remove();
     }
 
     /**
      * 使用 key
      *
-     * @deprecated 3.7.4 请使用 {@link #use(String, RunnableEx)}
+     * @deprecated 3.7.4 请使用 {@link #with(String, RunnableEx)}
      */
     @Deprecated
     public static void use(String name) {
+        log.warn("DynamicDsKey.use will be removed, please use DynamicDsKey.with");
+
         if (name == null) {
-            targetLocal.remove();
+            LOCAL.remove();
         } else {
-            targetLocal.set(name);
+            LOCAL.set(name);
         }
     }
 

@@ -16,6 +16,8 @@
 package org.noear.solon.core.util;
 
 import org.noear.solon.core.FactoryManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 作用域变量
@@ -23,6 +25,7 @@ import org.noear.solon.core.FactoryManager;
  * @since 3.7.4
  * */
 public class ScopeLocalByThreadLocal<T> implements ScopeLocal<T> {
+    private static final Logger log = LoggerFactory.getLogger(ScopeLocalByThreadLocal.class);
     private final ThreadLocal<T> ref = FactoryManager.getGlobal().newThreadLocal(ScopeLocalByThreadLocal.class, false);
 
     @Override
@@ -64,12 +67,16 @@ public class ScopeLocalByThreadLocal<T> implements ScopeLocal<T> {
 
     @Override
     public ScopeLocal<T> set(T value) {
+        log.warn("ScopeLocal.set will be removed, please use ScopeLocal.with");
+
         ref.set(value);
         return this;
     }
 
     @Override
     public void remove() {
+        log.warn("ScopeLocal.remove will be removed, please use ScopeLocal.with");
+
         ref.remove();
     }
 }

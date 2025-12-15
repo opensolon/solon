@@ -125,7 +125,7 @@ public class DynamicDataSource extends AbstractRoutingDataSource implements Data
     /**
      * 设置当前数据源名
      *
-     * @deprecated 3.7.4 请使用 {@link DynamicDsKey#use(String, RunnableEx)}
+     * @deprecated 3.7.4 请使用 {@link DynamicDsKey#with(String, RunnableEx)}
      * */
     @Deprecated
     public void setCurrentKey(String name){

@@ -15,7 +15,6 @@
  */
 package org.noear.solon.data.tran;
 
-import org.noear.solon.core.FactoryManager;
 import org.noear.solon.core.util.ScopeLocal;
 import org.noear.solon.data.annotation.Transaction;
 import org.noear.solon.data.tran.impl.*;
@@ -41,7 +40,7 @@ public class TranExecutorDefault implements TranExecutor {
 
     }
 
-    protected ScopeLocal<Stack<TranEntity>> local = FactoryManager.getGlobal().newScopeLocal(TranExecutorDefault.class);
+    protected final ScopeLocal<Stack<TranEntity>> LOCAL = ScopeLocal.newInstance(TranExecutorDefault.class);
 
     /**
      * 是否在事务中
@@ -97,9 +96,10 @@ public class TranExecutorDefault implements TranExecutor {
     /**
      * 执行事务
      *
-     * @param meta 事务注解
+     * @param meta     事务注解
      * @param runnable 真实执行器
-     * */
+     *
+     */
     @Override
     public void execute(Transaction meta, RunnableEx runnable) throws Throwable {
         if (meta == null) {
@@ -129,11 +129,11 @@ public class TranExecutorDefault implements TranExecutor {
             }
         }
 
-        Stack<TranEntity> stack = local.get();
+        Stack<TranEntity> stack = LOCAL.get();
 
         //根事务不存在
         if (stack == null) {
-            forRoot(stack, meta, runnable);
+            forRoot(meta, runnable);
         } else {
             forNotRoot(stack, meta, runnable);
         }
@@ -142,29 +142,25 @@ public class TranExecutorDefault implements TranExecutor {
     /**
      * 执行根节点的事务
      *
-     * @param stack 事务栈
-     * @param meta 事务注解
+     * @param meta     事务注解
      * @param runnable 真实执行器
      */
-    protected void forRoot(Stack<TranEntity> stack, Transaction meta, RunnableEx runnable) throws Throwable {
+    protected void forRoot(Transaction meta, RunnableEx runnable) throws Throwable {
         //::必须 或新建 或嵌套  //::入栈
         //
         TranNode tran = create(meta);
-        stack = new Stack<>();
 
-        try {
-            local.set(stack);
-            applyDo(stack, tran, meta, runnable);
-        } finally {
-            local.remove();
-        }
+        LOCAL.with(new Stack<>(), () -> {
+            applyDo(LOCAL.get(), tran, meta, runnable);
+            return null;
+        });
     }
 
     /**
      * 执行非根节点的事务
      *
-     * @param stack 事务栈
-     * @param meta 事务注解
+     * @param stack    事务栈
+     * @param meta     事务注解
      * @param runnable 真实执行器
      */
     protected void forNotRoot(Stack<TranEntity> stack, Transaction meta, RunnableEx runnable) throws Throwable {
@@ -187,8 +183,8 @@ public class TranExecutorDefault implements TranExecutor {
                 TranNode tran = create(meta);
 
                 //::加入上个事务***
-                if(stack!=null && !stack.isEmpty()) {
-                	stack.peek().tran.add(tran);
+                if (stack != null && !stack.isEmpty()) {
+                    stack.peek().tran.add(tran);
                 }
 
                 applyDo(stack, tran, meta, runnable);
@@ -201,11 +197,12 @@ public class TranExecutorDefault implements TranExecutor {
     /**
      * 应用事务
      *
-     * @param stack 事务栈
-     * @param tran 事务节点
-     * @param meta 事务注解
+     * @param stack    事务栈
+     * @param tran     事务节点
+     * @param meta     事务注解
      * @param runnable 真实执行器
-     * */
+     *
+     */
     protected void applyDo(Stack<TranEntity> stack, TranNode tran, Transaction meta, RunnableEx runnable) throws Throwable {
         if (meta.policy().code <= TranPolicy.nested.code) {
             //required || requires_new || nested ，需要入栈

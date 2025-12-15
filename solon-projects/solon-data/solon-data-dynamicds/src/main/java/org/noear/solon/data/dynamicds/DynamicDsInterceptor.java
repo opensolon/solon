@@ -38,7 +38,7 @@ public class DynamicDsInterceptor implements MethodInterceptor {
             return inv.invoke();
         } else {
             String dsName = SnelUtil.evalTmpl(anno.value(), inv);
-            return DynamicDsKey.use(dsName, inv::invoke);
+            return DynamicDsKey.with(dsName, inv::invoke);
         }
     }
 }

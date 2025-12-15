@@ -22,7 +22,6 @@ import org.noear.solon.annotation.Inject;
 import org.noear.solon.data.datasource.DsUtils;
 import org.noear.solon.data.dynamicds.DynamicDataSource;
 import org.noear.solon.data.dynamicds.DynamicDs;
-import org.noear.solon.annotation.Managed;
 import org.noear.solon.data.dynamicds.DynamicDsKey;
 
 import javax.sql.DataSource;
@@ -73,7 +72,7 @@ public class DemoDsTest {
 
         public void getUserList2() throws Throwable{
             //使用 db_user_2 源
-            DynamicDsKey.use("db_user_2", () -> {
+            DynamicDsKey.with("db_user_2", () -> {
                 userMapper.selectUserList();
             });
         }

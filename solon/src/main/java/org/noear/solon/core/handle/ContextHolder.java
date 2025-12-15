@@ -17,7 +17,6 @@ package org.noear.solon.core.handle;
 
 
 import org.noear.solon.Solon;
-import org.noear.solon.core.FactoryManager;
 import org.noear.solon.core.util.CallableTx;
 import org.noear.solon.core.util.JavaUtil;
 import org.noear.solon.core.util.ScopeLocal;
@@ -31,7 +30,7 @@ import org.noear.solon.core.util.ScopeLocal;
  * @since 3.0
  * */
 public class ContextHolder {
-    private final static ScopeLocal<Context> SCOPE_LOCAL = FactoryManager.getGlobal().newScopeLocal(ContextHolder.class);
+    private final static ScopeLocal<Context> LOCAL = ScopeLocal.newInstance(ContextHolder.class);
 
 
     /**
@@ -40,7 +39,7 @@ public class ContextHolder {
      * @since 3.7.4
      */
     public static void currentWith(Context context, Runnable runnable) {
-        SCOPE_LOCAL.with(context, runnable);
+        LOCAL.with(context, runnable);
     }
 
     /**
@@ -49,7 +48,7 @@ public class ContextHolder {
      * @since 3.7.4
      */
     public static <R, X extends Throwable> R currentWith(Context context, CallableTx<R, X> callable) throws X {
-        return SCOPE_LOCAL.with(context, callable);
+        return LOCAL.with(context, callable);
     }
 
 
@@ -57,12 +56,12 @@ public class ContextHolder {
      * 获取当前线域的上下文
      */
     public static Context current() {
-        Context tmp = SCOPE_LOCAL.get();
+        Context tmp = LOCAL.get();
 
         if (tmp == null && Solon.appIf(app -> app.cfg().testing())) {
             if (JavaUtil.JAVA_MAJOR_VERSION < 21) {
                 tmp = new ContextEmpty();
-                SCOPE_LOCAL.set(tmp);
+                LOCAL.set(tmp);
             }
         }
 
@@ -78,7 +77,7 @@ public class ContextHolder {
      */
     @Deprecated
     public static void currentSet(Context context) {
-        SCOPE_LOCAL.set(context);
+        LOCAL.set(context);
     }
 
     /**
@@ -88,6 +87,6 @@ public class ContextHolder {
      */
     @Deprecated
     public static void currentRemove() {
-        SCOPE_LOCAL.remove();
+        LOCAL.remove();
     }
 }
