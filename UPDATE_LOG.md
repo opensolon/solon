@@ -37,6 +37,7 @@
 * 添加 `solon-config-yaml` 依赖 solon-config-snack4 避免单个引入时啦掉
 * 添加 `solon-net-httputils` HttpSslSupplierAny
 * 添加 `solon-server-tomcat` ssl 适配支持
+* 添加 `nami` NamiScope 替代 NamiAttachment（标为弃用）
 * 优化 `solon-net-httputils` SslContextBuilder
 * 修复 `solon` IndexFiles 路径表达式的兼容问题（添加转换 `*->@`、`:->!`）
 * 调整 `solon` RunHolder：parallelExecutor 改为 newFixedThreadPool

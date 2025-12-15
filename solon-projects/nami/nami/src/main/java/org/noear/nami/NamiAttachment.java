@@ -16,8 +16,9 @@
 package org.noear.nami;
 
 import org.noear.solon.core.FactoryManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -26,8 +27,11 @@ import java.util.Map;
  *
  * @author noear
  * @since 1.4
+ * @deprecated 3.7.4 {@link NamiScope}
  */
+@Deprecated
 public final class NamiAttachment {
+    private final static Logger log = LoggerFactory.getLogger(NamiAttachment.class);
     private final static ThreadLocal<Map<String, String>> threadMap = FactoryManager.getGlobal().newThreadLocal(NamiAttachment.class, false);
 
     private static Map<String, String> getContextMap0() {
@@ -40,20 +44,31 @@ public final class NamiAttachment {
         return tmp;
     }
 
+    public static Map<String, String> getDataOrNull() {
+        return threadMap.get();
+    }
 
     public static Map<String, String> getData() {
-        return Collections.unmodifiableMap(getContextMap0());
+        log.warn("NamiAttachment is deprecated, please use NamiScope.with");
+
+        return getContextMap0();
     }
 
     public static void put(String name, String value) {
+        log.warn("NamiAttachment is deprecated, please use NamiScope.with");
+
         getContextMap0().put(name, value);
     }
 
     public static String get(String name) {
+        log.warn("NamiAttachment is deprecated, please use NamiScope.with");
+
         return getContextMap0().get(name);
     }
 
     public static void remove(String name) {
+        log.warn("NamiAttachment is deprecated, please use NamiScope.with");
+
         getContextMap0().remove(name);
     }
 

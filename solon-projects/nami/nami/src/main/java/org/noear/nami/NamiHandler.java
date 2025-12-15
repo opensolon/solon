@@ -168,8 +168,12 @@ public class NamiHandler implements InvocationHandler {
         }
 
         //attachment headers 优先2（处理附加信息）
-        Map<String, String> contextMap = NamiAttachment.getData();
-        if (contextMap.size() > 0) {
+        Map<String, String> contextMap = NamiAttachment.getDataOrNull();
+        if (contextMap != null && contextMap.size() > 0) {
+            headers.putAll(contextMap);
+        }
+        contextMap = NamiScope.getData();
+        if (contextMap != null && contextMap.size() > 0) {
             headers.putAll(contextMap);
         }
 
