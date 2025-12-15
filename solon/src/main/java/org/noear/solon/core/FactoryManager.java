@@ -18,7 +18,7 @@ package org.noear.solon.core;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.ScopeLocal;
-import org.noear.solon.core.util.ScopeLocalByThreadLocal;
+import org.noear.solon.core.util.ScopeLocalJdk8;
 
 import java.lang.reflect.AnnotatedElement;
 import java.util.function.BiFunction;
@@ -78,7 +78,7 @@ public final class FactoryManager {
     //
 
     private Function<Class<?>, ScopeLocal> scopeLocalFactory = (applyFor) -> {
-        return new ScopeLocalByThreadLocal<>();
+        return new ScopeLocalJdk8<>();
     };
 
     public void scopeLocalFactory(Function<Class<?>, ScopeLocal> factory) {

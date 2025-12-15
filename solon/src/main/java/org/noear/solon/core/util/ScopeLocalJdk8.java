@@ -24,9 +24,9 @@ import org.slf4j.LoggerFactory;
  *
  * @since 3.7.4
  * */
-public class ScopeLocalByThreadLocal<T> implements ScopeLocal<T> {
-    private static final Logger log = LoggerFactory.getLogger(ScopeLocalByThreadLocal.class);
-    private final ThreadLocal<T> ref = FactoryManager.getGlobal().newThreadLocal(ScopeLocalByThreadLocal.class, false);
+public class ScopeLocalJdk8<T> implements ScopeLocal<T> {
+    private static final Logger log = LoggerFactory.getLogger(ScopeLocalJdk8.class);
+    private final ThreadLocal<T> ref = FactoryManager.getGlobal().newThreadLocal(ScopeLocalJdk8.class, false);
 
     @Override
     public T get() {
