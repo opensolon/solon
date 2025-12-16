@@ -37,6 +37,7 @@
 * 添加 `solon-serialization` JsonPropsUtil2.dateAsFormat 添加 java.sql.Timestamp 类型支持
 * 添加 `solon-config-yaml` 依赖 solon-config-snack4 避免单个引入时啦掉
 * 添加 `solon-net-httputils` HttpSslSupplierAny
+* 添加 `solon-web-rx` RxEntity 类（方便对接 mcp-sdk）
 * 添加 `solon-server-tomcat` ssl 适配支持
 * 添加 `solon-flow` Graph:create(id,title,consumer) 方法
 * 添加 `solon-flow` GraphDecl:addLoop 方法替代 addLooping（后者标为弃用）
