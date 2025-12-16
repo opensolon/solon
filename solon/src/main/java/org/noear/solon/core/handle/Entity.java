@@ -87,19 +87,4 @@ public class Entity {
         headers.put("Content-Type", contentType);
         return this;
     }
-
-    /// /////////
-
-
-    public static Entity ok() {
-        return new Entity().status(StatusCodes.CODE_OK);
-    }
-
-    public static Entity badRequest() {
-        return new Entity().status(StatusCodes.CODE_BAD_REQUEST);
-    }
-
-    public static Entity ofStatus(int code) {
-        return new Entity().status(code);
-    }
 }
