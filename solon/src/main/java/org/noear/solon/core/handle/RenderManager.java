@@ -18,10 +18,7 @@ package org.noear.solon.core.handle;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Constants;
-import org.noear.solon.core.util.ClassUtil;
-import org.noear.solon.core.util.KeyValues;
-import org.noear.solon.core.util.DataThrowable;
-import org.noear.solon.core.util.MimeType;
+import org.noear.solon.core.util.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -172,6 +169,10 @@ public class RenderManager implements Render {
             }
         }
 
+        if(data instanceof Stringable) {
+            return data.toString();
+        }
+
         if (data instanceof ModelAndView) {
             ModelAndView mv = (ModelAndView) data;
 
@@ -259,6 +260,11 @@ public class RenderManager implements Render {
                     return;
                 }
             }
+        }
+
+        if(data instanceof Stringable) {
+            ctx.output(data.toString());
+            return;
         }
 
         //如果是模型视图
