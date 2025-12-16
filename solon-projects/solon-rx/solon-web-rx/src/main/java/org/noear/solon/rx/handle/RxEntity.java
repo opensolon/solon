@@ -32,11 +32,6 @@ public class RxEntity {
         this.entity = new Entity().status(code);
     }
 
-    public RxEntity body(Object body) {
-        entity.body(body);
-        return this;
-    }
-
     public RxEntity headerAdd(String name, String value) {
         entity.headerAdd(name, value);
         return this;
@@ -55,6 +50,11 @@ public class RxEntity {
     public RxEntity contentType(String contentType) {
         entity.contentType(contentType);
         return this;
+    }
+
+    public Mono<Entity> body(Object body) {
+        entity.body(body);
+        return Mono.just(entity);
     }
 
     public Mono<Entity> build() {
