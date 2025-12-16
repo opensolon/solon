@@ -33,6 +33,7 @@
 * 添加 `solon` ContextHolder:currentUse 方法
 * 添加 `solon` Controller:remoting 属性（可替代 @Remoting 注解）
 * 添加 `solon` 非依赖关系的 bean 异步初始化（`@Init(async=true)`）
+* 添加 `solon` Stringable 接口
 * 添加 `solon-test` HttpTester protocol 参数支持（方便 https 或 http 切换测试）
 * 添加 `solon-serialization` JsonPropsUtil2.dateAsFormat 添加 java.sql.Timestamp 类型支持
 * 添加 `solon-config-yaml` 依赖 solon-config-snack4 避免单个引入时啦掉

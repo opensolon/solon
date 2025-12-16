@@ -15,7 +15,6 @@
  */
 package org.noear.solon.core.handle;
 
-import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Constants;
 import org.noear.solon.core.util.*;
@@ -251,14 +250,6 @@ public class RenderManager implements Render {
             if (data instanceof String) {
                 ctx.output((String) data);
                 return;
-            }
-
-            if (data != null && Solon.app() != null) {
-                ReturnValueHandler tmp = Solon.app().chains().getReturnHandler(ctx, data.getClass());
-                if (tmp != null) {
-                    tmp.returnHandle(ctx, data);
-                    return;
-                }
             }
         }
 

@@ -15,6 +15,8 @@
  */
 package org.noear.solon.web.sse;
 
+import org.noear.solon.core.util.Stringable;
+
 import java.time.Duration;
 
 /**
@@ -23,9 +25,9 @@ import java.time.Duration;
  * @author kongweiguang
  * @since 2.3
  */
-public class SseEvent {
+public class SseEvent implements Stringable {
 
-    private final StringBuilder buf = new StringBuilder();
+    private transient final StringBuilder buf = new StringBuilder();
 
     /**
      * 添加 SSE "id" 行.

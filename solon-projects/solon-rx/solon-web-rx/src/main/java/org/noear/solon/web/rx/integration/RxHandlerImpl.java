@@ -15,7 +15,10 @@
  */
 package org.noear.solon.web.rx.integration;
 
+import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.handle.Entity;
+import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.rx.Completable;
 import org.noear.solon.rx.handle.RxContext;
 import org.noear.solon.rx.handle.RxHandler;
@@ -55,7 +58,15 @@ public class RxHandlerImpl implements RxHandler {
             }
 
             //开始订阅
-            publisher.doOnNext(o -> {
+            Flux.from(publisher).concatMap(o -> {
+                        if (o == null) {
+                            return Flux.empty();
+                        } else if (o instanceof Entity) {
+                            return getEntityBody(ctx, (Entity) o);
+                        } else {
+                            return Flux.just(o);
+                        }
+                    }).doOnNext(o -> {
                         try {
                             ctx.render(o);
 
@@ -74,5 +85,40 @@ public class RxHandlerImpl implements RxHandler {
                         emitter.onComplete();
                     }).subscribe();
         });
+    }
+
+    private Flux<Object> getEntityBody(Context ctx, Entity entity) {
+        Object data = entity.body();
+
+        if (ctx.isHeadersSent() == false) {
+            if (entity.status() > 0) {
+                ctx.status(entity.status());
+            }
+
+            if (entity.headers().isEmpty() == false) {
+                for (KeyValues<String> kv : entity.headers()) {
+                    if (Utils.isNotEmpty(kv.getValues())) {
+                        if (kv.getValues().size() > 1) {
+                            //多个
+                            for (String val : kv.getValues()) {
+                                ctx.headerAdd(kv.getKey(), val);
+                            }
+                        } else {
+                            //单个
+                            ctx.headerSet(kv.getKey(), kv.getFirstValue());
+                        }
+                    }
+                }
+            }
+        }
+
+
+        if (data == null) {
+            return Flux.empty();
+        } else if (data instanceof Publisher) {
+            return Flux.from((Publisher) data);
+        } else {
+            return Flux.just(data);
+        }
     }
 }
