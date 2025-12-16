@@ -25,7 +25,7 @@
 * 调整 Plugin 统一交给 AppContext 管理（之前由 SolonApp 或 PluginPackage 管理）？？
 * 升级 mcp-java-sdk 为 0.17.x？？？
 
-### v3.7.4
+### v3.8.0
 
 * 新增 `solon` ScopeLocal 接口（用于 ThreadLocal 到 ScopedValue 兼容）
 * 添加 `solon` Solon.start(Class, MultiMap) 方法
@@ -47,6 +47,7 @@
 * 添加 `solon-flow` Graph:toYaml(FlowContext)，Graph:toJson(FlowContext) 方法，可输出节点状态（方便前端展示进度）
 * 添加 `solon-ai-dialect-openai` ClaudeChatDialect 方言
 * 添加 `solon-ai-core` ChatMessage:toNdjson,fromNdjson 方法（替代 ChatSession:toNdjson, loadNdjson），新方法机制上更自由
+* 优化 `solon` api-version 版本匹配
 * 优化 `solon-ai-mcp` mcp StreamableHttp 模式下 服务端正常返回时 客户端异常日志打印的情况
 * 优化 `solon-flow` eval(Node startNode) 处理，改为从 root 开始恢复到 start 再开始执行（恢复过程中，不会执行任务）
 * 优化 `solon-flow` stateful 允许 stateController 独立使用（即可以没有 stateRepository）
@@ -56,6 +57,20 @@
 * 调整 `solon-data` TranExecutorDefault 切换为 ScopeLocal 接口实现
 * 调整 `solon` RunHolder：parallelExecutor 改为 newFixedThreadPool
 * 调整 `solon-flow` FlowStatefulService:evel、stepForward、stepBack 标为弃用
+* 修复 `solon` IndexFiles 路径表达式的兼容问题（添加转换 `*->@`、`:->!`）
+* snack4 升为 4.0.18
+* liquor 升为 1.6.4
+* asm 升为 9.9
+
+
+### v3.7.4
+
+* 添加 `solon` ThreadsUtil:newVirtualThreadFactory 方法
+* 添加 `solon` Solon.start(Class, MultiMap) 方法
+* 添加 `solon-test` HttpTester protocol 参数支持（方便 https 或 http 切换测试）
+* 添加 `solon-serialization` JsonPropsUtil2.dateAsFormat 添加 java.sql.Timestamp 类型支持
+* 添加 `solon-net-httputils` HttpSslSupplierAny
+* 优化 `solon-net-httputils` SslContextBuilder
 * 修复 `solon` IndexFiles 路径表达式的兼容问题（添加转换 `*->@`、`:->!`）
 * snack4 升为 4.0.18
 * liquor 升为 1.6.4
