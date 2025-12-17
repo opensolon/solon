@@ -15,8 +15,10 @@
  */
 package org.noear.solon.serialization.hessian;
 
+import com.alibaba.com.caucho.hessian.io.ClassFactory;
 import com.alibaba.com.caucho.hessian.io.Hessian2Input;
 import com.alibaba.com.caucho.hessian.io.Hessian2Output;
+import com.alibaba.com.caucho.hessian.io.SerializerFactory;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.lang.Nullable;
@@ -34,6 +36,12 @@ import java.lang.reflect.Type;
 public class HessianBytesSerializer implements EntitySerializer<byte[]> {
     private static final String label = "application/hessian";
     private static final HessianBytesSerializer _default = new HessianBytesSerializer();
+
+    private static volatile SerializerFactory serializerFactory; // global serializer factory
+
+    static {
+        serializerFactory = initDefaultSerializerFactory();
+    }
 
     /**
      * 默认实例
@@ -114,6 +122,7 @@ public class HessianBytesSerializer implements EntitySerializer<byte[]> {
     @Override
     public Object deserialize(byte[] data, Type toType) throws IOException {
         Hessian2Input hi = new Hessian2Input(new ByteArrayInputStream(data));
+        hi.setSerializerFactory(serializerFactory);
         return hi.readObject();
     }
 
@@ -147,6 +156,18 @@ public class HessianBytesSerializer implements EntitySerializer<byte[]> {
     @Override
     public Object deserializeFromBody(Context ctx, @Nullable Type bodyType) throws IOException {
         Hessian2Input hi = new Hessian2Input(ctx.bodyAsStream());
+        hi.setSerializerFactory(serializerFactory);
         return hi.readObject();
+    }
+
+    private static SerializerFactory initDefaultSerializerFactory() {
+        SerializerFactory defaultSerializerFactory = new SerializerFactory();
+        ClassFactory classFactory = defaultSerializerFactory.getClassFactory();
+        classFactory.setWhitelist(false); // blacklist mode
+        classFactory.deny("org.apache.catalina.tribes.*");
+        classFactory.deny("com.alibaba.citrus.springext.*");
+        classFactory.deny("com.alipay.custrelation.*");
+        classFactory.deny("com.alibaba.druid.*");
+        return defaultSerializerFactory;
     }
 }
