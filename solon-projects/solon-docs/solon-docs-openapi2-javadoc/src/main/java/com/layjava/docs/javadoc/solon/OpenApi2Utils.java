@@ -119,7 +119,7 @@ public class OpenApi2Utils {
     /**
      * @since 2.9
      */
-    private static String getSwaggerJson(DocDocket docket, String description) throws IOException {
+    public static String getSwaggerJson(DocDocket docket, String description) throws IOException {
         //本地模式
         Swagger swagger = new OpenApi2Builder(docket).build(description);
 
