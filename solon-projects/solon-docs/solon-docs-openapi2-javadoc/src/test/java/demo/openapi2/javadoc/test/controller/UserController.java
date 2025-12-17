@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.layjava.test.controller;
+package demo.openapi2.javadoc.test.controller;
 
-import com.layjava.test.domain.Page;
-import com.layjava.test.domain.PageImpl;
-import com.layjava.test.domain.bo.UserBo;
-import com.layjava.test.domain.vo.UserVo;
+import demo.openapi2.javadoc.test.domain.Page;
+import demo.openapi2.javadoc.test.domain.PageImpl;
+import demo.openapi2.javadoc.test.domain.bo.UserBo;
+import demo.openapi2.javadoc.test.domain.vo.UserVo;
 import org.noear.solon.annotation.*;
+import org.noear.solon.core.handle.Result;
 
 import java.util.List;
 
@@ -60,6 +61,18 @@ public class UserController {
     @Mapping("/{id}")
     public UserVo get(Long id) {
         return new UserVo();
+    }
+
+    /**
+     * 根据Id查询用户信息2
+     *
+     * @param id 身份证件
+     * @return {@link UserVo}
+     */
+    @Get
+    @Mapping("/info/{id}")
+    public Result<UserVo> info(Long id) {
+        return Result.succeed(new UserVo());
     }
 
     /**

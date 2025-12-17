@@ -13,27 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.layjava.test.domain;
+package demo.openapi2.javadoc;
+
+import org.noear.solon.Solon;
 
 /**
- * @author noear 2024/6/17 created
+ * 应用启动类
+ *
+ * @author chengliang
+ * @since 2024/02/26
  */
-public class PageImpl implements Page {
-    private int pageNumber;
-    private int pageSize;
+public class App {
 
-    public PageImpl(int pageNumber, int pageSize) {
-        this.pageNumber = pageNumber;
-        this.pageSize = pageSize;
+    public static void main(String[] args) {
+        Solon.start(App.class, args);
     }
 
-    @Override
-    public int getPageNumber() {
-        return 0;
-    }
-
-    @Override
-    public int getPageSize() {
-        return 0;
-    }
 }

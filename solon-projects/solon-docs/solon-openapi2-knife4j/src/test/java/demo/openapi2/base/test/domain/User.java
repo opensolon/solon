@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.layjava.test.domain.vo;
+package demo.openapi2.base.test.domain;
 
+import demo.openapi2.base.test.base.BaseEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -29,7 +30,8 @@ import java.time.LocalDateTime;
  */
 @Data
 @Accessors(chain = true)
-public class UserVo implements Serializable {
+@EqualsAndHashCode(callSuper = true)
+public class User extends BaseEntity {
 
     /**
      * 用户ID
@@ -115,5 +117,4 @@ public class UserVo implements Serializable {
      * 备注
      */
     private String remark;
-
 }

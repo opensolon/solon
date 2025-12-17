@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.layjava.test.domain.bo;
+package demo.openapi2.base.test.domain.bo;
 
-import com.layjava.test.base.BaseEntity;
+import demo.openapi2.base.test.base.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;

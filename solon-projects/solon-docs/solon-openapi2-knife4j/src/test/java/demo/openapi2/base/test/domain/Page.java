@@ -13,26 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.layjava;
+package demo.openapi2.base.test.domain;
 
-import io.swagger.models.Scheme;
-import org.noear.solon.annotation.Managed;
-import org.noear.solon.annotation.Configuration;
-import org.noear.solon.docs.DocDocket;
-
-@Configuration
-public class DocsConfig {
-
-    /**
-     * 简单点的
-     */
-    @Managed("appApi")
-    public DocDocket appApi() {
-        return new DocDocket()
-                .groupName("app端接口")
-                .schemes(Scheme.HTTP.toValue())
-                .apis("com.layjava.test");
-
-    }
-
+/**
+ * @author noear 2024/6/17 created
+ */
+public interface Page {
+    int getPageNumber();
+    int getPageSize();
 }

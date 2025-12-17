@@ -13,12 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.layjava.test.domain;
+package demo.openapi2.base;
+
+import org.noear.solon.Solon;
 
 /**
- * @author noear 2024/6/17 created
+ * 应用启动类
+ *
+ * @author chengliang
+ * @since 2024/02/26
  */
-public interface Page {
-    int getPageNumber();
-    int getPageSize();
+public class App {
+
+    public static void main(String[] args) {
+        Solon.start(App.class, args);
+    }
+
 }

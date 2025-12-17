@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.layjava.test.base;
+package demo.openapi2.javadoc.test.base;
 
 import lombok.Data;
 
