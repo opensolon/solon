@@ -36,6 +36,7 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.net.URI;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 /**
  *
@@ -412,7 +413,11 @@ public class GyHttpContext extends ContextBase {
                 sendHeaders(true);
             }
         } finally {
-            _response.finish();
+            if (asyncState.asyncFuture != null) {
+                asyncState.asyncFuture.complete(null);
+            } else {
+                _response.finish();
+            }
         }
     }
 
@@ -465,7 +470,11 @@ public class GyHttpContext extends ContextBase {
     public void asyncStart(long timeout, Runnable runnable) {
         if (asyncState.isStarted == false) {
             asyncState.isStarted = true;
+            _response.suspend();
+
+            asyncState.asyncFuture = new CompletableFuture<>();
             asyncState.asyncDelay(timeout, this, this::innerCommit);
+            asyncState.asyncFuture.whenComplete((result, error) -> _response.resume());
 
             if (runnable != null) {
                 runnable.run();
