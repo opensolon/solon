@@ -85,7 +85,8 @@
 * 添加 `solon-net-httputils` HttpSslSupplierAny
 * 优化 `solon-net-httputils` SslContextBuilder
 * 修复 `solon` IndexFiles 路径表达式的兼容问题（添加转换 `*->@`、`:->!`）
-* snack4 升为 4.0.18
+* 修复 `solon-docs-openapi2` 返回类型中泛型失效的问题（v3.7.0 出现）
+* snack4 升为 4.0.19
 * liquor 升为 1.6.4
 * asm 升为 9.9
 
