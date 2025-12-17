@@ -63,6 +63,8 @@ public class RxHandlerImpl implements RxHandler {
                             return Flux.empty();
                         } else if (o instanceof Entity) {
                             return getEntityBody(ctx, (Entity) o);
+                        } else if (o instanceof Publisher) {
+                            return Flux.from((Publisher) o);
                         } else {
                             return Flux.just(o);
                         }
