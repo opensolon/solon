@@ -15,7 +15,7 @@ public class Config {
         return new DocDocket()
                 .groupName("app端接口")
                 .schemes(Scheme.HTTP.toValue())
-                .apis("demo.openapi2.javadoc");
+                .apis("demo.openapi2.base");
 
     }
 }
