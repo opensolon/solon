@@ -731,6 +731,10 @@ public class OpenApi2Builder {
      * 将class解析为swagger model
      */
     private Model parseSwaggerModel(Class<?> clazz, Type type) {
+        if(type == null){
+            type = clazz;
+        }
+
         final String modelName = BuilderHelper.getModelName(clazz, type);
 
         // 1.已存在,不重复解析
@@ -769,7 +773,7 @@ public class OpenApi2Builder {
 
 
         // 3.完成模型解析
-        ClassEggg ce = EgggUtil.getClassEggg(clazz);
+        ClassEggg ce = EgggUtil.getClassEggg(type);
         if (clazz.isInterface()) {
             for (MethodEggg me : ce.getOwnMethodEgggs()) {
                 if (me.getParamCount() == 0 && me.getName().startsWith("get")) {

@@ -60,6 +60,7 @@
 * 调整 `solon` RunHolder：parallelExecutor 改为 newFixedThreadPool
 * 调整 `solon-flow` FlowStatefulService:evel、stepForward、stepBack 标为弃用
 * 修复 `solon` IndexFiles 路径表达式的兼容问题（添加转换 `*->@`、`:->!`）
+* 修复 `solon-docs-openapi2` 返回类型中泛型失效的问题（v3.7.0 出现）
 * snack4 升为 4.0.18
 * jackson 升为 2.19.2
 * liquor 升为 1.6.4
