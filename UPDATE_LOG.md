@@ -27,6 +27,10 @@
 
 ### v3.8.0
 
+
+* 新增 `solon-ai-mcp` mcp-java-sdk v0.17 适配（支持 2025-06-18 版本协议）
+* 新增 `solon-ai-mcp` mcp-server 异步支持
+* 新增 `solon-ai-mcp` mcp-server streamable_stateless 支持
 * 新增 `solon` ScopeLocal 接口（用于 ThreadLocal 到 ScopedValue 兼容）
 * 添加 `solon` Solon.start(Class, MultiMap) 方法
 * 添加 `solon` ThreadsUtil:newVirtualThreadFactory 方法
@@ -47,8 +51,12 @@
 * 添加 `solon-flow` Graph:copy 方法
 * 添加 `solon-flow` GraphDecl:getNode 方法
 * 添加 `solon-flow` Graph:toYaml(FlowContext)，Graph:toJson(FlowContext) 方法，可输出节点状态（方便前端展示进度）
+* 添加 `solon-ai` FunctionPrompt:handleAsync（用于 mcp-server 异步支持）
+* 添加 `solon-ai` FunctionResource:handleAsync（用于 mcp-server 异步支持）
+* 添加 `solon-ai` FunctionTool:handleAsync（用于 mcp-server 异步支持）
 * 添加 `solon-ai-dialect-openai` ClaudeChatDialect 方言
 * 添加 `solon-ai-core` ChatMessage:toNdjson,fromNdjson 方法（替代 ChatSession:toNdjson, loadNdjson），新方法机制上更自由
+* 添加 `solon-ai-mcp` McpServerHolder 接口，用于隔离有状态与无状态服务
 * 优化 `solon` api-version 版本匹配
 * 优化 `solon-ai-mcp` mcp StreamableHttp 模式下 服务端正常返回时 客户端异常日志打印的情况
 * 优化 `solon-flow` eval(Node startNode) 处理，改为从 root 开始恢复到 start 再开始执行（恢复过程中，不会执行任务）
@@ -59,6 +67,7 @@
 * 调整 `solon-data` TranExecutorDefault 切换为 ScopeLocal 接口实现
 * 调整 `solon` RunHolder：parallelExecutor 改为 newFixedThreadPool
 * 调整 `solon-flow` FlowStatefulService:evel、stepForward、stepBack 标为弃用
+* 调整 `solon-ai-mcp` getResourceTemplates、getResources 不再共享注册
 * 修复 `solon` IndexFiles 路径表达式的兼容问题（添加转换 `*->@`、`:->!`）
 * 修复 `solon-docs-openapi2` 返回类型中泛型失效的问题（v3.7.0 出现）
 * snack4 升为 4.0.18
