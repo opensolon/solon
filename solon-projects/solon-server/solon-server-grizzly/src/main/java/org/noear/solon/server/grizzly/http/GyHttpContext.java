@@ -36,8 +36,6 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.net.URI;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 /**
  *
@@ -414,9 +412,7 @@ public class GyHttpContext extends ContextBase {
                 sendHeaders(true);
             }
         } finally {
-            if (asyncState.asyncFuture != null) {
-                asyncState.asyncFuture.complete(null);
-            }
+            _response.finish();
         }
     }
 
@@ -469,8 +465,6 @@ public class GyHttpContext extends ContextBase {
     public void asyncStart(long timeout, Runnable runnable) {
         if (asyncState.isStarted == false) {
             asyncState.isStarted = true;
-
-            asyncState.asyncFuture = new CompletableFuture<>();
             asyncState.asyncDelay(timeout, this, this::innerCommit);
 
             if (runnable != null) {
@@ -493,12 +487,6 @@ public class GyHttpContext extends ContextBase {
             } finally {
                 asyncState.onComplete(this);
             }
-        }
-    }
-
-    protected void asyncAwait() throws InterruptedException, ExecutionException {
-        if (asyncState.isStarted) {
-            asyncState.asyncFuture.get();
         }
     }
 }

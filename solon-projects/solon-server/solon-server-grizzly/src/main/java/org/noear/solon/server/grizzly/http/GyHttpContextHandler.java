@@ -82,7 +82,9 @@ public class GyHttpContextHandler extends HttpHandler {
         } catch (Throwable e) {
             e.printStackTrace();
         } finally {
-            ctx.innerGetResponse().finish();
+            if (ctx.asyncStarted() == false) {
+                ctx.innerGetResponse().finish();
+            }
         }
     }
 
@@ -100,9 +102,7 @@ public class GyHttpContextHandler extends HttpHandler {
 
             handler.handle(ctx);
 
-            if (ctx.asyncStarted()) {
-                ctx.asyncAwait();
-            } else {
+            if (ctx.asyncStarted() == false) {
                 ctx.innerCommit();
             }
 
