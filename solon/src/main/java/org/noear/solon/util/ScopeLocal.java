@@ -13,9 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.core.util;
+package org.noear.solon.util;
 
 import org.noear.solon.core.FactoryManager;
+
+import java.util.function.Supplier;
 
 /**
  * 作用域变量
@@ -27,7 +29,7 @@ import org.noear.solon.core.FactoryManager;
  *     String name = LOCAL.get().getName();
  * });
  * }</pre>
- * @since 3.7.4
+ * @since 3.8.0
  * */
 public interface ScopeLocal<T> {
     static <T> ScopeLocal<T> newInstance() {
@@ -54,18 +56,28 @@ public interface ScopeLocal<T> {
     /**
      * 使用值并调用
      */
-    <R, X extends Throwable> R with(T value, CallableTx<? extends R, X> callable) throws X;
+    <R> R with(T value, Supplier<R> callable);
+
+    /**
+     * 使用值并运行
+     */
+    <X extends Throwable> void withOrThrow(T value, RunnableTx<X> runnable) throws X;
+
+    /**
+     * 使用值并调用
+     */
+    <R, X extends Throwable> R withOrThrow(T value, CallableTx<? extends R, X> callable) throws X;
 
     /// ////////////////////////////
 
     /**
-     * @deprecated 3.7.4
+     * @deprecated 3.8.0
      */
     @Deprecated
     ScopeLocal<T> set(T value);
 
     /**
-     * @deprecated 3.7.4
+     * @deprecated 3.8.0
      */
     @Deprecated
     void remove();

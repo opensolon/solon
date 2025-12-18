@@ -13,17 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.core.util;
+package org.noear.solon.util;
 
 /**
- * 可运行
+ * 可调用
  *
  * @author noear
- * @since 3.7.4
+ * @since 3.8.0
  * */
-public interface RunnableTx<X extends Throwable> {
+public interface CallableTx<T, X extends Throwable> {
     /**
-     * 运行
+     * 调用
      */
-    void run() throws X;
+    T call() throws X;
 }

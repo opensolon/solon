@@ -1,10 +1,5 @@
 package demo.solon;
 
-import org.noear.solon.core.util.CallableTx;
-import org.noear.solon.core.util.ScopeLocal;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 //import java.lang.ScopedValue;
 //
 //public class ScopeLocalJdk21<T> implements ScopeLocal<T> {

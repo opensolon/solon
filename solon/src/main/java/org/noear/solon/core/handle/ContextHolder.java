@@ -17,9 +17,10 @@ package org.noear.solon.core.handle;
 
 
 import org.noear.solon.Solon;
-import org.noear.solon.core.util.CallableTx;
+import org.noear.solon.util.CallableTx;
+import org.noear.solon.util.RunnableTx;
+import org.noear.solon.util.ScopeLocal;
 import org.noear.solon.core.util.JavaUtil;
-import org.noear.solon.core.util.ScopeLocal;
 
 /**
  * 上下文状态处理工具（独立出来，可为别的业务服务）
@@ -36,19 +37,19 @@ public class ContextHolder {
     /**
      * 使用当前域的上下文
      *
-     * @since 3.7.4
+     * @since 3.8.0
      */
-    public static void currentWith(Context context, Runnable runnable) {
-        LOCAL.with(context, runnable);
+    public static <X extends Throwable> void currentWith(Context context, RunnableTx<X> runnable) throws X {
+        LOCAL.withOrThrow(context, runnable);
     }
 
     /**
      * 使用当前域的上下文
      *
-     * @since 3.7.4
+     * @since 3.8.0
      */
     public static <R, X extends Throwable> R currentWith(Context context, CallableTx<R, X> callable) throws X {
-        return LOCAL.with(context, callable);
+        return LOCAL.withOrThrow(context, callable);
     }
 
 
@@ -73,7 +74,7 @@ public class ContextHolder {
     /**
      * 设置当前域的上下文
      *
-     * @deprecated 3.7.4 {@link #currentWith(Context, Runnable)}
+     * @deprecated 3.7.4 {@link #currentWith(Context, RunnableTx)}
      */
     @Deprecated
     public static void currentSet(Context context) {
@@ -83,7 +84,7 @@ public class ContextHolder {
     /**
      * 移除当前域的上下文
      *
-     * @deprecated 3.7.4 {@link #currentWith(Context, Runnable)}
+     * @deprecated 3.7.4 {@link #currentWith(Context, RunnableTx)}
      */
     @Deprecated
     public static void currentRemove() {

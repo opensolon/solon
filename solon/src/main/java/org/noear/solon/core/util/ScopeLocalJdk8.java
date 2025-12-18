@@ -16,13 +16,18 @@
 package org.noear.solon.core.util;
 
 import org.noear.solon.core.FactoryManager;
+import org.noear.solon.util.CallableTx;
+import org.noear.solon.util.RunnableTx;
+import org.noear.solon.util.ScopeLocal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.function.Supplier;
 
 /**
  * 作用域变量
  *
- * @since 3.7.4
+ * @since 3.8.0
  * */
 public class ScopeLocalJdk8<T> implements ScopeLocal<T> {
     private static final Logger log = LoggerFactory.getLogger(ScopeLocalJdk8.class);
@@ -49,7 +54,37 @@ public class ScopeLocalJdk8<T> implements ScopeLocal<T> {
     }
 
     @Override
-    public <R, X extends Throwable> R with(T value, CallableTx<? extends R, X> callable) throws X {
+    public <R> R with(T value, Supplier<R> callable) {
+        T bak = ref.get();
+        try {
+            ref.set(value);
+            return callable.get();
+        } finally {
+            if (bak == null) {
+                ref.remove();
+            } else {
+                ref.set(bak);
+            }
+        }
+    }
+
+    @Override
+    public <X extends Throwable> void withOrThrow(T value, RunnableTx<X> runnable) throws X {
+        T bak = ref.get();
+        try {
+            ref.set(value);
+            runnable.run();
+        } finally {
+            if (bak == null) {
+                ref.remove();
+            } else {
+                ref.set(bak);
+            }
+        }
+    }
+
+    @Override
+    public <R, X extends Throwable> R withOrThrow(T value, CallableTx<? extends R, X> callable) throws X {
         T bak = ref.get();
         try {
             ref.set(value);

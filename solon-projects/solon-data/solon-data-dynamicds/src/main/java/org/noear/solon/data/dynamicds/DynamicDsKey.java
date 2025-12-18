@@ -15,9 +15,9 @@
  */
 package org.noear.solon.data.dynamicds;
 
-import org.noear.solon.core.util.RunnableEx;
-import org.noear.solon.core.util.ScopeLocal;
-import org.noear.solon.core.util.SupplierEx;
+import org.noear.solon.util.CallableTx;
+import org.noear.solon.util.RunnableTx;
+import org.noear.solon.util.ScopeLocal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,20 +34,17 @@ public class DynamicDsKey {
 
 
     /**
-     * @since 3.7.4
+     * @since 3.8.0
      * */
-    public static void with(String name, RunnableEx runnable) throws Throwable {
-        LOCAL.with(name, () -> {
-            runnable.run();
-            return null;
-        });
+    public static <X extends Throwable> void with(String name, RunnableTx<X> runnable) throws X {
+        LOCAL.withOrThrow(name, runnable);
     }
 
     /**
-     * @since 3.7.4
+     * @since 3.8.0
      * */
-    public static <T> T with(String name, SupplierEx<T> supplier) throws Throwable {
-        return LOCAL.with(name, supplier::get);
+    public static <T, X extends Throwable> T with(String name, CallableTx<T,X> callable) throws X {
+        return LOCAL.withOrThrow(name, callable);
     }
 
     /**
@@ -61,7 +58,7 @@ public class DynamicDsKey {
     /**
      * 移除 key
      *
-     * @deprecated 3.7.4 请使用 {@link #with(String, RunnableEx)} ()}
+     * @deprecated 3.8.0 请使用 {@link #with(String, RunnableTx)} ()}
      */
     @Deprecated
     public static void remove() {
@@ -73,7 +70,7 @@ public class DynamicDsKey {
     /**
      * 使用 key
      *
-     * @deprecated 3.7.4 请使用 {@link #with(String, RunnableEx)}
+     * @deprecated 3.8.0 请使用 {@link #with(String, RunnableTx)}
      */
     @Deprecated
     public static void use(String name) {

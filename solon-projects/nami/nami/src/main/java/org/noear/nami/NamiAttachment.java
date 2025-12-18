@@ -15,14 +15,16 @@
  */
 package org.noear.nami;
 
-import org.noear.solon.core.util.CallableTx;
-import org.noear.solon.core.util.ScopeLocal;
+import org.noear.solon.util.CallableTx;
+import org.noear.solon.util.RunnableTx;
+import org.noear.solon.util.ScopeLocal;
 import org.noear.solon.lang.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * Nami 请求附件（通过 ThreadLocal 切换）
@@ -36,7 +38,7 @@ public final class NamiAttachment {
 
 
     /**
-     * @since 3.7.4
+     * @since 3.8.0
      */
     public static void with(Runnable runnable) {
         Map<String, String> data = LOCAL.get();
@@ -48,9 +50,9 @@ public final class NamiAttachment {
     }
 
     /**
-     * @since 3.7.4
+     * @since 3.8.0
      */
-    public static <R, X extends Throwable> R with(CallableTx<R, X> callable) throws X {
+    public static <R> R with(Supplier<R> callable) {
         Map<String, String> data = LOCAL.get();
         if (data == null) {
             data = new HashMap<>();
@@ -58,6 +60,32 @@ public final class NamiAttachment {
 
         return LOCAL.with(data, callable);
     }
+
+    /**
+     * @since 3.8.0
+     */
+    public static <X extends Throwable> void withOrThrow(RunnableTx<X> runnable) throws X {
+        Map<String, String> data = LOCAL.get();
+        if (data == null) {
+            data = new HashMap<>();
+        }
+
+        LOCAL.withOrThrow(data, runnable);
+    }
+
+    /**
+     * @since 3.8.0
+     */
+    public static <R, X extends Throwable> R withOrThrow(CallableTx<R, X> callable) throws X {
+        Map<String, String> data = LOCAL.get();
+        if (data == null) {
+            data = new HashMap<>();
+        }
+
+        return LOCAL.withOrThrow(data, callable);
+    }
+
+    /// ///////////////////
 
 
     public static @Nullable Map<String, String> getData() {

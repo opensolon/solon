@@ -17,8 +17,8 @@ package org.noear.solon.core;
 
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.util.ClassUtil;
-import org.noear.solon.core.util.ScopeLocal;
 import org.noear.solon.core.util.ScopeLocalJdk8;
+import org.noear.solon.util.ScopeLocal;
 
 import java.lang.reflect.AnnotatedElement;
 import java.util.function.BiFunction;

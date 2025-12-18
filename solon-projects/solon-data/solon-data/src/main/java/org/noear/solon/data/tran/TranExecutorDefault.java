@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.tran;
 
-import org.noear.solon.core.util.ScopeLocal;
+import org.noear.solon.util.ScopeLocal;
 import org.noear.solon.data.annotation.Transaction;
 import org.noear.solon.data.tran.impl.*;
 import org.noear.solon.core.util.RunnableEx;
@@ -150,9 +150,8 @@ public class TranExecutorDefault implements TranExecutor {
         //
         TranNode tran = create(meta);
 
-        LOCAL.with(new Stack<>(), () -> {
+        LOCAL.withOrThrow(new Stack<>(), () -> {
             applyDo(LOCAL.get(), tran, meta, runnable);
-            return null;
         });
     }
 

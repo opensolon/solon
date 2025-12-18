@@ -15,8 +15,7 @@
  */
 package org.noear.solon.data.tran;
 
-import org.noear.solon.core.FactoryManager;
-import org.noear.solon.core.util.ScopeLocal;
+import org.noear.solon.util.ScopeLocal;
 import org.noear.solon.data.datasource.RoutingDataSourceMapping;
 import org.noear.solon.data.tran.impl.DbTran;
 
