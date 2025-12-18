@@ -107,7 +107,11 @@ public final class SolonProps extends Props {
             //loadEnv(k -> k.indexOf('.') > 0);
 
             //4.2.加载环境配置(例：env=pro 或 env=debug)
-            env = getArg("env");
+            env = getArg("env.use"); //new: v3.8.0
+
+            if(env == null){
+                env = getArg("env");//old
+            }
 
             if (Utils.isNotEmpty(env)) {
                 loadInit(ResourceUtil.getResource("app-" + env + ".properties"), sysPropOrg);
