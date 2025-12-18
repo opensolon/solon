@@ -347,6 +347,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon-java25</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon-handle</artifactId>
                 <version>${solon.version}</version>
             </dependency>
