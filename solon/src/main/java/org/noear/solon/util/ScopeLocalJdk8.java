@@ -13,12 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.core.util;
+package org.noear.solon.util;
 
 import org.noear.solon.core.FactoryManager;
-import org.noear.solon.util.CallableTx;
-import org.noear.solon.util.RunnableTx;
-import org.noear.solon.util.ScopeLocal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
