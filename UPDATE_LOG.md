@@ -76,6 +76,21 @@
 * asm 升为 9.9
 
 
+新特性：
+
+```java
+public class Demo {
+   static ScopeLocal<String> LOCAL = ScopeLocal.newInstance();
+
+   public void test(){
+       LOCAL.with("test", ()->{
+           System.out.println(LOCAL.get());
+       });
+   }
+}
+```
+
+
 ### v3.7.4
 
 * 添加 `solon` ThreadsUtil:newVirtualThreadFactory 方法
