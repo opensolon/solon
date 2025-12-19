@@ -27,7 +27,7 @@
 
 ### v3.8.0
 
-
+* 插件 `solon-flow` 第六次预览（FlowStatefulService 接口简化）
 * 新增 `solon-java25` 仓库（提供 ScopedValue 适配）
 * 新增 `solon-ai-mcp` mcp-java-sdk v0.17 适配（支持 2025-06-18 版本协议）
 * 新增 `solon-ai-mcp` mcp-server 异步支持
@@ -41,6 +41,7 @@
 * 添加 `solon` Stringable 接口
 * 添加 `solon` 'env.use' 配置支持（相对 'env'，它与 'env.on' 协作时不会冲突）
 * 添加 `solon` 'server.session.cookieHttpOnly' 配置支持（默认为 true）
+* 添加 `solon` Context.cookieSet(...,httpOnly) 方法
 * 添加 `solon-test` HttpTester protocol 参数支持（方便 https 或 http 切换测试）
 * 添加 `solon-serialization` JsonPropsUtil2.dateAsFormat 添加 java.sql.Timestamp 类型支持
 * 添加 `solon-config-yaml` 依赖 solon-config-snack4 避免单个引入时忘掉
@@ -48,19 +49,25 @@
 * 添加 `solon-web-rx` RxEntity 类（方便对接 mcp-sdk）
 * 添加 `solon-server` 会话状态的 cookie httpOnly 配置（默认为 false）
 * 添加 `solon-server-tomcat` ssl 适配支持
-* 添加 `solon-flow` Graph:create(id,title,consumer) 方法
-* 添加 `solon-flow` GraphDecl:addLoop 方法替代 addLooping（后者标为弃用）
 * 添加 `solon-flow` Evaluation:runCondition 方法替代 runTest（后者标为弃用）
 * 添加 `solon-flow` FlowContext:lastNode 方法（最后一个运行的节点）
-* 添加 `solon-flow` Graph:copy 方法（方便快速复制后修改）
-* 添加 `solon-flow` GraphDecl:getNode 方法
+* 添加 `solon-flow` FlowContext:lastNodeId 方法（最后一个运行的节点Id）
+* 添加 `solon-flow` Node.getMetaAs, Link.getMetaAs 方法
+* 添加 `solon-flow` NodeDecl:linkRemove 方法（增强修改能力）
+* 添加 `solon-flow` Graph:create(id,title,consumer) 方法
+* 添加 `solon-flow` Graph:copy 方法（方便复制后修改）
 * 添加 `solon-flow` Graph:toYaml(FlowContext)，Graph:toJson(FlowContext) 方法，可输出节点状态（方便前端展示进度）
+* 添加 `solon-flow` GraphDecl:getNode 方法
+* 添加 `solon-flow` GraphDecl:addLoop 方法替代 addLooping（后者标为弃用）
+* 添加 `solon-flow` StatefulTask:getNodeId 方法
+* 添加 `solon-flow` FlowStatefulService:postTaskIfWaiting(Graph...),postTask(Graph) 方法
 * 添加 `solon-ai` FunctionPrompt:handleAsync（用于 mcp-server 异步支持）
 * 添加 `solon-ai` FunctionResource:handleAsync（用于 mcp-server 异步支持）
 * 添加 `solon-ai` FunctionTool:handleAsync（用于 mcp-server 异步支持）
 * 添加 `solon-ai-dialect-openai` ClaudeChatDialect 方言
 * 添加 `solon-ai-core` ChatMessage:toNdjson,fromNdjson 方法（替代 ChatSession:toNdjson, loadNdjson），新方法机制上更自由
-* 添加 `solon-ai-mcp` McpServerHolder 接口，用于隔离有状态与无状态服务
+* 添加 `solon-ai-mcp` McpServerHost 服务宿主接口，用于隔离有状态与无状态服务
+* 添加 `solon-ai-mcp` McpChannel.STREAMABLE_STATELESS （服务端）无状态会话
 * 优化 `solon` api-version 版本匹配
 * 优化 `solon-ai-mcp` mcp StreamableHttp 模式下 服务端正常返回时 客户端异常日志打印的情况
 * 优化 `solon-flow` eval(Node startNode) 处理，改为从 root 开始恢复到 start 再开始执行（恢复过程中，不会执行任务）
@@ -70,8 +77,17 @@
 * 调整 `solon` ContextHolder 切换为 ScopeLocal 接口实现
 * 调整 `solon-data` TranExecutorDefault 切换为 ScopeLocal 接口实现
 * 调整 `solon` RunHolder：parallelExecutor 改为 newFixedThreadPool
-* 调整 `solon-flow` FlowStatefulService:evel、stepForward、stepBack 标为弃用
+* 调整 `solon-flow` Activity 节点预览属性 "$imode" 和 "$omode" 标为移除
+* 调整 `solon-flow` Activity 节点流出改为自由模式（可以多线流出：无条件直接流出，有条件检测后流出）
+* 调整 `solon-flow` Node.getMeta 方法返回改为 Object 类型（并新增 getMetaAs）
+* 调整 `solon-flow` FlowContext:incrAdd,incrGet 标为弃用（上下文数据为型只能由输入侧决定）
+* 调整 `solon-flow` FlowStatefulService:evel、StateResult 标为移除
+* 调整 `solon-flow` FlowStatefulService:stepForward、stepBack 标为移除（接口更专注、更简洁）
+* 调整 `solon-flow` FlowStatefulService:postOperationIfWaiting 更名为 postTaskIfWaiting
+* 调整 `solon-flow` FlowStatefulService:postOperation 更名为 postTask
+* 调整 `solon-flow` Operation 更名为 StateOp（与 StateType 更配套）
 * 调整 `solon-ai-mcp` getResourceTemplates、getResources 不再共享注册
+* 调整 `solon-ai-mcp` McpServerManager 内部接口更名为 McpPrimitivesRegistry （MCP 原语注册器）
 * 修复 `solon` IndexFiles 路径表达式的兼容问题（添加转换 `*->@`、`:->!`）
 * 修复 `solon-docs-openapi2` 返回类型中泛型失效的问题（v3.7.0 出现）
 * snack4 升为 4.0.20
