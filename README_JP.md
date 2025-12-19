@@ -81,8 +81,9 @@ Solon
 | [/opensolon/solon-ai](../../../../opensolon/solon-ai)                       | Solon Ai ,コードリポジトリです                   | 
 | [/opensolon/solon-cloud](../../../../opensolon/solon-cloud)                 | Solon Cloud ,コードリポジトリです                | 
 | [/opensolon/solon-admin](../../../../opensolon/solon-admin)                 | Solon Admin ,コードリポジトリです                | 
-| [/opensolon/solon-jakarta](../../../../opensolon/solon-jakarta)             | Solon Jakarta ,コードリポジトリです（base java21） | 
 | [/opensolon/solon-integration](../../../../opensolon/solon-integration)     | Solon Integration ,コードリポジトリです          | 
+| [/opensolon/solon-jakarta](../../../../opensolon/solon-jakarta)             | Solon Jakarta ,コードリポジトリです（base java17） | 
+| [/opensolon/solon-java25](../../../../opensolon/solon-java25)             | Solon Java25 ,コードリポジトリです（base java25）  | 
 |                                                                  |                                        |
 | [/opensolon/solon-gradle-plugin](../../../../opensolon/solon-gradle-plugin) | Solon Gradle ,プラグインのリポジトリです            | 
 | [/opensolon/solon-idea-plugin](../../../../opensolon/solon-idea-plugin)     | Solon Idea ,プラグインのリポジトリです              | 

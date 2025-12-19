@@ -83,8 +83,9 @@ Solon
 | [/opensolon/solon-ai](../../../../opensolon/solon-ai)                       | Solon Ai ,Кодовый склад                             | 
 | [/opensolon/solon-cloud](../../../../opensolon/solon-cloud)                 | Solon Cloud ,Кодовый склад                          | 
 | [/opensolon/solon-admin](../../../../opensolon/solon-admin)                 | Solon Admin ,Кодовый склад                          | 
-| [/opensolon/solon-jakarta](../../../../opensolon/solon-jakarta)             | Solon Jakarta ,Кодовый склад（base java21）           | 
 | [/opensolon/solon-integration](../../../../opensolon/solon-integration)     | Solon Integration ,Кодовый склад                    | 
+| [/opensolon/solon-jakarta](../../../../opensolon/solon-jakarta)             | Solon Jakarta ,Кодовый склад（base java17）           | 
+| [/opensolon/solon-java25](../../../../opensolon/solon-java25)             | Solon Java25 ,Кодовый склад（base java25）            | 
 |                                                                  |                                                     |
 | [/opensolon/solon-gradle-plugin](../../../../opensolon/solon-gradle-plugin) | Solon Gradle ,Код плагина хранилища                 | 
 | [/opensolon/solon-idea-plugin](../../../../opensolon/solon-idea-plugin)     | Solon Idea ,Код плагина хранилища                   | 
