@@ -30,6 +30,7 @@ public abstract class SessionStateBase implements SessionState {
 
     protected static int _expiry = 60 * 60 * 2;
     protected static String _domain = null;
+    protected static boolean _httpOnly;
 
     static {
         if (SessionProps.session_timeout > 0) {
@@ -39,6 +40,8 @@ public abstract class SessionStateBase implements SessionState {
         if (SessionProps.session_cookieDomain != null) {
             _domain = SessionProps.session_cookieDomain;
         }
+
+        _httpOnly = SessionProps.session_cookieHttpOnly;
     }
 
     protected final Context ctx;
@@ -61,13 +64,13 @@ public abstract class SessionStateBase implements SessionState {
         if (SessionProps.session_cookieDomainAuto) {
             if (_domain != null) {
                 if (ctx.uri().getHost().indexOf(_domain) < 0) { //非安全域
-                    ctx.cookieSet(key, val, null, _expiry);
+                    ctx.cookieSet(key, val, null, _expiry, _httpOnly);
                     return;
                 }
             }
         }
 
-        ctx.cookieSet(key, val, _domain, _expiry);
+        ctx.cookieSet(key, val, _domain, _expiry, _httpOnly);
     }
 
 

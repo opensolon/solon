@@ -1001,6 +1001,13 @@ public abstract class Context {
     public void cookieSet(String name, String val, String domain, int maxAge) {
         cookieSet(new Cookie(name, val).domain(domain).maxAge(maxAge));
     }
+    
+    /**
+     * 设置 cookie
+     */
+    public void cookieSet(String name, String val, String domain, int maxAge, boolean httpOnly) {
+        cookieSet(new Cookie(name, val).domain(domain).maxAge(maxAge).httpOnly(httpOnly));
+    }
 
     /**
      * 设置 cookie
