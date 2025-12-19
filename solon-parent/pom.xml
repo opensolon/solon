@@ -1395,6 +1395,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>sa-token-snack4</artifactId>
+                <version>${solon-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>sa-token-dao-redisson-jackson</artifactId>
                 <version>${solon-integration.version}</version>
             </dependency>
