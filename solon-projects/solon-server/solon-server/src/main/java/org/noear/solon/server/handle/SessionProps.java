@@ -33,11 +33,14 @@ public class SessionProps {
 
     public final static boolean session_cookieDomainAuto;
 
+    public final static boolean session_cookieHttpOnly;
 
     static {
         session_timeout = Solon.cfg().getInt("server.session.timeout", 60 * 60 * 2);
 
         session_cookieName = Solon.cfg().get("server.session.cookieName", "SOLONID");
+
+        session_cookieHttpOnly = Solon.cfg().getBool("server.session.cookieHttpOnly", false);
 
         //
         // cookieDomain
