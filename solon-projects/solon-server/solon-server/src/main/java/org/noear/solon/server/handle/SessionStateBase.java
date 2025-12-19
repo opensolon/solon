@@ -17,6 +17,7 @@ package org.noear.solon.server.handle;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.handle.Cookie;
 import org.noear.solon.core.handle.SessionState;
 
 /**
@@ -61,16 +62,14 @@ public abstract class SessionStateBase implements SessionState {
             return;
         }
 
+        Cookie sessionCookie = new Cookie(key, val).domain(_domain).maxAge(_expiry).httpOnly(_httpOnly);
         if (SessionProps.session_cookieDomainAuto) {
             if (_domain != null) {
                 if (ctx.uri().getHost().indexOf(_domain) < 0) { //非安全域
-                    ctx.cookieSet(key, val, null, _expiry, _httpOnly);
-                    return;
+                    sessionCookie.domain(null);
                 }
             }
         }
-
-        ctx.cookieSet(key, val, _domain, _expiry, _httpOnly);
     }
 
 
