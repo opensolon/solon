@@ -29,19 +29,13 @@ import org.noear.solon.core.handle.SessionState;
  */
 public abstract class SessionStateBase implements SessionState {
 
-    protected static int _expiry = 60 * 60 * 2;
-    protected static String _domain = null;
-    protected static boolean _httpOnly;
+    protected static final int _expiry;
+    protected static final String _domain;
+    protected static final boolean _httpOnly;
 
     static {
-        if (SessionProps.session_timeout > 0) {
-            _expiry = SessionProps.session_timeout;
-        }
-
-        if (SessionProps.session_cookieDomain != null) {
-            _domain = SessionProps.session_cookieDomain;
-        }
-
+        _expiry = SessionProps.session_timeout;
+        _domain = SessionProps.session_cookieDomain;
         _httpOnly = SessionProps.session_cookieHttpOnly;
     }
 
@@ -70,6 +64,8 @@ public abstract class SessionStateBase implements SessionState {
                 }
             }
         }
+
+        ctx.cookieSet(sessionCookie);
     }
 
 
