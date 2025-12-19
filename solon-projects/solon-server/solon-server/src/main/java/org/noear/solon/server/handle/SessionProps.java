@@ -40,7 +40,7 @@ public class SessionProps {
 
         session_cookieName = Solon.cfg().get("server.session.cookieName", "SOLONID");
 
-        session_cookieHttpOnly = Solon.cfg().getBool("server.session.cookieHttpOnly", false);
+        session_cookieHttpOnly = Solon.cfg().getBool("server.session.cookieHttpOnly", true);
 
         //
         // cookieDomain

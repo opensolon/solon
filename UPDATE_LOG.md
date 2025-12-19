@@ -40,6 +40,7 @@
 * 添加 `solon` 非依赖关系的 bean 异步初始化（`@Init(async=true)`）
 * 添加 `solon` Stringable 接口
 * 添加 `solon` 'env.use' 配置支持（相对 'env'，它与 'env.on' 协作时不会冲突）
+* 添加 `solon` 'server.session.cookieHttpOnly' 配置支持（默认为 true）
 * 添加 `solon-test` HttpTester protocol 参数支持（方便 https 或 http 切换测试）
 * 添加 `solon-serialization` JsonPropsUtil2.dateAsFormat 添加 java.sql.Timestamp 类型支持
 * 添加 `solon-config-yaml` 依赖 solon-config-snack4 避免单个引入时忘掉
