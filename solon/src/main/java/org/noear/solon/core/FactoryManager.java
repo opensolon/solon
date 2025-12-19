@@ -77,9 +77,7 @@ public final class FactoryManager {
     // scopeLocalFactory 对接
     //
 
-    private Function<Class<?>, ScopeLocal> scopeLocalFactory = (applyFor) -> {
-        return new ScopeLocalJdk8<>();
-    };
+    private Function<Class<?>, ScopeLocal> scopeLocalFactory = ScopeLocalJdk8::new;
 
     public void scopeLocalFactory(Function<Class<?>, ScopeLocal> factory) {
         if (factory != null) {

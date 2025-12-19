@@ -30,6 +30,14 @@ public class ScopeLocalJdk8<T> implements ScopeLocal<T> {
     private static final Logger log = LoggerFactory.getLogger(ScopeLocalJdk8.class);
     private final ThreadLocal<T> ref = FactoryManager.getGlobal().newThreadLocal(ScopeLocalJdk8.class, false);
 
+    public ScopeLocalJdk8() {
+
+    }
+
+    public ScopeLocalJdk8(Class<?> applyFor) {
+
+    }
+
     @Override
     public T get() {
         return ref.get();
