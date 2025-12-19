@@ -28,29 +28,29 @@
 ### v3.8.0
 
 
-* 新增 `solon-java25` 仓库
+* 新增 `solon-java25` 仓库（提供 ScopedValue 适配）
 * 新增 `solon-ai-mcp` mcp-java-sdk v0.17 适配（支持 2025-06-18 版本协议）
 * 新增 `solon-ai-mcp` mcp-server 异步支持
 * 新增 `solon-ai-mcp` mcp-server streamable_stateless 支持
 * 新增 `solon` ScopeLocal 接口（用于 ThreadLocal 到 ScopedValue 兼容）
 * 添加 `solon` Solon.start(Class, MultiMap) 方法
 * 添加 `solon` ThreadsUtil:newVirtualThreadFactory 方法
-* 添加 `solon` ContextHolder:currentUse 方法
+* 添加 `solon` ContextHolder:currentWith 方法，替代 currentSet（标为弃用）
 * 添加 `solon` Controller:remoting 属性（可替代 @Remoting 注解）
 * 添加 `solon` 非依赖关系的 bean 异步初始化（`@Init(async=true)`）
 * 添加 `solon` Stringable 接口
 * 添加 `solon` 'env.use' 配置支持（相对 'env'，它与 'env.on' 协作时不会冲突）
 * 添加 `solon-test` HttpTester protocol 参数支持（方便 https 或 http 切换测试）
 * 添加 `solon-serialization` JsonPropsUtil2.dateAsFormat 添加 java.sql.Timestamp 类型支持
-* 添加 `solon-config-yaml` 依赖 solon-config-snack4 避免单个引入时啦掉
-* 添加 `solon-net-httputils` HttpSslSupplierAny
+* 添加 `solon-config-yaml` 依赖 solon-config-snack4 避免单个引入时忘掉
+* 添加 `solon-net-httputils` HttpSslSupplierAny（方便无限制的 ssl 使用，但不建议）
 * 添加 `solon-web-rx` RxEntity 类（方便对接 mcp-sdk）
 * 添加 `solon-server-tomcat` ssl 适配支持
 * 添加 `solon-flow` Graph:create(id,title,consumer) 方法
 * 添加 `solon-flow` GraphDecl:addLoop 方法替代 addLooping（后者标为弃用）
 * 添加 `solon-flow` Evaluation:runCondition 方法替代 runTest（后者标为弃用）
 * 添加 `solon-flow` FlowContext:lastNode 方法（最后一个运行的节点）
-* 添加 `solon-flow` Graph:copy 方法
+* 添加 `solon-flow` Graph:copy 方法（方便快速复制后修改）
 * 添加 `solon-flow` GraphDecl:getNode 方法
 * 添加 `solon-flow` Graph:toYaml(FlowContext)，Graph:toJson(FlowContext) 方法，可输出节点状态（方便前端展示进度）
 * 添加 `solon-ai` FunctionPrompt:handleAsync（用于 mcp-server 异步支持）
