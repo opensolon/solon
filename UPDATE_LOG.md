@@ -49,18 +49,18 @@
 * 添加 `solon-web-rx` RxEntity 类（方便对接 mcp-sdk）
 * 添加 `solon-server` 会话状态的 cookie httpOnly 配置（默认为 false）
 * 添加 `solon-server-tomcat` ssl 适配支持
-* 添加 `solon-flow` Evaluation:runCondition 方法替代 runTest（后者标为弃用）
-* 添加 `solon-flow` FlowContext:lastNode 方法（最后一个运行的节点）
-* 添加 `solon-flow` FlowContext:lastNodeId 方法（最后一个运行的节点Id）
+* 添加 `solon-flow` FlowContext:lastNode() 方法（最后一个运行的节点）
+* 添加 `solon-flow` FlowContext:lastNodeId() 方法（最后一个运行的节点Id）
 * 添加 `solon-flow` Node.getMetaAs, Link.getMetaAs 方法
 * 添加 `solon-flow` NodeDecl:linkRemove 方法（增强修改能力）
 * 添加 `solon-flow` Graph:create(id,title,consumer) 方法
-* 添加 `solon-flow` Graph:copy 方法（方便复制后修改）
-* 添加 `solon-flow` Graph:toYaml(FlowContext)，Graph:toJson(FlowContext) 方法，可输出节点状态（方便前端展示进度）
-* 添加 `solon-flow` GraphDecl:getNode 方法
-* 添加 `solon-flow` GraphDecl:addLoop 方法替代 addLooping（后者标为弃用）
-* 添加 `solon-flow` StatefulTask:getNodeId 方法
-* 添加 `solon-flow` FlowStatefulService:postTaskIfWaiting(Graph...),postTask(Graph) 方法
+* 添加 `solon-flow` Graph:copy(graph,consumer) 方法（方便复制后修改）
+* 添加 `solon-flow` Graph:toYaml(context)，Graph:toJson(context) 方法，可输出节点状态（方便前端展示进度）
+* 添加 `solon-flow` GraphDecl:getNode(id) 方法
+* 添加 `solon-flow` GraphDecl:addLoop(id) 方法替代 addLooping（后者标为弃用）
+* 添加 `solon-flow` StatefulTask:getNodeId() 方法
+* 添加 `solon-flow` FlowEngine:eval(Graph, ..) 系列方法
+* 添加 `solon-flow` FlowStatefulService:postTaskIfWaiting(Graph, ..),postTask(Graph, ..) 方法
 * 添加 `solon-ai` FunctionPrompt:handleAsync（用于 mcp-server 异步支持）
 * 添加 `solon-ai` FunctionResource:handleAsync（用于 mcp-server 异步支持）
 * 添加 `solon-ai` FunctionTool:handleAsync（用于 mcp-server 异步支持）
@@ -80,6 +80,7 @@
 * 调整 `solon-flow` Activity 节点预览属性 "$imode" 和 "$omode" 标为移除
 * 调整 `solon-flow` Activity 节点流出改为自由模式（可以多线流出：无条件直接流出，有条件检测后流出）
 * 调整 `solon-flow` Node.getMeta 方法返回改为 Object 类型（并新增 getMetaAs）
+* 调整 `solon-flow` Evaluation:runTest 改为 runCondition
 * 调整 `solon-flow` FlowContext:incrAdd,incrGet 标为弃用（上下文数据为型只能由输入侧决定）
 * 调整 `solon-flow` FlowStatefulService:evel、StateResult 标为移除
 * 调整 `solon-flow` FlowStatefulService:stepForward、stepBack 标为移除（接口更专注、更简洁）
