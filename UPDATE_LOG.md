@@ -28,6 +28,7 @@
 ### v3.8.0
 
 * 插件 `solon-flow` 第六次预览（FlowStatefulService 接口简化）
+* 
 * 新增 `solon-java25` 仓库（提供 ScopedValue 适配）
 * 新增 `solon-ai-mcp` mcp-java-sdk v0.17 适配（支持 2025-06-18 版本协议）
 * 新增 `solon-ai-mcp` mcp-server 异步支持

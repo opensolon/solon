@@ -489,7 +489,7 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon-flow-stateful</artifactId>
+                <artifactId>solon-flow-workflow</artifactId>
                 <version>${solon-flow.version}</version>
             </dependency>
             <dependency>
