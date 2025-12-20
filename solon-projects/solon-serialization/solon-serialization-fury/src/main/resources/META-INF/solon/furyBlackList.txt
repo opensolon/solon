@@ -234,6 +234,7 @@ org.springframework.beans.factory.config.MethodInvokingFactoryBean
 org.springframework.beans.factory.config.PropertyPathFactoryBean
 org.springframework.beans.factory.ObjectFactory
 org.springframework.beans.factory.support.DefaultListableBeanFactory
+org.springframework.beans.support.
 org.springframework.core.SerializableTypeWrapper
 org.springframework.expression.spel.ast.Indexer
 org.springframework.expression.spel.ast.MethodReference
@@ -259,3 +260,8 @@ com.caucho.naming.QBindingEnumeration
 com.sun.org.apache.xpath.internal.objects.XStringForFSB
 com.caucho.naming.ContextImpl
 com.caucho.naming.MemoryModel
+cn.hutool.core.
+org.apache.catalina.
+com.alibaba.citrus.springext.
+com.alipay.custrelation.
+com.alibaba.druid.
