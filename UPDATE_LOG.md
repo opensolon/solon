@@ -94,7 +94,7 @@
 * 修复 `solon-docs-openapi2` 返回类型中泛型失效的问题（v3.7.0 出现）
 * snack4 升为 4.0.20
 * jackson 升为 2.19.2
-* liquor 升为 1.6.4
+* liquor 升为 1.6.6
 * asm 升为 9.9
 
 

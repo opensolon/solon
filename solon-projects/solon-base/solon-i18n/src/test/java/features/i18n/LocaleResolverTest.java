@@ -1,4 +1,4 @@
-package i18n;
+package features.i18n;
 
 import org.junit.jupiter.api.Test;
 import org.noear.solon.core.handle.ContextEmpty;
