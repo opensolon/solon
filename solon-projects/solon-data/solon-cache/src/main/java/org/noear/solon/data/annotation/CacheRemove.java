@@ -38,13 +38,13 @@ public @interface CacheRemove {
     String service() default "";
 
     /**
-     * 例：user_${user_id}
+     * 例：user_#{user_id}
      * */
     @Note("缓存唯一标识，多个以逗号隔开")
     String keys() default "";
 
     /**
-     * 例：user_${user_id} ，user_id 为参数
+     * 例：user_#{user_id} ，user_id 为参数
      * */
     @Note("清除缓存标签，多个以逗号隔开")
     String tags() default "";

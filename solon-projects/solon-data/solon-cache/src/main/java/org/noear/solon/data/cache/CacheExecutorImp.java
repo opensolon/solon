@@ -35,7 +35,7 @@ import java.lang.reflect.Type;
  * */
 public class CacheExecutorImp {
     public static final CacheExecutorImp global = new CacheExecutorImp();
-    private final StringMutexLock SYNC_LOCK = new StringMutexLock();
+    private final StringMutexLock LOCK = new StringMutexLock();
 
     /**
      * 添加缓存
@@ -59,30 +59,30 @@ public class CacheExecutorImp {
             key = SnelUtil.evalTmpl(key, inv);
         }
 
-
-        Object result = null;
         CacheService cs = CacheLib.cacheServiceGet(anno.service());
 
-        SYNC_LOCK.lock(key);
-        try {
+        //1.从缓存获取
+        //
+        Type type = inv.method().getGenericReturnType();
+        if (type == null) {
+            type = inv.method().getReturnType();
+        }
 
-            //1.从缓存获取
-            //
-            Type type = inv.method().getGenericReturnType();
-            if(type == null){
-                type = inv.method().getReturnType();
-            }
+        //第一次尝试（无锁读）: 绝大多数请求在此返回
+        Object result = cs.get(key, type);
+        if (result != null) {
+            return result;
+        }
 
+        try (AutoCloseable entry = LOCK.lockEntry(key)) {
+            //第二次尝试（双重检查）:
             result = cs.get(key, type);
 
             if (result == null) {
-                //2.执行调用，并返回
-                //
+                //真正执行业务逻辑
                 result = executor.get();
 
                 if (result != null) {
-                    //3.不为null，则进行缓存
-                    //
                     cs.store(key, result, anno.seconds());
 
                     if (Utils.isNotEmpty(anno.tags())) {
@@ -98,8 +98,6 @@ public class CacheExecutorImp {
             }
 
             return result;
-        } finally {
-            SYNC_LOCK.unlock(key);
         }
     }
 

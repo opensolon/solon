@@ -44,13 +44,13 @@ public @interface CachePut {
     int seconds() default 0;
 
     /**
-     * 例：user_${user_id}
+     * 例：user_#{user_id}
      * */
     @Note("缓存唯一标识，不能有逗号")
     String key() default "";
 
     /**
-     * 例：user_${user_id} ，user_id 为参数
+     * 例：user_#{user_id} ，user_id 为参数
      * */
     @Note("缓存标签，多个以逗号隔开")
     String tags() default "";

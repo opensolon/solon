@@ -19,25 +19,56 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.CountDownLatch;
 
+
 /**
- * 字符串排它锁
+ * 字符串排它锁（支持 LockEntry 模式）
  *
  * @author noear
  * @since 2.7
+ * @since 3.8
  */
 public class StringMutexLock {
     private final ConcurrentMap<String, CountDownLatch> lockKeyHolder = new ConcurrentHashMap<>();
 
     /**
-     * 锁
+     * 获取锁入口（支持 try-with-resources）
+     */
+    public AutoCloseable lockEntry(String lockKey) {
+        lock(lockKey);
+        return () -> unlock(lockKey);
+    }
+
+    /**
+     * 加锁
      */
     public void lock(String lockKey) {
-        while (!tryLock(lockKey)) {
-            try {
-                blockOnSecondLevelLock(lockKey);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                break;
+        while (true) {
+            // 1. 先尝试获取已有的锁，避免频繁 new 对象
+            CountDownLatch existing = lockKeyHolder.get(lockKey);
+            if (existing != null) {
+                try {
+                    existing.await();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    throw new RuntimeException("Locking interrupted", e);
+                }
+                continue;
+            }
+
+            // 2. 尝试抢占
+            CountDownLatch newLatch = new CountDownLatch(1);
+            existing = lockKeyHolder.putIfAbsent(lockKey, newLatch);
+
+            if (existing == null) {
+                return; // 抢锁成功
+            } else {
+                // 3. 抢锁失败，直接在别人放进去的锁上等待
+                try {
+                    existing.await();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    throw new RuntimeException("Locking interrupted", e);
+                }
             }
         }
     }
@@ -45,55 +76,11 @@ public class StringMutexLock {
     /**
      * 解锁
      */
-    public boolean unlock(String lockKey) {
-        // 先删除锁，再释放锁，此处会导致后续进来的并发优先执行，无影响
-        CountDownLatch realLock = getAndReleaseLock1(lockKey);
-        releaseSecondLevelLock(realLock);
-        return true;
-    }
-
-    /**
-     * 尝试锁
-     */
-    private boolean tryLock(String lockKey) {
-        return lockKeyHolder.putIfAbsent(lockKey, new CountDownLatch(1)) == null;
-    }
-
-    /**
-     * 释放1级锁（删除） 并返回重量级锁
-     *
-     * @return 真正的锁
-     */
-    private CountDownLatch getAndReleaseLock1(String lockKey) {
-        return lockKeyHolder.remove(lockKey);
-    }
-
-    /**
-     * 二级锁锁定（锁升级）
-     */
-    private void blockOnSecondLevelLock(String lockKey) throws InterruptedException {
-        CountDownLatch realLock = getRealLockByKey(lockKey);
-        // 为 null 说明此时锁已被删除，  next race
-        if (realLock != null) {
-            realLock.await();
+    public void unlock(String lockKey) {
+        // 先删除，再释放，确保后续进来的并发能重新触发 tryLock 流程
+        CountDownLatch latch = lockKeyHolder.remove(lockKey);
+        if (latch != null) {
+            latch.countDown();
         }
-    }
-
-    /**
-     * 二级锁解锁（如有必要）
-     *
-     * @param realLock 锁实例
-     */
-    private void releaseSecondLevelLock(CountDownLatch realLock) {
-        realLock.countDown();
-    }
-
-    /**
-     * 通过key 获取对应的锁实例
-     *
-     * @return 锁实例
-     */
-    private CountDownLatch getRealLockByKey(String lockKey) {
-        return lockKeyHolder.get(lockKey);
     }
 }
