@@ -70,6 +70,8 @@
 * 添加 `solon-ai-mcp` McpServerHost 服务宿主接口，用于隔离有状态与无状态服务
 * 添加 `solon-ai-mcp` McpChannel.STREAMABLE_STATELESS （服务端）无状态会话
 * 优化 `solon` api-version 版本匹配
+* 优化 `solon` SnelUtil snel 表达式缺参数时异常提示（避免配错名字）
+* 优化 `solon` ParamWrap:getName 改用 ParamSpec.getAlias。加 '@Param(name=xxx)' 注解可生效
 * 优化 `solon-ai-mcp` mcp StreamableHttp 模式下 服务端正常返回时 客户端异常日志打印的情况
 * 优化 `solon-flow` eval(Node startNode) 处理，改为从 root 开始恢复到 start 再开始执行（恢复过程中，不会执行任务）
 * 优化 `solon-flow` stateful 允许 stateController 独立使用（即可以没有 stateRepository）
@@ -91,6 +93,7 @@
 * 调整 `solon-ai-mcp` getResourceTemplates、getResources 不再共享注册
 * 调整 `solon-ai-mcp` McpServerManager 内部接口更名为 McpPrimitivesRegistry （MCP 原语注册器）
 * 修复 `solon` IndexFiles 路径表达式的兼容问题（添加转换 `*->@`、`:->!`）
+* 修复 `solon` ParamWrap:getName 加 '@Param(name=xxx)' 注解时没有生效的问题（v3.7.0 出现）
 * 修复 `solon-docs-openapi2` 返回类型中泛型失效的问题（v3.7.0 出现）
 * snack4 升为 4.0.20
 * jackson 升为 2.19.2

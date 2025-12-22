@@ -15,7 +15,9 @@
  */
 package features.cache;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.noear.solon.Solon;
 import org.noear.solon.data.cache.CacheService;
 import org.noear.solon.data.cache.LocalCacheService;
 
@@ -34,5 +36,35 @@ public class CacheTest {
         cacheService.remove("1");
 
         assert cacheService.get("1", String.class) == null;
+    }
+
+    @Test
+    public void case2() throws Exception {
+        try {
+            Solon.start(DemoService.class, new String[0], app -> {
+                app.enableCaching(true);
+            });
+
+
+            DemoService demoService = Solon.context().getBean(DemoService.class);
+
+            String rst1 = demoService.getName("1");
+            System.out.println(rst1);
+
+            String rst2 = demoService.getName("1");
+            System.out.println(rst2);
+
+            Assertions.assertEquals(rst1, rst2);
+
+            Thread.sleep(2000);
+
+            String rst3 = demoService.getName("1");
+            System.out.println(rst3);
+
+            Assertions.assertNotEquals(rst1, rst3);
+
+        } finally {
+            Solon.stopBlock();
+        }
     }
 }
