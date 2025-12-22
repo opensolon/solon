@@ -50,6 +50,7 @@
 * 添加 `solon-web-rx` RxEntity 类（方便对接 mcp-sdk）
 * 添加 `solon-server` 会话状态的 cookie httpOnly 配置（默认为 false）
 * 添加 `solon-server-tomcat` ssl 适配支持
+* 添加 `solon-security-validation` ValidatorFailureHandlerI18n 支持验证注解的国际化处理
 * 添加 `solon-flow` FlowContext:lastNode() 方法（最后一个运行的节点）
 * 添加 `solon-flow` FlowContext:lastNodeId() 方法（最后一个运行的节点Id）
 * 添加 `solon-flow` Node.getMetaAs, Link.getMetaAs 方法

@@ -27,7 +27,7 @@ import java.lang.annotation.Annotation;
  * @author noear
  * @since 1.3
  * */
-class ValidatorFailureHandlerDefault implements ValidatorFailureHandler {
+public class ValidatorFailureHandlerDefault implements ValidatorFailureHandler {
 
     @Override
     public boolean onFailure(Context ctx, Annotation anno, Result rst, String msg) throws Throwable {
