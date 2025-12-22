@@ -46,7 +46,8 @@ public class RedisCacheService implements CacheService {
 
     /**
      * 启用 Md5 key（默认为 true）
-     * */
+     *
+     */
     public RedisCacheService enableMd5key(boolean enable) {
         _enableMd5key = enable;
         return this;
@@ -54,7 +55,8 @@ public class RedisCacheService implements CacheService {
 
     /**
      * 配置序列化
-     * */
+     *
+     */
     public RedisCacheService serializer(Serializer<String> serializer) {
         if (serializer != null) {
             this._serializer = serializer;
@@ -183,10 +185,18 @@ public class RedisCacheService implements CacheService {
 
 
     protected String newKey(String key) {
-        if (_enableMd5key) {
-            return _cacheKeyHead + ":" + Utils.md5(key);
+        if (_cacheKeyHead == null) {
+            if (_enableMd5key) {
+                return Utils.md5(key);
+            } else {
+                return key;
+            }
         } else {
-            return _cacheKeyHead + ":" + key;
+            if (_enableMd5key) {
+                return _cacheKeyHead + ":" + Utils.md5(key);
+            } else {
+                return _cacheKeyHead + ":" + key;
+            }
         }
     }
 }
