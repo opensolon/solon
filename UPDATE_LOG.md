@@ -27,13 +27,10 @@
 
 ### v3.8.0
 
-* 插件 `solon-flow` 第六次预览（FlowStatefulService 接口简化）
-* 
+* 插件 `solon-flow` 第六次预览
+* 新增 `solon-flow-workflow` 插件（替代 FlowStatefulService）
 * 新增 `solon-java25` 仓库（提供 ScopedValue 适配）
-* 新增 `solon-ai-mcp` mcp-java-sdk v0.17 适配（支持 2025-06-18 版本协议）
-* 新增 `solon-ai-mcp` mcp-server 异步支持
-* 新增 `solon-ai-mcp` mcp-server streamable_stateless 支持
-* 新增 `solon` ScopeLocal 接口（用于 ThreadLocal 到 ScopedValue 兼容）
+* 添加 `solon` ScopeLocal 接口（用于 ThreadLocal 到 ScopedValue 兼容）
 * 添加 `solon` Solon.start(Class, MultiMap) 方法
 * 添加 `solon` ThreadsUtil:newVirtualThreadFactory 方法
 * 添加 `solon` ContextHolder:currentWith 方法，替代 currentSet（标为弃用）
@@ -54,45 +51,53 @@
 * 添加 `solon-flow` FlowContext:lastNode() 方法（最后一个运行的节点）
 * 添加 `solon-flow` FlowContext:lastNodeId() 方法（最后一个运行的节点Id）
 * 添加 `solon-flow` Node.getMetaAs, Link.getMetaAs 方法
-* 添加 `solon-flow` NodeDecl:linkRemove 方法（增强修改能力）
+* 添加 `solon-flow` NodeSpec:linkRemove 方法（增强修改能力）
 * 添加 `solon-flow` Graph:create(id,title,consumer) 方法
 * 添加 `solon-flow` Graph:copy(graph,consumer) 方法（方便复制后修改）
-* 添加 `solon-flow` Graph:toYaml(context)，Graph:toJson(context) 方法，可输出节点状态（方便前端展示进度）
-* 添加 `solon-flow` GraphDecl:getNode(id) 方法
-* 添加 `solon-flow` GraphDecl:addLoop(id) 方法替代 addLooping（后者标为弃用）
-* 添加 `solon-flow` StatefulTask:getNodeId() 方法
+* 添加 `solon-flow` GraphSpec:getNode(id) 方法
+* 添加 `solon-flow` GraphSpec:addLoop(id) 方法替代 addLooping（后者标为弃用）
 * 添加 `solon-flow` FlowEngine:eval(Graph, ..) 系列方法
-* 添加 `solon-flow` FlowStatefulService:postTaskIfWaiting(Graph, ..),postTask(Graph, ..) 方法
 * 添加 `solon-ai` FunctionPrompt:handleAsync（用于 mcp-server 异步支持）
 * 添加 `solon-ai` FunctionResource:handleAsync（用于 mcp-server 异步支持）
 * 添加 `solon-ai` FunctionTool:handleAsync（用于 mcp-server 异步支持）
-* 添加 `solon-ai-dialect-openai` ClaudeChatDialect 方言
 * 添加 `solon-ai-core` ChatMessage:toNdjson,fromNdjson 方法（替代 ChatSession:toNdjson, loadNdjson），新方法机制上更自由
+* 添加 `solon-ai-core` ToolSchemaUtil.jsonSchema Publisher 泛型支持
+* 添加 `solon-ai-mcp` mcp-java-sdk v0.17 适配（支持 2025-06-18 版本协议）
+* 添加 `solon-ai-mcp` mcp-server 异步支持
+* 添加 `solon-ai-mcp` mcp-server streamable_stateless 支持
+* 添加 `solon-ai-mcp` Tool,Resource,Prompt 对 org.reactivestreams.Publisher<X> 异步返回支持
 * 添加 `solon-ai-mcp` McpServerHost 服务宿主接口，用于隔离有状态与无状态服务
 * 添加 `solon-ai-mcp` McpChannel.STREAMABLE_STATELESS （服务端）无状态会话
+* 添加 `solon-ai-mcp` McpClientProvider:customize 方法（用于扩展 roots, sampling 等）
+* 添加 `solon-ai-mcp` mcpServer McpAsyncServerExchange 注入支持（用于扩展 roots, sampling 等）
 * 优化 `solon` api-version 版本匹配
 * 优化 `solon` SnelUtil snel 表达式缺参数时异常提示（避免配错名字）
 * 优化 `solon` ParamWrap:getName 改用 ParamSpec.getAlias。加 '@Param(name=xxx)' 注解可生效
-* 优化 `solon-ai-mcp` mcp StreamableHttp 模式下 服务端正常返回时 客户端异常日志打印的情况
-* 优化 `solon-flow` eval(Node startNode) 处理，改为从 root 开始恢复到 start 再开始执行（恢复过程中，不会执行任务）
-* 优化 `solon-flow` stateful 允许 stateController 独立使用（即可以没有 stateRepository）
+* 优化 `solon-ai-dialect-openai` claude 兼容性
+* 优化 `solon-ai-mcp mcp` StreamableHttp 模式下 服务端正常返回时 客户端异常日志打印的情况* 优化 `solon-flow` eval(Node startNode) 处理，改为从 root 开始恢复到 start 再开始执行（恢复过程中，不会执行任务）
+* 优化 `solon-flow` FlowEngine:eval(Node startNode) 处理，改为从 root 开始恢复到 start 再开始执行（恢复过程中，不会执行任务）
 * 优化 `solon-net-httputils` SslContextBuilder
 * 调整 `nami` NamiAttachment 切换为 ScopeLocal 接口实现
 * 调整 `solon` ContextHolder 切换为 ScopeLocal 接口实现
-* 调整 `solon-data` TranExecutorDefault 切换为 ScopeLocal 接口实现
 * 调整 `solon` RunHolder：parallelExecutor 改为 newFixedThreadPool
-* 调整 `solon-flow` Activity 节点预览属性 "$imode" 和 "$omode" 标为移除
+* 调整 `solon-data` TranExecutorDefault 切换为 ScopeLocal 接口实现
+* 调整 `local-solon-cloud-plugin` 的 config 和 i18n 服务，如果没有 group 配置，则文件不带 group 前缀（之前默认给了 DEFAULT_GROUP 组名，显得复杂）
+* 调整 `rocketmq-solon-clouud-plugin` 的适配，事件属性不再加 '!' （并兼容旧格式）
+* 调整 `aliyun-ons-solon-clouud-plugin` 的适配，事件属性不再加 '!' （并兼容旧格式）
+* 调整 `rocketmq5-solon-clouud-plugin` 的适配，事件属性不再加 '!' （并兼容旧格式）。添加 sql92 过滤支持
+* 调整 `solon-flow` 移除 Activity 节点预览属性 "$imode" 和 "$omode"
 * 调整 `solon-flow` Activity 节点流出改为自由模式（可以多线流出：无条件直接流出，有条件检测后流出）
 * 调整 `solon-flow` Node.getMeta 方法返回改为 Object 类型（并新增 getMetaAs）
 * 调整 `solon-flow` Evaluation:runTest 改为 runCondition
 * 调整 `solon-flow` FlowContext:incrAdd,incrGet 标为弃用（上下文数据为型只能由输入侧决定）
-* 调整 `solon-flow` FlowStatefulService:evel、StateResult 标为移除
-* 调整 `solon-flow` FlowStatefulService:stepForward、stepBack 标为移除（接口更专注、更简洁）
-* 调整 `solon-flow` FlowStatefulService:postOperationIfWaiting 更名为 postTaskIfWaiting
-* 调整 `solon-flow` FlowStatefulService:postOperation 更名为 postTask
-* 调整 `solon-flow` Operation 更名为 StateOp（与 StateType 更配套）
+* 调整 `solon-flow` Condition 更名为 ConditionDesc
+* 调整 `solon-flow` Task 更名为 ConditionDesc
+* 调整 `solon-flow` XxxDecl 命名风格改为 XxxSpec
+* 调整 `solon-flow` GraphDecl.parseByXxx 命名风格改为 GraphSpec.fromXxx
+* 调整 `solon-flow` Graph.parseByXxx 命名风格改为 Graph.fromXxx
 * 调整 `solon-ai-mcp` getResourceTemplates、getResources 不再共享注册
 * 调整 `solon-ai-mcp` McpServerManager 内部接口更名为 McpPrimitivesRegistry （MCP 原语注册器）
+* 调整 `solon-ai-mcp` McpClientProvider 默认不启用心跳机制（随着 mcp-sdk 的成熟，server 都有心跳机制了）
 * 修复 `solon` IndexFiles 路径表达式的兼容问题（添加转换 `*->@`、`:->!`）
 * 修复 `solon` ParamWrap:getName 加 '@Param(name=xxx)' 注解时没有生效的问题（v3.7.0 出现）
 * 修复 `solon-docs-openapi2` 返回类型中泛型失效的问题（v3.7.0 出现）
@@ -101,6 +106,8 @@
 * liquor 升为 1.6.6
 * asm 升为 9.9
 
+
+#### solon 仓库补充说明
 
 新特性：
 
@@ -115,6 +122,122 @@ public class Demo {
    }
 }
 ```
+
+
+#### solon-ai 仓库补充说明
+
+
+新特性展示：1.MCP 无状态会话（STREAMABLE_STATELESS）和 2.CompletableFuture 异步MCP工具
+
+```java
+@McpServerEndpoint(channel = McpChannel.STREAMABLE_STATELESS, mcpEndpoint = "/mcp1")
+public class McpServerTool {
+    @ToolMapping(description = "查询天气预报", returnDirect = true)
+    public CompletableFuture<String> getWeather(@Param(description = "城市位置") String location) {
+        return CompletableFuture.completedFuture("晴，14度");
+    }
+}
+```
+
+传输方式对应表：（服务端与客户端，须使用对应的传输方式才可通讯）
+
+| 服务端                   | 客户端         |  备注               |
+|-----------------------|-------------|-----------------|
+| STDIO                 | STDIO       |                 |
+| SSE                   | SSE         |                 |
+| STREAMABLE            | STREAMABLE  |                 |
+| STREAMABLE_STATELESS  | STREAMABLE  | 对 server 集群很友好  |
+
+
+* STREAMABLE_STATELESS 集群，不需要 ip_hash，但“原语”变化后无法通知 client
+
+
+
+
+#### solon-flow 仓库补充说明
+
+重要变化：
+
+* 取消“有状态”、“无状态”概念。
+* solon-flow 回归通用流程引擎（分离“有状态”的概念）。
+* 新增 solon-flow-workflow 为工作流性质的封装（未来可能会有 dataflow 等）。
+
+
+兼容变化对照表：
+
+| 旧名称                    | 新名称                   | 说明                    |  
+|------------------------|-----------------------|-----------------------|
+| `GraphDecl`            | `GraphSpec`           | 图定义                   |
+| `GraphDecl.parseByXxx` | `GraphSpec.fromXxx`   | 图定义加载                    |
+| `Graph.parseByXxx`     | `Graph.fromXxx`       | 图加载                   |
+| `LinkDecl`             | `LinkSpec`            | 连接定义                  |
+| `NodeDecl`             | `NodeSpec`            | 节点定义                  |
+| `Condition`            | `ConditionDesc`       | 条件描述                  |
+| `Task`                 | `TaskDesc`            | 任务描述（避免与 workflow 的概念冲突） |
+|                        |                       |                       |
+| `FlowStatefulService`  | `WorkflowService`     | 工作流服务                 |
+| `StatefulTask`         | `Task`                | 任务                    | 
+| `Operation`            | `TaskAction`          | 任动工作                  | 
+| `TaskType`             | `TaskState`           | 任务状态                  | 
+
+
+FlowStatefulService 到 WorkflowService 的接口变化对照表：
+
+| 旧名称                          | 新名称                     | 说明     |  
+|------------------------------|-------------------------|--------|
+| `postOperation(..)`          | `postTask(..)`          | 提交任务   |
+| `postOperationIfWaiting(..)` | `postTaskIfWaiting(..)` | 提交任务   |
+|                              |                         |        |
+| `evel(..)`                   | /                       | 执行     |
+| `stepForward(..)`            | /                       | 单步前进   |
+| `stepBack(..)`               | /                       | 单步后退   |
+|                              |                         |        |
+| /                            | `getState(..)`          | 获取状态   |
+
+
+
+新特性预览：Graph 硬编码方式（及修改能力增强）
+
+```java
+//硬编码
+Graph graph = Graph.create("demo1", "示例", spec -> {
+    spec.addStart("start").title("开始").linkAdd("01");
+    spec.addActivity("n1").task("@AaMetaProcessCom").linkAdd("end");
+    spec.addEnd("end").title("结束");
+});
+
+//修改
+Graph graphNew = Graph.copy(graph, spec -> {
+    spec.getNode("n1").linkRemove("end").linkAdd("n2"); //移掉 n1 连接；改为 n2 连接
+    spec.addActivity("n2").linkAdd("end");
+});
+```
+
+新特性预览：FlowContext:lastNodeId （计算的中断与恢复）。参考：https://solon.noear.org/article/1246
+
+```java
+flowEngine.eval(graph, context.lastNodeId(), context);
+//...（从上一个节点开始执行）
+flowEngine.eval(graph, context.lastNodeId(), context);
+```
+
+
+新特性预览：WorkflowService（替代 FlowStatefulService）
+
+```java
+WorkflowService workflow = WorkflowService.of(engine, WorkflowDriver.builder()
+        .stateController(new ActorStateController()) 
+        .stateRepository(new InMemoryStateRepository()) 
+        .build());
+
+
+//1. 取出任务
+Task task = workflow.getTask(graph, context);
+
+//2. 提交任务
+workflow.postTask(task.getNode(), TaskAction.FORWARD, context);
+```
+
 
 
 ### v3.7.4
