@@ -27,6 +27,7 @@ import java.lang.management.RuntimeMXBean;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.net.*;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.*;
 import java.util.concurrent.Future;
@@ -45,7 +46,7 @@ public class Utils {
 
     private static final FileNameMap mimeMap = URLConnection.getFileNameMap();
 
-    private static final char[] HEX_DIGITS = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+    private static final char[] HEX_DIGITS = "0123456789abcdef".toCharArray();;
 
 
     /**
@@ -224,23 +225,32 @@ public class Utils {
      * @param str 字符串
      */
     public static String md5(String str) {
+        if (str == null) return null;
+
         try {
-            byte[] btInput = str.getBytes("UTF-8");
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] bytes = md.digest(str.getBytes(StandardCharsets.UTF_8));
 
-            MessageDigest mdInst = MessageDigest.getInstance("MD5");
-            mdInst.update(btInput);
-            byte[] md = mdInst.digest();
-            int j = md.length;
-            char[] chars = new char[j * 2];
-            int k = 0;
-
-            for (int i = 0; i < j; ++i) {
-                byte byte0 = md[i];
-                chars[k++] = HEX_DIGITS[byte0 >>> 4 & 15];
-                chars[k++] = HEX_DIGITS[byte0 & 15];
+            char[] result = new char[32];
+            for (int i = 0; i < bytes.length; i++) {
+                int b = bytes[i] & 0xFF; // 转为无符号
+                result[i * 2] = HEX_DIGITS[b >>> 4];    // 高 4 位
+                result[i * 2 + 1] = HEX_DIGITS[b & 0x0F]; // 低 4 位
             }
+            return new String(result);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    }
 
-            return new String(chars);
+    public static String md5b(String str){
+        if (str == null) return null;
+
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] digest = md.digest(str.getBytes(StandardCharsets.UTF_8));
+
+            return Base64.getUrlEncoder().withoutPadding().encodeToString(digest);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
