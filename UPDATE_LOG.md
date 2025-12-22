@@ -48,6 +48,7 @@
 * 添加 `solon-server` 会话状态的 cookie httpOnly 配置（默认为 false）
 * 添加 `solon-server-tomcat` ssl 适配支持
 * 添加 `solon-security-validation` ValidatorFailureHandlerI18n 支持验证注解的国际化处理
+  添加 `solon-expression` SnelParser 类，为 TemplateParser 和 EvaluateParser 提供出入口和占位符配置
 * 添加 `solon-flow` FlowContext:lastNode() 方法（最后一个运行的节点）
 * 添加 `solon-flow` FlowContext:lastNodeId() 方法（最后一个运行的节点Id）
 * 添加 `solon-flow` Node.getMetaAs, Link.getMetaAs 方法
@@ -73,10 +74,13 @@
 * 优化 `solon` api-version 版本匹配
 * 优化 `solon` SnelUtil snel 表达式缺参数时异常提示（避免配错名字）
 * 优化 `solon` ParamWrap:getName 改用 ParamSpec.getAlias。加 '@Param(name=xxx)' 注解可生效
+* 优化 `solon-net-httputils` SslContextBuilder
+* 优化 `solon-expression` EvaluateParser 支持定义占位符（可支持 `{xxx}` 表达式）
+* 优化 `solon-expression` TemplateParser 支持定义占位符（可支持 `{xxx}` 表达式）
+* 优化 `solon-expression` LRUCache 性能（提高缓存性能）
 * 优化 `solon-ai-dialect-openai` claude 兼容性
 * 优化 `solon-ai-mcp mcp` StreamableHttp 模式下 服务端正常返回时 客户端异常日志打印的情况* 优化 `solon-flow` eval(Node startNode) 处理，改为从 root 开始恢复到 start 再开始执行（恢复过程中，不会执行任务）
 * 优化 `solon-flow` FlowEngine:eval(Node startNode) 处理，改为从 root 开始恢复到 start 再开始执行（恢复过程中，不会执行任务）
-* 优化 `solon-net-httputils` SslContextBuilder
 * 调整 `nami` NamiAttachment 切换为 ScopeLocal 接口实现
 * 调整 `solon` ContextHolder 切换为 ScopeLocal 接口实现
 * 调整 `solon` RunHolder：parallelExecutor 改为 newFixedThreadPool
