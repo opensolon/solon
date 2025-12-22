@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package demo1;
+package demo1.validation;
 
 import org.noear.solon.annotation.Managed;
 import org.noear.solon.core.handle.Context;
