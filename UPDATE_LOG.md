@@ -28,6 +28,7 @@
 
 ### 3.6.7
 
+* 修复 `solon-web-vertx` VxWebContext._requestBody 如果为 null 文件上传时会出错的问题
 * snack4 升为 4.0.20
 * liquor 升为 1.6.6
 * jackson 升为 2.19.2
