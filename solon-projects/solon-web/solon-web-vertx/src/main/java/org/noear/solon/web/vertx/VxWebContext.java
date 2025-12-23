@@ -74,7 +74,9 @@ public class VxWebContext extends ContextBase {
 
         //文件上传需要
         if (isMultipartFormData()) {
-            DecodeUtils.decodeMultipart(this, _fileMap);
+            if (_requestBody != null) {
+                DecodeUtils.decodeMultipart(this, _fileMap);
+            }
         }
     }
 
