@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>3.6.6</version>
+    <version>3.6.7</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -30,14 +30,14 @@
 
         <maven-war.version>3.4.0</maven-war.version>
 
-        <solon.version>3.6.6</solon.version>
-        <solon-ai.version>3.6.6</solon-ai.version>
-        <solon-flow.version>3.6.6</solon-flow.version>
-        <solon-expression.version>3.6.6</solon-expression.version>
-        <solon-cloud.version>3.6.6</solon-cloud.version>
-        <solon-admin.version>3.6.6</solon-admin.version>
-        <solon-integration.version>3.6.6</solon-integration.version>
-        <solon-jakarta.version>3.6.6</solon-jakarta.version>
+        <solon.version>3.6.7</solon.version>
+        <solon-ai.version>3.6.7</solon-ai.version>
+        <solon-flow.version>3.6.7</solon-flow.version>
+        <solon-expression.version>3.6.7</solon-expression.version>
+        <solon-cloud.version>3.6.7</solon-cloud.version>
+        <solon-admin.version>3.6.7</solon-admin.version>
+        <solon-integration.version>3.6.7</solon-integration.version>
+        <solon-jakarta.version>3.6.7</solon-jakarta.version>
 
         <solonx.version>1.2.0</solonx.version>
 
