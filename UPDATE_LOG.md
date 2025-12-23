@@ -32,6 +32,8 @@
 * 修复 `solon` IndexFiles 路径表达式的兼容问题（添加转换 `*->@`、`:->!`）
 * 修复 `solon` ParamWrap:getName 加 '@Param(name=xxx)' 注解时没有生效的问题（v3.7.0 出现）。对 solon-cache 会有影响
 * 修复 `solon-web-vertx` VxWebContext._requestBody 如果为 null 文件上传时会出错的问题
+* snack4 升为 4.0.20
+* liquor 升为 1.6.6
 
 ### v3.7.3
 
