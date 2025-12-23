@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>3.5.9</version>
+        <version>3.5.10</version>
         <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
 
@@ -16,7 +16,7 @@
     <packaging>jar</packaging>
 
     <properties>
-        <cxf.version>3.5.9</cxf.version>
+        <cxf.version>3.5.10</cxf.version>
     </properties>
 
     <dependencies>
