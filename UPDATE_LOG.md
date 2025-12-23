@@ -105,6 +105,7 @@
 * 调整 `solon-ai-mcp` McpClientProvider 默认不启用心跳机制（随着 mcp-sdk 的成熟，server 都有心跳机制了）
 * 修复 `solon` IndexFiles 路径表达式的兼容问题（添加转换 `*->@`、`:->!`）
 * 修复 `solon` ParamWrap:getName 加 '@Param(name=xxx)' 注解时没有生效的问题（v3.7.0 出现）。对 solon-cache 会有影响
+* 修复 `solon-web-vertx` VxWebContext._requestBody 如果为 null 文件上传时会出错的问题
 * 修复 `solon-docs-openapi2` 返回类型中泛型失效的问题（v3.7.0 出现）
 * snack4 升为 4.0.20
 * jackson 升为 2.19.2
