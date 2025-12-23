@@ -31,6 +31,8 @@
 
 ### 3.5.10
 
+* 优化 `solon-cache` CacheService 适配没有 _cacheKeyHead 配置时，则不加前缀
+* 优化 `solon` SnelUtil snel 表达式缺参数时异常提示（避免配错名字）
 * 修复 `solon-web-vertx` VxWebContext._requestBody 如果为 null 文件上传时会出错的问题
 * liquor 升为 1.6.6
 * jackson 升为 2.19.2
