@@ -191,6 +191,25 @@ Graph graph = Graph.create("demo1", decl -> {
 
 
 
+### 3.6.7
+
+* 优化 `solon-cache` CacheService 适配没有 _cacheKeyHead 配置时，则不加前缀
+* 优化 `solon` SnelUtil snel 表达式缺参数时异常提示（避免配错名字）
+* 修复 `solon-web-vertx` VxWebContext._requestBody 如果为 null 文件上传时会出错的问题
+* snack4 升为 4.0.20
+* liquor 升为 1.6.6
+* jackson 升为 2.19.2
+* asm 升为 9.9
+
+### 3.6.6
+
+* 优化 solon-ai-mcp MCP 客户端与服务端异常链接状态 立即返回
+* 调整 mybatis-solon-plugin 当配置的 mapper 没有对应注册时改为 warn 日志打印（之前为异常）
+* 修复 solon-configuration-processor 失效的问题（v3.6.1 出现）
+* snack4 升为 4.0.17
+
+
+
 ### 3.6.3
 
 * 优化 solon-server 不再默认输出 TEXT_PLAIN_UTF8_VALUE（允许空 content-type）
