@@ -158,10 +158,18 @@ public class MemCacheService implements CacheService {
 
 
     protected String newKey(String key) {
-        if (_enableMd5key) {
-            return _cacheKeyHead + ":" + Utils.md5(key);
+        if (_cacheKeyHead == null) {
+            if (_enableMd5key) {
+                return Utils.md5(key);
+            } else {
+                return key;
+            }
         } else {
-            return _cacheKeyHead + ":" + key;
+            if (_enableMd5key) {
+                return _cacheKeyHead + ":" + Utils.md5(key);
+            } else {
+                return _cacheKeyHead + ":" + key;
+            }
         }
     }
 }

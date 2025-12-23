@@ -28,6 +28,7 @@
 
 ### 3.6.7
 
+* 优化 `solon-cache` CacheService 适配没有 _cacheKeyHead 配置时，则不加前缀
 * 修复 `solon-web-vertx` VxWebContext._requestBody 如果为 null 文件上传时会出错的问题
 * snack4 升为 4.0.20
 * liquor 升为 1.6.6
