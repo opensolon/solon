@@ -172,6 +172,21 @@ public class SnelDemo {
 }
 ```
 
+### 3.5.10
+
+* 优化 `solon-cache` CacheService 适配没有 _cacheKeyHead 配置时，则不加前缀
+* 修复 `solon-web-vertx` VxWebContext._requestBody 如果为 null 文件上传时会出错的问题
+* liquor 升为 1.6.6
+* jackson 升为 2.19.2
+* asm 升为 9.9
+
+### 3.5.9
+
+* 添加 solon RunUtil.io(),timer() 方便响应式使用
+* 修复 solon-rx Completable:doOnError 会中断传递的问题
+* 修复 solon-server-vertx VxWebSocketImpl:remoteAddress 转换失败的问题
+* 修复 solon-scheduling-simple 不能识别：`zone=+08` 配置问题
+
 ### 3.5.5
 
 * 添加 `solon-net-httputils` HttpUtilsBuilder:factory 方法
