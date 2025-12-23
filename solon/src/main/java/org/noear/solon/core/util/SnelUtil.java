@@ -16,6 +16,7 @@
 package org.noear.solon.core.util;
 
 import org.noear.solon.core.aspect.Invocation;
+import org.noear.solon.expression.exception.EvaluationException;
 import org.noear.solon.expression.snel.SnEL;
 
 import java.util.Map;
@@ -94,7 +95,13 @@ public class SnelUtil {
                 }
             }
 
-            return inv.argsAsMap().get(key);
+            Object rst = inv.argsAsMap().get(key);
+
+            if (rst == null && inv.argsAsMap().containsKey(key) == false) {
+                throw new EvaluationException("Missing tmpl parameter: " + key);
+            }
+
+            return rst;
         }
     }
 }
