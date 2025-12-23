@@ -26,6 +26,11 @@
 * 调整 Plugin 统一交给 AppContext 管理（之前由 SolonApp 或 PluginPackage 管理）？？
 * 使用 solon-expression 替代其它临时的表达式处理 //ok
 
+### 3.6.7
+
+* snack4 升为 4.0.20
+* liquor 升为 1.6.6
+
 ### 3.6.6
 
 * 优化 solon-ai-mcp MCP 客户端与服务端异常链接状态 立即返回
