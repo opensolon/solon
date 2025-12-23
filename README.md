@@ -85,8 +85,8 @@ Built from scratch, with more flexible interface specifications and an open ecos
 | [/opensolon/solon-cloud](../../../../opensolon/solon-cloud)                 | Solon Cloud ,Code repository                              | 
 | [/opensolon/solon-admin](../../../../opensolon/solon-admin)                 | Solon Admin ,Code repository                              | 
 | [/opensolon/solon-integration](../../../../opensolon/solon-integration)     | Solon Integration ,Code repository                        | 
-| [/opensolon/solon-jakarta](../../../../opensolon/solon-jakarta)             | Solon Jakarta ,Code repository（base java17）               | 
-| [/opensolon/solon-java25](../../../../opensolon/solon-java25)              | Solon Java25 ,Code repository（base java25）                | 
+| [/opensolon/solon-java17](../../../../opensolon/solon-java17)               | Solon Java17 ,Code repository（base java17）               | 
+| [/opensolon/solon-java25](../../../../opensolon/solon-java25)               | Solon Java25 ,Code repository（base java25）                | 
 |                                                                             |                                                           |
 | [/opensolon/solon-gradle-plugin](../../../../opensolon/solon-gradle-plugin) | Solon Gradle ,Plugin code repository                      | 
 | [/opensolon/solon-idea-plugin](../../../../opensolon/solon-idea-plugin)     | Solon Idea ,Plugin code repository                        | 

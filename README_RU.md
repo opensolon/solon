@@ -73,20 +73,20 @@ Solon
 ## Основной кодовый склад
 
 
-| Кодовый склад                                                    | описыва                                             | 
-|------------------------------------------------------------------|-----------------------------------------------------| 
+| Кодовый склад                                                               | описыва                                             | 
+|-----------------------------------------------------------------------------|-----------------------------------------------------| 
 | [/opensolon/solon](../../../../opensolon/solon)                             | Solon ,Главный код пакгауза                         | 
 | [/opensolon/solon-examples](../../../../opensolon/solon-examples)           | Solon ,Стандартный набор кодов на официальном сайте |
-|                                                                  |                                                     |
-| [/opensolon/solon-expression](../../../../opensolon/solon-expression)                   | Solon Expression ,Кодовый склад                     | 
+|                                                                             |                                                     |
+| [/opensolon/solon-expression](../../../../opensolon/solon-expression)       | Solon Expression ,Кодовый склад                     | 
 | [/opensolon/solon-flow](../../../../opensolon/solon-flow)                   | Solon Flow ,Кодовый склад                           | 
 | [/opensolon/solon-ai](../../../../opensolon/solon-ai)                       | Solon Ai ,Кодовый склад                             | 
 | [/opensolon/solon-cloud](../../../../opensolon/solon-cloud)                 | Solon Cloud ,Кодовый склад                          | 
 | [/opensolon/solon-admin](../../../../opensolon/solon-admin)                 | Solon Admin ,Кодовый склад                          | 
 | [/opensolon/solon-integration](../../../../opensolon/solon-integration)     | Solon Integration ,Кодовый склад                    | 
-| [/opensolon/solon-jakarta](../../../../opensolon/solon-jakarta)             | Solon Jakarta ,Кодовый склад（base java17）           | 
-| [/opensolon/solon-java25](../../../../opensolon/solon-java25)             | Solon Java25 ,Кодовый склад（base java25）            | 
-|                                                                  |                                                     |
+| [/opensolon/solon-java17](../../../../opensolon/solon-java17)               | Solon Java17 ,Кодовый склад（base java17）            | 
+| [/opensolon/solon-java25](../../../../opensolon/solon-java25)               | Solon Java25 ,Кодовый склад（base java25）            | 
+|                                                                             |                                                     |
 | [/opensolon/solon-gradle-plugin](../../../../opensolon/solon-gradle-plugin) | Solon Gradle ,Код плагина хранилища                 | 
 | [/opensolon/solon-idea-plugin](../../../../opensolon/solon-idea-plugin)     | Solon Idea ,Код плагина хранилища                   | 
 | [/opensolon/solon-vscode-plugin](../../../../opensolon/solon-vscode-plugin) | Solon VsCode ,Код плагина хранилища                 | 
