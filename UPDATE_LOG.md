@@ -27,6 +27,10 @@
 * 使用 solon-expression 替代其它临时的表达式处理 //ok
 * 升级 mcp-java-sdk 为 0.14.x？？？
 
+### v3.7.4
+
+* 修复 `solon-web-vertx` VxWebContext._requestBody 如果为 null 文件上传时会出错的问题
+
 ### v3.7.3
 
 * 插件 `solon-flow` 第五次预览
