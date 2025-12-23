@@ -28,11 +28,12 @@
 * 使用 solon-expression 替代其它临时的表达式处理
 
 
-### 3.6.0
 
-* 调整 `solon-serialization-*` 弱化 ActionExecuteHandler, Render 的定制，改为 XxxxSerializer 对外定制
-* 引入 `solon-expression` 替代 `solon` 内的表达式
+### 3.5.10
 
+* liquor 升为 1.6.6
+* jackson 升为 2.19.2
+* asm 升为 9.9
 
 ### 3.5.9
 
