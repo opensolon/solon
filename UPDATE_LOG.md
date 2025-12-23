@@ -29,6 +29,9 @@
 
 ### v3.7.4
 
+
+* 优化 `solon` ParamWrap:getName 改用 ParamSpec.getAlias。加 '@Param(name=xxx)' 注解可生效
+* 优化 `solon-cache` CacheService 适配没有 _cacheKeyHead 配置时，则不加前缀
 * 优化 `solon` SnelUtil snel 表达式缺参数时异常提示（避免配错名字）
 * 修复 `solon` IndexFiles 路径表达式的兼容问题（添加转换 `*->@`、`:->!`）
 * 修复 `solon` ParamWrap:getName 加 '@Param(name=xxx)' 注解时没有生效的问题（v3.7.0 出现）。对 solon-cache 会有影响
