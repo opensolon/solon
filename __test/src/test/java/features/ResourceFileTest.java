@@ -30,7 +30,7 @@ import java.util.Enumeration;
  */
 @SolonTest(App.class)
 public class ResourceFileTest {
-    public static final String file_root_dir = "file:/Users/noear/WORK/work_github/noear/solon/__test/target/classes/";
+    public static final String file_root_dir = "file:/Users/noear/WORK/work_github/opensolon/solon/__test/target/classes/";
 
     @Test
     public void scanResources() {
