@@ -34,6 +34,7 @@
 * 修复 `solon-web-vertx` VxWebContext._requestBody 如果为 null 文件上传时会出错的问题
 * snack4 升为 4.0.20
 * liquor 升为 1.6.6
+* asm 升为 9.9
 
 ### v3.7.3
 
