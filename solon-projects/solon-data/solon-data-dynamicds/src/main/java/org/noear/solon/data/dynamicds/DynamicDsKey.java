@@ -37,14 +37,14 @@ public class DynamicDsKey {
      * @since 3.8.0
      * */
     public static <X extends Throwable> void with(String name, RunnableTx<X> runnable) throws X {
-        LOCAL.withOrThrow(name, runnable);
+        LOCAL.with(name, runnable);
     }
 
     /**
      * @since 3.8.0
      * */
     public static <T, X extends Throwable> T with(String name, CallableTx<T,X> callable) throws X {
-        return LOCAL.withOrThrow(name, callable);
+        return LOCAL.with(name, callable);
     }
 
     /**

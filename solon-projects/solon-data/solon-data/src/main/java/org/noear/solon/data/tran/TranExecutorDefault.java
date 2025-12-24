@@ -150,8 +150,8 @@ public class TranExecutorDefault implements TranExecutor {
         //
         TranNode tran = create(meta);
 
-        LOCAL.withOrThrow(new Stack<>(), () -> {
-            applyDo(LOCAL.get(), tran, meta, runnable);
+        LOCAL.with(new Stack<>(), stack -> {
+            applyDo(stack, tran, meta, runnable);
         });
     }
 

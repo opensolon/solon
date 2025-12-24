@@ -44,7 +44,7 @@ public class ScopeLocalJdk8<T> implements ScopeLocal<T> {
     }
 
     @Override
-    public void with(T value, Runnable runnable) {
+    public <X extends Throwable> void with(T value, RunnableTx<X> runnable) throws X {
         T bak = ref.get();
         try {
             ref.set(value);
@@ -59,41 +59,41 @@ public class ScopeLocalJdk8<T> implements ScopeLocal<T> {
     }
 
     @Override
-    public <R> R with(T value, Supplier<R> callable) {
-        T bak = ref.get();
-        try {
-            ref.set(value);
-            return callable.get();
-        } finally {
-            if (bak == null) {
-                ref.remove();
-            } else {
-                ref.set(bak);
-            }
-        }
-    }
-
-    @Override
-    public <X extends Throwable> void withOrThrow(T value, RunnableTx<X> runnable) throws X {
-        T bak = ref.get();
-        try {
-            ref.set(value);
-            runnable.run();
-        } finally {
-            if (bak == null) {
-                ref.remove();
-            } else {
-                ref.set(bak);
-            }
-        }
-    }
-
-    @Override
-    public <R, X extends Throwable> R withOrThrow(T value, CallableTx<? extends R, X> callable) throws X {
+    public <R, X extends Throwable> R with(T value, CallableTx<? extends R, X> callable) throws X {
         T bak = ref.get();
         try {
             ref.set(value);
             return callable.call();
+        } finally {
+            if (bak == null) {
+                ref.remove();
+            } else {
+                ref.set(bak);
+            }
+        }
+    }
+
+    @Override
+    public <X extends Throwable> void with(T value, ConsumerTx<T, X> consumer) throws X {
+        T bak = ref.get();
+        try {
+            ref.set(value);
+            consumer.accept(value);
+        } finally {
+            if (bak == null) {
+                ref.remove();
+            } else {
+                ref.set(bak);
+            }
+        }
+    }
+
+    @Override
+    public <R, X extends Throwable> R with(T value, FunctionTx<T, ? extends R, X> function) throws X {
+        T bak = ref.get();
+        try {
+            ref.set(value);
+            return function.apply(value);
         } finally {
             if (bak == null) {
                 ref.remove();

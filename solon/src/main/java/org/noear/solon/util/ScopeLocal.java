@@ -16,8 +16,7 @@
 package org.noear.solon.util;
 
 import org.noear.solon.core.FactoryManager;
-
-import java.util.function.Supplier;
+import org.noear.solon.lang.Preview;
 
 /**
  * 作用域变量
@@ -31,6 +30,7 @@ import java.util.function.Supplier;
  * }</pre>
  * @since 3.8.0
  * */
+@Preview("3.8")
 public interface ScopeLocal<T> {
     static <T> ScopeLocal<T> newInstance() {
         return newInstance(ScopeLocal.class);
@@ -51,22 +51,22 @@ public interface ScopeLocal<T> {
     /**
      * 使用值并运行
      */
-    void with(T value, Runnable runnable);
+    <X extends Throwable> void with(T value, RunnableTx<X> runnable) throws X;
 
     /**
      * 使用值并调用
      */
-    <R> R with(T value, Supplier<R> callable);
+    <R, X extends Throwable> R with(T value, CallableTx<? extends R, X> callable) throws X;
 
     /**
      * 使用值并运行
      */
-    <X extends Throwable> void withOrThrow(T value, RunnableTx<X> runnable) throws X;
+    <X extends Throwable> void with(T value, ConsumerTx<T, X> consumer) throws X;
 
     /**
      * 使用值并调用
      */
-    <R, X extends Throwable> R withOrThrow(T value, CallableTx<? extends R, X> callable) throws X;
+    <R, X extends Throwable> R with(T value, FunctionTx<T, ? extends R, X> function) throws X;
 
     /// ////////////////////////////
 

@@ -66,7 +66,7 @@ public abstract class Context {
      * @since 3.8.1
      */
     public static <X extends Throwable> void currentWith(Context context, RunnableTx<X> runnable) throws X {
-        LOCAL.withOrThrow(context, runnable);
+        LOCAL.with(context, runnable);
     }
 
     /**
@@ -75,7 +75,7 @@ public abstract class Context {
      * @since 3.8.1
      */
     public static <R, X extends Throwable> R currentWith(Context context, CallableTx<R, X> callable) throws X {
-        return LOCAL.withOrThrow(context, callable);
+        return LOCAL.with(context, callable);
     }
 
     /// ///////////////////////

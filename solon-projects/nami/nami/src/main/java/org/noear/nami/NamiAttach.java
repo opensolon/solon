@@ -56,16 +56,14 @@ public class NamiAttach {
      *
      * @since 3.8.1
      */
-    public static <X extends Throwable> void currentWith(ConsumerTx<NamiAttach, X> runnable) throws X {
+    public static <X extends Throwable> void currentWith(ConsumerTx<NamiAttach, X> consumer) throws X {
         NamiAttach tmp = LOCAL.get();
 
         if (tmp == null) {
             tmp = new NamiAttach();
         }
 
-        LOCAL.withOrThrow(tmp, () -> {
-            runnable.accept(LOCAL.get());
-        });
+        LOCAL.with(tmp, consumer);
     }
 
     /**
@@ -73,15 +71,13 @@ public class NamiAttach {
      *
      * @since 3.8.1
      */
-    public static <R, X extends Throwable> R currentWith(FunctionTx<NamiAttach, R, X> callable) throws X {
+    public static <R, X extends Throwable> R currentWith(FunctionTx<NamiAttach, R, X> function) throws X {
         NamiAttach tmp = LOCAL.get();
         if (tmp == null) {
             tmp = new NamiAttach();
         }
 
-        return LOCAL.withOrThrow(tmp, () -> {
-            return callable.apply(LOCAL.get());
-        });
+        return LOCAL.with(tmp, function);
     }
 
     /// ///////////////////////
