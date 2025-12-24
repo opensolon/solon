@@ -1,5 +1,7 @@
 package demo.solon;
 
+import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.handle.ContextHolder;
 import org.noear.solon.util.ScopeLocal;
 
 /**
@@ -33,6 +35,12 @@ public class ScopeLocalDemo {
             }
 
             return null;
+        });
+    }
+
+    public void case3(Context newCtx) {
+        Context.currentWith(newCtx, () -> {
+            Context ctx = Context.current();
         });
     }
 }

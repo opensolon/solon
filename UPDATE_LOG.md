@@ -25,6 +25,10 @@
 * 调整 Plugin 统一交给 AppContext 管理（之前由 SolonApp 或 PluginPackage 管理）？？
 * 升级 mcp-java-sdk 为 0.17.x？？？
 
+### v3.8.1
+
+* 添加 `Context.currentWith(...)` 方法替代 ContextHolder
+
 ### v3.8.0
 
 * 插件 `solon-flow` 第六次预览
