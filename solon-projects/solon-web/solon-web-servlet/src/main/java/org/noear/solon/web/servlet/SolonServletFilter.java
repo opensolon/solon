@@ -50,9 +50,7 @@ public class SolonServletFilter implements Filter {
             //
             // 临时对接，parseMultipart=false 免得对数据有影响
             //
-            Context ctx = new SolonServletContext((HttpServletRequest) request, (HttpServletResponse) response);
-
-            Context.currentWith(ctx, () -> {
+            Context.currentWith(new SolonServletContext((HttpServletRequest) request, (HttpServletResponse) response), ctx -> {
                 try {
                     //过滤开始
                     doFilterStart(ctx);
