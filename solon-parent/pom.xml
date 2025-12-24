@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>3.8.0</version>
+    <version>3.8.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -30,7 +30,7 @@
 
         <maven-war.version>3.4.0</maven-war.version>
 
-        <solon.version>3.8.0</solon.version>
+        <solon.version>3.8.1-SNAPSHOT</solon.version>
         <solon-ai.version>3.8.0</solon-ai.version>
         <solon-flow.version>3.8.0</solon-flow.version>
         <solon-expression.version>3.8.0</solon-expression.version>
@@ -152,8 +152,8 @@
         <rocketmq5.version>5.0.5</rocketmq5.version>
         <activemq.version>5.16.7</activemq.version>
         <rabbitmq.version>5.19.0</rabbitmq.version>
-        <kafka_2.13.version>3.8.0</kafka_2.13.version>
-        <kafka.version>3.8.0</kafka.version>
+        <kafka_2.13.version>3.8.1-SNAPSHOT</kafka_2.13.version>
+        <kafka.version>3.8.1-SNAPSHOT</kafka.version>
         <pulsar.version>2.11.2</pulsar.version>
 
         <nacos1.version>1.4.8</nacos1.version>
