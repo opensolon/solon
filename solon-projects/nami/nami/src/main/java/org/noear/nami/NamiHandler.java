@@ -168,9 +168,9 @@ public class NamiHandler implements InvocationHandler {
         }
 
         //attachment headers 优先2（处理附加信息）
-        Map<String, String> contextMap = NamiAttachment.getData();
-        if (contextMap != null && contextMap.size() > 0) {
-            headers.putAll(contextMap);
+        NamiAttach namiAttach = NamiAttach.current();
+        if (namiAttach != null && namiAttach.getData().size() > 0) {
+            headers.putAll(namiAttach.getData());
         }
 
         //构建 args

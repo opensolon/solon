@@ -16,7 +16,7 @@
 package webapp.demo5_rpc;
 
 import org.noear.nami.Nami;
-import org.noear.nami.NamiAttachment;
+import org.noear.nami.NamiAttach;
 import org.noear.nami.coder.snack4.Snack4Decoder;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Controller;
@@ -34,8 +34,8 @@ public class RpcTest implements Handler {
     public void handle(Context ctx) throws Throwable {
         Map<String, Object> map = new HashMap<>();
 
-        NamiAttachment.with(() -> {
-            NamiAttachment.put("user_name", "noear");
+        NamiAttach.currentWith((attach) -> {
+            attach.put("user_name", "noear");
 
             map.put("HttpChannel", httpOf());
             map.put("SocketChannel", socketOf());

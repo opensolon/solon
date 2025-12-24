@@ -27,8 +27,8 @@
 
 ### v3.8.1
 
-* 添加 `solon` `Context.currentWith(...)` 方法替代 ContextHolder
-* 调整 `solon` ContextHolder 标为弃用
+* 添加 `solon` `Context.currentWith(...)` 方法替代 ContextHolder（后者标为弃用）
+* 添加 `nami` NamiAttach 替代 NamiAttachment（后者标为弃用）
 
 ### v3.8.0
 
