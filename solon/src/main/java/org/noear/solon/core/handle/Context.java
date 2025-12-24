@@ -23,9 +23,7 @@ import org.noear.solon.core.PropsConverter;
 import org.noear.solon.core.util.*;
 import org.noear.solon.lang.NonNull;
 import org.noear.solon.lang.Nullable;
-import org.noear.solon.util.CallableTx;
-import org.noear.solon.util.RunnableTx;
-import org.noear.solon.util.ScopeLocal;
+import org.noear.solon.util.*;
 
 import java.io.*;
 import java.math.BigDecimal;
@@ -75,6 +73,24 @@ public abstract class Context {
      * @since 3.8.1
      */
     public static <R, X extends Throwable> R currentWith(Context context, CallableTx<R, X> callable) throws X {
+        return LOCAL.with(context, callable);
+    }
+
+    /**
+     * 使用当前域的上下文
+     *
+     * @since 3.8.1
+     */
+    public static <X extends Throwable> void currentWith(Context context, ConsumerTx<Context, X> runnable) throws X {
+        LOCAL.with(context, runnable);
+    }
+
+    /**
+     * 使用当前域的上下文
+     *
+     * @since 3.8.1
+     */
+    public static <R, X extends Throwable> R currentWith(Context context, FunctionTx<Context, R, X> callable) throws X {
         return LOCAL.with(context, callable);
     }
 
