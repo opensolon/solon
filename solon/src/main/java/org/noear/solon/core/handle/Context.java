@@ -48,6 +48,11 @@ public abstract class Context {
         return ContextHolder.current();
     }
 
+    /**
+     * 使用当前域的上下文
+     *
+     * @since 3.8.1
+     */
     public static <X extends Throwable> void currentWith(Context context, RunnableTx<X> runnable) throws X {
         ContextHolder.currentWith(context, runnable);
     }
@@ -55,7 +60,7 @@ public abstract class Context {
     /**
      * 使用当前域的上下文
      *
-     * @since 3.8.0
+     * @since 3.8.1
      */
     public static <R, X extends Throwable> R currentWith(Context context, CallableTx<R, X> callable) throws X {
         return ContextHolder.currentWith(context, callable);
