@@ -17,7 +17,6 @@ package org.noear.solon.web.servlet;
 
 import org.noear.solon.Solon;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.core.handle.ContextHolder;
 import org.noear.solon.core.handle.Handler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,7 +52,7 @@ public class SolonServletFilter implements Filter {
             //
             Context ctx = new SolonServletContext((HttpServletRequest) request, (HttpServletResponse) response);
 
-            ContextHolder.currentWith(ctx, () -> {
+            Context.currentWith(ctx, () -> {
                 try {
                     //过滤开始
                     doFilterStart(ctx);

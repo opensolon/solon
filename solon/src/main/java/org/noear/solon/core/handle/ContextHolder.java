@@ -19,8 +19,6 @@ package org.noear.solon.core.handle;
 import org.noear.solon.Solon;
 import org.noear.solon.util.CallableTx;
 import org.noear.solon.util.RunnableTx;
-import org.noear.solon.util.ScopeLocal;
-import org.noear.solon.core.util.JavaUtil;
 
 /**
  * 上下文状态处理工具（独立出来，可为别的业务服务）
@@ -29,10 +27,10 @@ import org.noear.solon.core.util.JavaUtil;
  * @author noear
  * @since 1.0
  * @since 3.0
+ * @deprecated  3.8 {@link Context#currentWith(Context, CallableTx)}
  * */
+@Deprecated
 public class ContextHolder {
-    private final static ScopeLocal<Context> LOCAL = ScopeLocal.newInstance(ContextHolder.class);
-
 
     /**
      * 使用当前域的上下文
@@ -40,7 +38,7 @@ public class ContextHolder {
      * @since 3.8.0
      */
     public static <X extends Throwable> void currentWith(Context context, RunnableTx<X> runnable) throws X {
-        LOCAL.withOrThrow(context, runnable);
+        Context.currentWith(context, runnable);
     }
 
     /**
@@ -49,7 +47,7 @@ public class ContextHolder {
      * @since 3.8.0
      */
     public static <R, X extends Throwable> R currentWith(Context context, CallableTx<R, X> callable) throws X {
-        return LOCAL.withOrThrow(context, callable);
+        return Context.currentWith(context, callable);
     }
 
 
@@ -57,16 +55,7 @@ public class ContextHolder {
      * 获取当前线域的上下文
      */
     public static Context current() {
-        Context tmp = LOCAL.get();
-
-        if (tmp == null && Solon.appIf(app -> app.cfg().testing())) {
-            if (JavaUtil.JAVA_MAJOR_VERSION < 21) {
-                tmp = new ContextEmpty();
-                LOCAL.set(tmp);
-            }
-        }
-
-        return tmp;
+        return Context.current();
     }
 
     /// /////////////////
@@ -78,7 +67,7 @@ public class ContextHolder {
      */
     @Deprecated
     public static void currentSet(Context context) {
-        LOCAL.set(context);
+        Context.LOCAL.set(context);
     }
 
     /**
@@ -88,6 +77,6 @@ public class ContextHolder {
      */
     @Deprecated
     public static void currentRemove() {
-        LOCAL.remove();
+        Context.LOCAL.remove();
     }
 }

@@ -22,7 +22,7 @@ import org.noear.solon.core.util.MimeType;
  *
  * @author noear
  * @since 1.0
- * @deprecated 3.0 {@link ContextHolder}
+ * @deprecated 3.0 {@link Context}
  * */
 @Deprecated
 public class ContextUtil {
@@ -33,20 +33,20 @@ public class ContextUtil {
      * 设置当前线程的上下文
      */
     public static void currentSet(Context ctx) {
-        ContextHolder.currentSet(ctx);
+        Context.LOCAL.set(ctx);
     }
 
     /**
      * 移除当前线程的上下文
      */
     public static void currentRemove() {
-        ContextHolder.currentRemove();
+        Context.LOCAL.remove();
     }
 
     /**
      * 获取当前线程的上下文
      */
     public static Context current() {
-        return ContextHolder.current();
+        return Context.current();
     }
 }

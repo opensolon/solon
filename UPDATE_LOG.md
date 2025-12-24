@@ -27,7 +27,8 @@
 
 ### v3.8.1
 
-* 添加 `Context.currentWith(...)` 方法替代 ContextHolder
+* 添加 `solon` `Context.currentWith(...)` 方法替代 ContextHolder
+* 调整 `solon` ContextHolder 标为弃用
 
 ### v3.8.0
 

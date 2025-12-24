@@ -22,7 +22,6 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ContextEmpty;
-import org.noear.solon.core.handle.ContextHolder;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -122,13 +121,13 @@ public class JtRun {
     public static void execFile(AFileModel file) throws Exception {
         initFuture.get();
 
-        Context ctx = ContextHolder.current();
+        Context ctx = Context.current();
 
         if (ctx == null) {
             ctx = ContextEmpty.create();
 
-            ContextHolder.currentWith(ctx, () -> {
-                ExecutorFactory.execOnly(file, ContextHolder.current());
+            Context.currentWith(ctx, () -> {
+                ExecutorFactory.execOnly(file, Context.current());
                 return null;
             });
         } else {

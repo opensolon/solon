@@ -25,6 +25,7 @@ import org.noear.solon.lang.NonNull;
 import org.noear.solon.lang.Nullable;
 import org.noear.solon.util.CallableTx;
 import org.noear.solon.util.RunnableTx;
+import org.noear.solon.util.ScopeLocal;
 
 import java.io.*;
 import java.math.BigDecimal;
@@ -41,11 +42,22 @@ import java.util.zip.GZIPOutputStream;
  * @since 1.0
  * */
 public abstract class Context {
+    protected final static ScopeLocal<Context> LOCAL = ScopeLocal.newInstance(Context.class);
+
     /**
      * 获取当前线程的上下文
      */
     public static Context current() {
-        return ContextHolder.current();
+        Context tmp = LOCAL.get();
+
+        if (tmp == null && Solon.appIf(app -> app.cfg().testing())) {
+            if (JavaUtil.JAVA_MAJOR_VERSION < 21) {
+                tmp = new ContextEmpty();
+                LOCAL.set(tmp);
+            }
+        }
+
+        return tmp;
     }
 
     /**
@@ -54,7 +66,7 @@ public abstract class Context {
      * @since 3.8.1
      */
     public static <X extends Throwable> void currentWith(Context context, RunnableTx<X> runnable) throws X {
-        ContextHolder.currentWith(context, runnable);
+        LOCAL.withOrThrow(context, runnable);
     }
 
     /**
@@ -63,7 +75,7 @@ public abstract class Context {
      * @since 3.8.1
      */
     public static <R, X extends Throwable> R currentWith(Context context, CallableTx<R, X> callable) throws X {
-        return ContextHolder.currentWith(context, callable);
+        return LOCAL.withOrThrow(context, callable);
     }
 
     private Locale locale;

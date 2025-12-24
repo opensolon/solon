@@ -1,7 +1,6 @@
 package demo.solon;
 
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.core.handle.ContextHolder;
 import org.noear.solon.util.ScopeLocal;
 
 /**

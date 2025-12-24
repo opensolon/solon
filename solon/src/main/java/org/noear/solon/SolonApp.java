@@ -616,7 +616,7 @@ public class SolonApp extends RouterWrapper {
      */
     public void tryHandle(Context x) {
         //使用当前线程上下文
-        ContextHolder.currentWith(x, () -> {
+        Context.currentWith(x, () -> {
             try {
                 if (stopping) {
                     x.status(503);

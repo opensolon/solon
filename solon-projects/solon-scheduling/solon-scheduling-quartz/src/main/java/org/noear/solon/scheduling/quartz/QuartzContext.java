@@ -17,7 +17,6 @@ package org.noear.solon.scheduling.quartz;
 
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ContextEmpty;
-import org.noear.solon.core.handle.ContextHolder;
 import org.quartz.JobExecutionContext;
 
 import java.util.Map;
