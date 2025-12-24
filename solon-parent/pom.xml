@@ -37,7 +37,8 @@
         <solon-cloud.version>3.8.0</solon-cloud.version>
         <solon-admin.version>3.8.0</solon-admin.version>
         <solon-integration.version>3.8.0</solon-integration.version>
-        <solon-jakarta.version>3.8.0</solon-jakarta.version>
+        <solon-java17.version>3.8.0</solon-java17.version>
+        <solon-java25.version>3.8.1-SNAPSHOT</solon-java25.version>
 
         <solonx.version>1.3.1</solonx.version>
 
@@ -152,8 +153,8 @@
         <rocketmq5.version>5.0.5</rocketmq5.version>
         <activemq.version>5.16.7</activemq.version>
         <rabbitmq.version>5.19.0</rabbitmq.version>
-        <kafka_2.13.version>3.8.1-SNAPSHOT</kafka_2.13.version>
-        <kafka.version>3.8.1-SNAPSHOT</kafka.version>
+        <kafka_2.13.version>3.9.1</kafka_2.13.version>
+        <kafka.version>3.9.1</kafka.version>
         <pulsar.version>2.11.2</pulsar.version>
 
         <nacos1.version>1.4.8</nacos1.version>
@@ -348,7 +349,7 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-java25</artifactId>
-                <version>${solon.version}</version>
+                <version>${solon-java25.version}</version>
             </dependency>
 
             <dependency>
@@ -1962,73 +1963,73 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-server-undertow-jakarta</artifactId>
-                <version>${solon-jakarta.version}</version>
+                <version>${solon-java17.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-server-undertow-add-jsp-jakarta</artifactId>
-                <version>${solon-jakarta.version}</version>
+                <version>${solon-java17.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-server-tomcat-jakarta</artifactId>
-                <version>${solon-jakarta.version}</version>
+                <version>${solon-java17.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-server-tomcat-add-jsp-jakarta</artifactId>
-                <version>${solon-jakarta.version}</version>
+                <version>${solon-java17.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-server-tomcat-add-websocket-jakarta</artifactId>
-                <version>${solon-jakarta.version}</version>
+                <version>${solon-java17.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-server-jetty-jakarta</artifactId>
-                <version>${solon-jakarta.version}</version>
+                <version>${solon-java17.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-server-jetty-add-jsp-jakarta</artifactId>
-                <version>${solon-jakarta.version}</version>
+                <version>${solon-java17.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-server-jetty-add-websocket-jakarta</artifactId>
-                <version>${solon-jakarta.version}</version>
+                <version>${solon-java17.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-view-jsp-jakarta</artifactId>
-                <version>${solon-jakarta.version}</version>
+                <version>${solon-java17.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-web-servlet-jakarta</artifactId>
-                <version>${solon-jakarta.version}</version>
+                <version>${solon-java17.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-web-webservices-jakarta</artifactId>
-                <version>${solon-jakarta.version}</version>
+                <version>${solon-java17.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-logging-logback-jakarta</artifactId>
-                <version>${solon-jakarta.version}</version>
+                <version>${solon-java17.version}</version>
             </dependency>
 
             <!-- jakarta plugins:: end -->

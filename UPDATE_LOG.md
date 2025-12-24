@@ -31,6 +31,7 @@
 * 添加 `nami` NamiAttach 替代 NamiAttachment（后者标为弃用）
 * 优化 `solon` ScopeLocal 定义
 * 优化 `solon-java25` 的 ScopeLocal 适配
+* kafka 升为 3.9.1
 
 ### v3.8.0
 
