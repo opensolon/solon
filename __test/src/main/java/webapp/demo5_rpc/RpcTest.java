@@ -34,7 +34,7 @@ public class RpcTest implements Handler {
     public void handle(Context ctx) throws Throwable {
         Map<String, Object> map = new HashMap<>();
 
-        NamiAttach.currentWith(attach -> {
+        NamiAttach.apply(attach -> {
             attach.put("user_name", "noear");
 
             map.put("HttpChannel", httpOf());
@@ -45,7 +45,7 @@ public class RpcTest implements Handler {
     }
 
     protected void testOf() {
-        NamiAttach.currentWith(attach -> {
+        NamiAttach.apply(attach -> {
             attach.put("user_name", "noear");
         });
     }

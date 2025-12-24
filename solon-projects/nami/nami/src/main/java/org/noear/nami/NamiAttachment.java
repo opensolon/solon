@@ -37,7 +37,7 @@ public final class NamiAttachment {
      * @since 3.8.0
      */
     public static <X extends Throwable> void with(RunnableTx<X> runnable) throws X {
-        NamiAttach.currentWith(t -> {
+        NamiAttach.apply(t -> {
             runnable.run();
         });
     }
@@ -46,7 +46,7 @@ public final class NamiAttachment {
      * @since 3.8.0
      */
     public static <R, X extends Throwable> R with(CallableTx<R, X> callable) throws X {
-        return NamiAttach.currentWith(t -> {
+        return NamiAttach.apply(t -> {
             return callable.call();
         });
     }
@@ -55,7 +55,7 @@ public final class NamiAttachment {
      * @since 3.8.0
      */
     public static <X extends Throwable> void withOrThrow(RunnableTx<X> runnable) throws X {
-        NamiAttach.currentWith(t -> {
+        NamiAttach.apply(t -> {
             runnable.run();
         });
     }
@@ -64,7 +64,7 @@ public final class NamiAttachment {
      * @since 3.8.0
      */
     public static <R, X extends Throwable> R withOrThrow(CallableTx<R, X> callable) throws X {
-        return NamiAttach.currentWith(t -> {
+        return NamiAttach.apply(t -> {
             return callable.call();
         });
     }

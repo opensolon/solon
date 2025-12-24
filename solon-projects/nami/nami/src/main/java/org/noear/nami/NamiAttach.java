@@ -21,7 +21,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 
 /**
  * Nami 请求附件
@@ -45,7 +44,7 @@ public class NamiAttach {
      *
      * @since 3.8.1
      */
-    public static <X extends Throwable> void currentWith(ConsumerTx<NamiAttach, X> consumer) throws X {
+    public static <X extends Throwable> void apply(ConsumerTx<NamiAttach, X> consumer) throws X {
         NamiAttach tmp = LOCAL.get();
 
         if (tmp == null) {
@@ -60,7 +59,7 @@ public class NamiAttach {
      *
      * @since 3.8.1
      */
-    public static <R, X extends Throwable> R currentWith(FunctionTx<NamiAttach, R, X> function) throws X {
+    public static <R, X extends Throwable> R apply(FunctionTx<NamiAttach, R, X> function) throws X {
         NamiAttach tmp = LOCAL.get();
         if (tmp == null) {
             tmp = new NamiAttach();
