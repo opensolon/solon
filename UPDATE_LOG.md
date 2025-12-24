@@ -28,7 +28,7 @@
 ### v3.8.1
 
 * 添加 `solon` `Context.currentWith(...)` 方法替代 ContextHolder（后者标为弃用）
-* 添加 `nami` NamiAttach 替代 NamiAttachment（后者标为弃用）
+* 添加 `nami` NamiAttach（更适合 java25 未来的发展） 替代 NamiAttachment（后者标为弃用）
 * 优化 `solon` ScopeLocal 定义
 * 优化 `solon-java25` 的 ScopeLocal 适配
 * kafka 升为 3.9.1
