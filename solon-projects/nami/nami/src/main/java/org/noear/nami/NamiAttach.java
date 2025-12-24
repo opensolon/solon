@@ -40,17 +40,6 @@ public class NamiAttach {
         return LOCAL.get();
     }
 
-    public static <T> T ifPresent(Function<NamiAttach, T> consumer) {
-        NamiAttach tmp = current();
-
-        if (tmp != null) {
-            return consumer.apply(tmp);
-        } else {
-            log.error("Attach is null, please use `NamiAttach.currentWith(attach -> ...`");
-            return null;
-        }
-    }
-
     /**
      * 使用当前域的上下文
      *
