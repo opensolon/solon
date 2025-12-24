@@ -17,7 +17,8 @@ package org.noear.nami;
 
 import org.noear.solon.util.CallableTx;
 import org.noear.solon.util.RunnableTx;
-import org.noear.solon.lang.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
@@ -30,6 +31,8 @@ import java.util.Map;
  */
 @Deprecated
 public final class NamiAttachment {
+    private final static Logger log = LoggerFactory.getLogger(NamiAttachment.class);
+
     /**
      * @since 3.8.0
      */
@@ -69,20 +72,47 @@ public final class NamiAttachment {
     /// ///////////////////
 
 
-    public static @Nullable Map<String, String> getData() {
-        return NamiAttach.ifPresent(att -> att.getData());
+    private static NamiAttach getContextMap0() {
+        NamiAttach tmp = NamiAttach.LOCAL.get();
+        if (tmp == null) {
+            tmp = new NamiAttach();
+            NamiAttach.LOCAL.set(tmp);
+        }
+
+        return tmp;
+    }
+
+    public static Map<String, String> getDataOrNull() {
+        NamiAttach tmp = NamiAttach.LOCAL.get();
+        if (tmp == null) {
+            return null;
+        } else {
+            return tmp.getData();
+        }
+    }
+
+    public static Map<String, String> getData() {
+        log.warn("NamiAttachment is deprecated, please use `NamiAttach.currentWith(attach -> ...`");
+
+        return getContextMap0().getData();
     }
 
     public static void put(String name, String value) {
-        NamiAttach.ifPresent(att -> att.put(name, value));
+        log.warn("NamiAttachment is deprecated, please use `NamiAttach.currentWith(attach -> ...`");
+
+        getContextMap0().put(name, value);
     }
 
     public static String get(String name) {
-        return NamiAttach.ifPresent(att -> att.get(name));
+        log.warn("NamiAttachment is deprecated, please use `NamiAttach.currentWith(attach -> ...`");
+
+        return getContextMap0().get(name);
     }
 
     public static void remove(String name) {
-        NamiAttach.ifPresent(att -> att.remove(name));
+        log.warn("NamiAttachment is deprecated, please use `NamiAttach.currentWith(attach -> ...`");
+
+        getContextMap0().remove(name);
     }
 
     public static void clear() {
