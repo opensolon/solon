@@ -33,7 +33,8 @@
 * 优化 `solon` ScopeLocal 定义
 * 优化 `solon-java25` 的 ScopeLocal 适配
 * kafka 升为 3.9.1
-* snack4 升为 4.0.21
+* snack4 升为 4.0.22
+* wood 升为 1.4.4
 * luffy 升为 1.11.4
 
 ### v3.8.0
