@@ -48,7 +48,7 @@ public class DsUtils {
 
             Class<?> typeClz = ClassUtil.loadClass(typeStr);
             if (typeClz == null || DataSource.class.isAssignableFrom(typeClz) == false) {
-                throw new IllegalStateException("Type configuration not is data source");
+                throw new IllegalStateException("The type configuration is not a data source");
             }
 
             return typeClz;
@@ -75,7 +75,7 @@ public class DsUtils {
 
         if (typeClz == null || DataSource.class.isAssignableFrom(typeClz) == false) {
             //如果没有？或类型不对？
-            throw new IllegalStateException("Type configuration not is data source");
+            throw new IllegalStateException("The type configuration is not a data source");
         }
 
         return typeClz;
