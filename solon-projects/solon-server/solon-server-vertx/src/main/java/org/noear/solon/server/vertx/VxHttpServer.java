@@ -97,7 +97,7 @@ public class VxHttpServer implements ServerLifecycle {
         }
 
         if (handlerFactory == null) {
-            handlerFactory = new VxHandlerSupplierDefault();
+            handlerFactory = new VxHandlerSupplierDefault(_vertx);
         }
 
         HttpServerOptions _serverOptions = new HttpServerOptions();

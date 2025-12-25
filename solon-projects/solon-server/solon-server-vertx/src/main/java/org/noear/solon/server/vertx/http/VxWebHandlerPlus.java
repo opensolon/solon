@@ -15,6 +15,7 @@
  */
 package org.noear.solon.server.vertx.http;
 
+import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServerRequest;
 import org.noear.solon.Utils;
 import org.noear.solon.server.ServerProps;
@@ -32,6 +33,10 @@ import java.io.IOException;
 public class VxWebHandlerPlus extends VxWebHandler {
     private boolean enableWebSocket;
     private VxWebSocketHandlerImpl vxWebSocketHandlerImpl = new VxWebSocketHandlerImpl();
+
+    public VxWebHandlerPlus(Vertx vertx) {
+        super(vertx);
+    }
 
     @Override
     public void enableWebSocket(boolean enable) {

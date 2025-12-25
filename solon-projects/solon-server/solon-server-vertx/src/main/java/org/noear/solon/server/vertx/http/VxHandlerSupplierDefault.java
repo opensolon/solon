@@ -15,6 +15,7 @@
  */
 package org.noear.solon.server.vertx.http;
 
+import io.vertx.core.Vertx;
 import org.noear.solon.web.vertx.VxHandler;
 import org.noear.solon.web.vertx.VxWebHandler;
 
@@ -25,8 +26,8 @@ import org.noear.solon.web.vertx.VxWebHandler;
 public class VxHandlerSupplierDefault implements VxHandlerSupplier {
     private final VxWebHandler handler;
 
-    public VxHandlerSupplierDefault() {
-        handler = new VxWebHandlerPlus();
+    public VxHandlerSupplierDefault(Vertx vertx) {
+        handler = new VxWebHandlerPlus(vertx);
     }
 
     @Override

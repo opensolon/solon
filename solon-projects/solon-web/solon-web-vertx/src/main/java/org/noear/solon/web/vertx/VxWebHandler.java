@@ -15,6 +15,7 @@
  */
 package org.noear.solon.web.vertx;
 
+import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
@@ -36,12 +37,18 @@ import java.util.concurrent.RejectedExecutionException;
 public class VxWebHandler implements VxHandler {
     static final Logger log = LoggerFactory.getLogger(VxWebHandler.class);
 
+    private final Vertx vertx;
     private @Nullable Executor executor;
     private @Nullable Handler handler;
 
+    public VxWebHandler(Vertx vertx) {
+        this.vertx = vertx;
+    }
+
     /**
      * 预处理
-     * */
+     *
+     */
     protected void preHandle(Context ctx) throws IOException {
 
     }
@@ -80,7 +87,7 @@ public class VxWebHandler implements VxHandler {
     }
 
     private void handleDo(HttpServerRequest request, Buffer requestBody, boolean disPool) {
-        VxWebContext ctx = new VxWebContext(request, requestBody);
+        VxWebContext ctx = new VxWebContext(vertx, request, requestBody);
 
         if (executor == null || disPool) {
             handle0(ctx);

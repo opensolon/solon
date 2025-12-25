@@ -16,6 +16,7 @@
 package org.noear.solon.web.vertx;
 
 import io.netty.buffer.ByteBufInputStream;
+import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
@@ -46,9 +47,10 @@ import java.util.*;
 public class VxWebContext extends ContextBase {
     static final Logger log = LoggerFactory.getLogger(VxWebContext.class);
 
-    private HttpServerRequest _request;
-    private HttpServerResponse _response;
-    private Buffer _requestBody;
+    private final Vertx vertx;
+    private final HttpServerRequest _request;
+    private final HttpServerResponse _response;
+    private final Buffer _requestBody;
 
     protected HttpServerRequest innerGetRequest() {
         return _request;
@@ -58,7 +60,8 @@ public class VxWebContext extends ContextBase {
         return _response;
     }
 
-    public VxWebContext(HttpServerRequest request, Buffer requestBody) {
+    public VxWebContext(Vertx vertx, HttpServerRequest request, Buffer requestBody) {
+        this.vertx = vertx;
         this._request = request;
         this._requestBody = requestBody;
         this._response = request.response();
@@ -79,6 +82,10 @@ public class VxWebContext extends ContextBase {
                 DecodeUtils.decodeMultipart(this, new ByteBufInputStream(_requestBody.getByteBuf()), _fileMap);
             }
         }
+    }
+
+    public Vertx getVertx() {
+        return vertx;
     }
 
     @Override
