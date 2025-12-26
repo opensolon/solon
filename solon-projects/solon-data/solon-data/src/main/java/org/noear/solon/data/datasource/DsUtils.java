@@ -35,7 +35,7 @@ import java.util.function.Consumer;
  */
 public class DsUtils {
     public static final String[] DEFAULT_CLASS_PROP_NAMES = {"@type", "type", "class", "dataSourceClassName"};
-
+    public static final String UNTRANSACTION_PROP_NAME = "untransaction";
     /**
      * 解析类型
      */
@@ -88,7 +88,13 @@ public class DsUtils {
      * @param typeClz 数据源类型
      */
     private static DataSource convertDo(Properties props, Class<?> typeClz) {
-        return (DataSource) PropsConverter.global().convert(props, typeClz);
+        DataSource ds = (DataSource) PropsConverter.global().convert(props, typeClz);
+
+        if ("true".equals(props.getProperty(UNTRANSACTION_PROP_NAME))) {
+            return new UntransactionDataSource(ds);
+        } else {
+            return ds;
+        }
     }
 
     /**

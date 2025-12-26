@@ -13,27 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.data.tran;
-
-import org.noear.solon.data.datasource.DataSourceWrapper;
+package org.noear.solon.data.datasource;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.SQLException;
 
 /**
- * 数据源代理（用于事务控制）
+ * 非事务数据源
  *
  * @author noear
- * @since 2.7
+ * @since 3.8.1
  */
-public class DataSourceProxy extends DataSourceWrapper implements DataSource{
-    public DataSourceProxy(DataSource real) {
+public class UntransactionDataSource extends DataSourceWrapper implements DataSource {
+    public UntransactionDataSource(DataSource real) {
         super(real);
-    }
-
-    @Override
-    public Connection getConnection() throws SQLException {
-        return TranUtils.getConnectionProxy(getReal());
     }
 }

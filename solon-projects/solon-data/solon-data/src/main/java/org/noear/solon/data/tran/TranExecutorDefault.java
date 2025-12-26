@@ -15,6 +15,8 @@
  */
 package org.noear.solon.data.tran;
 
+import org.noear.solon.data.datasource.DataSourceWrapper;
+import org.noear.solon.data.datasource.UntransactionDataSource;
 import org.noear.solon.util.ScopeLocal;
 import org.noear.solon.data.annotation.Transaction;
 import org.noear.solon.data.tran.impl.*;
@@ -71,6 +73,14 @@ public class TranExecutorDefault implements TranExecutor {
         if (tran == null) {
             return ds.getConnection();
         } else {
+            if (ds instanceof DataSourceWrapper) {
+                DataSourceWrapper dsw = (DataSourceWrapper) ds;
+                if (dsw instanceof UntransactionDataSource || dsw.getReal() instanceof UntransactionDataSource) {
+                    //不使用事务 //v3.8.1
+                    return ds.getConnection();
+                }
+            }
+
             return tran.getConnection(ds);
         }
     }

@@ -28,7 +28,7 @@ import java.util.Properties;
 import java.util.logging.Logger;
 
 /**
- * 无池数据源
+ * 非池数据源
  *
  * @author noear
  * @since 1.6
