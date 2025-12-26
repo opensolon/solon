@@ -74,7 +74,7 @@ public interface ScopeLocal<T> {
      * @deprecated 3.8.0
      */
     @Deprecated
-    ScopeLocal<T> set(T value);
+    void set(T value);
 
     /**
      * @deprecated 3.8.0

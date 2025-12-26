@@ -106,17 +106,14 @@ public class ScopeLocalJdk8<T> implements ScopeLocal<T> {
     /// ///////////////////////////////////////
 
     @Override
-    public ScopeLocal<T> set(T value) {
+    public void set(T value) {
         log.warn("ScopeLocal.set will be removed, please use ScopeLocal.with");
-
         ref.set(value);
-        return this;
     }
 
     @Override
     public void remove() {
         log.warn("ScopeLocal.remove will be removed, please use ScopeLocal.with");
-
         ref.remove();
     }
 }
