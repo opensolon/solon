@@ -17,7 +17,6 @@ package org.noear.solon.net.http.impl.okhttp;
 
 import com.moczul.ok2curl.CurlInterceptor;
 import okhttp3.*;
-import okhttp3.internal.Util;
 import okio.BufferedSink;
 import okio.Okio;
 import okio.Source;
@@ -313,7 +312,7 @@ public class OkHttpUtils extends AbstractHttpUtils implements HttpUtils {
         private MediaType _contentType = null;
         private HttpStream _httpStream = null;
 
-        public StreamBody(HttpStream stream)  {
+        public StreamBody(HttpStream stream) {
             if (stream.getContentType() != null) {
                 _contentType = MediaType.parse(stream.getContentType());
             }
@@ -333,13 +332,8 @@ public class OkHttpUtils extends AbstractHttpUtils implements HttpUtils {
 
         @Override
         public void writeTo(BufferedSink sink) throws IOException {
-            Source source = null;
-
-            try {
-                source = Okio.source(_httpStream.getContent());
+            try (Source source = Okio.source(_httpStream.getContent())) {
                 sink.writeAll(source);
-            } finally {
-                Util.closeQuietly(source);
             }
         }
     }
