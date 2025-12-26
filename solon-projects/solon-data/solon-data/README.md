@@ -9,6 +9,7 @@ solon.dataSources:
     url: "xxx"
     username: "xxx"
     paasword: "xxx"
+    untransaction: "true"
   db_user: #动态数据源
     class: "org.noear.solon.data.dynamicds.DynamicDataSource"
     strict: true #是否严格的
