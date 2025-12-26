@@ -32,14 +32,16 @@ public class TranNotImpl implements TranNode {
 
     @Override
     public void apply(RunnableEx runnable) throws Throwable {
-        //获取当前事务
-        //
-        DbTran tran = TranManager.trySuspend();
+        TranManager.with(null, runnable::run);
 
-        try {
-            runnable.run();
-        } finally {
-            TranManager.tryResume(tran);
-        }
+//        //获取当前事务
+//        //
+//        DbTran tran = TranManager.trySuspend();
+//
+//        try {
+//            runnable.run();
+//        } finally {
+//            TranManager.tryResume(tran);
+//        }
     }
 }

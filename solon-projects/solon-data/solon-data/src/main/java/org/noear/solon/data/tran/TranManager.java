@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.tran;
 
-import org.noear.solon.util.ScopeLocal;
+import org.noear.solon.util.*;
 import org.noear.solon.data.datasource.RoutingDataSourceMapping;
 import org.noear.solon.data.tran.impl.DbTran;
 
@@ -55,16 +55,6 @@ public final class TranManager {
         return null;
     }
 
-
-    /**
-     * 设置当前事务
-     *
-     * @param tran 事务
-     */
-    public static void currentSet(DbTran tran) {
-        TL_TRAN.set(tran);
-    }
-
     /**
      * 获取当前事务
      */
@@ -72,17 +62,43 @@ public final class TranManager {
         return TL_TRAN.get();
     }
 
-    /**
-     * 移移当前事务
-     */
-    public static void currentRemove() {
-        TL_TRAN.remove();
+    public static <X extends Throwable> void with(DbTran tran, RunnableTx<X> runnable) throws X {
+        TL_TRAN.with(tran, runnable);
+    }
+
+    public static <R, X extends Throwable> R with(DbTran tran, CallableTx<R, X> callable) throws X {
+        return TL_TRAN.with(tran, callable);
     }
 
 
     /**
-     * 尝试挂起
+     * 设置当前事务
+     *
+     * @param tran 事务
+     * @deprecated 3.8.1
      */
+    @Deprecated
+    public static void currentSet(DbTran tran) {
+        TL_TRAN.set(tran);
+    }
+
+
+    /**
+     * 移移当前事务
+     *
+     * @deprecated 3.8.1
+     */
+    @Deprecated
+    public static void currentRemove() {
+        TL_TRAN.remove();
+    }
+
+    /**
+     * 尝试挂起
+     *
+     * @deprecated 3.8.1
+     */
+    @Deprecated
     public static DbTran trySuspend() {
         DbTran tran = current();
 
@@ -95,7 +111,10 @@ public final class TranManager {
 
     /**
      * 尝试恢复
+     *
+     * @deprecated 3.8.1
      */
+    @Deprecated
     public static void tryResume(DbTran tran) {
         if (tran != null) {
             currentSet(tran);

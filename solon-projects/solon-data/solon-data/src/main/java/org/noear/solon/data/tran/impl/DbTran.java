@@ -85,31 +85,29 @@ public abstract class DbTran extends DbTranNode implements TranNode {
 
     public void execute(RunnableEx runnable) throws Throwable {
 
-        try {
-            //conMap 此时，还是空的
-            //
-            TranManager.currentSet(this);
+        //conMap 此时，还是空的
+        //
+        TranManager.with(this, () -> {
+            try {
+                //conMap 会在run时产生
+                //
+                runnable.run();
 
-            //conMap 会在run时产生
-            //
-            runnable.run();
+                if (parent == null) {
+                    commit();
+                }
+            } catch (Throwable ex) {
+                if (parent == null || meta.policy() == TranPolicy.nested) {
+                    rollback();
+                }
 
-            if (parent == null) {
-                commit();
+                throw Utils.throwableUnwrap(ex);
+            } finally {
+                if (parent == null) {
+                    close();
+                }
             }
-        } catch (Throwable ex) {
-            if (parent == null || meta.policy() == TranPolicy.nested) {
-                rollback();
-            }
-
-            throw Utils.throwableUnwrap(ex);
-        } finally {
-            TranManager.currentRemove();
-
-            if (parent == null) {
-                close();
-            }
-        }
+        });
     }
 
     @Override
@@ -127,7 +125,7 @@ public abstract class DbTran extends DbTranNode implements TranNode {
 
         //提交后
         status = TranListener.STATUS_COMMITTED;
-        TranManager.currentRemove(); //移除当前节点
+        //TranManager.currentRemove(); //移除当前节点
         listenerSet.afterCommit();
     }
 

@@ -34,17 +34,23 @@ public class TranDbNewImpl extends DbTran implements TranNode {
 
     @Override
     public void apply(RunnableEx runnable) throws Throwable {
-        //尝试挂起事务
-        //
-        DbTran tran = TranManager.trySuspend();
-
-        try {
+        TranManager.with(null, () -> {
             super.execute(() -> {
                 runnable.run();
             });
-        } finally {
-            //尝试恢复事务
-            TranManager.tryResume(tran);
-        }
+        });
+
+        //尝试挂起事务
+        //
+//        DbTran tran = TranManager.trySuspend();
+//
+//        try {
+//            super.execute(() -> {
+//                runnable.run();
+//            });
+//        } finally {
+//            //尝试恢复事务
+//            TranManager.tryResume(tran);
+//        }
     }
 }
