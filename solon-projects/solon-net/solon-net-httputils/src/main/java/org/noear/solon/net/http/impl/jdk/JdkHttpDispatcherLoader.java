@@ -15,8 +15,10 @@
  */
 package org.noear.solon.net.http.impl.jdk;
 
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.util.NamedThreadFactory;
+import org.noear.solon.core.util.ThreadsUtil;
 
 import java.util.concurrent.*;
 
@@ -34,10 +36,14 @@ public class JdkHttpDispatcherLoader {
             Utils.locker().lock();
             try {
                 if (dispatcher == null) {
-                    dispatcher = new ThreadPoolExecutor(0, Integer.MAX_VALUE,
-                            60, TimeUnit.SECONDS,
-                            new SynchronousQueue<>()
-                            , new NamedThreadFactory("http-dispatcher").daemon(false));
+                    if (Solon.appIf(app -> app.cfg().isEnabledVirtualThreads())) {
+                        dispatcher = ThreadsUtil.newVirtualThreadPerTaskExecutor();
+                    } else {
+                        dispatcher = new ThreadPoolExecutor(0, Integer.MAX_VALUE,
+                                60, TimeUnit.SECONDS,
+                                new SynchronousQueue<>()
+                                , new NamedThreadFactory("http-dispatcher").daemon(false));
+                    }
                 }
             } finally {
                 Utils.locker().unlock();

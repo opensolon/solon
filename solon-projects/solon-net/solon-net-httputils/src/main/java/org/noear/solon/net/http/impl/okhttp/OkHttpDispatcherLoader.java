@@ -16,7 +16,9 @@
 package org.noear.solon.net.http.impl.okhttp;
 
 import okhttp3.Dispatcher;
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.core.util.ThreadsUtil;
 
 /**
  * Http 调度加载器（用于懒加载）
@@ -32,9 +34,13 @@ public class OkHttpDispatcherLoader {
             Utils.locker().lock();
             try {
                 if (dispatcher == null) {
-                    dispatcher = new Dispatcher();
-                    dispatcher.setMaxRequests(Integer.MAX_VALUE);
-                    dispatcher.setMaxRequestsPerHost(10000);
+                    if (Solon.appIf(app -> app.cfg().isEnabledVirtualThreads())) {
+                        dispatcher = new Dispatcher(ThreadsUtil.newVirtualThreadPerTaskExecutor());
+                    } else {
+                        dispatcher = new Dispatcher();
+                        dispatcher.setMaxRequests(Integer.MAX_VALUE);
+                        dispatcher.setMaxRequestsPerHost(10000);
+                    }
                 }
             } finally {
                 Utils.locker().unlock();
