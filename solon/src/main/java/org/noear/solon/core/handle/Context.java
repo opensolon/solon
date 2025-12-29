@@ -43,7 +43,7 @@ public abstract class Context {
     protected final static ScopeLocal<Context> LOCAL = ScopeLocal.newInstance(Context.class);
 
     /**
-     * 获取当前线程的上下文
+     * 获取当前域的上下文
      */
     public static Context current() {
         Context tmp = LOCAL.get();
