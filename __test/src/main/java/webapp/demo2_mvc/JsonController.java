@@ -51,6 +51,11 @@ public class JsonController {
         return userMap;
     }
 
+    @Mapping("/map_r2")
+    public Object map_r2(ONode userMap) {
+        return userMap;
+    }
+
     @Produces("text/xml")
     @Mapping("/map_xml")
     public Object map_xml(Map<String, UserModel> userMap, ModelAndView mv) {

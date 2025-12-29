@@ -125,6 +125,22 @@ public class HttpJsonTest extends HttpTester {
     }
 
     @Test
+    public void json_map_r2() throws Exception {
+        ONode oNode = new ONode();
+
+        UserModel userModel = new UserModel();
+        userModel.id = 12;
+        oNode.set("1", ONode.ofBean(userModel));
+
+        String rst = path("/demo2/json/map_r")
+                .header("Accept", "application/json")
+                .bodyOfJson(oNode.toJson()).post();
+
+        assert rst.startsWith("{\"1\":{\"id\":12,\"sex\":0,\"date\":");
+        assert rst.contains("@type") == false;
+    }
+
+    @Test
     public void json_map_xml() throws Exception {
         ONode oNode = new ONode();
 
