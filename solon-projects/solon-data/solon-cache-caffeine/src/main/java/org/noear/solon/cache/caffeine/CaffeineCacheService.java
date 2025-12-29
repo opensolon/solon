@@ -25,6 +25,7 @@ import org.noear.solon.data.cache.CacheService;
 import java.lang.reflect.Type;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Supplier;
 
 /**
@@ -35,7 +36,7 @@ import java.util.function.Supplier;
  */
 public class CaffeineCacheService implements CacheService {
     private final Cache<String, Object> client;
-    private final Object lock = new Object();
+    private final ReentrantLock lock = new ReentrantLock();
     private MyExpiry expiry;
     private String _cacheKeyHead;
     private int _defaultSeconds;
@@ -89,10 +90,13 @@ public class CaffeineCacheService implements CacheService {
 
     @Override
     public void store(String key, Object obj, int seconds) {
-        synchronized (lock) {
+        lock.lock();
+        try {
             expiry.setSupplier(() -> TimeUnit.SECONDS.toNanos(seconds));
             client.put(key, obj);
             expiry.setSupplier(null);
+        } finally {
+            lock.unlock();
         }
     }
 
