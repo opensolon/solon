@@ -28,14 +28,12 @@ import java.util.function.Supplier;
  * */
 public class ScopeLocalJdk8<T> implements ScopeLocal<T> {
     private static final Logger log = LoggerFactory.getLogger(ScopeLocalJdk8.class);
+
     private final ThreadLocal<T> ref = FactoryManager.getGlobal().newThreadLocal(ScopeLocalJdk8.class, false);
-
-    public ScopeLocalJdk8() {
-
-    }
+    private final Class<?> applyFor;
 
     public ScopeLocalJdk8(Class<?> applyFor) {
-
+        this.applyFor = applyFor;
     }
 
     @Override
@@ -107,13 +105,13 @@ public class ScopeLocalJdk8<T> implements ScopeLocal<T> {
 
     @Override
     public void set(T value) {
-        log.warn("ScopeLocal.set will be removed, please use ScopeLocal.with");
+        log.warn("ScopeLocal.set will be removed, please use ScopeLocal.with. applyFor: {}", applyFor);
         ref.set(value);
     }
 
     @Override
     public void remove() {
-        log.warn("ScopeLocal.remove will be removed, please use ScopeLocal.with");
+        log.warn("ScopeLocal.remove will be removed, please use ScopeLocal.with. applyFor: {}", applyFor);
         ref.remove();
     }
 }
