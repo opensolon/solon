@@ -7,6 +7,8 @@ import org.noear.nami.Result;
 import org.noear.nami.coder.gson.GsonDecoder;
 import org.noear.nami.coder.gson.GsonEncoder;
 
+import com.google.gson.Gson;
+
 import features._model.UserModel;
 
 /**
@@ -20,7 +22,7 @@ public class NamiCoderTest_gson {
     String json_usr = "{\"id\":1,\"name\":\"noear\",\"sex\":1,\"date\":\"2023-09-24 15:51:35\"}";
     String json_usr2 = "{\"id\":1,\"name\":\"noear\",\"sex\":1,\"date\":\"1744102552378\"}";
     String json_usr_ary = "[{\"@type\":\"features._model.UserModel\",\"id\":1,\"name\":\"noear\",\"sex\":1}]";
-
+    Gson gson=new Gson();
     GsonDecoder decoder=GsonDecoder.instance;
     GsonEncoder encoder=GsonEncoder.instance;
     @Test
@@ -46,16 +48,16 @@ public class NamiCoderTest_gson {
     }
 
 //    @Test
-//    public void test_bean_list() {
+//    public void test_bean_list() throws Exception {
 //        //bean list //不支持
-//        List<UserModel> usr_ary = ONode.ofJson(json_usr_ary).toBean();
+//        List<UserModel> usr_ary = gson.fromJson(json_usr_ary, new TypeToken<List<UserModel>>() {}.getType());
 //
-//        byte[] usr_bytes = JacksonEncoder.instance.encode(usr_ary);
+//        byte[] usr_bytes = encoder.encode(usr_ary);
 //        System.out.println(new String(usr_bytes));
 //
 //
 //        Result usr_rst_ary = new Result(200, usr_bytes);
-//        Object usr_obj_ary = JacksonDecoder.instance.decode(usr_rst_ary, new ArrayList<UserModel>(){}.getClass());
+//        Object usr_obj_ary = decoder.decode(usr_rst_ary, new TypeToken<List<UserModel>>() {}.getType());
 //
 //        assert usr_obj_ary instanceof List;
 //        assert ((List<?>) usr_obj_ary).size() == 1;
