@@ -5,6 +5,7 @@ import org.noear.nami.Encoder;
 import org.noear.nami.common.ContentTypes;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 /**
  * 编码器:负责把对象编码为json
@@ -17,7 +18,9 @@ public class GsonEncoder implements Encoder {
 
     private Gson gson;
     public GsonEncoder() {
-    	this.gson = new Gson();
+    	this.gson = new GsonBuilder()
+    			//.registerTypeAdapter(Date.class, new TimestampSecondsAdapter())
+    			.create();
     }
     @Override
     public String enctype() {

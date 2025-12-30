@@ -1,6 +1,7 @@
 package org.noear.nami.coder.gson;
 
 import java.lang.reflect.Type;
+import java.util.Date;
 
 import org.noear.nami.Context;
 import org.noear.nami.Decoder;
@@ -11,6 +12,7 @@ import org.noear.nami.exception.NamiDecodeException;
 import org.noear.solon.Utils;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 /**
  * 解码器:负责把json解码为对象
@@ -24,7 +26,10 @@ public class GsonDecoder implements Decoder {
     private Gson gson;
 
     public GsonDecoder() {
-    	this.gson = new Gson();
+    	this.gson = new GsonBuilder()
+    				.registerTypeAdapter(Date.class, new TimestampAdapter())
+    				.create();
+
     }
 
     @Override
