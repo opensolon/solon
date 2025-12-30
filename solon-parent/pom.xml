@@ -1136,7 +1136,11 @@
                 <artifactId>nami-coder-jackson</artifactId>
                 <version>${solon.version}</version>
             </dependency>
-
+			<dependency>
+				<groupId>org.noear</groupId>
+				<artifactId>nami-coder-gson</artifactId>
+				<version>${solon.version}</version>
+			</dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>nami-coder-hessian</artifactId>
