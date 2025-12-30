@@ -21,8 +21,8 @@
     <properties>
         <maven.install.skip>true</maven.install.skip>
         <maven.deploy.skip>true</maven.deploy.skip>
-    </properties>
-
+        <snack4.version>4.0.21</snack4.version>
+    </properties>	
     <dependencies>
 
         <dependency>
@@ -127,6 +127,10 @@
             <groupId>org.noear</groupId>
             <artifactId>nami-coder-snack4</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>nami-coder-gson</artifactId>
+        </dependency>        
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>nami-coder-fastjson</artifactId>
