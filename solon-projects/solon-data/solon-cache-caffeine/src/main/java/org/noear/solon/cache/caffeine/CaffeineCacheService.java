@@ -17,6 +17,7 @@ package org.noear.solon.cache.caffeine;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
+import com.github.benmanes.caffeine.cache.Expiry;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.data.cache.CacheService;
@@ -24,6 +25,7 @@ import org.noear.solon.data.cache.CacheService;
 import java.lang.reflect.Type;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Supplier;
 
 /**
@@ -33,15 +35,15 @@ import java.util.function.Supplier;
  * @since 1.9
  */
 public class CaffeineCacheService implements CacheService {
+    private final Cache<String, Object> client;
+    private final ReentrantLock lock = new ReentrantLock();
+    private MyExpiry expiry;
     private String _cacheKeyHead;
     private int _defaultSeconds;
-
-    private final Cache<String, Object> client;
 
     public CaffeineCacheService(Cache<String, Object> client, int defSeconds) {
         this(client, null, defSeconds);
     }
-
 
     public CaffeineCacheService(Cache<String, Object> client, String keyHeader, int defSeconds) {
         this.client = client;
@@ -82,14 +84,20 @@ public class CaffeineCacheService implements CacheService {
         _cacheKeyHead = keyHeader;
         _defaultSeconds = defSeconds;
 
-        client = Caffeine.newBuilder()
-                .expireAfterWrite(_defaultSeconds, TimeUnit.SECONDS)
-                .build();
+        expiry = new MyExpiry(_defaultSeconds);
+        client = Caffeine.newBuilder().expireAfter(expiry).build();
     }
 
     @Override
     public void store(String key, Object obj, int seconds) {
-        client.put(key, obj);
+        lock.lock();
+        try {
+            expiry.setSupplier(() -> TimeUnit.SECONDS.toNanos(seconds));
+            client.put(key, obj);
+            expiry.setSupplier(null);
+        } finally {
+            lock.unlock();
+        }
     }
 
     @Override
@@ -97,13 +105,54 @@ public class CaffeineCacheService implements CacheService {
         client.invalidate(key);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <T> T get(String key, Type type) {
         return (T) client.getIfPresent(key);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <T> T getOrStore(String key, Type type, int seconds, Supplier<T> supplier) {
         return (T) client.get(key, (k) -> supplier.get());
+    }
+
+    private static class MyExpiry implements Expiry<String, Object> {
+
+        private final int defaultSeconds;
+        private volatile Supplier<Long> customExpirySupplier;
+
+        public MyExpiry(int seconds) {
+            this.defaultSeconds = seconds;
+        }
+
+        public void setSupplier(Supplier<Long> supplier) {
+            this.customExpirySupplier = supplier;
+        }
+
+        @Override
+        public long expireAfterCreate(String key, Object value, long currentTime) {
+            return getExpireNanos();
+        }
+
+        @Override
+        public long expireAfterUpdate(
+                String key, Object value, long currentTime, long currentDuration) {
+            return getExpireNanos();
+        }
+
+        @Override
+        public long expireAfterRead(String key, Object value, long currentTime, long currentDuration) {
+            // 读取时保持原有剩余时间，不重新计算
+            return currentDuration;
+        }
+
+        private long getExpireNanos() {
+            Supplier<Long> supplier = customExpirySupplier;
+            if (supplier != null) {
+                return supplier.get();
+            }
+            return TimeUnit.SECONDS.toNanos(defaultSeconds);
+        }
     }
 }
