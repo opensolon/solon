@@ -105,13 +105,13 @@ public class ScopeLocalJdk8<T> implements ScopeLocal<T> {
 
     @Override
     public void set(T value) {
-        log.warn("ScopeLocal.set will be removed, please use ScopeLocal.with. applyFor: {}", applyFor);
+        log.warn("ScopeLocal.set will be removed, please use ScopeLocal.with. applyFor: {}", applyFor.getName());
         ref.set(value);
     }
 
     @Override
     public void remove() {
-        log.warn("ScopeLocal.remove will be removed, please use ScopeLocal.with. applyFor: {}", applyFor);
+        log.warn("ScopeLocal.remove will be removed, please use ScopeLocal.with. applyFor: {}", applyFor.getName());
         ref.remove();
     }
 }
