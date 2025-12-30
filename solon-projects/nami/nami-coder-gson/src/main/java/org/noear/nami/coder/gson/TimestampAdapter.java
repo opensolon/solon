@@ -38,7 +38,7 @@ public class TimestampAdapter implements JsonDeserializer<Date>,JsonSerializer<D
 	                return new SimpleDateFormat(p, Locale.CHINA).parse(v);
 	            } catch (ParseException ignore) { continue;}
 	        }
-	        seconds = Long.parseLong(json.getAsString());
+	        seconds = Long.parseLong(v);
         }
         // 2. 数字
         else if (json.isJsonPrimitive() && json.getAsJsonPrimitive().isNumber()) {
