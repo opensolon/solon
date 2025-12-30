@@ -51,7 +51,7 @@ public class TimestampAdapter implements JsonDeserializer<Date>,JsonSerializer<D
 
 	@Override
 	public JsonElement serialize(Date src, Type typeOfSrc, JsonSerializationContext context) {
-		return new JsonPrimitive(src.getTime()/1000);
+		return new JsonPrimitive(src.getTime());
 	}
 
 }
