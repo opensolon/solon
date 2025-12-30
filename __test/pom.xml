@@ -21,7 +21,6 @@
     <properties>
         <maven.install.skip>true</maven.install.skip>
         <maven.deploy.skip>true</maven.deploy.skip>
-        <snack4.version>4.0.21</snack4.version>
     </properties>	
     <dependencies>
 

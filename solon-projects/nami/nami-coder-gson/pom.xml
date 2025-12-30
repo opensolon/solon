@@ -10,9 +10,7 @@
         <version>3.8.1-SNAPSHOT</version>
         <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
-	<properties>
-		<snack4.version>4.0.21</snack4.version>
-	</properties>
+
     <artifactId>nami-coder-gson</artifactId>
     <name>${project.artifactId}</name>
     <packaging>jar</packaging>
