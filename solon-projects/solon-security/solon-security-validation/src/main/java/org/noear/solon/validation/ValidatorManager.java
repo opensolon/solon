@@ -17,6 +17,7 @@ package org.noear.solon.validation;
 
 import org.noear.eggg.ClassEggg;
 import org.noear.eggg.FieldEggg;
+import org.noear.eggg.MethodEggg;
 import org.noear.solon.Utils;
 import org.noear.solon.core.aspect.Invocation;
 import org.noear.solon.core.handle.Action;
@@ -106,6 +107,9 @@ public class ValidatorManager {
      * 初始化（验证器注册）
      */
     private static void initialize() {
+        register(AssertTrue.class, AssertTrueValidator.instance);
+        register(AssertFalse.class, AssertFalseValidator.instance);
+
         register(Date.class, DateValidator.instance);
 
         register(DecimalMax.class, DecimalMaxValidator.instance);
@@ -387,6 +391,60 @@ public class ValidatorManager {
                                 rst.setData(new BeanValidateInfo(fe.getName(), anno, valid.message(anno)));
                             }
                             return rst;
+                        }
+                    }
+                }
+            }
+        }
+
+        //遍历方法进行校验
+        for (MethodEggg me : ce.getPublicMethodEgggs()) {
+            //只处理无参方法
+            if (me.getParamCount() == 0) {
+                for (Annotation anno : me.getAnnotations()) {
+                    Validator valid = ValidatorManager.get(anno.annotationType());
+
+                    if (valid != null) {
+
+                        if (inGroup(valid.groups(anno), groups) == false) {
+                            continue;
+                        }
+
+                        if (valid.isSupportValueType(me.getReturnType()) == false) {
+                            throw new IllegalStateException("@" + anno.annotationType().getSimpleName() + " not support the '" + me.getName() + "' method as " + me.getReturnType().getSimpleName() + " type: " + ce.getType());
+                        }
+
+                        tmp.setLength(0);
+                        Object methodValue = null;
+                        try {
+                            methodValue = me.invoke(obj);
+                        } catch (Throwable e) {
+                            throw new RuntimeException(e);
+                        }
+                        Result rst = valid.validateOfValue(anno, methodValue, tmp);
+
+                        if (rst.getCode() != Result.SUCCEED_CODE) {
+                            if (Utils.isEmpty(rst.getDescription())) {
+                                rst.setDescription(ce.getType().getSimpleName() + "." + me.getName() + "()");
+                            }
+
+                            if (VALIDATE_ALL) {
+                                result.setCode(rst.getCode());
+                                if (rst.getData() instanceof BeanValidateInfo) {
+                                    list.add((BeanValidateInfo) rst.getData());
+                                } else if (rst.getData() instanceof Collection) {
+                                    List<BeanValidateInfo> list2 = (List<BeanValidateInfo>) rst.getData();
+                                    list.addAll(list2);
+                                } else {
+                                    rst.setData(new BeanValidateInfo(me.getName() + "()", anno, valid.message(anno)));
+                                    list.add((BeanValidateInfo) rst.getData());
+                                }
+                            } else {
+                                if (rst.getData() instanceof BeanValidateInfo == false) {
+                                    rst.setData(new BeanValidateInfo(me.getName() + "()", anno, valid.message(anno)));
+                                }
+                                return rst;
+                            }
                         }
                     }
                 }
