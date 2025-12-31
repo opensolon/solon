@@ -29,16 +29,12 @@
         <module>../../solon-projects/solon-data/solon-cache-spymemcached</module>
         <module>../../solon-projects/solon-data/solon-cache-redisson</module>
 
-        <module>../../solon-projects/solon-logging/solon-logging</module>
-        <module>../../solon-projects/solon-logging/solon-logging-log4j2</module>
-        <module>../../solon-projects/solon-logging/solon-logging-logback</module>
-        <module>../../solon-projects/solon-logging/solon-logging-simple</module>
-
         <module>../../solon-projects/solon-docs/solon-docs</module>
         <module>../../solon-projects/solon-docs/solon-docs-openapi2</module>
         <module>../../solon-projects/solon-docs/solon-docs-openapi2-javadoc</module>
-        <!--        <module>../../solon-projects/solon-docs/solon-docs-openapi3</module>-->
+        <module>../../solon-projects/solon-docs/solon-docs-openapi3</module>
         <module>../../solon-projects/solon-docs/solon-openapi2-knife4j</module>
+        <module>../../solon-projects/solon-docs/solon-openapi3-knife4j</module>
         <module>../../solon-projects/solon-docs/solon-swagger2-knife4j</module>
     </modules>
 </project>

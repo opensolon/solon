@@ -30,6 +30,8 @@
 
 * 新增 `solon-ai-agent` 插件
 * 新增 `nami-coder-gson` 插件
+* 新增 `solon-docs-openapi3` 插件
+* 新增 `solon-openapi3-knife4j` 插件
 * 新增 `solon-net-httputils-java11` 插件
 * 添加 `solon` Context.currentWith(...) 方法替代 ContextHolder（后者标为弃用）
 * 添加 `solon-data` UntransactionDataSource (非事务数据源)

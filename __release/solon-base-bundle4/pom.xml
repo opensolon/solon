@@ -33,5 +33,10 @@
         <module>../../solon-projects/solon-view/solon-view-thymeleaf</module>
         <module>../../solon-projects/solon-view/solon-view-enjoy</module>
         <module>../../solon-projects/solon-view/solon-view-beetl</module>
+
+        <module>../../solon-projects/solon-logging/solon-logging</module>
+        <module>../../solon-projects/solon-logging/solon-logging-log4j2</module>
+        <module>../../solon-projects/solon-logging/solon-logging-logback</module>
+        <module>../../solon-projects/solon-logging/solon-logging-simple</module>
     </modules>
 </project>
