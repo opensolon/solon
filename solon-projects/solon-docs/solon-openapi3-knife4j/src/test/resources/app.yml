@@ -1,0 +1,39 @@
+server.port: 9081
+
+solon.app:
+    name: demoapi
+    group: demo
+
+
+knife4j.enable: true
+knife4j.production: true
+knife4j.basic.enable: true
+knife4j.basic.username: admin
+knife4j.basic.password: admin
+knife4j.setting.enableOpenApi: false
+knife4j.setting.enableSwaggerModels: true
+knife4j.setting.enableFooter: false
+knife4j.setting.enableFooterCustom: true
+knife4j.setting.footerCustomContent: Apache License 2.0 | Copyright 2022-[SNOWY](https://www.xiaonuo.vip)
+
+
+swagger.adminApi:
+    groupName: "admin端接口"
+    globalResponseInData: true
+    globalResult: "com.swagger.demo.model.ResultModel"
+    schemes:
+        - https
+        - http
+    apis:
+        -   basePackage: "com.swagger.demo.controller.admin"
+    info: #可选
+        title: "在线文档"
+        description: "在线API文档"
+        termsOfService: "https://gitee.com/noear/solon"
+        version: 1.0
+        contact: #可选
+            name: "demo"
+            email: "demo@qq.com"
+        license: #可选
+            name: "demo"
+            url: "https://gitee.com/noear/solon/blob/master/LICENSE"

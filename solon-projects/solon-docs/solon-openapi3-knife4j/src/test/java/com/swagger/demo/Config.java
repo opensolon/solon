@@ -1,0 +1,142 @@
+/*
+ * Copyright 2017-2025 noear.org and authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.swagger.demo;
+
+import cn.ingrun.solon.knife4j.extension.OpenApiExtensionResolver;
+import com.swagger.demo.model.HttpCodes;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.models.parameters.HeaderParameter;
+import io.swagger.v3.oas.models.security.SecurityScheme;
+import org.noear.solon.annotation.Configuration;
+import org.noear.solon.annotation.Inject;
+import org.noear.solon.annotation.Managed;
+import org.noear.solon.core.handle.Result;
+import org.noear.solon.docs.ApiEnum;
+import org.noear.solon.docs.DocDocket;
+import org.noear.solon.docs.models.ApiInfo;
+
+
+@OpenAPIDefinition(info = @Info(title = "swagger-demo", version = "1.1.3"))
+@Configuration
+public class Config {
+
+    @Inject
+    OpenApiExtensionResolver openApiExtensionResolver;
+
+    /**
+     * 基于配置构建
+     */
+    @Managed("adminApi")
+    public DocDocket adminApi(@Inject("${swagger.adminApi}") DocDocket docket) {
+        docket.globalResponseCodes(new HttpCodes());
+        docket.basicAuth(openApiExtensionResolver.getSetting().getBasic());
+
+        docket.securityExtensions("token", new SecurityScheme().type(SecurityScheme.Type.APIKEY).name("Authorization").in(SecurityScheme.In.HEADER));
+        docket.globalParams(new HeaderParameter().name("Authorization").required(true));
+        docket.vendorExtensions(openApiExtensionResolver.buildExtensions());
+
+        return docket;
+    }
+
+    /**
+     * 基于代码构建
+     */
+    @Managed("restapi")
+    public DocDocket restapi() {
+        return new DocDocket()
+                .groupName("restapi接口")
+                .schemes(ApiEnum.SCHEMES_HTTP)
+                .apis("com.swagger.demo.controller.restapi");
+        //.securityDefinitionInHeader("token");
+
+    }
+
+    /**
+     * 基于代码构建
+     */
+    @Managed("appApi")
+    public DocDocket appApi() {
+        return new DocDocket()
+                .groupName("app端接口")
+                .schemes(ApiEnum.SCHEMES_HTTP)
+                .globalResult(Result.class)
+                .globalResponseInData(true)
+                .apis("com.swagger.demo.controller.app");
+        //.securityDefinitionInHeader("token");
+
+    }
+
+
+    /**
+     * 基于代码构建
+     */
+    @Managed("appApi2")
+    public DocDocket appApi2() {
+        return new DocDocket()
+                .groupName("app2端接口")
+                .schemes(ApiEnum.SCHEMES_HTTP)
+                .apis("com.swagger.demo.controller.app2");
+    }
+
+    /**
+     * 基于代码构建
+     */
+    @Managed("gatewayApi")
+    public DocDocket gatewayApi() {
+        return new DocDocket()
+                .groupName("gateway端接口")
+                .schemes(ApiEnum.SCHEMES_HTTP)
+                .globalResult(Result.class)
+                .globalResponseInData(true)
+                //.securityExtensions("TOKEN", new ApiKeyAuthDefinition().in(In.HEADER))
+                //.vendorExtensions("TOKEN", "xxx")
+                .globalParams(new HeaderParameter().name("token").required(true))
+                .apis("com.swagger.demo.controller.api2");
+        //.securityDefinitionInHeader("token");
+
+    }
+
+    /**
+     * 基于代码构建
+     */
+//    @Managed("removeApi")
+    public DocDocket removeApi() {
+        return new DocDocket()
+                .groupName("removeApi端接口")
+                .schemes(ApiEnum.SCHEMES_HTTP)
+                .upstream("lb://user-service", "/user-service", "swagger/v2?group=removeApi");
+        //.securityDefinitionInHeader("token");
+
+    }
+
+    //    @Managed("appApi")
+    public DocDocket appApi_2() {
+        return new DocDocket()
+                .groupName("app端接口")
+                .info(new ApiInfo().title("在线文档")
+                        .description("在线API文档")
+                        .termsOfService("https://gitee.com/noear/solon")
+                        .contact("demo", "https://gitee.com/noear/solon", "demo@foxmail.com")
+                        .version("1.0"))
+                .schemes(ApiEnum.SCHEMES_HTTP)
+                .globalResponseInData(true)
+                .globalResult(Result.class)
+                .apis("com.swagger.demo.controller.app");
+        //.securityDefinitionInHeader("token");
+
+    }
+}

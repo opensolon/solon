@@ -104,7 +104,7 @@
         <snakeyaml.version>2.5</snakeyaml.version>
 
         <swagger.version>1.6.11</swagger.version>
-        <swagger2.version>2.1.13</swagger2.version>
+        <swagger2.version>2.2.41</swagger2.version>
         <knife4j.version>4.5.0</knife4j.version>
         <therapi-runtime-javadoc.version>0.13.0</therapi-runtime-javadoc.version>
 
@@ -696,6 +696,11 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-config-banner</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-docs-openapi3</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 

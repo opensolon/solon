@@ -16,6 +16,7 @@
 package org.noear.solon.docs.openapi3.impl;
 
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.SessionState;
@@ -34,7 +35,7 @@ public class ParamHolder {
     private ParamWrap param;
     private Parameter anno;
 
-    public ParamHolder(ParamWrap param){
+    public ParamHolder(ParamWrap param) {
         this.param = param;
     }
 
@@ -58,13 +59,13 @@ public class ParamHolder {
 
     /**
      * 名字
-     * */
+     */
     public String getName() {
-        if(param != null){
+        if (param != null) {
             return param.getName();
         }
 
-        if(anno != null){
+        if (anno != null) {
             return anno.name();
         }
 
@@ -73,25 +74,25 @@ public class ParamHolder {
 
     /**
      * 描述
-     * */
-    public String getDescription(){
-        if(anno != null){
+     */
+    public String getDescription() {
+        if (anno != null) {
             return anno.description();
         }
 
         return null;
     }
 
-    public boolean isMap(){
-        if(param != null){
+    public boolean isMap() {
+        if (param != null) {
             return Map.class.isAssignableFrom(param.getType());
         }
 
         return false;
     }
 
-    public boolean isArray(){
-        if(param != null){
+    public boolean isArray() {
+        if (param != null) {
             return Collection.class.isAssignableFrom(param.getType());
         }
 
@@ -100,7 +101,7 @@ public class ParamHolder {
 
     /**
      * 获取数据类型
-     * */
+     */
     public String dataType() {
         if (param != null) {
             if (UploadedFile.class.equals(param.getType())) {
@@ -111,9 +112,9 @@ public class ParamHolder {
         }
 
         String tmp = null;
-//        if (anno != null) {
-//            tmp = anno.dataType();
-//        }
+        if (anno != null) {
+            tmp = anno.schema() != null ? anno.schema().type() : null;
+        }
 
         if (Utils.isBlank(tmp)) {
             return ApiEnum.STRING;
@@ -122,16 +123,19 @@ public class ParamHolder {
         }
     }
 
-    public String paramType(){
-        if(param != null) {
-            if (param.isRequiredBody()) {
+    public String paramType() {
+        if (param != null) {
+            if (param.spec().isRequiredBody()) {
                 return ApiEnum.PARAM_TYPE_BODY;
             }
         }
 
         String tmp = null;
         if (anno != null) {
-            tmp = anno.in().toString();
+            ParameterIn in = anno.in();
+            if (in != null) {
+                tmp = in.toString().toLowerCase();
+            }
         }
 
         if (Utils.isBlank(tmp)) {
@@ -147,16 +151,16 @@ public class ParamHolder {
                     Collection.class.isAssignableFrom(param.getType());
         }
 
-//        if (anno != null) {
-//            return anno.allowMultiple();
-//        }
+        if (anno != null) {
+            return anno.array() != null; // OpenAPI 3 中使用 array 属性表示数组
+        }
 
         return false;
     }
 
     public boolean isRequired() {
         if (param != null) {
-            if (param.isRequiredInput()) {
+            if (param.spec().isRequiredInput()) {
                 return true;
             }
         }
@@ -168,55 +172,53 @@ public class ParamHolder {
         return false;
     }
 
-    public boolean isRequiredBody(){
+    public boolean isRequiredBody() {
         if (param != null) {
-            return param.isRequiredBody();
+            return param.spec().isRequiredBody();
         }
 
         return false;
     }
 
-    public boolean isRequiredHeader(){
+    public boolean isRequiredHeader() {
         if (param != null) {
-            return param.isRequiredHeader();
+            return param.spec().isRequiredHeader();
         }
 
         return false;
     }
 
-    public boolean isRequiredCookie(){
+    public boolean isRequiredCookie() {
         if (param != null) {
-            return param.isRequiredCookie();
+            return param.spec().isRequiredCookie();
         }
 
         return false;
     }
 
-    public boolean isRequiredPath(){
+    public boolean isRequiredPath() {
         if (param != null) {
-            return param.isRequiredPath();
+            return param.spec().isRequiredPath();
         }
 
         return false;
     }
 
-    public boolean isReadOnly(){
-//        if(anno != null){
-//            return anno.readOnly();
-//        }
+    public boolean isReadOnly() {
+        if(anno != null){
+            return anno.ref() != null && !anno.ref().isEmpty(); // OpenAPI 3 中使用 ref 表示引用
+        }
 
         return false;
     }
 
-    public boolean isIgnore(){
-        if(param !=null){
-            if(Context.class.equals(param.getType())){
+    public boolean isIgnore() {
+        if (param != null) {
+            if (Context.class.equals(param.getTypeEggg().getType())) {
                 return true;
             }
 
-            if(SessionState.class.equals(param.getType())){
-                return true;
-            }
+            return SessionState.class.equals(param.getTypeEggg().getType());
         }
 
         return false;
