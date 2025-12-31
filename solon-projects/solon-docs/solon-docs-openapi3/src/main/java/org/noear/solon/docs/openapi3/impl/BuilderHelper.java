@@ -102,7 +102,7 @@ public class BuilderHelper {
                 }
 
                 if (methodType.ordinal() < MethodType.UNKNOWN.ordinal()) {
-                    return methodType.name.toLowerCase();
+                    return methodType.name().toLowerCase();
                 } else {
                     return ApiEnum.METHOD_POST;
                 }
