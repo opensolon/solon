@@ -31,7 +31,7 @@ import java.util.Map;
 
 /**
  * @author noear
- * @since 2.4
+ * @since 3.8.1
  */
 public class BuilderHelper {
     public static boolean isModel(Class<?> clz){

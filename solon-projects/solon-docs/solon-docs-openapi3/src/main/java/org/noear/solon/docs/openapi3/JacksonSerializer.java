@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 
 /**
+ * @author ingrun
  * @author noear
  * @since 2.8
  */

@@ -59,8 +59,9 @@ import java.util.*;
 /**
  * openapi v3 json builder
  *
+ * @author ingrun
  * @author noear
- * @since 2.3
+ * @since 3.8.1
  */
 public class OpenApi3Builder {
     private final OpenAPI openAPI = new OpenAPI();

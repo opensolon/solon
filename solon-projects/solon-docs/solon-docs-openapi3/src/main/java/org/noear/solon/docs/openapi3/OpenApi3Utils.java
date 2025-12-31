@@ -33,8 +33,9 @@ import java.util.stream.Collectors;
 /**
  * Open Api v3 工具类
  *
+ * @author ingrun
  * @author noear
- * @since 2.4
+ * @since 3.8.1
  */
 public class OpenApi3Utils {
     /**
