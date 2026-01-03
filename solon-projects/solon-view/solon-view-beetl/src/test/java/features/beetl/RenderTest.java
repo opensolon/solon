@@ -27,4 +27,29 @@ public class RenderTest {
         assert html != null;
         assert html.contains("<html>");
     }
+
+    /**
+     * 先完整渲染整个模板到内存中，没有错误时，再一次性写入 HTTP 响应。
+     */
+    @Test
+    public void case2() throws Throwable {
+        Solon.start(RenderTest.class, new String[0], app -> {
+
+        });
+
+
+        ModelAndView modelAndView = new ModelAndView("beetl_out_error.htm");
+        modelAndView.put("title", "beetl");
+
+        BeetlRender render = Solon.context().getBean(BeetlRender.class);
+        String html = null;
+        try {
+            html = render.renderAndReturn(modelAndView, new ContextEmpty());
+            assert html != null;
+        } catch (Throwable e) {
+            assert html == null;// 没有内容输出，即渲染中途报错没有内容输出
+            assert e.getMessage() != null;
+            assert e.getMessage().contains("VAR_NOT_DEFINED");
+        }
+    }
 }
