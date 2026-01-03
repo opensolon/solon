@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>${title}</title>
+</head>
+<body>
+beetl模板引擎先渲染，再写入请求响应。
+<b>之前</b>
+<% // entity.name 这是一个不存在的对象、属性，用于报错抛出 %>
+${entity.name}
+<b>之后</b>
+</body>
+</html>
