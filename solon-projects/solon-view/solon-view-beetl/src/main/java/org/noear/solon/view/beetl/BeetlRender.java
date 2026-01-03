@@ -276,6 +276,9 @@ public class BeetlRender implements Render {
 
 
         template.binding(mv.model());
-        template.renderTo(outputStream.get());
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        template.renderTo(out);
+        // 先渲染到内存字节缓冲区，再一次性写出。
+        outputStream.get().write(out.toByteArray());
     }
 }
