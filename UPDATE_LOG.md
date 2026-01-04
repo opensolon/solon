@@ -42,7 +42,7 @@
 * 优化 `solon-net-httputils` 添加虚拟线程支持
 * 优化 `solon-java25` 的 ScopeLocal 适配
 * kafka 升为 3.9.1
-* snack4 升为 4.0.26
+* snack4 升为 4.0.28
 * wood 升为 1.4.4
 * luffy 升为 1.11.4
 * liquor 升为 1.6.7
