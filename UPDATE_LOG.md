@@ -35,6 +35,7 @@
 * 新增 `solon-net-httputils-java11` 插件
 * 添加 `solon` Context.currentWith(...) 方法替代 ContextHolder（后者标为弃用）
 * 添加 `solon-data` UntransactionDataSource (非事务数据源)
+* 添加 `solon-server` newVirtualThreadFactory 名字前缀支持
 * 添加 `solon-web-vertx` VxWebContext:getVertx() 方法
 * 添加 `nami` NamiAttach（更适合 java25 未来的发展） 替代 NamiAttachment（后者标为弃用）
 * 优化 `solon` ScopeLocal 定义
