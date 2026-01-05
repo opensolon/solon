@@ -41,6 +41,7 @@
 * 优化 `solon-data` TranManager 完成 ScopeLocal 改造
 * 优化 `solon-net-httputils` 添加虚拟线程支持
 * 优化 `solon-java25` 的 ScopeLocal 适配
+* 修复 `solon-data` UnpooledDataSource driverClassName 配置失效的问题  
 * kafka 升为 3.9.1
 * snack4 升为 4.0.28
 * wood 升为 1.4.4

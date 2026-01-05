@@ -54,6 +54,7 @@ public class UnpooledDataSource implements DataSource {
 
         this.username = props.getProperty("username");
         this.password = props.getProperty("password");
+        this.driverClassName = props.getProperty("driverClassName");
 
         setDriverClassName(driverClassName);
     }
@@ -68,6 +69,7 @@ public class UnpooledDataSource implements DataSource {
         this.url = url;
         this.username = username;
         this.password = password;
+        this.driverClassName = driverClassName;
 
         setDriverClassName(driverClassName);
     }
@@ -94,7 +96,7 @@ public class UnpooledDataSource implements DataSource {
             this.driverClassName = driverClassName;
             Class.forName(driverClassName);
         } catch (ClassNotFoundException e) {
-            throw new IllegalArgumentException(e);
+            throw new IllegalArgumentException("driverClassName", e);
         }
     }
 
