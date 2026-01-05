@@ -28,17 +28,29 @@ import java.util.concurrent.ThreadFactory;
  */
 public class ThreadsUtil {
     private static Method method_newVirtualThreadPerTaskExecutor;
+    private static Method method_newThreadPerTaskExecutor;
+
     private static Method method_newVirtualOfVirtual;
     private static Method method_newVirtualFactory;
     private static Method method_newVirtualName;
 
     public static ExecutorService newVirtualThreadPerTaskExecutor() {
+        return newVirtualThreadPerTaskExecutor(null);
+    }
+
+    public static ExecutorService newVirtualThreadPerTaskExecutor(String prefix) {
         try {
             if (method_newVirtualThreadPerTaskExecutor == null) {
                 method_newVirtualThreadPerTaskExecutor = Executors.class.getDeclaredMethod("newVirtualThreadPerTaskExecutor");
+                method_newThreadPerTaskExecutor = Executors.class.getDeclaredMethod("newThreadPerTaskExecutor", ThreadFactory.class);
+
             }
 
-            return (ExecutorService) method_newVirtualThreadPerTaskExecutor.invoke(Executors.class);
+            if (prefix != null) {
+                return (ExecutorService) method_newThreadPerTaskExecutor.invoke(Executors.class, newVirtualThreadFactory(prefix));
+            } else {
+                return (ExecutorService) method_newVirtualThreadPerTaskExecutor.invoke(Executors.class);
+            }
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
