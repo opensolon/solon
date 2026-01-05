@@ -35,7 +35,7 @@ public class OkHttpDispatcherLoader {
             try {
                 if (dispatcher == null) {
                     if (Solon.appIf(app -> app.cfg().isEnabledVirtualThreads())) {
-                        dispatcher = new Dispatcher(ThreadsUtil.newVirtualThreadPerTaskExecutor());
+                        dispatcher = new Dispatcher(ThreadsUtil.newVirtualThreadPerTaskExecutor("okhttp-"));
                     } else {
                         dispatcher = new Dispatcher();
                         dispatcher.setMaxRequests(Integer.MAX_VALUE);

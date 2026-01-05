@@ -59,7 +59,7 @@ public interface ServerExecutorProps {
      */
     default ExecutorService newWorkExecutor(String namePrefix) {
         if (Solon.cfg().isEnabledVirtualThreads()) {
-            return ThreadsUtil.newVirtualThreadPerTaskExecutor();
+            return ThreadsUtil.newVirtualThreadPerTaskExecutor(namePrefix);
         } else {
             return new ThreadPoolExecutor(getCoreThreads(),
                     getMaxThreads(isIoBound()),

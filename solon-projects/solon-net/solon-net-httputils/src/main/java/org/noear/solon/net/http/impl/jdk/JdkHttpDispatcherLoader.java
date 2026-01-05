@@ -37,12 +37,12 @@ public class JdkHttpDispatcherLoader {
             try {
                 if (dispatcher == null) {
                     if (Solon.appIf(app -> app.cfg().isEnabledVirtualThreads())) {
-                        dispatcher = ThreadsUtil.newVirtualThreadPerTaskExecutor();
+                        dispatcher = ThreadsUtil.newVirtualThreadPerTaskExecutor("http-dispatcher-");
                     } else {
                         dispatcher = new ThreadPoolExecutor(0, Integer.MAX_VALUE,
                                 60, TimeUnit.SECONDS,
                                 new SynchronousQueue<>()
-                                , new NamedThreadFactory("http-dispatcher").daemon(false));
+                                , new NamedThreadFactory("http-dispatcher-").daemon(false));
                     }
                 }
             } finally {
