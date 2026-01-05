@@ -30,6 +30,7 @@ public class ThreadsUtil {
     private static Method method_newVirtualThreadPerTaskExecutor;
     private static Method method_newVirtualOfVirtual;
     private static Method method_newVirtualFactory;
+    private static Method method_newVirtualName;
 
     public static ExecutorService newVirtualThreadPerTaskExecutor() {
         try {
@@ -44,15 +45,24 @@ public class ThreadsUtil {
     }
 
     public static ThreadFactory newVirtualThreadFactory() {
+        return newVirtualThreadFactory("solon-");
+    }
+
+    public static ThreadFactory newVirtualThreadFactory(String prefix) {
         try {
             if (method_newVirtualOfVirtual == null) {
                 method_newVirtualOfVirtual = Thread.class.getDeclaredMethod("ofVirtual");
 
                 Class<?> threadBuilderClass = Class.forName("java.lang.Thread$Builder");
                 method_newVirtualFactory = threadBuilderClass.getMethod("factory");
+                method_newVirtualName = threadBuilderClass.getMethod("name", String.class, int.class);
             }
 
             Object ofVirtual = method_newVirtualOfVirtual.invoke(Thread.class);
+
+            if (prefix != null) {
+                ofVirtual = method_newVirtualName.invoke(ofVirtual, prefix, 0);
+            }
 
             return (ThreadFactory) method_newVirtualFactory.invoke(ofVirtual);
         } catch (Exception e) {
