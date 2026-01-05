@@ -25,6 +25,7 @@ import java.util.concurrent.ThreadFactory;
  *
  * @author noear
  * @since 2.7
+ * @since 3.8
  */
 public class ThreadsUtil {
     private static Method method_newVirtualThreadPerTaskExecutor;
@@ -57,7 +58,7 @@ public class ThreadsUtil {
     }
 
     public static ThreadFactory newVirtualThreadFactory() {
-        return newVirtualThreadFactory("solon-");
+        return newVirtualThreadFactory(null);
     }
 
     public static ThreadFactory newVirtualThreadFactory(String prefix) {
@@ -67,13 +68,13 @@ public class ThreadsUtil {
 
                 Class<?> threadBuilderClass = Class.forName("java.lang.Thread$Builder");
                 method_newVirtualFactory = threadBuilderClass.getMethod("factory");
-                method_newVirtualName = threadBuilderClass.getMethod("name", String.class, int.class);
+                method_newVirtualName = threadBuilderClass.getMethod("name", String.class, long.class);
             }
 
             Object ofVirtual = method_newVirtualOfVirtual.invoke(Thread.class);
 
             if (prefix != null) {
-                ofVirtual = method_newVirtualName.invoke(ofVirtual, prefix, 0);
+                ofVirtual = method_newVirtualName.invoke(ofVirtual, prefix, 0L);
             }
 
             return (ThreadFactory) method_newVirtualFactory.invoke(ofVirtual);
