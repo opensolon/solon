@@ -47,6 +47,7 @@
 * wood 升为 1.4.4
 * luffy 升为 1.11.4
 * liquor 升为 1.6.7
+* smarthttp 升为 2.5.18
 
 ### v3.8.0
 
