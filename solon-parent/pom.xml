@@ -1802,6 +1802,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon-openapi3-knife4j</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon-admin-client</artifactId>
                 <version>${solon-admin.version}</version>
             </dependency>
