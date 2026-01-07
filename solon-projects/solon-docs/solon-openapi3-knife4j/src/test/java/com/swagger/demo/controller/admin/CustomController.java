@@ -35,7 +35,7 @@ import org.noear.solon.annotation.Mapping;
 @Controller
 public class CustomController {
 
-    @Operation(summary = "新增实验性质的自定义返回值格式", description = "对接强势第三方,需要按对方约定格式返回数据")
+    @Operation(summary = "新增实验性质的自定义返回值格式", description = "对接强势第三方,需要按对方约定格式返回数据", tags = {"HelloWorld222"})
     @Parameters({
             @Parameter(name = "paramA", description = "参数a"),
             @Parameter(name = "paramB", description = "参数b"),

@@ -56,9 +56,6 @@ public class ActionHolder {
         if (apiAnno != null && !apiAnno.name().isEmpty()) {
             actionTags.add(apiAnno.name());
         }
-        if (apiAnno != null) {
-            actionTags.addAll(Arrays.asList(apiAnno.description()));
-        }
         actionTags.addAll(Arrays.asList(apiOperationAnno.tags()));
         actionTags.remove("");
 
