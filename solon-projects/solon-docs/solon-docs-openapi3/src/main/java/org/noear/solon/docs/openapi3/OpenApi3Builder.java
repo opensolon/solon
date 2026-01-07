@@ -33,7 +33,6 @@ import io.swagger.v3.oas.models.responses.ApiResponses;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
-import org.noear.eggg.ParamEggg;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Action;
@@ -44,7 +43,6 @@ import org.noear.solon.core.route.Routing;
 import org.noear.solon.core.route.VersionedTarget;
 import org.noear.solon.core.util.GenericUtil;
 import org.noear.solon.core.wrap.ParamWrap;
-import org.noear.solon.docs.ApiEnum;
 import org.noear.solon.docs.DocDocket;
 import org.noear.solon.docs.exception.DocException;
 import org.noear.solon.docs.models.ApiContact;
@@ -55,6 +53,7 @@ import org.noear.solon.docs.openapi3.impl.ParamHolder;
 
 import java.lang.reflect.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * openapi v3 json builder
@@ -138,6 +137,10 @@ public class OpenApi3Builder {
             }
         }
 
+        // 按tag name去重
+        List<io.swagger.v3.oas.models.tags.Tag> tags = openAPI.getTags();
+        openAPI.setTags(tags.stream().collect(Collectors.groupingBy(io.swagger.v3.oas.models.tags.Tag::getName)).
+                values().stream().map(i -> i.get(0)).collect(Collectors.toList()));
 
         return openAPI;
     }
@@ -146,6 +149,7 @@ public class OpenApi3Builder {
      * 解析分组包
      */
     private void parseGroupPackage() {
+
         //获取所有控制器及动作
         Map<Class<?>, List<ActionHolder>> classMap = this.getApiAction();
 
@@ -222,25 +226,12 @@ public class OpenApi3Builder {
         // controller 信息
         Tag api = clazz.getAnnotation(Tag.class);
 
-        String controllerKey = BuilderHelper.getControllerKey(clazz);
-        Set<String> apiTags = new LinkedHashSet<>();
-        if (api != null) {
-            apiTags.add(api.name());
-            apiTags.addAll(Arrays.asList(api.description()));
-        }
-        apiTags.remove("");
-
-        for (String tagName : apiTags) {
+        if (api != null && Utils.isNotEmpty(api.name())) {
             io.swagger.v3.oas.models.tags.Tag tag = new io.swagger.v3.oas.models.tags.Tag();
-            tag.setName(tagName);
-            tag.setDescription(controllerKey + " (" + clazz.getSimpleName() + ")");
-
-            if (openAPI.getTags() == null) {
-                openAPI.setTags(new ArrayList<>());
-            }
+            tag.setName(api.name());
+            tag.setDescription(api.description());
             openAPI.addTagsItem(tag);
         }
-
 
         // 解析action
         this.parseAction(actionHolders);
