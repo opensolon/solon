@@ -46,6 +46,7 @@
 * kafka 升为 3.9.1
 * snack4 升为 4.0.28
 * wood 升为 1.4.4
+* redisx 升为 1.8.4
 * luffy 升为 1.11.4
 * liquor 升为 1.6.7
 * smarthttp 升为 2.5.18
