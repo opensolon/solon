@@ -41,9 +41,9 @@ public class SnelUtil {
      * @param inv  调用
      */
     public static String evalTmpl(String tmpl, Invocation inv) {
-        if (tmpl.indexOf('#') >= 0) {
+        if (tmpl.indexOf("#{") >= 0) {
             return SnEL.evalTmpl(tmpl, new InvocationContext(inv));
-        } else if (tmpl.indexOf('$') >= 0) {
+        } else if (tmpl.indexOf("${") >= 0) {
             //兼容旧模式
             return TmplUtil.parse(tmpl, inv);
         } else {
@@ -63,14 +63,29 @@ public class SnelUtil {
      * @param model 数据模型
      */
     public static String evalTmpl(String tmpl, Map model) {
-        if (tmpl.indexOf('#') >= 0) {
+        if (tmpl.indexOf("#{") >= 0) {
             return SnEL.evalTmpl(tmpl, model);
-        } else if (tmpl.indexOf('$') >= 0) {
+        } else if (tmpl.indexOf("${") >= 0) {
             //兼容旧模式
             return TmplUtil.parse(tmpl, model);
         } else {
             return tmpl;
         }
+    }
+
+    /**
+     * 执行模板渲染
+     */
+    public static String render(String tmpl, Map model) {
+        if (Assert.isEmpty(tmpl)) {
+            return tmpl;
+        }
+
+        if (tmpl.indexOf("#{") >= 0) {
+            return SnEL.evalTmpl(tmpl, model);
+        }
+
+        return tmpl;
     }
 
     /**
