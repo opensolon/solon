@@ -555,6 +555,11 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon-ai-dialect-gemini</artifactId>
+                <version>${solon-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon-ai-search-baidu</artifactId>
                 <version>${solon-ai.version}</version>
             </dependency>

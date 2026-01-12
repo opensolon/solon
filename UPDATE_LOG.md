@@ -29,6 +29,7 @@
 
 
 * 新增 `solon-ai-agent` 插件
+* 新增 `solon-ai-dialect-gemini` 插件
 * 新增 `nami-coder-gson` 插件
 * 新增 `solon-docs-openapi3` 插件
 * 新增 `solon-openapi3-knife4j` 插件
