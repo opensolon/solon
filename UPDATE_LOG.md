@@ -27,7 +27,7 @@
 
 ### v3.8.1
 
-
+* 插件 `solon-flow` 第七次预览
 * 新增 `solon-ai-agent` 插件
 * 新增 `solon-ai-dialect-gemini` 插件
 * 新增 `nami-coder-gson` 插件
