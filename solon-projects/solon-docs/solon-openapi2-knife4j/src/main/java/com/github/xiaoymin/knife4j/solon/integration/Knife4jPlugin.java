@@ -16,6 +16,7 @@
 package com.github.xiaoymin.knife4j.solon.integration;
 
 import com.github.xiaoymin.knife4j.solon.extension.OpenApiExtensionResolver;
+import com.github.xiaoymin.knife4j.solon.settings.OpenApiSetting;
 import org.noear.solon.Utils;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
@@ -32,31 +33,29 @@ public class Knife4jPlugin implements Plugin {
     @Override
     public void start(AppContext context) throws Throwable {
         OpenApiExtensionResolver openApiExtensionResolver = context.wrapAndPut(OpenApiExtensionResolver.class).get();
+        OpenApiSetting setting = openApiExtensionResolver.getSetting();
 
-        if (openApiExtensionResolver.getSetting().isEnable()) {
-            String uiPath = "/";
-            if (openApiExtensionResolver.getSetting().isProduction()) {
-                if (context.app().cfg().isFilesMode() == false) {
-                    //生产环境，只有 files 模式才能用（即开发模式）
-                    StaticMappings.add(uiPath, new ClassPathStaticRepository("META-INF/resources"));
-                }
-            } else {
-                //非生产环境，一直可用
-                StaticMappings.add(uiPath, new ClassPathStaticRepository("META-INF/resources"));
+        if (setting.isEnable() == false) {
+            return;
+        }
+
+        if (setting.isProduction() && !context.app().cfg().isFilesMode()) {
+            //生产环境，只有 files 模式才能用（即开发模式）
+            return;
+        }
+
+        String uiPath = "/";
+        StaticMappings.add(uiPath, new ClassPathStaticRepository("META-INF/resources"));
+        context.app().router().add(uiPath, Knife4jController.class);         //注册控制器
+
+        //添加 auth
+        context.subBeansOfType(DocDocket.class, bean -> {
+            if (Utils.isEmpty(bean.basicAuth())) {
+                //如果没有定义，则用全局的配置
+                bean.basicAuth(setting.getBasic());
             }
 
-            //注册控制器
-            context.app().add(uiPath, Knife4jController.class);
-
-            //添加 auth
-            context.subBeansOfType(DocDocket.class, bean -> {
-                if (Utils.isEmpty(bean.basicAuth())) {
-                    //如果没有定义，则用全局的配置
-                    bean.basicAuth(openApiExtensionResolver.getSetting().getBasic());
-                }
-
-                bean.vendorExtensions(openApiExtensionResolver.buildExtensions());
-            });
-        }
+            bean.vendorExtensions(openApiExtensionResolver.buildExtensions());
+        });
     }
 }
