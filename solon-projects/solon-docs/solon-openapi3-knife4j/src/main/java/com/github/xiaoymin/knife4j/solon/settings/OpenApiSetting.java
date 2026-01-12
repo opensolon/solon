@@ -13,28 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.ingrun.solon.knife4j.settings;
-
-import org.noear.solon.docs.BasicAuth;
+package com.github.xiaoymin.knife4j.solon.settings;
 
 /**
  * @author noear
  * @since 2.3
  */
-public class OpenApiBasicAuth implements BasicAuth {
-    boolean enable = true;
-    String username;
-    String password;
+public class OpenApiSetting {
+    private boolean enable = false;
+    private boolean production = false;
+    private OpenApiBasicAuth basic = new OpenApiBasicAuth();
 
     public boolean isEnable() {
         return enable;
     }
 
-    public String getPassword() {
-        return password;
+    public boolean isProduction() {
+        return production;
     }
 
-    public String getUsername() {
-        return username;
+    public OpenApiBasicAuth getBasic() {
+        return basic;
     }
 }

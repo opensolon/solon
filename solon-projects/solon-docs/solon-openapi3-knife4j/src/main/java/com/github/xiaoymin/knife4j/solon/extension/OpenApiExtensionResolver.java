@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.ingrun.solon.knife4j.extension;
+package com.github.xiaoymin.knife4j.solon.extension;
 
 
-import cn.ingrun.solon.knife4j.settings.OpenApiExtendSetting;
-import cn.ingrun.solon.knife4j.settings.OpenApiSetting;
+import com.github.xiaoymin.knife4j.solon.settings.OpenApiExtendSetting;
+import com.github.xiaoymin.knife4j.solon.settings.OpenApiSetting;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.docs.DocDocket;

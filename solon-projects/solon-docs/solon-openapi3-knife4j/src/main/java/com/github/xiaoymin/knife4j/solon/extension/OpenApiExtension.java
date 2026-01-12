@@ -13,30 +13,44 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.ingrun.solon.knife4j.extension;
+package com.github.xiaoymin.knife4j.solon.extension;
 
-
-import cn.ingrun.solon.knife4j.settings.OpenApiExtendSetting;
 import org.noear.solon.docs.models.ApiVendorExtension;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * @author noear
  * @since 2.3
  */
-public class OpenApiSettingExtension implements ApiVendorExtension<OpenApiExtendSetting> {
-    OpenApiExtendSetting value;
+public class OpenApiExtension implements ApiVendorExtension<Map> {
+    public static final String EXTENSION_NAME = "x-openapi";
 
-    public OpenApiSettingExtension(OpenApiExtendSetting value) {
-        this.value = value;
+    private final String name;
+    private final Map<String, Object> value;
+
+    public OpenApiExtension() {
+        this(EXTENSION_NAME);
     }
 
-    @Override
+    public OpenApiExtension(String name) {
+        this.name = name;
+        this.value = new LinkedHashMap<>();
+    }
+
     public String getName() {
-        return "x-setting";
+        return name;
     }
 
-    @Override
-    public OpenApiExtendSetting getValue() {
+    public Map getValue() {
         return value;
     }
+
+    public OpenApiExtension addProperty(ApiVendorExtension vendorExtension) {
+        value.put(vendorExtension.getName(), vendorExtension.getValue());
+
+        return this;
+    }
 }
+

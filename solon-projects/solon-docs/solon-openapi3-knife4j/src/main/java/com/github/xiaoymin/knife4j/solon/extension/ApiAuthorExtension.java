@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.ingrun.solon.knife4j.extension;
+package com.github.xiaoymin.knife4j.solon.extension;
 
 import org.noear.solon.docs.models.ApiVendorExtension;
 
@@ -21,18 +21,18 @@ import org.noear.solon.docs.models.ApiVendorExtension;
  * @author noear
  * @since 2.3
  */
-public class ApiOrderExtension implements ApiVendorExtension<Integer> {
-    private final Integer order;
+public class ApiAuthorExtension implements ApiVendorExtension<String> {
+    private final String author;
 
-    public ApiOrderExtension(Integer order) {
-        this.order = order;
+    public ApiAuthorExtension(String author) {
+        this.author = author;
     }
 
     public String getName() {
-        return "x-order";
+        return "x-author";
     }
 
-    public Integer getValue() {
-        return this.order;
+    public String getValue() {
+        return this.author;
     }
 }

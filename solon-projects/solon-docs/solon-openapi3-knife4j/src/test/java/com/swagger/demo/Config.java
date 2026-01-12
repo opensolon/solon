@@ -15,7 +15,7 @@
  */
 package com.swagger.demo;
 
-import cn.ingrun.solon.knife4j.extension.OpenApiExtensionResolver;
+import com.github.xiaoymin.knife4j.solon.extension.OpenApiExtensionResolver;
 import com.swagger.demo.model.HttpCodes;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
