@@ -83,8 +83,13 @@ public class WebStaticfilesPlugin implements Plugin {
                 if (repository.startsWith(":")) {
                     StaticMappings.add(path, new ExtendStaticRepository());
                 } else if (ResourceUtil.hasClasspath(repository)) {
+                    //calsspath:
                     repository = ResourceUtil.remSchema(repository);
                     StaticMappings.add(path, new ClassPathStaticRepository(repository));
+                } else if (ResourceUtil.hasFile(repository)) {
+                    //file:
+                    repository = ResourceUtil.remSchema(repository);
+                    StaticMappings.add(path, new FileStaticRepository(repository));
                 } else {
                     StaticMappings.add(path, new FileStaticRepository(repository));
                 }
