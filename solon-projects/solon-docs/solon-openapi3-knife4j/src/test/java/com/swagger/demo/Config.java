@@ -111,6 +111,18 @@ public class Config {
     }
 
     /**
+     * ISSUES
+     */
+    @Managed("issues")
+    public DocDocket issues() {
+        return new DocDocket()
+                .groupName("issues")
+                .schemes(ApiEnum.SCHEMES_HTTP)
+                .apis("com.swagger.demo.controller.issues");
+    }
+
+
+    /**
      * 基于代码构建
      */
 //    @Managed("removeApi")

@@ -33,6 +33,7 @@ import io.swagger.v3.oas.models.responses.ApiResponses;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
+import org.noear.eggg.TypeEggg;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Action;
@@ -41,6 +42,7 @@ import org.noear.solon.core.handle.Handler;
 import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.core.route.Routing;
 import org.noear.solon.core.route.VersionedTarget;
+import org.noear.solon.core.util.EgggUtil;
 import org.noear.solon.core.util.GenericUtil;
 import org.noear.solon.core.wrap.ParamWrap;
 import org.noear.solon.docs.DocDocket;
@@ -279,7 +281,8 @@ public class OpenApi3Builder {
             operation.setParameters(parameters);
 
             // 设置响应
-            operation.setResponses(this.parseActionResponse(controllerKey, actionName, actionMethod));
+//            operation.setResponses(this.parseActionResponse(controllerKey, actionName, actionMethod));
+            operation.setResponses(this.parseActionResponse(actionHolder));
 
             if (Utils.isBlank(apiAction.operationId())) {
                 operation.setOperationId(operationMethod + "_" + pathKey.replace("/", "_"));
@@ -394,7 +397,7 @@ public class OpenApi3Builder {
     /**
      * 根据数据类型获取Schema
      */
-    private Schema getSchemaByType(String dataType) {
+    private Schema<?> getSchemaByType(String dataType) {
         if (dataType == null) {
             return new StringSchema();
         }
@@ -409,6 +412,7 @@ public class OpenApi3Builder {
             case "string":
                 return new StringSchema();
             case "array":
+            case "list":
                 return new ArraySchema();
             case "object":
                 return new ObjectSchema();
@@ -441,6 +445,7 @@ public class OpenApi3Builder {
                             .addMediaType("application/json",
                                     new MediaType()
                                             .schema(new Schema<>().$ref("#/components/schemas/" + schema))));
+                    response.description("OK");
                 }
             }
 
@@ -449,11 +454,61 @@ public class OpenApi3Builder {
 
         // 如果没有定义200响应，至少添加一个基本响应
         if (!responses.containsKey("200")) {
-            responses.addApiResponse("200", new ApiResponse().description("Success"));
+            responses.addApiResponse("200", new ApiResponse().description("OK"));
+        }
+
+        return responses;
+
+    }
+
+    private ApiResponses parseActionResponse(ActionHolder actionHolder) {
+        ApiResponses responses = new ApiResponses();
+
+
+        Class<?> returnType = actionHolder.action().method().getReturnType();
+        Type type = actionHolder.action().method().getGenericReturnType();
+
+        String produces = Objects.requireNonNull(actionHolder.action().produces(), "application/json");
+        String schema = this.parseSchema(returnType, type);
+
+
+        if (schema != null) {
+            ApiResponse okResponse = new ApiResponse()
+                    .description("OK")
+                    .content(new Content().addMediaType(produces,
+                            new MediaType()
+                                    .schema(generSchema(actionHolder.action().method().getReturnTypeEggg())
+                                    )
+                    ));
+            responses.addApiResponse("200", okResponse);
+        }
+
+        // 如果没有定义200响应，至少添加一个基本响应
+        if (!responses.containsKey("200")) {
+            responses.addApiResponse("200", new ApiResponse().description("OK"));
         }
 
         return responses;
     }
+
+
+    private Schema<?> generSchema(TypeEggg typeEggg) {
+        Class<?> returnType = typeEggg.getType();
+
+        if (!BuilderHelper.isModel(returnType) && typeEggg.getGenericType() instanceof ParameterizedType) {
+            Schema<?> schemaByType = this.getSchemaByType(typeEggg.getType().getSimpleName());
+            Map<String, Type> genericInfo = typeEggg.getGenericInfo();
+            schemaByType.items(this.generSchema(EgggUtil.getTypeEggg(genericInfo.values().stream().findFirst().orElse(null))));
+            return schemaByType;
+        }
+
+        String schemaName = parseSchema(returnType, typeEggg.getType());
+
+        Schema<Object> schemaByType = new Schema<>();
+        schemaByType.$ref("#/components/schemas/" + schemaName);
+        return schemaByType;
+    }
+
 
     /**
      * 解析返回值
@@ -476,8 +531,7 @@ public class OpenApi3Builder {
         if (apiResClz != Void.class && apiResClz != void.class) {
             if (BuilderHelper.isModel(apiResClz)) {
                 try {
-                    String schemaRef = this.parseSchema(apiResClz, method.getGenericReturnType());
-                    return schemaRef;
+                    return this.parseSchema(apiResClz, method.getGenericReturnType());
                 } catch (Exception e) {
                     String hint = method.getDeclaringClass().getName() + ":" + method.getName() + "->" + apiResClz.getSimpleName();
                     throw new DocException("Response model parsing failure: " + hint, e);
@@ -485,25 +539,33 @@ public class OpenApi3Builder {
             }
         }
 
-        if (responses.size() == 0) {
-            if (docket.globalResult() != null) {
-                schemaName = this.parseSchema(docket.globalResult(), docket.globalResult());
-            }
+        if (responses.isEmpty() && docket.globalResult() != null) {
+            schemaName = this.parseSchema(docket.globalResult(), docket.globalResult());
         } else {
             // 将参数放入commonRes中,作为新的schema引用
-            String schemaRef = this.parseSchema(controllerKey, actionName, responses);
-            schemaName = schemaRef;
+            schemaName = this.parseSchema(controllerKey, actionName, responses);
         }
 
         return schemaName;
     }
 
+    private String getSchemaName(Class<?> clazz, Type type) {
+        String schemaName = BuilderHelper.getModelName(clazz, type);
+        io.swagger.v3.oas.annotations.media.Schema apiModel = clazz.getAnnotation(io.swagger.v3.oas.annotations.media.Schema.class);
+        if (apiModel != null && Utils.isNotEmpty(apiModel.name())) {
+            schemaName = apiModel.name();
+        }
+
+        return schemaName;
+    }
 
     /**
      * 将class解析为schema
      */
     private String parseSchema(Class<?> clazz, Type type) {
-        final String schemaName = BuilderHelper.getModelName(clazz, type);
+
+        io.swagger.v3.oas.annotations.media.Schema apiModel = clazz.getAnnotation(io.swagger.v3.oas.annotations.media.Schema.class);
+        String schemaName = this.getSchemaName(clazz, type);
 
         // 1.已存在,不重复解析
         if (openAPI.getComponents() != null && openAPI.getComponents().getSchemas() != null) {
@@ -513,15 +575,14 @@ public class OpenApi3Builder {
         }
 
         // 2.创建模型
-        io.swagger.v3.oas.annotations.media.Schema apiModel = clazz.getAnnotation(io.swagger.v3.oas.annotations.media.Schema.class);
         String title;
-        if (apiModel != null) {
+        if (apiModel != null && Utils.isNotEmpty(apiModel.description())) {
             title = apiModel.description();
         } else {
             title = schemaName;
         }
 
-        Schema schema = new Schema<>();
+        Schema<Object> schema = new Schema<>();
         schema.setName(schemaName);
         schema.setTitle(title);
         schema.setType("object");
@@ -533,7 +594,10 @@ public class OpenApi3Builder {
         if (openAPI.getComponents().getSchemas() == null) {
             openAPI.getComponents().setSchemas(new LinkedHashMap<>());
         }
-        openAPI.getComponents().addSchemas(schemaName, schema);
+
+        if (!Collection.class.isAssignableFrom(clazz)) {
+            openAPI.getComponents().addSchemas(schemaName, schema);
+        }
 
         if (clazz.isEnum()) {
             schema.setType("string");
@@ -550,7 +614,16 @@ public class OpenApi3Builder {
         }
 
         // 3.完成模型解析 - 获取所有字段并添加属性
-        Field[] fields = clazz.getDeclaredFields();
+        List<Field> fields = new ArrayList<>();
+        Class<?> currentClass = clazz;
+
+        // 收集当前类及其所有父类的字段
+        while (currentClass != null && currentClass != Object.class) {
+            fields.addAll(Arrays.asList(currentClass.getDeclaredFields()));
+            currentClass = currentClass.getSuperclass();
+        }
+
+
         Map<String, Schema> properties = new LinkedHashMap<>();
         for (Field field : fields) {
             if (Modifier.isStatic(field.getModifiers())) {
@@ -668,6 +741,7 @@ public class OpenApi3Builder {
     private String parseSchema(String controllerKey, String actionName, List<ApiResProperty> responses) {
         final String schemaName = controllerKey + "_" + actionName;
 
+
         Map<String, Schema> propertiesList = new LinkedHashMap<>();
 
         Schema schema = new Schema<>();
@@ -741,9 +815,6 @@ public class OpenApi3Builder {
             if (paramHolder.getParam() != null) {
                 dataTypeClass = paramHolder.getParam().getTypeEggg().getType();
             }
-//            else {
-//                dataTypeClass = String.class;
-//            }
 
             if (null != dataTypeClass && dataTypeClass != Void.class) {
                 return this.parseSchema(dataTypeClass, dataTypeClass);
