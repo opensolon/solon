@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.ingrun.solon.knife4j.settings;
+package com.github.xiaoymin.knife4j.solon.settings;
 
 /**
  * @author noear

@@ -13,26 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.ingrun.solon.knife4j.settings;
+package com.github.xiaoymin.knife4j.solon.extension;
+
+
+import com.github.xiaoymin.knife4j.solon.settings.OpenApiExtendSetting;
+import org.noear.solon.docs.models.ApiVendorExtension;
 
 /**
  * @author noear
  * @since 2.3
  */
-public class OpenApiSetting {
-    private boolean enable = false;
-    private boolean production = false;
-    private OpenApiBasicAuth basic = new OpenApiBasicAuth();
+public class OpenApiSettingExtension implements ApiVendorExtension<OpenApiExtendSetting> {
+    OpenApiExtendSetting value;
 
-    public boolean isEnable() {
-        return enable;
+    public OpenApiSettingExtension(OpenApiExtendSetting value) {
+        this.value = value;
     }
 
-    public boolean isProduction() {
-        return production;
+    @Override
+    public String getName() {
+        return "x-setting";
     }
 
-    public OpenApiBasicAuth getBasic() {
-        return basic;
+    @Override
+    public OpenApiExtendSetting getValue() {
+        return value;
     }
 }

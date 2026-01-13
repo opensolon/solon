@@ -13,26 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.ingrun.solon.knife4j.extension;
+package com.github.xiaoymin.knife4j.solon.settings;
 
-import org.noear.solon.docs.models.ApiVendorExtension;
+import org.noear.solon.docs.BasicAuth;
 
 /**
  * @author noear
  * @since 2.3
  */
-public class ApiAuthorExtension implements ApiVendorExtension<String> {
-    private final String author;
+public class OpenApiBasicAuth implements BasicAuth {
+    boolean enable = true;
+    String username;
+    String password;
 
-    public ApiAuthorExtension(String author) {
-        this.author = author;
+    public boolean isEnable() {
+        return enable;
     }
 
-    public String getName() {
-        return "x-author";
+    public String getPassword() {
+        return password;
     }
 
-    public String getValue() {
-        return this.author;
+    public String getUsername() {
+        return username;
     }
 }

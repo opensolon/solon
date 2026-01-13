@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.ingrun.solon.knife4j.integration;
+package com.github.xiaoymin.knife4j.solon.integration;
 
 
-import cn.ingrun.solon.knife4j.extension.OpenApiExtensionResolver;
-import cn.ingrun.solon.knife4j.settings.OpenApiSetting;
+import com.github.xiaoymin.knife4j.solon.extension.OpenApiExtensionResolver;
+import com.github.xiaoymin.knife4j.solon.settings.OpenApiSetting;
 import org.noear.solon.Utils;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
@@ -36,7 +36,7 @@ public class Knife4jPlugin implements Plugin {
         OpenApiExtensionResolver openApiExtensionResolver = context.wrapAndPut(OpenApiExtensionResolver.class).get();
         OpenApiSetting setting = openApiExtensionResolver.getSetting();
 
-        if (!setting.isEnable()) {
+        if (setting.isEnable() == false) {
             return;
         }
 
@@ -53,8 +53,9 @@ public class Knife4jPlugin implements Plugin {
         context.subBeansOfType(DocDocket.class, bean -> {
             if (Utils.isEmpty(bean.basicAuth())) {
                 //如果没有定义，则用全局的配置
-                bean.basicAuth(openApiExtensionResolver.getSetting().getBasic());
+                bean.basicAuth(setting.getBasic());
             }
+
             bean.vendorExtensions(openApiExtensionResolver.buildExtensions());
         });
     }
