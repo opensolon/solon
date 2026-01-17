@@ -26,6 +26,10 @@
 * 升级 mcp-java-sdk 为 0.17.x？？？
 
 
+### v3.8.4
+
+* sanck4 升为 4.0.29
+
 ### v3.8.3
 
 * 优化 `solon-web-staticfiles` 支持 'file:' 前缀的配置
