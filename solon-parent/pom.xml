@@ -736,6 +736,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon-security-sm</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon-security-validation</artifactId>
                 <version>${solon.version}</version>
             </dependency>
