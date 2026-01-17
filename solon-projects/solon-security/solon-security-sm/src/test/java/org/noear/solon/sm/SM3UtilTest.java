@@ -2,10 +2,9 @@ package org.noear.solon.sm;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.noear.solon.sm.SM3Utils.*;
+import static org.noear.solon.sm.SM3Util.*;
 
-class SM3UtilsTest {
+class SM3UtilTest {
 
     @Test
     public void case1() {

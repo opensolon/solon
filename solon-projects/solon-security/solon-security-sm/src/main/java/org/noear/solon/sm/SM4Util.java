@@ -18,7 +18,7 @@ import java.util.Base64;
 /**
  * SM4 对称加密算法 Java实现（输出格式：Base64，支持ECB/CBC模式）
  */
-class SM4Utils {
+public class SM4Util {
     // 静态代码块：注册Bouncy Castle安全提供者
     static {
         if (Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null) {

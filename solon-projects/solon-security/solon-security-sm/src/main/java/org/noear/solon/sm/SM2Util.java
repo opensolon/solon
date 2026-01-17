@@ -19,7 +19,7 @@ import java.util.Base64;
 /**
  * SM2椭圆曲线公钥算法 Java实现（基于Bouncy Castle）
  */
-class SM2Utils {
+public class SM2Util {
     // 静态代码块：注册Bouncy Castle安全提供者
     static {
         if (Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null) {

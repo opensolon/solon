@@ -14,7 +14,7 @@ import java.math.BigInteger;
 /**
  * SM2密钥 十六进制格式存储工具（基础方案）
  */
-class SM2KeyHexStorage {
+public class SM2KeyHexStorage {
     // SM2标准曲线
     private static final X9ECParameters SM2_CURVE_PARAMS = GMNamedCurves.getByName("sm2p256v1");
 

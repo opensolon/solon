@@ -11,7 +11,7 @@ import java.util.Base64;
 /**
  * SM3 哈希算法 Java实现（基础场景：字符串/字节数组）
  */
-class SM3Utils {
+public class SM3Util {
     // 静态代码块：注册Bouncy Castle安全提供者
     static {
         if (Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null) {

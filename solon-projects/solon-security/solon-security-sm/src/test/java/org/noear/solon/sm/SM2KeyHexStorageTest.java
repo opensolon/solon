@@ -13,7 +13,7 @@ class SM2KeyHexStorageTest {
     @Test
     public void case1() {
         // 1. 生成SM2密钥对
-        AsymmetricCipherKeyPair keyPair = SM2Utils.generateSM2KeyPair(); // 复用之前的SM2Utils.generateSM2KeyPair()
+        AsymmetricCipherKeyPair keyPair = SM2Util.generateSM2KeyPair(); // 复用之前的SM2Utils.generateSM2KeyPair()
         ECPrivateKeyParameters privateKey = (ECPrivateKeyParameters) keyPair.getPrivate();
         ECPublicKeyParameters publicKey = (ECPublicKeyParameters) keyPair.getPublic();
 

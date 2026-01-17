@@ -7,8 +7,8 @@ import org.bouncycastle.crypto.params.ECPublicKeyParameters;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static org.noear.solon.sm.SM2Utils.*;
-class SM2UtilsTest {
+import static org.noear.solon.sm.SM2Util.*;
+class SM2UtilTest {
     @Test
     public void case1() throws CryptoException {
         // 步骤1：生成SM2密钥对

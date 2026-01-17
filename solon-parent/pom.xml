@@ -30,7 +30,7 @@
 
         <maven-war.version>3.4.0</maven-war.version>
 
-        <solon.version>3.8.3</solon.version>
+        <solon.version>3.8.4-SNAPSHOT</solon.version>
         <solon-ai.version>3.8.4-SNAPSHOT</solon-ai.version>
         <solon-flow.version>3.8.4-SNAPSHOT</solon-flow.version>
         <solon-expression.version>3.8.3</solon-expression.version>
