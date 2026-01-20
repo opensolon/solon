@@ -17,6 +17,7 @@ package org.noear.solon.serialization.fury.integration;
 
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.serialization.EntityBytesSerializer;
 import org.noear.solon.serialization.SerializerNames;
 import org.noear.solon.serialization.fury.FuryActionExecutor;
 import org.noear.solon.serialization.fury.FuryBytesSerializer;
@@ -30,6 +31,7 @@ public class SerializationFuryPlugin implements Plugin {
         //::serializer
         FuryBytesSerializer serializer = FuryBytesSerializer.getDefault();
         context.wrapAndPut(FuryBytesSerializer.class, serializer); //用于扩展
+        context.wrapAndPut(EntityBytesSerializer.class, serializer);
         context.app().serializers().register(SerializerNames.AT_FURY, serializer);
 
         //::entityConverter

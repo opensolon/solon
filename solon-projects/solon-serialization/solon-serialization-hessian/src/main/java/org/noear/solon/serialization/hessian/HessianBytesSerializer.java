@@ -22,6 +22,7 @@ import com.alibaba.com.caucho.hessian.io.SerializerFactory;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.lang.Nullable;
+import org.noear.solon.serialization.EntityBytesSerializer;
 import org.noear.solon.serialization.EntitySerializer;
 
 import java.io.ByteArrayInputStream;
@@ -33,7 +34,7 @@ import java.lang.reflect.Type;
  * @author noear
  * @since 2.8
  */
-public class HessianBytesSerializer implements EntitySerializer<byte[]> {
+public class HessianBytesSerializer implements EntityBytesSerializer {
     private static final String label = "application/hessian";
     private static final HessianBytesSerializer _default = new HessianBytesSerializer();
 
