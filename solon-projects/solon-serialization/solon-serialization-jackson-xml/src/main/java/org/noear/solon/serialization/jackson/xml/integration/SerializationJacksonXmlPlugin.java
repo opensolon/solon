@@ -17,6 +17,7 @@ package org.noear.solon.serialization.jackson.xml.integration;
 
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.serialization.EntityStringSerializer;
 import org.noear.solon.serialization.SerializerNames;
 import org.noear.solon.serialization.jackson.xml.*;
 import org.noear.solon.serialization.prop.JsonProps;
@@ -36,6 +37,7 @@ public class SerializationJacksonXmlPlugin implements Plugin {
         //::serializer
         JacksonXmlStringSerializer serializer = new JacksonXmlStringSerializer(jsonProps);
         context.wrapAndPut(JacksonXmlStringSerializer.class, serializer); //用于扩展
+        context.wrapAndPut(EntityStringSerializer.class, serializer);
         context.app().serializers().register(SerializerNames.AT_XML, serializer);
 
         //::entityConverter
