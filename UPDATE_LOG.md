@@ -28,6 +28,7 @@
 
 ### v3.8.4
 
+* 新增 solon-security-sm 插件
 * sanck4 升为 4.0.30
 
 ### v3.8.3
