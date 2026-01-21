@@ -41,16 +41,16 @@ public class JsonProps implements Serializable {
 
     public String dateAsTimeZone;
     public String dateAsFormat;
-    public boolean dateAsTicks;
+    public boolean dateAsTicks = false;
 
-    public boolean longAsString;
-    public boolean boolAsInt;
+    public boolean longAsString = false;
+    public boolean boolAsInt = false;
 
-    public boolean nullStringAsEmpty;
-    public boolean nullBoolAsFalse;
-    public boolean nullNumberAsZero;
-    public boolean nullArrayAsEmpty;
-    public boolean nullAsWriteable;
+    public boolean nullStringAsEmpty = false;
+    public boolean nullBoolAsFalse = false;
+    public boolean nullNumberAsZero = false;
+    public boolean nullArrayAsEmpty = false;
+    public boolean nullAsWriteable = false;
 
-    public boolean enumAsName;
+    public boolean enumAsName = true;
 }

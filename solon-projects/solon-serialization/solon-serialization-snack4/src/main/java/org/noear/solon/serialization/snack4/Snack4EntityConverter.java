@@ -38,7 +38,6 @@ public class Snack4EntityConverter extends AbstractStringEntityConverter<Snack4S
         super(serializer);
 
         //serializer.getDeserializeConfig().addFeatures(Feature.Read_AutoType);
-        serializer.getSerializeConfig().addFeatures(Feature.Write_EnumUsingName);
     }
 
     /**
