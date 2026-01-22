@@ -53,6 +53,7 @@ import org.noear.solon.docs.openapi3.impl.ActionHolder;
 import org.noear.solon.docs.openapi3.impl.BuilderHelper;
 import org.noear.solon.docs.openapi3.impl.ParamHolder;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -74,9 +75,8 @@ public class OpenApi3Builder {
 
     public OpenAPI build() {
         // 初始化 components
-        openAPI.setComponents(new Components());
+        openAPI.setComponents(new Components().schemas(new LinkedHashMap<>()));
         openAPI.setPaths(new Paths());
-
 
         // 解析通用返回
         if (docket.globalResult() != null) {
@@ -141,8 +141,10 @@ public class OpenApi3Builder {
 
         // 按tag name去重
         List<io.swagger.v3.oas.models.tags.Tag> tags = openAPI.getTags();
-        openAPI.setTags(tags.stream().collect(Collectors.groupingBy(io.swagger.v3.oas.models.tags.Tag::getName)).
-                values().stream().map(i -> i.get(0)).collect(Collectors.toList()));
+        if (tags != null) {
+            openAPI.setTags(tags.stream().collect(Collectors.groupingBy(io.swagger.v3.oas.models.tags.Tag::getName)).
+                    values().stream().map(i -> i.get(0)).collect(Collectors.toList()));
+        }
 
         return openAPI;
     }
@@ -324,26 +326,21 @@ public class OpenApi3Builder {
         }
 
         // 获取参数注解信息
-        {
-            List<io.swagger.v3.oas.annotations.Parameter> apiParams = new ArrayList<>();
-            if (actionHolder.isAnnotationPresent(io.swagger.v3.oas.annotations.Parameter.class)) {
-                apiParams.add(actionHolder.getAnnotation(io.swagger.v3.oas.annotations.Parameter.class));
-            }
-
-            if (actionHolder.isAnnotationPresent(Parameters.class)) {
-                io.swagger.v3.oas.annotations.Parameter[] paramArray = actionHolder.getAnnotationsByType(io.swagger.v3.oas.annotations.Parameter.class);
-                apiParams.addAll(Arrays.asList(paramArray));
-            }
-
-            for (io.swagger.v3.oas.annotations.Parameter a1 : apiParams) {
-                ParamHolder paramHolder = actionParamMap.get(a1.name());
-                if (paramHolder == null) {
-                    paramHolder = new ParamHolder(null);
-                    actionParamMap.put(a1.name(), paramHolder);
-                }
-                paramHolder.binding(a1);
-            }
+        List<io.swagger.v3.oas.annotations.Parameter> apiParams = new ArrayList<>();
+        if (actionHolder.isAnnotationPresent(io.swagger.v3.oas.annotations.Parameter.class)) {
+            apiParams.add(actionHolder.getAnnotation(io.swagger.v3.oas.annotations.Parameter.class));
         }
+
+        if (actionHolder.isAnnotationPresent(Parameters.class)) {
+            io.swagger.v3.oas.annotations.Parameter[] paramArray = actionHolder.getAnnotationsByType(io.swagger.v3.oas.annotations.Parameter.class);
+            apiParams.addAll(Arrays.asList(paramArray));
+        }
+
+        for (io.swagger.v3.oas.annotations.Parameter a1 : apiParams) {
+            ParamHolder paramHolder = actionParamMap.computeIfAbsent(a1.name(), k -> new ParamHolder(null));
+            paramHolder.binding(a1);
+        }
+
 
         // 构建参数列表
         List<Parameter> paramList = new ArrayList<>();
@@ -359,9 +356,28 @@ public class OpenApi3Builder {
             Parameter parameter = new Parameter();
 
             parameter.setName(paramHolder.getName());
-            parameter.setDescription(paramHolder.getDescription());
             parameter.setRequired(paramHolder.isRequired());
             parameter.setIn(paramHolder.paramType());
+
+
+            // 获取参数描述信息，优先使用ParamHolder中的注解信息，否则尝试从参数本身获取
+            if (paramHolder.getAnno() != null) {
+                parameter.setDescription(paramHolder.getDescription());
+            } else {
+                io.swagger.v3.oas.annotations.Parameter annotation = paramHolder.getParam().getParameter().getAnnotation(io.swagger.v3.oas.annotations.Parameter.class);
+                if (null != annotation) {
+                    parameter.setDescription(annotation.description());
+                } else {
+                    // 从 schema 中获取参数描述信息
+                    Class<?> dataTypeClass = paramHolder.getParam().getTypeEggg().getType();
+                    Type dataGenericType = paramHolder.getParam().getTypeEggg().getGenericType();
+                    String schemaName = this.getSchemaName(dataTypeClass, dataGenericType);
+                    Schema<?> schema = openAPI.getComponents().getSchemas().get(schemaName);
+                    if (schema != null) {
+                        parameter.setDescription(schema.getTitle());
+                    }
+                }
+            }
 
             if (paramHolder.allowMultiple()) {
                 ArraySchema arraySchema = new ArraySchema();
@@ -464,11 +480,10 @@ public class OpenApi3Builder {
     private ApiResponses parseActionResponse(ActionHolder actionHolder) {
         ApiResponses responses = new ApiResponses();
 
-
         Class<?> returnType = actionHolder.action().method().getReturnType();
         Type type = actionHolder.action().method().getGenericReturnType();
 
-        String produces = Objects.requireNonNull(actionHolder.action().produces(), "application/json");
+        String produces = StringUtils.getOrDefault(actionHolder.action().produces(), "application/json");
         String schema = this.parseSchema(returnType, type);
 
 
@@ -477,7 +492,7 @@ public class OpenApi3Builder {
                     .description("OK")
                     .content(new Content().addMediaType(produces,
                             new MediaType()
-                                    .schema(generSchema(actionHolder.action().method().getReturnTypeEggg())
+                                    .schema(this.generSchema(actionHolder.action().method().getReturnTypeEggg())
                                     )
                     ));
             responses.addApiResponse("200", okResponse);
@@ -568,10 +583,8 @@ public class OpenApi3Builder {
         String schemaName = this.getSchemaName(clazz, type);
 
         // 1.已存在,不重复解析
-        if (openAPI.getComponents() != null && openAPI.getComponents().getSchemas() != null) {
-            if (openAPI.getComponents().getSchemas().containsKey(schemaName)) {
-                return schemaName;
-            }
+        if (openAPI.getComponents().getSchemas().containsKey(schemaName)) {
+            return schemaName;
         }
 
         // 2.创建模型
@@ -586,14 +599,7 @@ public class OpenApi3Builder {
         schema.setName(schemaName);
         schema.setTitle(title);
         schema.setType("object");
-
-        // 添加到components
-        if (openAPI.getComponents() == null) {
-            openAPI.setComponents(new Components());
-        }
-        if (openAPI.getComponents().getSchemas() == null) {
-            openAPI.getComponents().setSchemas(new LinkedHashMap<>());
-        }
+        schema.setDescription(title);
 
         if (!Collection.class.isAssignableFrom(clazz)) {
             openAPI.getComponents().addSchemas(schemaName, schema);
@@ -677,16 +683,19 @@ public class OpenApi3Builder {
                     }
 
                     if (itemClazz instanceof Class) {
+                        Schema<?> itemSchema = new Schema<>();
                         if (itemClazz.equals(type)) {
                             //避免出现循环依赖，然后 oom
-                            Schema itemSchema = new Schema<>();
                             itemSchema.set$ref("#/components/schemas/" + schemaName);
+                            itemSchema.setDescription(title);
                             fieldSchema.setItems(itemSchema);
                         } else {
                             String itemSchemaName = this.parseSchema((Class<?>) itemClazz, itemClazz);
-                            Schema itemSchema = new Schema<>();
-                            itemSchema.set$ref("#/components/schemas/" + itemSchemaName);
+                            itemSchema = openAPI.getComponents().getSchemas().get(itemSchemaName);
                             fieldSchema.setItems(itemSchema);
+                        }
+                        if (fieldSchema.getDescription() == null) {
+                            fieldSchema.setDescription(itemSchema.getDescription());
                         }
                     }
 
@@ -835,19 +844,18 @@ public class OpenApi3Builder {
                 return null;
             }
 
-            Type dataGenericType = paramHolder.getParam().getGenericType();
+            Type dataGenericType = paramHolder.getParam().getTypeEggg().getGenericType();
 
-            if (dataTypeClass != Void.class) {
-                if (Collection.class.isAssignableFrom(dataTypeClass) && dataGenericType instanceof ParameterizedType) {
-                    Type itemType = ((ParameterizedType) dataGenericType).getActualTypeArguments()[0];
+            if (Collection.class.isAssignableFrom(dataTypeClass) && dataGenericType instanceof ParameterizedType) {
+                Type itemType = ((ParameterizedType) dataGenericType).getActualTypeArguments()[0];
 
-                    if (itemType instanceof Class) {
-                        return this.parseSchema((Class<?>) itemType, itemType);
-                    }
+                if (itemType instanceof Class) {
+                    return this.parseSchema((Class<?>) itemType, itemType);
                 }
-
-                return this.parseSchema(dataTypeClass, dataGenericType);
             }
+
+            return this.parseSchema(dataTypeClass, dataGenericType);
+
         }
 
         return null;
