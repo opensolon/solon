@@ -5,9 +5,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.List;
 
-@Schema(name = "自定义分页查询结果")
+@Schema(name = "自定义分页查询结果", description = "9999999999999999")
 public class CustomerQueryPageVo<T> {
-    @Schema(description = "内容")
+
+    //    @Schema(description = "内容")
     private List<T> content = new ArrayList<>();
     @Schema(description = "总数")
     private long totalElements = 0;

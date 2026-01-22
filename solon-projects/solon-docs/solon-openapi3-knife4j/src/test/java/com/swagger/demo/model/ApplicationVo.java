@@ -2,7 +2,7 @@ package com.swagger.demo.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-@Schema(name = "应用信息")
+@Schema(name = "应用信息", description = "应用信息说明")
 public class ApplicationVo {
     @Schema(description = "应用ID")
     private String id;
