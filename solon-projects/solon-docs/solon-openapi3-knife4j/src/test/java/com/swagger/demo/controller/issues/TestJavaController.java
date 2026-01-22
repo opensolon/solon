@@ -4,6 +4,8 @@ import com.swagger.demo.model.ApplicationQueryPo;
 import com.swagger.demo.model.ApplicationVo;
 import com.swagger.demo.model.CustomerQueryPageVo;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.noear.solon.annotation.Body;
 import org.noear.solon.annotation.Controller;
@@ -35,7 +37,8 @@ public class TestJavaController {
             value = "/appPage",
             produces = MimeType.APPLICATION_FORM_URLENCODED_VALUE
     )
-    public CustomerQueryPageVo<ApplicationVo> query(@Body List<ApplicationQueryPo> applicationQueryPo) {
+
+    public CustomerQueryPageVo<ApplicationVo> query(@Parameter(description = "issues 缺参数说明") CustomerQueryPageVo<ApplicationVo> appPageParam) {
         CustomerQueryPageVo<ApplicationVo> page = new CustomerQueryPageVo<>();
         page.setCurrPage(1);
         page.setPageSize(10);
