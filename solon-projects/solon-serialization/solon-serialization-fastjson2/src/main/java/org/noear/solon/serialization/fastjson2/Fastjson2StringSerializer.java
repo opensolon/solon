@@ -273,8 +273,8 @@ public class Fastjson2StringSerializer implements EntityStringSerializer {
                 getSerializeConfig().addFeatures(JSONWriter.Feature.WriteNullListAsEmpty);
             }
 
-            if (jsonProps.enumAsName) {
-                getSerializeConfig().addFeatures(JSONWriter.Feature.WriteEnumsUsingName);
+            if (!jsonProps.enumAsName) {
+                getSerializeConfig().addFeatures(JSONWriter.Feature.WriteEnumUsingOrdinal);
             }
 
             if (writeNulls) {

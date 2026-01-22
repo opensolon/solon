@@ -290,8 +290,8 @@ public class GsonStringSerializer implements EntityStringSerializer {
                 this.getSerializeConfig().getBuilder().registerTypeAdapter(String.class, new NullStringWriteAdapter());
             }
 
-            if (jsonProps.enumAsName) {
-                this.getSerializeConfig().getBuilder().registerTypeAdapter(Enum.class, new EnumWriteAdapter());
+            if (!jsonProps.enumAsName) {
+                this.getSerializeConfig().getBuilder().registerTypeHierarchyAdapter(Enum.class, new EnumWriteAdapter());
             }
 
         } else {

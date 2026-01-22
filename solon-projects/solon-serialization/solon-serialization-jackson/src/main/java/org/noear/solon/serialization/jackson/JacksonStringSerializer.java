@@ -310,8 +310,8 @@ public class JacksonStringSerializer implements EntityStringSerializer {
                         .setNullValueSerializer(new NullValueSerializerImpl(jsonProps));
             }
 
-            if (jsonProps.enumAsName) {
-                getSerializeConfig().getMapper().configure(SerializationFeature.WRITE_ENUMS_USING_TO_STRING, true);
+            if (!jsonProps.enumAsName) {
+                getSerializeConfig().getMapper().configure(SerializationFeature.WRITE_ENUMS_USING_INDEX, true);
             }
         }
 

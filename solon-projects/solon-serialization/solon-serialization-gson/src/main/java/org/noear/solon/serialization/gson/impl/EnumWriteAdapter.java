@@ -28,7 +28,7 @@ import java.io.IOException;
 public class EnumWriteAdapter extends TypeAdapter<Enum> {
     @Override
     public void write(JsonWriter out, Enum anEnum) throws IOException {
-        out.value(anEnum.name());
+        out.value(anEnum.ordinal());
     }
 
     @Override

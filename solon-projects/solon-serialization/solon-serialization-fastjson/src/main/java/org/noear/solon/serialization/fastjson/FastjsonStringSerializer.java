@@ -291,8 +291,8 @@ public class FastjsonStringSerializer implements EntityStringSerializer {
                 getSerializeConfig().addFeatures(SerializerFeature.WriteMapNullValue);
             }
 
-            if (jsonProps.enumAsName) {
-                getSerializeConfig().addFeatures(SerializerFeature.WriteEnumUsingName);
+            if (!jsonProps.enumAsName) {
+                getSerializeConfig().removeFeatures(SerializerFeature.WriteEnumUsingName);
             }
         }
     }
