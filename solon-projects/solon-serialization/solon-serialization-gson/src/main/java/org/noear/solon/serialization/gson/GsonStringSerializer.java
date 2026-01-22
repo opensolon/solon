@@ -291,7 +291,7 @@ public class GsonStringSerializer implements EntityStringSerializer {
             }
 
             if (!jsonProps.enumAsName) {
-                this.getSerializeConfig().getBuilder().registerTypeHierarchyAdapter(Enum.class, new EnumWriteAdapter());
+                this.getSerializeConfig().getBuilder().registerTypeHierarchyAdapter(Enum.class, new EnumWriteAdapter(false));
             }
 
         } else {
