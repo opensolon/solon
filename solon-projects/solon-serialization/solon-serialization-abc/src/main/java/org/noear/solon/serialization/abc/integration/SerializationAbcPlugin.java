@@ -17,6 +17,7 @@ package org.noear.solon.serialization.abc.integration;
 
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.serialization.EntityBytesSerializer;
 import org.noear.solon.serialization.SerializerNames;
 import org.noear.solon.serialization.abc.AbcActionExecutor;
 import org.noear.solon.serialization.abc.AbcBytesSerializer;
@@ -34,6 +35,7 @@ public class SerializationAbcPlugin implements Plugin {
         //::serializer
         AbcBytesSerializer serializer = AbcBytesSerializer.getDefault();
         context.wrapAndPut(AbcBytesSerializer.class, serializer); //用于扩展
+        context.wrapAndPut(EntityBytesSerializer.class, serializer);
         context.app().serializers().register(SerializerNames.AT_ABC, serializer);
 
         //::entityConverter

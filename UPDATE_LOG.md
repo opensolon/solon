@@ -25,6 +25,16 @@
 * 调整 Plugin 统一交给 AppContext 管理（之前由 SolonApp 或 PluginPackage 管理）？？
 * 升级 mcp-java-sdk 为 0.17.x？？？
 
+
+### v3.8.4
+
+* 新增 solon-security-sm 插件
+* sanck4 升为 4.0.30
+
+### v3.8.3
+
+* 优化 `solon-web-staticfiles` 支持 'file:' 前缀的配置
+
 ### v3.8.1
 
 * 插件 `solon-flow` 第七次预览

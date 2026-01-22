@@ -17,6 +17,7 @@ package org.noear.solon.serialization.snack3.integration;
 
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.serialization.EntityStringSerializer;
 import org.noear.solon.serialization.SerializerNames;
 import org.noear.solon.serialization.prop.JsonProps;
 import org.noear.solon.serialization.snack3.*;
@@ -29,6 +30,7 @@ public class SerializationSnackPlugin implements Plugin {
         //::serializer
         SnackStringSerializer serializer = new SnackStringSerializer(jsonProps);
         context.wrapAndPut(SnackStringSerializer.class, serializer); //用于扩展
+        context.wrapAndPut(EntityStringSerializer.class, serializer);
         context.app().serializers().register(SerializerNames.AT_JSON, serializer);
 
         //::entityConverter

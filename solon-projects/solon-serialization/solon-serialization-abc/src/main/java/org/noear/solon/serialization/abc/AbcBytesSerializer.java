@@ -19,6 +19,7 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.lang.Nullable;
+import org.noear.solon.serialization.EntityBytesSerializer;
 import org.noear.solon.serialization.EntitySerializer;
 import org.noear.solon.serialization.abc.io.AbcSerializable;
 
@@ -29,7 +30,7 @@ import java.lang.reflect.Type;
  * @author noear
  * @since  3.0
  */
-public class AbcBytesSerializer implements EntitySerializer<byte[]> {
+public class AbcBytesSerializer implements EntityBytesSerializer {
     private static final String label = "application/abc";
     private static final AbcBytesSerializer _default = new AbcBytesSerializer();
 

@@ -21,6 +21,7 @@ import com.esotericsoftware.kryo.io.Output;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.lang.Nullable;
+import org.noear.solon.serialization.EntityBytesSerializer;
 import org.noear.solon.serialization.EntitySerializer;
 
 import java.io.ByteArrayInputStream;
@@ -34,7 +35,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * @author noear
  * @since  3.0
  */
-public class KryoBytesSerializer implements EntitySerializer<byte[]> {
+public class KryoBytesSerializer implements EntityBytesSerializer {
     private static final String label = "application/kryo";
     private static final KryoBytesSerializer _default = new KryoBytesSerializer();
 

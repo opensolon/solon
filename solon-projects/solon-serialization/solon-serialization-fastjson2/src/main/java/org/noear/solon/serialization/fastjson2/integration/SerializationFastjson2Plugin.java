@@ -17,6 +17,7 @@ package org.noear.solon.serialization.fastjson2.integration;
 
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.serialization.EntityStringSerializer;
 import org.noear.solon.serialization.SerializerNames;
 import org.noear.solon.serialization.fastjson2.*;
 import org.noear.solon.serialization.prop.JsonProps;
@@ -30,6 +31,7 @@ public class SerializationFastjson2Plugin implements Plugin {
         //::serializer
         Fastjson2StringSerializer serializer = new Fastjson2StringSerializer(jsonProps);
         context.wrapAndPut(Fastjson2StringSerializer.class, serializer); //用于扩展
+        context.wrapAndPut(EntityStringSerializer.class, serializer);
         context.app().serializers().register(SerializerNames.AT_JSON, serializer);
 
         //::entityConverter

@@ -17,6 +17,7 @@ package org.noear.solon.serialization.hessian.integration;
 
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.serialization.EntityBytesSerializer;
 import org.noear.solon.serialization.SerializerNames;
 import org.noear.solon.serialization.hessian.HessianActionExecutor;
 import org.noear.solon.serialization.hessian.HessianBytesSerializer;
@@ -30,6 +31,7 @@ public class SerializationHessianPlugin implements Plugin {
         //::serializer
         HessianBytesSerializer serializer = HessianBytesSerializer.getDefault();
         context.wrapAndPut(HessianBytesSerializer.class, serializer); //用于扩展
+        context.wrapAndPut(EntityBytesSerializer.class, serializer);
         context.app().serializers().register(SerializerNames.AT_HESSIAN, serializer);
 
         //::entityConverter
