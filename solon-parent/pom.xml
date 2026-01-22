@@ -566,6 +566,11 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon-ai-search-bocha</artifactId>
+                <version>${solon-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon-ai-repo-chroma</artifactId>
                 <version>${solon-ai.version}</version>
             </dependency>

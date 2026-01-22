@@ -29,6 +29,7 @@
 ### v3.8.4
 
 * 新增 solon-security-sm 插件
+* 新增 solon-ai-search-bocha 插件
 * 添加 solon-serialization EntityStringSerializer, EntityBytesSerializer 注入支持
 * sanck4 升为 4.0.30
 
