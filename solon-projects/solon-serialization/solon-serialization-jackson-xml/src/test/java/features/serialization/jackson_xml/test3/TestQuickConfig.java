@@ -56,6 +56,6 @@ public class TestQuickConfig {
 
         //error 会有多余的 null (和所有 null 打印开启一样)
 
-        assert "<UserDo><b0>0</b0><b1>1</b1><d0>0.0</d0><d1>1.0</d1><list0/><map0/><map1><null/><time>2023-01-16 17:39:53</time><long>12</long><int>12</int></map1><n0>0</n0><n1>1</n1><obj0/><s0></s0><s1>noear</s1></UserDo>".equals(output);
+        assert "<UserDo><b0>0</b0><b1>1</b1><d0>0.0</d0><d1>1.0</d1><list0/><map0/><map1><null/><time>2023-01-16 17:39:53</time><long>12</long><int>12</int></map1><n0>0</n0><n1>1</n1><obj0/><s0></s0><s1>noear</s1><type>MANAGE</type></UserDo>".equals(output);
     }
 }

@@ -56,7 +56,7 @@ public class TestQuickConfig {
         System.out.println(output);
 
         //完美
-        assert "{\"b0\":0,\"b1\":1,\"d0\":0.0,\"d1\":1.0,\"list0\":[],\"map0\":null,\"map1\":{\"null\":null,\"time\":\"2023-01-16 17:39:53\",\"long\":\"12\",\"int\":12},\"n0\":\"0\",\"n1\":\"1\",\"obj0\":null,\"s0\":\"\",\"s1\":\"noear\"}".equals(output);
+        assert "{\"b0\":0,\"b1\":1,\"d0\":0.0,\"d1\":1.0,\"list0\":[],\"map0\":null,\"map1\":{\"null\":null,\"time\":\"2023-01-16 17:39:53\",\"long\":\"12\",\"int\":12},\"n0\":\"0\",\"n1\":\"1\",\"obj0\":null,\"s0\":\"\",\"s1\":\"noear\",\"type\":\"MANAGE\"}".equals(output);
     }
 
     @Test

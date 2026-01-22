@@ -55,6 +55,6 @@ public class TestQuickConfig {
         System.out.println(output);
 
         //error: int 没转为 string
-        assert "{\"s0\":\"\",\"s1\":\"noear\",\"b0\":0,\"b1\":1,\"n0\":\"0\",\"n1\":\"1\",\"d0\":0,\"d1\":1.0,\"obj0\":null,\"list0\":null,\"map0\":null,\"map1\":{\"null\":null,\"time\":\"2023-01-16 17:39:53\",\"long\":\"12\",\"int\":12}}".equals(output);
+        assert "{\"s0\":\"\",\"s1\":\"noear\",\"b0\":0,\"b1\":1,\"n0\":\"0\",\"n1\":\"1\",\"d0\":0,\"d1\":1.0,\"obj0\":null,\"list0\":null,\"map0\":null,\"map1\":{\"null\":null,\"time\":\"2023-01-16 17:39:53\",\"long\":\"12\",\"int\":12},\"type\":\"MANAGE\"}".equals(output);
     }
 }

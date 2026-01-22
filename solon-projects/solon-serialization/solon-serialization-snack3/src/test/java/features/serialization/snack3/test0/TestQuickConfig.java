@@ -56,9 +56,9 @@ public class TestQuickConfig {
 
         System.out.println(output);
 
-        assert ONode.load(output).count() == 5;
+        assert ONode.load(output).count() == 6;
 
         //完美
-        assert "{\"s1\":\"noear\",\"b1\":true,\"n1\":1,\"d1\":1.0,\"map1\":{\"time\":1673861993477,\"long\":12,\"int\":12}}".equals(output);
+        assert "{\"s1\":\"noear\",\"b1\":true,\"n1\":1,\"d1\":1.0,\"map1\":{\"time\":1673861993477,\"long\":12,\"int\":12},\"type\":\"MANAGE\"}".equals(output);
     }
 }

@@ -45,4 +45,6 @@ public class UserDo implements Serializable {
     List list0;
     Map map0;
     Map map1;
+
+    UserType type = UserType.MANAGE;
 }

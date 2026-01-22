@@ -55,9 +55,9 @@ public class TestQuickConfig {
 
         System.out.println(output);
 
-        assert ONode.ofJson(output).size() == 5;
+        assert ONode.ofJson(output).size() == 6;
 
         //完美
-        assert "{\"b1\":true,\"d1\":1.0,\"map1\":{\"time\":\"2023-01-16 17:39:53\",\"long\":12,\"int\":12},\"n1\":1,\"s1\":\"noear\"}".equals(output);
+        assert "{\"b1\":true,\"d1\":1.0,\"map1\":{\"time\":\"2023-01-16 17:39:53\",\"long\":12,\"int\":12},\"n1\":1,\"s1\":\"noear\",\"type\":\"MANAGE\"}".equals(output);
     }
 }
