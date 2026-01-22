@@ -30,6 +30,7 @@
 
 * 新增 solon-security-sm 插件
 * 添加 solon-serialization EntityStringSerializer, EntityBytesSerializer 注入支持
+* 修复 solon.serialization.json.enumAsName: false 部分序列化框架不生效的问题
 * sanck4 升为 4.0.30
 
 ### v3.8.3
