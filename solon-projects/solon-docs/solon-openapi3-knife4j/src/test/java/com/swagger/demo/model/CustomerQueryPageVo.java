@@ -1,6 +1,7 @@
 package com.swagger.demo.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.noear.solon.validation.annotation.NotEmpty;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,8 +11,10 @@ public class CustomerQueryPageVo<T> {
 
     //    @Schema(description = "内容")
     private List<T> content = new ArrayList<>();
-    @Schema(description = "总数")
+    @Schema(description = "总数", requiredMode = Schema.RequiredMode.REQUIRED)
     private long totalElements = 0;
+
+    @NotEmpty
     @Schema(description = "当前页号")
     private long currPage = 0;
     @Schema(description = "每页记录数")

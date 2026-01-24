@@ -52,8 +52,11 @@ import org.noear.solon.docs.models.ApiLicense;
 import org.noear.solon.docs.openapi3.impl.ActionHolder;
 import org.noear.solon.docs.openapi3.impl.BuilderHelper;
 import org.noear.solon.docs.openapi3.impl.ParamHolder;
+import org.noear.solon.lang.NonNull;
+import org.noear.solon.validation.annotation.NotBlank;
+import org.noear.solon.validation.annotation.NotEmpty;
+import org.noear.solon.validation.annotation.NotNull;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -253,9 +256,9 @@ public class OpenApi3Builder {
                 continue;
             }
 
-            String controllerKey = BuilderHelper.getControllerKey(actionHolder.controllerClz());
-            String actionName = actionHolder.action().name();
-            Method actionMethod = actionHolder.action().method().getMethod();
+//            String controllerKey = BuilderHelper.getControllerKey(actionHolder.controllerClz());
+//            String actionName = actionHolder.action().name();
+//            Method actionMethod = actionHolder.action().method().getMethod();
 
             Set<String> actionTags = actionHolder.getTags(apiAction);
 
@@ -322,7 +325,9 @@ public class OpenApi3Builder {
     private List<Parameter> parseActionParameters(ActionHolder actionHolder) {
         Map<String, ParamHolder> actionParamMap = new LinkedHashMap<>();
         for (ParamWrap p1 : actionHolder.action().method().getParamWraps()) {
-            actionParamMap.put(p1.getName(), new ParamHolder(p1));
+            ParamHolder paramHolder = new ParamHolder(p1);
+            paramHolder.binding(paramHolder.getParam().getParameter().getAnnotation(io.swagger.v3.oas.annotations.Parameter.class));
+            actionParamMap.put(p1.getName(), paramHolder);
         }
 
         // 获取参数注解信息
@@ -341,7 +346,6 @@ public class OpenApi3Builder {
             paramHolder.binding(a1);
         }
 
-
         // 构建参数列表
         List<Parameter> paramList = new ArrayList<>();
 
@@ -358,7 +362,6 @@ public class OpenApi3Builder {
             parameter.setName(paramHolder.getName());
             parameter.setRequired(paramHolder.isRequired());
             parameter.setIn(paramHolder.paramType());
-
 
             // 获取参数描述信息，优先使用ParamHolder中的注解信息，否则尝试从参数本身获取
             if (paramHolder.getAnno() != null) {
@@ -486,7 +489,6 @@ public class OpenApi3Builder {
         String produces = StringUtils.getOrDefault(actionHolder.action().produces(), "application/json");
         String schema = this.parseSchema(returnType, type);
 
-
         if (schema != null) {
             ApiResponse okResponse = new ApiResponse()
                     .description("OK")
@@ -509,15 +511,17 @@ public class OpenApi3Builder {
 
     private Schema<?> generSchema(TypeEggg typeEggg) {
         Class<?> returnType = typeEggg.getType();
-
+        String schemaName = null;
         if (!BuilderHelper.isModel(returnType) && typeEggg.getGenericType() instanceof ParameterizedType) {
             Schema<?> schemaByType = this.getSchemaByType(typeEggg.getType().getSimpleName());
             Map<String, Type> genericInfo = typeEggg.getGenericInfo();
             schemaByType.items(this.generSchema(EgggUtil.getTypeEggg(genericInfo.values().stream().findFirst().orElse(null))));
             return schemaByType;
+        } else if (typeEggg.getGenericType() instanceof ParameterizedType) {
+            schemaName = parseSchema(returnType, typeEggg.getGenericType());
+        } else {
+            schemaName = parseSchema(returnType, typeEggg.getType());
         }
-
-        String schemaName = parseSchema(returnType, typeEggg.getType());
 
         Schema<Object> schemaByType = new Schema<>();
         schemaByType.$ref("#/components/schemas/" + schemaName);
@@ -568,7 +572,14 @@ public class OpenApi3Builder {
         String schemaName = BuilderHelper.getModelName(clazz, type);
         io.swagger.v3.oas.annotations.media.Schema apiModel = clazz.getAnnotation(io.swagger.v3.oas.annotations.media.Schema.class);
         if (apiModel != null && Utils.isNotEmpty(apiModel.name())) {
-            schemaName = apiModel.name();
+
+            if (schemaName.contains("«")) {
+                String baseName = BuilderHelper.getModelName(clazz, clazz);
+                schemaName = schemaName.replace(baseName, apiModel.name());
+            } else {
+                schemaName = apiModel.name();
+            }
+
         }
 
         return schemaName;
@@ -599,7 +610,6 @@ public class OpenApi3Builder {
         schema.setName(schemaName);
         schema.setTitle(title);
         schema.setType("object");
-        schema.setDescription(title);
 
         if (!Collection.class.isAssignableFrom(clazz)) {
             openAPI.getComponents().addSchemas(schemaName, schema);
@@ -631,13 +641,20 @@ public class OpenApi3Builder {
 
 
         Map<String, Schema> properties = new LinkedHashMap<>();
+        List<String> required = new ArrayList<>();
         for (Field field : fields) {
             if (Modifier.isStatic(field.getModifiers())) {
                 //静态的跳过
                 continue;
             }
 
+
+            // model 的字段注解  Schema
             io.swagger.v3.oas.annotations.media.Schema apiField = field.getAnnotation(io.swagger.v3.oas.annotations.media.Schema.class);
+
+            // 添加字段必填项
+            this.handSchemaRequiredField(required, field, apiField);
+
 
             Class<?> typeClazz = field.getType();
             Type typeGenericType = field.getGenericType();
@@ -693,6 +710,7 @@ public class OpenApi3Builder {
                             String itemSchemaName = this.parseSchema((Class<?>) itemClazz, itemClazz);
                             itemSchema = openAPI.getComponents().getSchemas().get(itemSchemaName);
                             fieldSchema.setItems(itemSchema);
+                            fieldSchema.description(StringUtils.getOrDefault(itemSchema.getDescription(), itemSchema.getTitle()));
                         }
                         if (fieldSchema.getDescription() == null) {
                             fieldSchema.setDescription(itemSchema.getDescription());
@@ -723,6 +741,7 @@ public class OpenApi3Builder {
                     }
 
                     properties.put(field.getName(), fieldSchema);
+
                 }
             } else {
                 Schema fieldSchema = getSchemaByType(typeClazz.getSimpleName());
@@ -741,7 +760,26 @@ public class OpenApi3Builder {
         }
 
         schema.setProperties(properties);
+        schema.setRequired(required);
         return schemaName;
+    }
+
+    private void handSchemaRequiredField(List<String> required, Field field, io.swagger.v3.oas.annotations.media.Schema apiField) {
+        if (apiField == null) return;
+        io.swagger.v3.oas.annotations.media.Schema.RequiredMode requiredMode = apiField.requiredMode();
+
+        if (io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED.equals(requiredMode)) {
+            required.add(field.getName());
+        } else if (io.swagger.v3.oas.annotations.media.Schema.RequiredMode.AUTO.equals(requiredMode)) {
+            //  RequiredMode.AUTO： @NotNull、@NonNull、@NotBlank、@NotEmpty）→ 必填
+            NotNull notNull = field.getAnnotation(NotNull.class);
+            NotBlank notBlank = field.getAnnotation(NotBlank.class);
+            NotEmpty notEmpty = field.getAnnotation(NotEmpty.class);
+            NonNull nonNull = field.getAnnotation(NonNull.class);
+            if (notNull != null || notBlank != null || notEmpty != null || nonNull != null) {
+                required.add(field.getName());
+            }
+        }
     }
 
     /**
@@ -819,16 +857,16 @@ public class OpenApi3Builder {
      * 解析对象参数
      */
     private String getParameterSchema(ParamHolder paramHolder) {
-        if (paramHolder.getAnno() != null) {
-            Class<?> dataTypeClass = null;
-            if (paramHolder.getParam() != null) {
-                dataTypeClass = paramHolder.getParam().getTypeEggg().getType();
-            }
-
-            if (null != dataTypeClass && dataTypeClass != Void.class) {
-                return this.parseSchema(dataTypeClass, dataTypeClass);
-            }
-        }
+//        if (paramHolder.getAnno() != null) {
+//            Class<?> dataTypeClass = null;
+//            if (paramHolder.getParam() != null) {
+//                dataTypeClass = paramHolder.getParam().getTypeEggg().getType();
+//            }
+//
+//            if (null != dataTypeClass && dataTypeClass != Void.class) {
+//                return this.parseSchema(dataTypeClass, dataTypeClass);
+//            }
+//        }
 
         if (paramHolder.getParam() != null) {
             Class<?> dataTypeClass = paramHolder.getParam().getTypeEggg().getType();
