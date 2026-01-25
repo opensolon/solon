@@ -25,6 +25,9 @@
 * 调整 Plugin 统一交给 AppContext 管理（之前由 SolonApp 或 PluginPackage 管理）？？
 * 升级 mcp-java-sdk 为 0.17.x？？？
 
+### 3.9.0
+
+* 优化 solon-docs-openapi3 插件兼容性
 
 ### v3.8.4
 
