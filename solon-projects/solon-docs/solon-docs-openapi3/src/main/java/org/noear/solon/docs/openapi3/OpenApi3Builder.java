@@ -711,13 +711,15 @@ public class OpenApi3Builder {
                             fieldSchema.setItems(itemSchema);
                         } else {
                             String itemSchemaName = this.parseSchema((Class<?>) itemClazz, itemClazz);
-//                            itemSchema = openAPI.getComponents().getSchemas().get(itemSchemaName);
+                            Schema<?> itemSchemaInfo = openAPI.getComponents().getSchemas().get(itemSchemaName);
+
                             // knife4j需要设置为引用才能支持
                             itemSchema.set$ref("#/components/schemas/" + itemSchemaName);
-                            itemSchema.setDescription(title);
+                            itemSchema.setDescription(StringUtils.getOrDefault(itemSchemaInfo.getDescription(), itemSchemaInfo.getTitle()));
                             fieldSchema.setItems(itemSchema);
-                            fieldSchema.description(StringUtils.getOrDefault(itemSchema.getDescription(), itemSchema.getTitle()));
                         }
+
+                        // 空字段 Description 则使用引用对象的 Description
                         if (fieldSchema.getDescription() == null) {
                             fieldSchema.setDescription(itemSchema.getDescription());
                         }
@@ -848,13 +850,12 @@ public class OpenApi3Builder {
                             methodSchema.setItems(itemSchema);
                         } else {
                             String itemSchemaName = this.parseSchema((Class<?>) itemClazz, itemClazz);
-//                            itemSchema = openAPI.getComponents().getSchemas().get(itemSchemaName);
-                            // knife4j需要设置为引用才能支持
+                            Schema<?> itemSchemaInfo = openAPI.getComponents().getSchemas().get(itemSchemaName);                            // knife4j需要设置为引用才能支持
                             itemSchema.set$ref("#/components/schemas/" + itemSchemaName);
-                            itemSchema.setDescription(title);
+                            itemSchema.setDescription(StringUtils.getOrDefault(itemSchemaInfo.getDescription(), itemSchemaInfo.getTitle()));
                             methodSchema.setItems(itemSchema);
-                            methodSchema.description(StringUtils.getOrDefault(itemSchema.getDescription(), itemSchema.getTitle()));
                         }
+
                         if (methodSchema.getDescription() == null) {
                             methodSchema.setDescription(itemSchema.getDescription());
                         }
