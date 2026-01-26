@@ -9,7 +9,7 @@ import java.util.List;
 @Schema(name = "自定义分页查询结果", description = "9999999999999999")
 public class CustomerQueryPageVo<T> {
 
-    //    @Schema(description = "内容")
+    //        @Schema(description = "内容9527")
     private List<T> content = new ArrayList<>();
     @Schema(description = "总数", requiredMode = Schema.RequiredMode.REQUIRED)
     private long totalElements = 0;
@@ -51,4 +51,7 @@ public class CustomerQueryPageVo<T> {
     public void setPageSize(long pageSize) {
         this.pageSize = pageSize;
     }
+
+
+
 }
