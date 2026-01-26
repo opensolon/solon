@@ -17,6 +17,8 @@ package demo.openapi3.base.test.controller;
 
 import demo.openapi3.base.test.domain.Page;
 import demo.openapi3.base.test.domain.PageImpl;
+import demo.openapi3.base.test.domain.PageResult;
+import demo.openapi3.base.test.domain.PageResultImpl;
 import demo.openapi3.base.test.domain.bo.UserBo;
 import demo.openapi3.base.test.domain.vo.UserVo;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,6 +26,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.handle.Result;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -48,6 +51,22 @@ public class UserController {
     @Mapping("/page")
     public Page page() {
         return new PageImpl(1, 1);
+    }
+
+    @Operation(summary = "pageResult")
+    @Get
+    @Mapping("/pageResult")
+    public PageResult<UserVo> pageResult() {
+        ArrayList<UserVo> userVos = new ArrayList<>();
+        return new PageResultImpl<>(1, userVos);
+    }
+
+    @Operation(summary = "pageResultImpl")
+    @Get
+    @Mapping("/pageResultImpl")
+    public PageResultImpl<UserVo> pageResultImpl() {
+        ArrayList<UserVo> userVos = new ArrayList<>();
+        return new PageResultImpl<>(1, userVos);
     }
 
     @Operation(summary = "根据Id查询用户信息")

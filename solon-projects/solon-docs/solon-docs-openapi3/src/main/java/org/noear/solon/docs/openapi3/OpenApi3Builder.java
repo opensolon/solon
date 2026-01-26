@@ -631,6 +631,7 @@ public class OpenApi3Builder {
 
         // 3.完成模型解析 - 获取所有字段并添加属性
         List<Field> fields = new ArrayList<>();
+        Set<String> processedPropertyNames = new HashSet<>(); // 用于去重，避免字段和getter方法重复
         Class<?> currentClass = clazz;
 
         // 收集当前类及其所有父类的字段
@@ -648,6 +649,8 @@ public class OpenApi3Builder {
                 continue;
             }
 
+            // 记录已处理的属性名
+            processedPropertyNames.add(field.getName());
 
             // model 的字段注解  Schema
             io.swagger.v3.oas.annotations.media.Schema apiField = field.getAnnotation(io.swagger.v3.oas.annotations.media.Schema.class);
@@ -708,7 +711,10 @@ public class OpenApi3Builder {
                             fieldSchema.setItems(itemSchema);
                         } else {
                             String itemSchemaName = this.parseSchema((Class<?>) itemClazz, itemClazz);
-                            itemSchema = openAPI.getComponents().getSchemas().get(itemSchemaName);
+//                            itemSchema = openAPI.getComponents().getSchemas().get(itemSchemaName);
+                            // knife4j需要设置为引用才能支持
+                            itemSchema.set$ref("#/components/schemas/" + itemSchemaName);
+                            itemSchema.setDescription(title);
                             fieldSchema.setItems(itemSchema);
                             fieldSchema.description(StringUtils.getOrDefault(itemSchema.getDescription(), itemSchema.getTitle()));
                         }
@@ -756,6 +762,142 @@ public class OpenApi3Builder {
                 }
 
                 properties.put(field.getName(), fieldSchema);
+            }
+        }
+        // 4.处理getter方法，将其当作字段
+        List<Method> methods = new ArrayList<>();
+        currentClass = clazz;
+        // 收集当前类及其所有父类的方法
+        while (currentClass != null && currentClass != Object.class) {
+            methods.addAll(Arrays.asList(currentClass.getDeclaredMethods()));
+            currentClass = currentClass.getSuperclass();
+        }
+
+        for (Method method : methods) {
+            // 跳过静态方法
+            if (Modifier.isStatic(method.getModifiers())) {
+                continue;
+            }
+            // 跳过有参数的方法
+            if (method.getParameterCount() > 0) {
+                continue;
+            }
+            // 跳过void返回类型的方法
+            if (method.getReturnType() == Void.TYPE || method.getReturnType() == void.class) {
+                continue;
+            }
+
+            String propertyName = null;
+            String methodName = method.getName();
+
+            // 判断是否是标准的getter方法
+            if (methodName.startsWith("get") && methodName.length() > 3 && !method.getReturnType().equals(boolean.class)) {
+                // getXxx() -> xxx
+                propertyName = Character.toLowerCase(methodName.charAt(3)) + methodName.substring(4);
+            } else if (methodName.startsWith("is") && methodName.length() > 2 && method.getReturnType().equals(boolean.class)) {
+                // isXxx() -> xxx
+                propertyName = Character.toLowerCase(methodName.charAt(2)) + methodName.substring(3);
+            }
+
+            // 如果不是标准的getter方法，跳过
+            if (propertyName == null || propertyName.isEmpty()) {
+                continue;
+            }
+
+            // 如果该属性已经被字段处理过了，跳过
+            if (processedPropertyNames.contains(propertyName)) {
+                continue;
+            }
+
+            // 获取方法上的@Schema注解
+            io.swagger.v3.oas.annotations.media.Schema apiMethod = method.getAnnotation(io.swagger.v3.oas.annotations.media.Schema.class);
+
+            Class<?> returnType = method.getReturnType();
+            Type returnGenericType = method.getGenericReturnType();
+
+            // 处理Collection类型
+            if (Collection.class.isAssignableFrom(returnType)) {
+                if (returnGenericType instanceof ParameterizedType) {
+                    ArraySchema methodSchema = new ArraySchema();
+                    if (apiMethod != null) {
+                        methodSchema.setDescription(apiMethod.description());
+                    }
+
+                    ParameterizedType pt = (ParameterizedType) returnGenericType;
+                    //得到泛型里的class类型对象
+                    Type itemClazz = pt.getActualTypeArguments()[0];
+
+                    if (itemClazz instanceof ParameterizedType) {
+                        itemClazz = ((ParameterizedType) itemClazz).getRawType();
+                    }
+
+                    if (itemClazz instanceof TypeVariable) {
+                        Map<String, Type> genericMap = GenericUtil.getGenericInfo(type);
+                        Type itemClazz2 = genericMap.get(itemClazz.getTypeName());
+                        if (itemClazz2 instanceof Class) {
+                            itemClazz = itemClazz2;
+                        }
+                    }
+
+                    if (itemClazz instanceof Class) {
+                        Schema<?> itemSchema = new Schema<>();
+                        if (itemClazz.equals(type)) {
+                            //避免出现循环依赖，然后 oom
+                            itemSchema.set$ref("#/components/schemas/" + schemaName);
+                            itemSchema.setDescription(title);
+                            methodSchema.setItems(itemSchema);
+                        } else {
+                            String itemSchemaName = this.parseSchema((Class<?>) itemClazz, itemClazz);
+//                            itemSchema = openAPI.getComponents().getSchemas().get(itemSchemaName);
+                            // knife4j需要设置为引用才能支持
+                            itemSchema.set$ref("#/components/schemas/" + itemSchemaName);
+                            itemSchema.setDescription(title);
+                            methodSchema.setItems(itemSchema);
+                            methodSchema.description(StringUtils.getOrDefault(itemSchema.getDescription(), itemSchema.getTitle()));
+                        }
+                        if (methodSchema.getDescription() == null) {
+                            methodSchema.setDescription(itemSchema.getDescription());
+                        }
+                    }
+
+                    properties.put(propertyName, methodSchema);
+                }
+                continue;
+            }
+
+            // 处理Model类型
+            if (BuilderHelper.isModel(returnType)) {
+                if (returnType.equals(type)) {
+                    // 避免循环依赖
+                    Schema<?> methodSchema = new Schema<>();
+                    methodSchema.set$ref("#/components/schemas/" + schemaName);
+                    if (apiMethod != null) {
+                        methodSchema.setDescription(apiMethod.description());
+                    }
+                    properties.put(propertyName, methodSchema);
+                } else {
+                    String refSchemaName = this.parseSchema(returnType, returnGenericType);
+                    Schema<?> methodSchema = new Schema<>();
+                    methodSchema.set$ref("#/components/schemas/" + refSchemaName);
+                    if (apiMethod != null) {
+                        methodSchema.setDescription(apiMethod.description());
+                    }
+                    properties.put(propertyName, methodSchema);
+                }
+            } else {
+                // 处理基本类型
+                Schema<?> methodSchema = getSchemaByType(returnType.getSimpleName());
+                methodSchema.setName(propertyName);
+
+                if (apiMethod != null) {
+                    methodSchema.setDescription(apiMethod.description());
+                    methodSchema.setType(Utils.isBlank(apiMethod.type()) ? returnType.getSimpleName().toLowerCase() : apiMethod.type());
+                    methodSchema.setExample(apiMethod.example());
+                } else {
+                    methodSchema.setType(returnType.getSimpleName().toLowerCase());
+                }
+
+                properties.put(propertyName, methodSchema);
             }
         }
 
