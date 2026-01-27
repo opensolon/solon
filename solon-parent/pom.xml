@@ -541,6 +541,11 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon-ai-dialect-claude</artifactId>
+                <version>${solon-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon-ai-dialect-dashscope</artifactId>
                 <version>${solon-ai.version}</version>
             </dependency>

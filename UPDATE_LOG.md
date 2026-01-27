@@ -27,6 +27,7 @@
 
 ### v3.9.0
 
+* 新增 solon-ai-dialect-claude 插件
 * 优化 solon-docs-openapi3 插件兼容性
 
 ### v3.8.4
