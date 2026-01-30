@@ -33,6 +33,11 @@ public class SimpleRxSqlUtils implements RxSqlUtils {
     }
 
     @Override
+    public ConnectionFactory getConnectionFactory() {
+        return ds;
+    }
+
+    @Override
     public RxSqlQuerier sql(String sql, Object... args) {
         return new SimpleRxSqlQuerier(ds, sql).params(args);
     }

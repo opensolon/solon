@@ -57,6 +57,11 @@ public interface RxSqlUtils {
     }
 
     /**
+     * @since 3.9.1
+     */
+    ConnectionFactory getConnectionFactory();
+
+    /**
      * 执行代码
      *
      * @param sql  代码

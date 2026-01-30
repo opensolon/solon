@@ -25,6 +25,12 @@
 * 调整 Plugin 统一交给 AppContext 管理（之前由 SolonApp 或 PluginPackage 管理）？？
 * 升级 mcp-java-sdk 为 0.17.x？？？
 
+
+### v3.9.1
+
+* 添加 solon-data-sqlutils SqlUtils.getDataSource 方法
+* 添加 solon-data-rx-sqlutils RxSqlUtils.getConnectionFactory 方法
+
 ### v3.9.0
 
 * 新增 solon-ai-dialect-claude 插件
