@@ -57,6 +57,11 @@ public interface SqlUtils {
     }
 
     /**
+     * @since 3.9.1
+     */
+    DataSource getDataSource();
+
+    /**
      * 执行代码
      *
      * @param sql 代码

@@ -33,6 +33,11 @@ public class SimpleSqlUtils implements SqlUtils {
     }
 
     @Override
+    public DataSource getDataSource() {
+        return ds;
+    }
+
+    @Override
     public SqlQuerier sql(String sql, Object... args) {
         return new SimpleSqlQuerier(ds, sql).params(args);
     }
