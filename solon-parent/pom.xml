@@ -661,12 +661,42 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon-ai-skill-data</artifactId>
+                <version>${solon-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-skill-file</artifactId>
+                <version>${solon-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-skill-generation</artifactId>
+                <version>${solon-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon-ai-skill-openapi</artifactId>
                 <version>${solon-ai.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon-ai-skill-social</artifactId>
+                <version>${solon-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-skill-sys</artifactId>
+                <version>${solon-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon-ai-skill-text2sql</artifactId>
+                <version>${solon-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-skill-web</artifactId>
                 <version>${solon-ai.version}</version>
             </dependency>
             <dependency>
