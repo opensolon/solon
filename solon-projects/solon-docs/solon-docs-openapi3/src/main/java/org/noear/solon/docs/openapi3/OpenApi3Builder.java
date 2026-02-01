@@ -613,6 +613,8 @@ public class OpenApi3Builder {
 
         if (!Collection.class.isAssignableFrom(clazz)) {
             openAPI.getComponents().addSchemas(schemaName, schema);
+        } else {
+            schema.setType("array");
         }
 
         if (clazz.isEnum()) {
@@ -686,43 +688,46 @@ public class OpenApi3Builder {
                         fieldSchema.setDescription(apiField.description());
                     }
 
+
                     ParameterizedType pt = (ParameterizedType) typeGenericType;
                     //得到泛型里的class类型对象
                     Type itemClazz = pt.getActualTypeArguments()[0];
 
-                    if (itemClazz instanceof ParameterizedType) {
-                        itemClazz = ((ParameterizedType) itemClazz).getRawType();
-                    }
+//                    if (itemClazz instanceof ParameterizedType) {
+//                        itemClazz = ((ParameterizedType) itemClazz).getRawType();
+//                    }
+
 
                     if (itemClazz instanceof TypeVariable) {
                         Map<String, Type> genericMap = GenericUtil.getGenericInfo(type);
-                        Type itemClazz2 = genericMap.get(itemClazz.getTypeName());
-                        if (itemClazz2 instanceof Class) {
-                            itemClazz = itemClazz2;
-                        }
+                        itemClazz = genericMap.get(itemClazz.getTypeName());
                     }
 
-                    if (itemClazz instanceof Class) {
-                        Schema<?> itemSchema = new Schema<>();
-                        if (itemClazz.equals(type)) {
-                            //避免出现循环依赖，然后 oom
-                            itemSchema.set$ref("#/components/schemas/" + schemaName);
-                            itemSchema.setDescription(title);
-                            fieldSchema.setItems(itemSchema);
-                        } else {
-                            String itemSchemaName = this.parseSchema((Class<?>) itemClazz, itemClazz);
-                            Schema<?> itemSchemaInfo = openAPI.getComponents().getSchemas().get(itemSchemaName);
+//                    Type itemClazz = typeGenericType;
+//                    while (itemClazz instanceof ParameterizedType) {
+//                        itemClazz = parseParameterizedType((ParameterizedType) itemClazz);
+//                    }
 
-                            // knife4j需要设置为引用才能支持
-                            itemSchema.set$ref("#/components/schemas/" + itemSchemaName);
-                            itemSchema.setDescription(StringUtils.getOrDefault(itemSchemaInfo.getDescription(), itemSchemaInfo.getTitle()));
-                            fieldSchema.setItems(itemSchema);
-                        }
+                    Schema<?> itemSchema = new Schema<>();
+                    if (itemClazz.equals(type)) {
+                        //避免出现循环依赖，然后 oom
+                        itemSchema.set$ref("#/components/schemas/" + schemaName);
+                        itemSchema.setDescription(title);
+                        fieldSchema.setItems(itemSchema);
+                    } else {
+                        TypeEggg typeEggg = EgggUtil.getTypeEggg(itemClazz);
+                        String itemSchemaName = this.parseSchema(typeEggg.getType(), typeEggg.getGenericType());
+                        Schema<?> itemSchemaInfo = openAPI.getComponents().getSchemas().get(itemSchemaName);
 
-                        // 空字段 Description 则使用引用对象的 Description
-                        if (fieldSchema.getDescription() == null) {
-                            fieldSchema.setDescription(itemSchema.getDescription());
-                        }
+                        // knife4j需要设置为引用才能支持
+                        itemSchema.set$ref("#/components/schemas/" + itemSchemaName);
+                        itemSchema.setDescription(StringUtils.getOrDefault(itemSchemaInfo.getDescription(), itemSchemaInfo.getTitle()));
+                        fieldSchema.setItems(itemSchema);
+                    }
+
+                    // 空字段 Description 则使用引用对象的 Description
+                    if (fieldSchema.getDescription() == null) {
+                        fieldSchema.setDescription(itemSchema.getDescription());
                     }
 
                     properties.put(field.getName(), fieldSchema);
@@ -747,9 +752,7 @@ public class OpenApi3Builder {
                     if (apiField != null) {
                         fieldSchema.setDescription(apiField.description());
                     }
-
                     properties.put(field.getName(), fieldSchema);
-
                 }
             } else {
                 Schema fieldSchema = getSchemaByType(typeClazz.getSimpleName());
@@ -766,6 +769,8 @@ public class OpenApi3Builder {
                 properties.put(field.getName(), fieldSchema);
             }
         }
+
+
         // 4.处理getter方法，将其当作字段
         List<Method> methods = new ArrayList<>();
         currentClass = clazz;
@@ -785,7 +790,7 @@ public class OpenApi3Builder {
                 continue;
             }
             // 跳过void返回类型的方法
-            if (method.getReturnType() == Void.TYPE || method.getReturnType() == void.class) {
+            if (method.getReturnType() == Void.TYPE) {
                 continue;
             }
 
@@ -817,6 +822,7 @@ public class OpenApi3Builder {
             Class<?> returnType = method.getReturnType();
             Type returnGenericType = method.getGenericReturnType();
 
+
             // 处理Collection类型
             if (Collection.class.isAssignableFrom(returnType)) {
                 if (returnGenericType instanceof ParameterizedType) {
@@ -835,31 +841,38 @@ public class OpenApi3Builder {
 
                     if (itemClazz instanceof TypeVariable) {
                         Map<String, Type> genericMap = GenericUtil.getGenericInfo(type);
-                        Type itemClazz2 = genericMap.get(itemClazz.getTypeName());
-                        if (itemClazz2 instanceof Class) {
-                            itemClazz = itemClazz2;
-                        }
+                        itemClazz = genericMap.get(itemClazz.getTypeName());
                     }
 
-                    if (itemClazz instanceof Class) {
-                        Schema<?> itemSchema = new Schema<>();
-                        if (itemClazz.equals(type)) {
-                            //避免出现循环依赖，然后 oom
-                            itemSchema.set$ref("#/components/schemas/" + schemaName);
-                            itemSchema.setDescription(title);
-                            methodSchema.setItems(itemSchema);
-                        } else {
-                            String itemSchemaName = this.parseSchema((Class<?>) itemClazz, itemClazz);
-                            Schema<?> itemSchemaInfo = openAPI.getComponents().getSchemas().get(itemSchemaName);                            // knife4j需要设置为引用才能支持
-                            itemSchema.set$ref("#/components/schemas/" + itemSchemaName);
+//                    Type itemClazz = returnGenericType;
+//                    while (itemClazz instanceof ParameterizedType) {
+//                        itemClazz = parseParameterizedType((ParameterizedType) itemClazz);
+//                    }
+
+
+                    Schema<?> itemSchema = new Schema<>();
+                    if (itemClazz.equals(type)) {
+                        //避免出现循环依赖，然后 oom
+                        itemSchema.set$ref("#/components/schemas/" + schemaName);
+                        itemSchema.setDescription(title);
+                        methodSchema.setItems(itemSchema);
+                    } else {
+                        TypeEggg typeEggg = EgggUtil.getTypeEggg(itemClazz);
+                        String itemSchemaName = this.parseSchema(typeEggg.getType(), typeEggg.getGenericType());
+
+                        itemSchema.set$ref("#/components/schemas/" + itemSchemaName);
+
+                        Schema<?> itemSchemaInfo = openAPI.getComponents().getSchemas().get(itemSchemaName);
+                        if (itemSchemaInfo != null) {
                             itemSchema.setDescription(StringUtils.getOrDefault(itemSchemaInfo.getDescription(), itemSchemaInfo.getTitle()));
-                            methodSchema.setItems(itemSchema);
                         }
-
-                        if (methodSchema.getDescription() == null) {
-                            methodSchema.setDescription(itemSchema.getDescription());
-                        }
+                        methodSchema.setItems(itemSchema);
                     }
+
+                    if (methodSchema.getDescription() == null) {
+                        methodSchema.setDescription(itemSchema.getDescription());
+                    }
+
 
                     properties.put(propertyName, methodSchema);
                 }
@@ -1041,4 +1054,18 @@ public class OpenApi3Builder {
 
         return null;
     }
+
+
+    private Type parseParameterizedType(ParameterizedType type) {
+        //得到泛型里的class类型对象
+        Type itemClazz = type.getActualTypeArguments()[0];
+
+        if (itemClazz instanceof TypeVariable) {
+            Map<String, Type> genericMap = GenericUtil.getGenericInfo(type);
+            itemClazz = genericMap.get(itemClazz.getTypeName());
+        }
+
+        return itemClazz;
+    }
+
 }

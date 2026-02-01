@@ -13,7 +13,9 @@ import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.util.MimeType;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Tag(name = "demo控制器(JAVA)")
 @Controller
@@ -24,10 +26,12 @@ public class TestJavaController {
             value = "/appList",
             produces = MimeType.APPLICATION_JSON_VALUE
     )
-    public List<ApplicationVo> list(@Parameter(required = true) @Body ApplicationQueryPo applicationQueryPo) {
-        List<ApplicationVo> list = new ArrayList<>();
-        list.add(new ApplicationVo());
-        return list;
+    public R<Page<List<ApplicationVo>>> list(@Parameter(required = true) @Body List<ApplicationQueryPo> applicationQueryPo) {
+//        List<Map<String, ApplicationVo>> list = new ArrayList<>();
+//        HashMap<String, ApplicationVo> stringApplicationVoHashMap = new HashMap<>();
+//        stringApplicationVoHashMap.put("1", new ApplicationVo());
+//        list.add(stringApplicationVoHashMap);
+        return R.ok(null);
     }
 
     @Operation(summary = "分页查询信息列表", description = "查询条件：应用名称")
@@ -36,18 +40,14 @@ public class TestJavaController {
             value = "/appPage",
             produces = MimeType.APPLICATION_JSON_VALUE
     )
-    @Parameters(
-            {
-                    @Parameter(name = "page", required = true),
-                    @Parameter(name = "pageSize", required = false)
-            }
-    )
-    public CustomerQueryPageVo<ApplicationVo> query(@Parameter(description = "issues 缺参数说明", required = true) CustomerQueryPageVo<ApplicationVo> queryParam) {
-        CustomerQueryPageVo<ApplicationVo> page = new CustomerQueryPageVo<>();
+    public CustomerQueryPageVo<Page<ApplicationVo>> query(@Parameter(description = "issues 缺参数说明", required = true) CustomerQueryPageVo<ApplicationVo> queryParam) {
+        CustomerQueryPageVo<Page<ApplicationVo>> page = new CustomerQueryPageVo<>();
         page.setCurrPage(1);
         page.setPageSize(10);
         page.setTotalElements(1);
-        page.getContent().add(new ApplicationVo());
+
+        PageImpl<ApplicationVo> applicationVoPage = new PageImpl<>(1, 10);
+        page.getContent().add(applicationVoPage);
         return page;
     }
 }
