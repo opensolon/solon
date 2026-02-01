@@ -676,7 +676,7 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon-ai-skill-openapi</artifactId>
+                <artifactId>solon-ai-skill-restapi</artifactId>
                 <version>${solon-ai.version}</version>
             </dependency>
             <dependency>
