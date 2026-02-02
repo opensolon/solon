@@ -30,6 +30,7 @@
 
 * 添加 solon-data-sqlutils SqlUtils.getDataSource 方法
 * 添加 solon-data-rx-sqlutils RxSqlUtils.getConnectionFactory 方法
+* sanck4 升为 4.0.31
 
 ### v3.9.0
 
