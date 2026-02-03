@@ -130,7 +130,6 @@ public class Result<T> implements Serializable {
     /**
      * 成功的空结果
      */
-    @Note("成功的空结果")
     public static <T> Result<T> succeed() {
         return new Result(SUCCEED_CODE, "");
     }
@@ -138,17 +137,14 @@ public class Result<T> implements Serializable {
     /**
      * 成功的结果
      */
-    @Note("成功的结果")
     public static <T> Result<T> succeed(T data) {
         return new Result<>(data);
     }
 
-    @Note("成功的结果")
     public static <T> Result<T> succeed(T data, String description) {
         return new Result<>(SUCCEED_CODE, description, data);
     }
 
-    @Note("成功的结果")
     public static <T> Result<T> succeed(T data, int code) {
         return new Result<>(code, "", data);
     }
@@ -156,7 +152,6 @@ public class Result<T> implements Serializable {
     /**
      * 成功的空结果
      */
-    @Note("失败的空结果")
     public static <T> Result<T> failure() {
         return new Result(FAILURE_CODE, "");
     }
@@ -164,7 +159,6 @@ public class Result<T> implements Serializable {
     /**
      * 失败的结果
      */
-    @Note("失败的结果")
     public static <T> Result<T> failure(int code) {
         return failure(code, "");
     }
@@ -172,7 +166,6 @@ public class Result<T> implements Serializable {
     /**
      * 失败的结果
      */
-    @Note("失败的结果")
     public static <T> Result<T> failure(int code, String description) {
         return new Result<>(code, description);
     }
@@ -180,13 +173,15 @@ public class Result<T> implements Serializable {
     /**
      * 失败的结果
      */
-    @Note("失败的结果")
     public static <T> Result<T> failure(int code, String description, T data) {
         return new Result<>(code, description, data);
     }
 
-    @Note("失败的结果")
     public static <T> Result<T> failure(String description) {
         return new Result<>(FAILURE_CODE, description);
+    }
+
+    public static <T> Result<T> failure(String description, T data) {
+        return new Result<>(FAILURE_CODE, description, data);
     }
 }
