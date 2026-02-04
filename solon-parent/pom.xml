@@ -661,6 +661,11 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon-ai-skill-claudecode</artifactId>
+                <version>${solon-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon-ai-skill-data</artifactId>
                 <version>${solon-ai.version}</version>
             </dependency>
