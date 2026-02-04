@@ -1564,42 +1564,6 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>weixin-java-cp-solon-plugin</artifactId>
-                <version>${solon-integration.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>weixin-java-miniapp-solon-plugin</artifactId>
-                <version>${solon-integration.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>weixin-java-mp-solon-plugin</artifactId>
-                <version>${solon-integration.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>weixin-java-open-solon-plugin</artifactId>
-                <version>${solon-integration.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>weixin-java-pay-solon-plugin</artifactId>
-                <version>${solon-integration.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>weixin-java-qidian-solon-plugin</artifactId>
-                <version>${solon-integration.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
                 <artifactId>orika-solon-plugin</artifactId>
                 <version>${solon-integration.version}</version>
             </dependency>
