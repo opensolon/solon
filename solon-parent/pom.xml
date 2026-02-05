@@ -932,6 +932,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon-shell</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon-scheduling</artifactId>
                 <version>${solon.version}</version>
             </dependency>

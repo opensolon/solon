@@ -1,5 +1,7 @@
 package org.noear.solon.shell.core;
 
+import org.noear.solon.core.BeanWrap;
+
 import java.lang.reflect.Method;
 import java.util.List;
 
@@ -12,7 +14,7 @@ public class CommandMetadata {
     private String commandDescription;
 
     // 命令执行相关
-    private Object beanInstance;
+    private BeanWrap beanWrap;
     private Method targetMethod;
     private List<ParameterMetadata> parameterMetadataList;
 
@@ -34,11 +36,11 @@ public class CommandMetadata {
     }
 
     public Object getBeanInstance() {
-        return beanInstance;
+        return beanWrap.get();
     }
 
-    public void setBeanInstance(Object beanInstance) {
-        this.beanInstance = beanInstance;
+    public void setBeanWrap(BeanWrap beanWrap) {
+        this.beanWrap = beanWrap;
     }
 
     public Method getTargetMethod() {

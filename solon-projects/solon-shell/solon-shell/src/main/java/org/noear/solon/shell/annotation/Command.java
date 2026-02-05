@@ -19,5 +19,5 @@ public @interface Command {
     /**
      * 命令描述（用于 help 命令展示，可选）
      */
-    String description() default "无描述";
+    String description() default "";
 }

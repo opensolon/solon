@@ -1,8 +1,8 @@
 package org.noear.solon.shell;
 
 import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Param;
 import org.noear.solon.shell.annotation.Command;
-import org.noear.solon.shell.annotation.Option;
 
 /**
  * 命令容器类（复用 Solon 原生 @Component，无需自定义注解）
@@ -22,7 +22,7 @@ public class GreetingCommands {
      */
     @Command(value = "greet", description = "个性化问候，支持传入姓名（可选，默认：Solon）")
     public String greet(
-            @Option(defaultValue = "Solon", description = "问候对象姓名") String name
+            @Param(defaultValue = "Solon", description = "问候对象姓名") String name
     ) {
         return String.format("你好，%s！😀", name);
     }
@@ -32,8 +32,8 @@ public class GreetingCommands {
      */
     @Command(value = "add", description = "整数加法运算，接收两个必选整数参数")
     public String add(
-            @Option(required = true, description = "第一个整数") Integer a,
-            @Option(required = true, description = "第二个整数") Integer b
+            @Param(required = true, description = "第一个整数") Integer a,
+            @Param(required = true, description = "第二个整数") Integer b
     ) {
         return String.format("%d + %d = %d", a, b, a + b);
     }
