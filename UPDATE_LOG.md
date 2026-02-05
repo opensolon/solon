@@ -30,6 +30,7 @@
 
 * 添加 solon-data-sqlutils SqlUtils.getDataSource 方法
 * 添加 solon-data-rx-sqlutils RxSqlUtils.getConnectionFactory 方法
+* 调整 solon-net-httputils 响应式改为 Flux 接口（提供背压支持）
 * sanck4 升为 4.0.31
 
 ### v3.9.0

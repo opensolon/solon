@@ -23,9 +23,9 @@ import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.core.util.MimeType;
 import org.noear.solon.lang.Preview;
 import org.noear.solon.net.http.textstream.ServerSentEvent;
-import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Flux;
 
 import java.io.File;
 import java.io.IOException;
@@ -378,7 +378,7 @@ public interface HttpUtils {
     /**
      * 执行请求并返回文本行流
      */
-    Publisher<String> execAsLineStream(String method);
+    Flux<String> execAsLineStream(String method);
 
     /**
      * 执行请求并返回文本流
@@ -386,7 +386,7 @@ public interface HttpUtils {
      * @deprecated 3.1 {@link #execAsLineStream(String)}
      */
     @Deprecated
-    default Publisher<String> execAsTextStream(String method) {
+    default Flux<String> execAsTextStream(String method) {
         return execAsLineStream(method);
     }
 
@@ -394,7 +394,7 @@ public interface HttpUtils {
     /**
      * 执行请求并返回服务端推送事件流
      */
-    Publisher<ServerSentEvent> execAsSseStream(String method);
+    Flux<ServerSentEvent> execAsSseStream(String method);
 
     /**
      * 执行请求并返回服务端推送事件流
@@ -402,7 +402,7 @@ public interface HttpUtils {
      * @deprecated 3.1 {@link #execAsSseStream(String)}
      */
     @Deprecated
-    default Publisher<ServerSentEvent> execAsEventStream(String method) {
+    default Flux<ServerSentEvent> execAsEventStream(String method) {
         return execAsSseStream(method);
     }
 

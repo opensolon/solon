@@ -26,9 +26,10 @@ import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.core.util.MultiMap;
 import org.noear.solon.exception.SolonException;
 import org.noear.solon.net.http.*;
-import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -452,58 +453,46 @@ public abstract class AbstractHttpUtils implements HttpUtils {
     }
 
     @Override
-    public Publisher<String> execAsLineStream(String method) {
-        return subscriber -> execAsync(method)
-                .whenComplete((resp, err) -> {
-                    if (err == null) {
-                        try {
-                            if (resp.code() < 400) {
-                                TextStreamUtil.parseLineStream(resp, subscriber);
-                            } else {
-                                String message = RunUtil.callAndTry(resp::bodyAsString);
-
-                                if (Utils.isEmpty(message)) {
-                                    subscriber.onError(new HttpException("Error code: " + resp.code()));
-                                } else {
-                                    subscriber.onError(new HttpException("Error code: " + resp.code() + ", message: " + message));
-                                }
-                            }
-                        } catch (Exception e) {
-                            subscriber.onError(e);
-                        }
+    public Flux<String> execAsLineStream(String method) {
+        return Mono.fromFuture(execAsync(method))
+                .flatMapMany(resp -> {
+                    if (resp.code() < 400) {
+                        // 直接使用非弃用的 Flux 返回接口
+                        return TextStreamUtil.parseLineStream(resp);
                     } else {
-                        subscriber.onError(err);
+                        // 保持原有的错误构造逻辑
+                        return Flux.error(createHttpException(resp));
                     }
                 });
     }
 
     @Override
-    public Publisher<ServerSentEvent> execAsSseStream(String method) {
+    public Flux<ServerSentEvent> execAsSseStream(String method) {
         this.header("Accept", "text/event-stream");
         this.header("Cache-Control", "no-cache");
 
-        return subscriber -> execAsync(method)
-                .whenComplete((resp, err) -> {
-                    if (err == null) {
-                        try {
-                            if (resp.code() < 400) {
-                                TextStreamUtil.parseSseStream(resp, subscriber);
-                            } else {
-                                String message = RunUtil.callAndTry(resp::bodyAsString);
-
-                                if (Utils.isEmpty(message)) {
-                                    subscriber.onError(new HttpException("Error code: " + resp.code()));
-                                } else {
-                                    subscriber.onError(new HttpException("Error code: " + resp.code() + ", message: " + message));
-                                }
-                            }
-                        } catch (Exception e) {
-                            subscriber.onError(e);
-                        }
+        return Mono.fromFuture(execAsync(method))
+                .flatMapMany(resp -> {
+                    if (resp.code() < 400) {
+                        // 直接使用非弃用的 Flux 返回接口
+                        return TextStreamUtil.parseSseStream(resp);
                     } else {
-                        subscriber.onError(err);
+                        // 保持原有的错误构造逻辑
+                        return Flux.error(createHttpException(resp));
                     }
                 });
+    }
+
+    /**
+     * 提取公共异常构造逻辑（保持原逻辑：尝试读取 body 报错）
+     */
+    private HttpException createHttpException(HttpResponse resp) {
+        String message = RunUtil.callAndTry(resp::bodyAsString);
+        if (Utils.isEmpty(message)) {
+            return new HttpException("Error code: " + resp.code());
+        } else {
+            return new HttpException("Error code: " + resp.code() + ", message: " + message);
+        }
     }
 
     /**

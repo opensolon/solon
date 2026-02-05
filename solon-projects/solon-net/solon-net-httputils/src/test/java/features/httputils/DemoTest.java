@@ -2,7 +2,6 @@ package features.httputils;
 
 import org.junit.jupiter.api.Test;
 import org.noear.solon.net.http.HttpUtils;
-import org.noear.solon.rx.SimpleSubscriber;
 
 import java.util.concurrent.CountDownLatch;
 
@@ -16,21 +15,21 @@ public class DemoTest {
         HttpUtils.http("http://localhost:8080/test/functioncall/sse")
                 .data("prompt", "今天杭州的天气情况？")
                 .execAsLineStream("GET")
-                .subscribe(new SimpleSubscriber<String>()
-                        .doOnSubscribe(subscription -> {
-                            System.out.println("开始");
-                            subscription.request(1L);
-                        })
-                        .doOnNext(item -> {
-                            System.out.println(item);
-                        }).doOnComplete(() -> {
-                            System.out.println("完成");
-                            System.out.println("===================================");
-                            latch.countDown();
-                        }).doOnError(err -> {
-                            err.printStackTrace();
-                            latch.countDown();
-                        }));
+                .doOnSubscribe(subscription -> {
+                    System.out.println("开始");
+                    subscription.request(1L);
+                })
+                .doOnNext(item -> {
+                    System.out.println(item);
+                }).doOnComplete(() -> {
+                    System.out.println("完成");
+                    System.out.println("===================================");
+                    latch.countDown();
+                }).doOnError(err -> {
+                    err.printStackTrace();
+                    latch.countDown();
+                }).subscribe();
+
 
         latch.await();
     }
