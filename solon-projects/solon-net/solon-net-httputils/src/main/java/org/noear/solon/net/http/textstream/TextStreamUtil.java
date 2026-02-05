@@ -18,10 +18,8 @@ package org.noear.solon.net.http.textstream;
 import org.noear.solon.Solon;
 import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.net.http.HttpResponse;
-import org.reactivestreams.Subscriber;
 import reactor.core.publisher.Flux;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
@@ -165,56 +163,5 @@ public class TextStreamUtil {
         SseContext(CloseTrackableBufferedReader reader) {
             this.reader = reader;
         }
-    }
-
-    //---------
-
-    /**
-     * @deprecated 3.9.1
-     */
-    @Deprecated
-    public static void parseLineStream(HttpResponse response, Subscriber<? super String> subscriber) {
-        parseLineStream(response.body(), response.contentCharset(), subscriber);
-    }
-
-    /**
-     * @deprecated 3.9.1
-     */
-    @Deprecated
-    public static void parseLineStream(InputStream inputStream, Charset charset, Subscriber<? super String> subscriber) {
-        parseLineStream(inputStream, charset).subscribe(subscriber);
-    }
-
-    /**
-     * @deprecated 3.1 {@link #parseLineStream(InputStream, Charset, Subscriber)}
-     */
-    @Deprecated
-    public static void parseTextStream(InputStream inputStream, Subscriber<? super String> subscriber) throws IOException {
-        parseLineStream(inputStream, null, subscriber);
-    }
-
-
-    /**
-     * @deprecated 3.1 {@link #parseSseStream(InputStream, Charset, Subscriber)}
-     */
-    @Deprecated
-    public static void parseEventStream(InputStream inputStream, Subscriber<? super ServerSentEvent> subscriber) throws IOException {
-        parseSseStream(inputStream, null, subscriber);
-    }
-
-    /**
-     * @deprecated 3.9.1
-     */
-    @Deprecated
-    public static void parseSseStream(HttpResponse response, Subscriber<? super ServerSentEvent> subscriber) {
-        parseSseStream(response.body(), response.contentCharset(), subscriber);
-    }
-
-    /**
-     * @deprecated 3.9.1
-     */
-    @Deprecated
-    public static void parseSseStream(InputStream inputStream, Charset charset, Subscriber<? super ServerSentEvent> subscriber) {
-        parseSseStream(inputStream, charset).subscribe(subscriber);
     }
 }
