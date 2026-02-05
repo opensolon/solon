@@ -58,17 +58,18 @@ public class RxHandlerImpl implements RxHandler {
             }
 
             //开始订阅
-            Flux.from(publisher).concatMap(o -> {
-                        if (o == null) {
-                            return Flux.empty();
-                        } else if (o instanceof Entity) {
-                            return getEntityBody(ctx, (Entity) o);
-                        } else if (o instanceof Publisher) {
-                            return Flux.from((Publisher) o);
-                        } else {
-                            return Flux.just(o);
-                        }
-                    }).doOnNext(o -> {
+            publisher.concatMap(o -> {
+                if (o == null) {
+                    return Flux.empty();
+                } else if (o instanceof Entity) {
+                    return getEntityBody(ctx, (Entity) o);
+                } else if (o instanceof Publisher) {
+                    return Flux.from((Publisher) o);
+                } else {
+                    return Flux.just(o);
+                }
+            }).subscribe(
+                    o -> {
                         try {
                             ctx.render(o);
 
@@ -79,13 +80,10 @@ public class RxHandlerImpl implements RxHandler {
                         } catch (Throwable e) {
                             throw new RuntimeException(e);
                         }
-                    })
-                    .doOnError(err -> {
-                        emitter.onError((Throwable) err);
-                    })
-                    .doOnComplete(() -> {
-                        emitter.onComplete();
-                    }).subscribe();
+                    },
+                    e -> emitter.onError((Throwable) e),
+                    emitter::onComplete
+            );
         });
     }
 
