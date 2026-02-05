@@ -11,6 +11,8 @@
     </parent>
 
     <artifactId>solon-shell</artifactId>
+    <name>${project.artifactId}</name>
+    <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
@@ -21,6 +23,7 @@
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon-logging-simple</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>
