@@ -28,8 +28,10 @@
 
 ### v3.9.1
 
+* 新增 solon-shell 插件（试用）
 * 添加 solon-data-sqlutils SqlUtils.getDataSource 方法
 * 添加 solon-data-rx-sqlutils RxSqlUtils.getConnectionFactory 方法
+* 优化 solon-doc-openapi3 兼容性
 * 调整 solon-net-httputils 响应式改为 Flux 接口（提供背压支持）
 * sanck4 升为 4.0.31
 
