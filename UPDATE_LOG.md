@@ -26,6 +26,10 @@
 * 升级 mcp-java-sdk 为 0.17.x？？？
 
 
+### v3.9.2
+
+* 优化 solon-logging-log4j2 默认配置改为 java 动态构建（更灵活）
+
 ### v3.9.1
 
 * 新增 solon-shell 插件（试用）
