@@ -57,6 +57,7 @@ import org.noear.solon.validation.annotation.NotBlank;
 import org.noear.solon.validation.annotation.NotEmpty;
 import org.noear.solon.validation.annotation.NotNull;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -69,11 +70,32 @@ import java.util.stream.Collectors;
  * @since 3.8.1
  */
 public class OpenApi3Builder {
-    private final OpenAPI openAPI = new OpenAPI();
+    private final OpenAPI openAPI;
     private final DocDocket docket;
 
-    public OpenApi3Builder(DocDocket docket) {
+    private OpenApi3Builder(OpenAPI openAPI, DocDocket docket) {
         this.docket = docket;
+        this.openAPI = openAPI;
+    }
+
+    public static OpenApi3Builder getInstance(DocDocket docket) {
+        return new OpenApi3Builder(new OpenAPI(), docket);
+    }
+
+    public static OpenApi3Builder getInstance(OpenAPI customOpenAPI, DocDocket docket) {
+        OpenAPI openAPI = new OpenAPI();
+        if (customOpenAPI != null) {
+            openAPI.setComponents(customOpenAPI.getComponents());
+            openAPI.setPaths(customOpenAPI.getPaths());
+            openAPI.setSecurity(customOpenAPI.getSecurity());
+            openAPI.setTags(customOpenAPI.getTags());
+            openAPI.setServers(customOpenAPI.getServers());
+            openAPI.setExternalDocs(customOpenAPI.getExternalDocs());
+            openAPI.setInfo(customOpenAPI.getInfo());
+            openAPI.setExtensions(customOpenAPI.getExtensions());
+        }
+
+        return new OpenApi3Builder(openAPI, docket);
     }
 
     public OpenAPI build() {
@@ -94,7 +116,7 @@ public class OpenApi3Builder {
         ApiContact apiContact = docket.info().contact();
 
         openAPI.info(new Info()
-                .title(docket.info().title())
+                .title(StringUtils.getOrDefault(docket.info().title(), docket.groupName()))
                 .description(docket.info().description())
                 .termsOfService(docket.info().termsOfService())
                 .version(docket.info().version()));
@@ -147,6 +169,10 @@ public class OpenApi3Builder {
         if (tags != null) {
             openAPI.setTags(tags.stream().collect(Collectors.groupingBy(io.swagger.v3.oas.models.tags.Tag::getName)).
                     values().stream().map(i -> i.get(0)).collect(Collectors.toList()));
+        }
+
+        if (Utils.isEmpty(openAPI.getTags())) {
+            openAPI.addTagsItem(new io.swagger.v3.oas.models.tags.Tag());
         }
 
         return openAPI;
@@ -357,11 +383,10 @@ public class OpenApi3Builder {
             String paramSchema = this.getParameterSchema(paramHolder);
             String dataType = paramHolder.dataType();
 
-            Parameter parameter = new Parameter();
+            Parameter parameter = BuilderHelper.getParameter(paramHolder);
 
             parameter.setName(paramHolder.getName());
             parameter.setRequired(paramHolder.isRequired());
-            parameter.setIn(paramHolder.paramType());
 
             // 获取参数描述信息，优先使用ParamHolder中的注解信息，否则尝试从参数本身获取
             if (paramHolder.getAnno() != null) {
@@ -406,6 +431,7 @@ public class OpenApi3Builder {
                     parameter.setSchema(schema);
                 }
             }
+
 
             paramList.add(parameter);
         }

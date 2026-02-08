@@ -5,11 +5,11 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.noear.solon.annotation.Body;
-import org.noear.solon.annotation.Controller;
-import org.noear.solon.annotation.Mapping;
+import org.noear.solon.annotation.*;
 import org.noear.solon.core.handle.MethodType;
+import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.core.util.MimeType;
 
 import java.util.ArrayList;
@@ -23,10 +23,14 @@ public class TestJavaController {
     @Operation(summary = "查询信息列表", description = "查询条件：查询信息列表")
     @Mapping(
             method = MethodType.POST,
-            value = "/appList",
+            value = "/appList/{appid}",
             produces = MimeType.APPLICATION_JSON_VALUE
     )
-    public R<Page<List<ApplicationVo>>> list(@Parameter(required = true) @Body List<ApplicationQueryPo> applicationQueryPo) {
+    public R<Page<List<ApplicationVo>>> list(@Parameter(description = "用户授权") @Header(description = "用户授权", required = true) String token,
+                                             @Parameter(description = "param") String openId,
+                                             @Parameter(description = "上传附件") UploadedFile file,
+                                             @Path String appId,
+                                             @Body List<ApplicationQueryPo> applicationQueryPo) {
 //        List<Map<String, ApplicationVo>> list = new ArrayList<>();
 //        HashMap<String, ApplicationVo> stringApplicationVoHashMap = new HashMap<>();
 //        stringApplicationVoHashMap.put("1", new ApplicationVo());

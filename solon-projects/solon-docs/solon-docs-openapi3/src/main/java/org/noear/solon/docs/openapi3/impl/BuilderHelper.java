@@ -17,6 +17,7 @@ package org.noear.solon.docs.openapi3.impl;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.models.parameters.*;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Mapping;
@@ -34,20 +35,20 @@ import java.util.Map;
  * @since 3.8.1
  */
 public class BuilderHelper {
-    public static boolean isModel(Class<?> clz){
-        if(clz.isAnnotationPresent(Schema.class)){
+    public static boolean isModel(Class<?> clz) {
+        if (clz.isAnnotationPresent(Schema.class)) {
             return true;
         }
 
-        if(clz.getName().startsWith("java")){
+        if (clz.getName().startsWith("java")) {
             return false;
         }
 
-        if(clz.isPrimitive()){
+        if (clz.isPrimitive()) {
             return false;
         }
 
-        if(Map.class.isAssignableFrom(clz) || Collection.class.isAssignableFrom(clz)){
+        if (Map.class.isAssignableFrom(clz) || Collection.class.isAssignableFrom(clz)) {
             return false;
         }
 
@@ -145,6 +146,24 @@ public class BuilderHelper {
     }
 
 
-
-
+    public static Parameter getParameter(ParamHolder paramHolder) {
+        Parameter parameter;
+        if (paramHolder.isRequiredHeader()) {
+            parameter = new HeaderParameter();
+        } else if (paramHolder.isRequiredCookie()) {
+            parameter = new CookieParameter();
+        } else if (paramHolder.isRequiredPath()) {
+            parameter = new PathParameter();
+        } else if (paramHolder.isRequiredBody()) {
+            parameter = new Parameter();
+            parameter.setIn(ApiEnum.PARAM_TYPE_BODY);
+        } else if (ApiEnum.FILE.equals(paramHolder.dataType())) {
+            parameter = new Parameter();
+            parameter.setStyle(Parameter.StyleEnum.FORM);
+            parameter.setIn(ApiEnum.CONSUMES_FORM_DATA);
+        } else {
+            parameter = new QueryParameter();
+        }
+        return parameter;
+    }
 }
