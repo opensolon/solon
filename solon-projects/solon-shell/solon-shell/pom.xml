@@ -19,11 +19,21 @@
             <groupId>org.noear</groupId>
             <artifactId>solon</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-logging-simple</artifactId>
-            <scope>test</scope>
+            <artifactId>solon-i18n</artifactId>
+        </dependency>
+        <!-- JLine：增强终端交互（历史命令、自动补全、光标控制） -->
+        <dependency>
+            <groupId>org.jline</groupId>
+            <artifactId>jline</artifactId>
+            <version>3.21.0</version>
+        </dependency>
+        <!-- Jansi：终端颜色/ANSI转义符适配（Windows/Linux/Mac通用） -->
+        <dependency>
+            <groupId>org.fusesource.jansi</groupId>
+            <artifactId>jansi</artifactId>
+            <version>2.4.0</version>
         </dependency>
     </dependencies>
 </project>
