@@ -39,6 +39,7 @@ import java.util.List;
 @Controller
 @Mapping("/test/user")
 public class UserController {
+
     @Operation(summary = "查询用户列表")
     @Get
     @Mapping("/list")
@@ -103,5 +104,6 @@ public class UserController {
     public boolean delete(String ids) {
         return true;
     }
+
 
 }

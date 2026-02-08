@@ -91,6 +91,7 @@ public class OpenApi3Utils {
     public static String getApiJson(Context ctx, String group) throws IOException {
         DocDocket docket = Solon.context().getBean(group);
 
+
         if (docket == null) {
             return null;
         }
@@ -104,7 +105,10 @@ public class OpenApi3Utils {
             docket.globalResponseCodes().put(200, "");
         }
 
-        OpenAPI openAPI = new OpenApi3Builder(docket).build();
+        OpenAPI customOpenAPI = Solon.context().getBean(OpenAPI.class);
+
+
+        OpenAPI openAPI = OpenApi3Builder.getInstance(customOpenAPI, docket).build();
 
         if (docket.serializer() == null) {
             return JacksonSerializer.getInstance().serialize(openAPI);
@@ -115,7 +119,7 @@ public class OpenApi3Utils {
 
     public static String getSwaggerJson(DocDocket docket) throws IOException {
         //本地模式
-        OpenAPI openAPI = new OpenApi3Builder(docket).build();
+        OpenAPI openAPI = OpenApi3Builder.getInstance(docket).build();
 
         if (docket.serializer() == null) {
             return JacksonSerializer.getInstance().serialize(openAPI);
