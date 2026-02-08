@@ -36,7 +36,7 @@ import java.util.Map;
 public class RstController {
     @ApiOperation("框架类参数与结果")
     @Mapping("demo1")
-    public Result<User> demo1(@Body User user) {
+    public Result<User> demo1(@Header(required = true, description = "请求token") String token, @Body User user) {
         return null;
     }
 

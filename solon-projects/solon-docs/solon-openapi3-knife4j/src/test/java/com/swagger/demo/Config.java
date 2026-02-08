@@ -19,8 +19,12 @@ import com.github.xiaoymin.knife4j.solon.extension.OpenApiExtensionResolver;
 import com.swagger.demo.model.HttpCodes;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.parameters.HeaderParameter;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.Managed;
@@ -151,4 +155,19 @@ public class Config {
         //.securityDefinitionInHeader("token");
 
     }
+
+
+    @Managed
+    public OpenAPI customOpenApi() {
+        return new OpenAPI()
+                .components(new Components()
+                        .addSecuritySchemes("accessToken",
+                                new SecurityScheme()
+                                        .type(SecurityScheme.Type.APIKEY)
+                                        .in(SecurityScheme.In.HEADER)
+                                        .name("accessToken")
+                                        .description("用户token")))
+                .addSecurityItem(new SecurityRequirement().addList("accessToken"));
+    }
+
 }
