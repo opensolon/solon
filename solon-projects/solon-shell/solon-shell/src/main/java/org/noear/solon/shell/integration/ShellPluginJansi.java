@@ -22,7 +22,9 @@ import org.noear.solon.core.Plugin;
 import org.noear.solon.core.event.AppLoadEndEvent;
 import org.noear.solon.shell.annotation.Command;
 import org.noear.solon.shell.core.CommandMetadata;
-import org.noear.solon.shell.core.ShellRepl;
+import org.noear.solon.shell.core.ShellReplJansi;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -36,8 +38,8 @@ import java.util.List;
  * @author shenmk
  * @since 3.9.1
  */
-@Deprecated
-public class ShellPlugin implements Plugin {
+public class ShellPluginJansi implements Plugin {
+    private static final Logger log = LoggerFactory.getLogger(ShellPluginJansi.class);
 
     @Override
     public void start(AppContext context) {
@@ -50,8 +52,8 @@ public class ShellPlugin implements Plugin {
         context.beanMake(HelpCommand.class);
 
         //设定启动时机
-        context.onEvent(AppLoadEndEvent.class, event -> {
-            ShellRepl.start();
+        context.onEvent(AppLoadEndEvent.class, e -> {
+            ShellReplJansi.start();
         });
     }
 
@@ -60,7 +62,7 @@ public class ShellPlugin implements Plugin {
         if (ShellContext.COMMAND_REPOSITORY.containsKey(commandName)) {
             throw new IllegalArgumentException("Repeat command name: " + commandName);
         }
-
+        log.info("registry command name: {}, bean {}", commandName, beanWrap.clz().getName());
         CommandMetadata metadata = new CommandMetadata();
         metadata.setCommandName(commandName);
         metadata.setCommandDescription(anno.description());
