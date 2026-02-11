@@ -90,7 +90,9 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
         mapping = Utils.annoAlias(mappingAnno.value(), mappingAnno.path());
 
         //默认为404错误输出
-        mainDef = (c) -> c.status(404);
+        mainDef = (c) -> {
+            throw new StatusException("Not Found", 404);
+        };
 
         Solon.context().lifecycle(() -> {
             //通过生命周期触发注册，可以在注册时使用注入字段

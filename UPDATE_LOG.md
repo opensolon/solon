@@ -29,6 +29,7 @@
 ### v3.9.2
 
 * 优化 solon-logging-log4j2 默认配置改为 java 动态构建（更灵活）
+* 调整 solon Gateway mainDef 直接输出 404 状态，改为的抛 404 状态异常
 
 ### v3.9.1
 
