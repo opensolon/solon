@@ -18,8 +18,12 @@ package org.apache.logging.log4j.solon.integration;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.ThreadContext;
 import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.logging.log4j.core.config.LoggerConfig;
+import org.apache.logging.log4j.core.config.builder.api.ConfigurationBuilder;
+import org.apache.logging.log4j.core.config.builder.api.ConfigurationBuilderFactory;
+import org.apache.logging.log4j.core.config.builder.impl.BuiltConfiguration;
 import org.fusesource.jansi.AnsiConsole;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
@@ -31,7 +35,7 @@ import org.noear.solon.logging.model.LoggerLevelEntity;
 import java.net.URL;
 
 /**
- * 日志孵化器
+ * Log4j2 日志孵化器
  *
  * @author noear
  * @since 2.4
@@ -110,15 +114,10 @@ public class LogIncubatorImpl implements LogIncubator {
 
         if (url == null) {
             //::尝试默认加载
-            boolean fileEnable = Solon.cfg().getBool("solon.logging.appender.file.enable", true);
+            ConfigurationBuilder<BuiltConfiguration> builder = ConfigurationBuilderFactory.newConfigurationBuilder();
+            Configuration config = DefaultLog4j2ConfigFactory.createConfiguration(builder);
 
-            if (fileEnable) {
-                url = ResourceUtil.getResource("META-INF/solon_def/log4j2-def.xml");
-            } else {
-                url = ResourceUtil.getResource("META-INF/solon_def/log4j2-def_nofile.xml");
-            }
-
-            Configurator.reconfigure(url.toURI());
+            Configurator.reconfigure(config);
         } else {
             //::加载 xml url
             Configurator.reconfigure(url.toURI());
