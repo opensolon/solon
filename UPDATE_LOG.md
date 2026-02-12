@@ -50,6 +50,7 @@
 
 * 优化 solon-logging-log4j2 默认配置改为 java 动态构建（更灵活）
 * 优化 solon-docs-openapi3 插件兼容性
+* sanck4 升为 4.0.31
 
 ### v3.8.4
 
