@@ -52,6 +52,10 @@ import org.noear.solon.docs.models.ApiLicense;
 import org.noear.solon.docs.openapi3.impl.ActionHolder;
 import org.noear.solon.docs.openapi3.impl.BuilderHelper;
 import org.noear.solon.docs.openapi3.impl.ParamHolder;
+import org.noear.solon.lang.NonNull;
+import org.noear.solon.validation.annotation.NotBlank;
+import org.noear.solon.validation.annotation.NotEmpty;
+import org.noear.solon.validation.annotation.NotNull;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
@@ -66,11 +70,32 @@ import java.util.stream.Collectors;
  * @since 3.8.1
  */
 public class OpenApi3Builder {
-    private final OpenAPI openAPI = new OpenAPI();
+    private final OpenAPI openAPI;
     private final DocDocket docket;
 
-    public OpenApi3Builder(DocDocket docket) {
+    private OpenApi3Builder(OpenAPI openAPI, DocDocket docket) {
         this.docket = docket;
+        this.openAPI = openAPI;
+    }
+
+    public static OpenApi3Builder getInstance(DocDocket docket) {
+        return new OpenApi3Builder(new OpenAPI(), docket);
+    }
+
+    public static OpenApi3Builder getInstance(OpenAPI customOpenAPI, DocDocket docket) {
+        OpenAPI openAPI = new OpenAPI();
+        if (customOpenAPI != null) {
+            openAPI.setComponents(customOpenAPI.getComponents());
+            openAPI.setPaths(customOpenAPI.getPaths());
+            openAPI.setSecurity(customOpenAPI.getSecurity());
+            openAPI.setTags(customOpenAPI.getTags());
+            openAPI.setServers(customOpenAPI.getServers());
+            openAPI.setExternalDocs(customOpenAPI.getExternalDocs());
+            openAPI.setInfo(customOpenAPI.getInfo());
+            openAPI.setExtensions(customOpenAPI.getExtensions());
+        }
+
+        return new OpenApi3Builder(openAPI, docket);
     }
 
     public OpenAPI build() {
@@ -91,7 +116,7 @@ public class OpenApi3Builder {
         ApiContact apiContact = docket.info().contact();
 
         openAPI.info(new Info()
-                .title(docket.info().title())
+                .title(StringUtils.getOrDefault(docket.info().title(), docket.groupName()))
                 .description(docket.info().description())
                 .termsOfService(docket.info().termsOfService())
                 .version(docket.info().version()));
@@ -144,6 +169,10 @@ public class OpenApi3Builder {
         if (tags != null) {
             openAPI.setTags(tags.stream().collect(Collectors.groupingBy(io.swagger.v3.oas.models.tags.Tag::getName)).
                     values().stream().map(i -> i.get(0)).collect(Collectors.toList()));
+        }
+
+        if (Utils.isEmpty(openAPI.getTags())) {
+            openAPI.addTagsItem(new io.swagger.v3.oas.models.tags.Tag());
         }
 
         return openAPI;
@@ -253,9 +282,9 @@ public class OpenApi3Builder {
                 continue;
             }
 
-            String controllerKey = BuilderHelper.getControllerKey(actionHolder.controllerClz());
-            String actionName = actionHolder.action().name();
-            Method actionMethod = actionHolder.action().method().getMethod();
+//            String controllerKey = BuilderHelper.getControllerKey(actionHolder.controllerClz());
+//            String actionName = actionHolder.action().name();
+//            Method actionMethod = actionHolder.action().method().getMethod();
 
             Set<String> actionTags = actionHolder.getTags(apiAction);
 
@@ -322,7 +351,9 @@ public class OpenApi3Builder {
     private List<Parameter> parseActionParameters(ActionHolder actionHolder) {
         Map<String, ParamHolder> actionParamMap = new LinkedHashMap<>();
         for (ParamWrap p1 : actionHolder.action().method().getParamWraps()) {
-            actionParamMap.put(p1.getName(), new ParamHolder(p1));
+            ParamHolder paramHolder = new ParamHolder(p1);
+            paramHolder.binding(paramHolder.getParam().getParameter().getAnnotation(io.swagger.v3.oas.annotations.Parameter.class));
+            actionParamMap.put(p1.getName(), paramHolder);
         }
 
         // 获取参数注解信息
@@ -341,7 +372,6 @@ public class OpenApi3Builder {
             paramHolder.binding(a1);
         }
 
-
         // 构建参数列表
         List<Parameter> paramList = new ArrayList<>();
 
@@ -353,12 +383,10 @@ public class OpenApi3Builder {
             String paramSchema = this.getParameterSchema(paramHolder);
             String dataType = paramHolder.dataType();
 
-            Parameter parameter = new Parameter();
+            Parameter parameter = BuilderHelper.getParameter(paramHolder);
 
             parameter.setName(paramHolder.getName());
             parameter.setRequired(paramHolder.isRequired());
-            parameter.setIn(paramHolder.paramType());
-
 
             // 获取参数描述信息，优先使用ParamHolder中的注解信息，否则尝试从参数本身获取
             if (paramHolder.getAnno() != null) {
@@ -403,6 +431,7 @@ public class OpenApi3Builder {
                     parameter.setSchema(schema);
                 }
             }
+
 
             paramList.add(parameter);
         }
@@ -486,7 +515,6 @@ public class OpenApi3Builder {
         String produces = StringUtils.getOrDefault(actionHolder.action().produces(), "application/json");
         String schema = this.parseSchema(returnType, type);
 
-
         if (schema != null) {
             ApiResponse okResponse = new ApiResponse()
                     .description("OK")
@@ -509,15 +537,17 @@ public class OpenApi3Builder {
 
     private Schema<?> generSchema(TypeEggg typeEggg) {
         Class<?> returnType = typeEggg.getType();
-
+        String schemaName = null;
         if (!BuilderHelper.isModel(returnType) && typeEggg.getGenericType() instanceof ParameterizedType) {
             Schema<?> schemaByType = this.getSchemaByType(typeEggg.getType().getSimpleName());
             Map<String, Type> genericInfo = typeEggg.getGenericInfo();
             schemaByType.items(this.generSchema(EgggUtil.getTypeEggg(genericInfo.values().stream().findFirst().orElse(null))));
             return schemaByType;
+        } else if (typeEggg.getGenericType() instanceof ParameterizedType) {
+            schemaName = parseSchema(returnType, typeEggg.getGenericType());
+        } else {
+            schemaName = parseSchema(returnType, typeEggg.getType());
         }
-
-        String schemaName = parseSchema(returnType, typeEggg.getType());
 
         Schema<Object> schemaByType = new Schema<>();
         schemaByType.$ref("#/components/schemas/" + schemaName);
@@ -568,7 +598,14 @@ public class OpenApi3Builder {
         String schemaName = BuilderHelper.getModelName(clazz, type);
         io.swagger.v3.oas.annotations.media.Schema apiModel = clazz.getAnnotation(io.swagger.v3.oas.annotations.media.Schema.class);
         if (apiModel != null && Utils.isNotEmpty(apiModel.name())) {
-            schemaName = apiModel.name();
+
+            if (schemaName.contains("«")) {
+                String baseName = BuilderHelper.getModelName(clazz, clazz);
+                schemaName = schemaName.replace(baseName, apiModel.name());
+            } else {
+                schemaName = apiModel.name();
+            }
+
         }
 
         return schemaName;
@@ -599,10 +636,11 @@ public class OpenApi3Builder {
         schema.setName(schemaName);
         schema.setTitle(title);
         schema.setType("object");
-        schema.setDescription(title);
 
         if (!Collection.class.isAssignableFrom(clazz)) {
             openAPI.getComponents().addSchemas(schemaName, schema);
+        } else {
+            schema.setType("array");
         }
 
         if (clazz.isEnum()) {
@@ -621,6 +659,7 @@ public class OpenApi3Builder {
 
         // 3.完成模型解析 - 获取所有字段并添加属性
         List<Field> fields = new ArrayList<>();
+        Set<String> processedPropertyNames = new HashSet<>(); // 用于去重，避免字段和getter方法重复
         Class<?> currentClass = clazz;
 
         // 收集当前类及其所有父类的字段
@@ -631,13 +670,22 @@ public class OpenApi3Builder {
 
 
         Map<String, Schema> properties = new LinkedHashMap<>();
+        List<String> required = new ArrayList<>();
         for (Field field : fields) {
             if (Modifier.isStatic(field.getModifiers())) {
                 //静态的跳过
                 continue;
             }
 
+            // 记录已处理的属性名
+            processedPropertyNames.add(field.getName());
+
+            // model 的字段注解  Schema
             io.swagger.v3.oas.annotations.media.Schema apiField = field.getAnnotation(io.swagger.v3.oas.annotations.media.Schema.class);
+
+            // 添加字段必填项
+            this.handSchemaRequiredField(required, field, apiField);
+
 
             Class<?> typeClazz = field.getType();
             Type typeGenericType = field.getGenericType();
@@ -666,37 +714,46 @@ public class OpenApi3Builder {
                         fieldSchema.setDescription(apiField.description());
                     }
 
+
                     ParameterizedType pt = (ParameterizedType) typeGenericType;
                     //得到泛型里的class类型对象
                     Type itemClazz = pt.getActualTypeArguments()[0];
 
-                    if (itemClazz instanceof ParameterizedType) {
-                        itemClazz = ((ParameterizedType) itemClazz).getRawType();
-                    }
+//                    if (itemClazz instanceof ParameterizedType) {
+//                        itemClazz = ((ParameterizedType) itemClazz).getRawType();
+//                    }
+
 
                     if (itemClazz instanceof TypeVariable) {
                         Map<String, Type> genericMap = GenericUtil.getGenericInfo(type);
-                        Type itemClazz2 = genericMap.get(itemClazz.getTypeName());
-                        if (itemClazz2 instanceof Class) {
-                            itemClazz = itemClazz2;
-                        }
+                        itemClazz = genericMap.get(itemClazz.getTypeName());
                     }
 
-                    if (itemClazz instanceof Class) {
-                        Schema<?> itemSchema = new Schema<>();
-                        if (itemClazz.equals(type)) {
-                            //避免出现循环依赖，然后 oom
-                            itemSchema.set$ref("#/components/schemas/" + schemaName);
-                            itemSchema.setDescription(title);
-                            fieldSchema.setItems(itemSchema);
-                        } else {
-                            String itemSchemaName = this.parseSchema((Class<?>) itemClazz, itemClazz);
-                            itemSchema = openAPI.getComponents().getSchemas().get(itemSchemaName);
-                            fieldSchema.setItems(itemSchema);
-                        }
-                        if (fieldSchema.getDescription() == null) {
-                            fieldSchema.setDescription(itemSchema.getDescription());
-                        }
+//                    Type itemClazz = typeGenericType;
+//                    while (itemClazz instanceof ParameterizedType) {
+//                        itemClazz = parseParameterizedType((ParameterizedType) itemClazz);
+//                    }
+
+                    Schema<?> itemSchema = new Schema<>();
+                    if (itemClazz.equals(type)) {
+                        //避免出现循环依赖，然后 oom
+                        itemSchema.set$ref("#/components/schemas/" + schemaName);
+                        itemSchema.setDescription(title);
+                        fieldSchema.setItems(itemSchema);
+                    } else {
+                        TypeEggg typeEggg = EgggUtil.getTypeEggg(itemClazz);
+                        String itemSchemaName = this.parseSchema(typeEggg.getType(), typeEggg.getGenericType());
+                        Schema<?> itemSchemaInfo = openAPI.getComponents().getSchemas().get(itemSchemaName);
+
+                        // knife4j需要设置为引用才能支持
+                        itemSchema.set$ref("#/components/schemas/" + itemSchemaName);
+                        itemSchema.setDescription(StringUtils.getOrDefault(itemSchemaInfo.getDescription(), itemSchemaInfo.getTitle()));
+                        fieldSchema.setItems(itemSchema);
+                    }
+
+                    // 空字段 Description 则使用引用对象的 Description
+                    if (fieldSchema.getDescription() == null) {
+                        fieldSchema.setDescription(itemSchema.getDescription());
                     }
 
                     properties.put(field.getName(), fieldSchema);
@@ -721,7 +778,6 @@ public class OpenApi3Builder {
                     if (apiField != null) {
                         fieldSchema.setDescription(apiField.description());
                     }
-
                     properties.put(field.getName(), fieldSchema);
                 }
             } else {
@@ -740,8 +796,172 @@ public class OpenApi3Builder {
             }
         }
 
+
+        // 4.处理getter方法，将其当作字段
+        List<Method> methods = new ArrayList<>();
+        currentClass = clazz;
+        // 收集当前类及其所有父类的方法
+        while (currentClass != null && currentClass != Object.class) {
+            methods.addAll(Arrays.asList(currentClass.getDeclaredMethods()));
+            currentClass = currentClass.getSuperclass();
+        }
+
+        for (Method method : methods) {
+            // 跳过静态方法
+            if (Modifier.isStatic(method.getModifiers())) {
+                continue;
+            }
+            // 跳过有参数的方法
+            if (method.getParameterCount() > 0) {
+                continue;
+            }
+            // 跳过void返回类型的方法
+            if (method.getReturnType() == Void.TYPE) {
+                continue;
+            }
+
+            String propertyName = null;
+            String methodName = method.getName();
+
+            // 判断是否是标准的getter方法
+            if (methodName.startsWith("get") && methodName.length() > 3 && !method.getReturnType().equals(boolean.class)) {
+                // getXxx() -> xxx
+                propertyName = Character.toLowerCase(methodName.charAt(3)) + methodName.substring(4);
+            } else if (methodName.startsWith("is") && methodName.length() > 2 && method.getReturnType().equals(boolean.class)) {
+                // isXxx() -> xxx
+                propertyName = Character.toLowerCase(methodName.charAt(2)) + methodName.substring(3);
+            }
+
+            // 如果不是标准的getter方法，跳过
+            if (propertyName == null || propertyName.isEmpty()) {
+                continue;
+            }
+
+            // 如果该属性已经被字段处理过了，跳过
+            if (processedPropertyNames.contains(propertyName)) {
+                continue;
+            }
+
+            // 获取方法上的@Schema注解
+            io.swagger.v3.oas.annotations.media.Schema apiMethod = method.getAnnotation(io.swagger.v3.oas.annotations.media.Schema.class);
+
+            Class<?> returnType = method.getReturnType();
+            Type returnGenericType = method.getGenericReturnType();
+
+
+            // 处理Collection类型
+            if (Collection.class.isAssignableFrom(returnType)) {
+                if (returnGenericType instanceof ParameterizedType) {
+                    ArraySchema methodSchema = new ArraySchema();
+                    if (apiMethod != null) {
+                        methodSchema.setDescription(apiMethod.description());
+                    }
+
+                    ParameterizedType pt = (ParameterizedType) returnGenericType;
+                    //得到泛型里的class类型对象
+                    Type itemClazz = pt.getActualTypeArguments()[0];
+
+                    if (itemClazz instanceof ParameterizedType) {
+                        itemClazz = ((ParameterizedType) itemClazz).getRawType();
+                    }
+
+                    if (itemClazz instanceof TypeVariable) {
+                        Map<String, Type> genericMap = GenericUtil.getGenericInfo(type);
+                        itemClazz = genericMap.get(itemClazz.getTypeName());
+                    }
+
+//                    Type itemClazz = returnGenericType;
+//                    while (itemClazz instanceof ParameterizedType) {
+//                        itemClazz = parseParameterizedType((ParameterizedType) itemClazz);
+//                    }
+
+
+                    Schema<?> itemSchema = new Schema<>();
+                    if (itemClazz.equals(type)) {
+                        //避免出现循环依赖，然后 oom
+                        itemSchema.set$ref("#/components/schemas/" + schemaName);
+                        itemSchema.setDescription(title);
+                        methodSchema.setItems(itemSchema);
+                    } else {
+                        TypeEggg typeEggg = EgggUtil.getTypeEggg(itemClazz);
+                        String itemSchemaName = this.parseSchema(typeEggg.getType(), typeEggg.getGenericType());
+
+                        itemSchema.set$ref("#/components/schemas/" + itemSchemaName);
+
+                        Schema<?> itemSchemaInfo = openAPI.getComponents().getSchemas().get(itemSchemaName);
+                        if (itemSchemaInfo != null) {
+                            itemSchema.setDescription(StringUtils.getOrDefault(itemSchemaInfo.getDescription(), itemSchemaInfo.getTitle()));
+                        }
+                        methodSchema.setItems(itemSchema);
+                    }
+
+                    if (methodSchema.getDescription() == null) {
+                        methodSchema.setDescription(itemSchema.getDescription());
+                    }
+
+
+                    properties.put(propertyName, methodSchema);
+                }
+                continue;
+            }
+
+            // 处理Model类型
+            if (BuilderHelper.isModel(returnType)) {
+                if (returnType.equals(type)) {
+                    // 避免循环依赖
+                    Schema<?> methodSchema = new Schema<>();
+                    methodSchema.set$ref("#/components/schemas/" + schemaName);
+                    if (apiMethod != null) {
+                        methodSchema.setDescription(apiMethod.description());
+                    }
+                    properties.put(propertyName, methodSchema);
+                } else {
+                    String refSchemaName = this.parseSchema(returnType, returnGenericType);
+                    Schema<?> methodSchema = new Schema<>();
+                    methodSchema.set$ref("#/components/schemas/" + refSchemaName);
+                    if (apiMethod != null) {
+                        methodSchema.setDescription(apiMethod.description());
+                    }
+                    properties.put(propertyName, methodSchema);
+                }
+            } else {
+                // 处理基本类型
+                Schema<?> methodSchema = getSchemaByType(returnType.getSimpleName());
+                methodSchema.setName(propertyName);
+
+                if (apiMethod != null) {
+                    methodSchema.setDescription(apiMethod.description());
+                    methodSchema.setType(Utils.isBlank(apiMethod.type()) ? returnType.getSimpleName().toLowerCase() : apiMethod.type());
+                    methodSchema.setExample(apiMethod.example());
+                } else {
+                    methodSchema.setType(returnType.getSimpleName().toLowerCase());
+                }
+
+                properties.put(propertyName, methodSchema);
+            }
+        }
+
         schema.setProperties(properties);
+        schema.setRequired(required);
         return schemaName;
+    }
+
+    private void handSchemaRequiredField(List<String> required, Field field, io.swagger.v3.oas.annotations.media.Schema apiField) {
+        if (apiField == null) return;
+        io.swagger.v3.oas.annotations.media.Schema.RequiredMode requiredMode = apiField.requiredMode();
+
+        if (io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED.equals(requiredMode)) {
+            required.add(field.getName());
+        } else if (io.swagger.v3.oas.annotations.media.Schema.RequiredMode.AUTO.equals(requiredMode)) {
+            //  RequiredMode.AUTO： @NotNull、@NonNull、@NotBlank、@NotEmpty）→ 必填
+            NotNull notNull = field.getAnnotation(NotNull.class);
+            NotBlank notBlank = field.getAnnotation(NotBlank.class);
+            NotEmpty notEmpty = field.getAnnotation(NotEmpty.class);
+            NonNull nonNull = field.getAnnotation(NonNull.class);
+            if (notNull != null || notBlank != null || notEmpty != null || nonNull != null) {
+                required.add(field.getName());
+            }
+        }
     }
 
     /**
@@ -819,16 +1039,16 @@ public class OpenApi3Builder {
      * 解析对象参数
      */
     private String getParameterSchema(ParamHolder paramHolder) {
-        if (paramHolder.getAnno() != null) {
-            Class<?> dataTypeClass = null;
-            if (paramHolder.getParam() != null) {
-                dataTypeClass = paramHolder.getParam().getTypeEggg().getType();
-            }
-
-            if (null != dataTypeClass && dataTypeClass != Void.class) {
-                return this.parseSchema(dataTypeClass, dataTypeClass);
-            }
-        }
+//        if (paramHolder.getAnno() != null) {
+//            Class<?> dataTypeClass = null;
+//            if (paramHolder.getParam() != null) {
+//                dataTypeClass = paramHolder.getParam().getTypeEggg().getType();
+//            }
+//
+//            if (null != dataTypeClass && dataTypeClass != Void.class) {
+//                return this.parseSchema(dataTypeClass, dataTypeClass);
+//            }
+//        }
 
         if (paramHolder.getParam() != null) {
             Class<?> dataTypeClass = paramHolder.getParam().getTypeEggg().getType();
@@ -860,4 +1080,18 @@ public class OpenApi3Builder {
 
         return null;
     }
+
+
+    private Type parseParameterizedType(ParameterizedType type) {
+        //得到泛型里的class类型对象
+        Type itemClazz = type.getActualTypeArguments()[0];
+
+        if (itemClazz instanceof TypeVariable) {
+            Map<String, Type> genericMap = GenericUtil.getGenericInfo(type);
+            itemClazz = genericMap.get(itemClazz.getTypeName());
+        }
+
+        return itemClazz;
+    }
+
 }

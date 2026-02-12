@@ -26,6 +26,31 @@
 * 升级 mcp-java-sdk 为 0.17.x？？？
 
 
+
+### v3.9.2
+
+* 优化 solon-logging-log4j2 默认配置改为 java 动态构建（更灵活）
+* 调整 solon Gateway mainDef 直接输出 404 状态，改为的抛 404 状态异常
+
+### v3.9.1
+
+* 新增 solon-shell 插件（试用）
+* 添加 solon-data-sqlutils SqlUtils.getDataSource 方法
+* 添加 solon-data-rx-sqlutils RxSqlUtils.getConnectionFactory 方法
+* 优化 solon-doc-openapi3 兼容性
+* 调整 solon-net-httputils 响应式改为 Flux 接口（提供背压支持）
+* sanck4 升为 4.0.31
+
+### v3.9.0
+
+* 新增 solon-ai-dialect-claude 插件
+* 优化 solon-docs-openapi3 插件兼容性
+
+### v3.8.5
+
+* 优化 solon-logging-log4j2 默认配置改为 java 动态构建（更灵活）
+* 优化 solon-docs-openapi3 插件兼容性
+
 ### v3.8.4
 
 * 新增 solon-security-sm 插件

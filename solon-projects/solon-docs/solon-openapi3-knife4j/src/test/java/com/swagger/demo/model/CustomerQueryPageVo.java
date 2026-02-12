@@ -1,6 +1,7 @@
 package com.swagger.demo.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.noear.solon.validation.annotation.NotEmpty;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,10 +9,12 @@ import java.util.List;
 @Schema(name = "自定义分页查询结果", description = "9999999999999999")
 public class CustomerQueryPageVo<T> {
 
-    //    @Schema(description = "内容")
+    //        @Schema(description = "内容9527")
     private List<T> content = new ArrayList<>();
-    @Schema(description = "总数")
+    @Schema(description = "总数", requiredMode = Schema.RequiredMode.REQUIRED)
     private long totalElements = 0;
+
+    @NotEmpty
     @Schema(description = "当前页号")
     private long currPage = 0;
     @Schema(description = "每页记录数")
@@ -48,4 +51,7 @@ public class CustomerQueryPageVo<T> {
     public void setPageSize(long pageSize) {
         this.pageSize = pageSize;
     }
+
+
+
 }
