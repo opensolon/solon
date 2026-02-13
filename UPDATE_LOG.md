@@ -30,6 +30,9 @@
 
 * 优化 solon-logging-log4j2 默认配置改为 java 动态构建（更灵活）
 * 调整 solon Gateway mainDef 直接输出 404 状态，改为的抛 404 状态异常
+* 修复 quartz-solon-cloud-plugin quartz.Scheduler 定制无效的问题
+* 修复 minio7-solon-cloud-plugin bucketDef 无效的问题
+* 修复 minio-solon-cloud-plugin bucketDef 无效的问题
 
 ### v3.9.1
 
