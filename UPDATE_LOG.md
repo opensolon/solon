@@ -26,6 +26,12 @@
 * 调整 Plugin 统一交给 AppContext 管理（之前由 SolonApp 或 PluginPackage 管理）？？
 * 使用 solon-expression 替代其它临时的表达式处理 //ok
 
+
+### v3.6.8
+
+* 优化 solon-logging-log4j2 默认配置改为 java 动态构建（更灵活）
+* sanck4 升为 4.0.31
+
 ### 3.6.7
 
 * 优化 `solon-cache` CacheService 适配没有 _cacheKeyHead 配置时，则不加前缀
