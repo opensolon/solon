@@ -31,13 +31,13 @@
         <maven-war.version>3.4.0</maven-war.version>
 
         <solon.version>3.6.8</solon.version>
-        <solon-ai.version>3.6.7</solon-ai.version>
-        <solon-flow.version>3.6.7</solon-flow.version>
-        <solon-expression.version>3.6.7</solon-expression.version>
-        <solon-cloud.version>3.6.7</solon-cloud.version>
-        <solon-admin.version>3.6.7</solon-admin.version>
-        <solon-integration.version>3.6.7</solon-integration.version>
-        <solon-jakarta.version>3.6.7</solon-jakarta.version>
+        <solon-ai.version>3.6.8</solon-ai.version>
+        <solon-flow.version>3.6.8</solon-flow.version>
+        <solon-expression.version>3.6.8</solon-expression.version>
+        <solon-cloud.version>3.6.8</solon-cloud.version>
+        <solon-admin.version>3.6.8</solon-admin.version>
+        <solon-integration.version>3.6.8</solon-integration.version>
+        <solon-jakarta.version>3.6.8</solon-jakarta.version>
 
         <solonx.version>1.2.0</solonx.version>
 
