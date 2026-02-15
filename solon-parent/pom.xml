@@ -30,7 +30,7 @@
 
         <maven-war.version>3.4.0</maven-war.version>
 
-        <solon.version>3.9.3</solon.version>
+        <solon.version>3.9.4-SNAPSHOT</solon.version>
         <solon-ai.version>3.9.4-SNAPSHOT</solon-ai.version>
         <solon-flow.version>3.9.3</solon-flow.version>
         <solon-expression.version>3.9.3</solon-expression.version>
@@ -68,6 +68,7 @@
 
         <asm.version>9.9</asm.version>
         <jspecify.version>1.0.0</jspecify.version>
+        <jline.version>3.30.6</jline.version>
 
         <r2dbc.version>1.0.0.RELEASE</r2dbc.version>
 
@@ -160,7 +161,7 @@
         <nacos1.version>1.4.8</nacos1.version>
         <nacos2.version>2.5.1</nacos2.version>
         <nacos3.version>3.0.1</nacos3.version>
-        <zookeeper.version>3.9.3</zookeeper.version>
+        <zookeeper.version>3.9.4-SNAPSHOT</zookeeper.version>
         <jetcd.version>0.7.7</jetcd.version>
         <polaris.version>1.14.1</polaris.version>
 
