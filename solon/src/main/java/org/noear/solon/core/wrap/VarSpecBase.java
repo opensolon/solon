@@ -59,11 +59,11 @@ public abstract class VarSpecBase implements VarSpec {
     @Override
     public String getRequiredHint() {
         if (vo.isRequiredHeader) {
-            return "Required header @" + getName();
+            return "Missing required header '" + getName() + "'";
         } else if (vo.isRequiredCookie) {
-            return "Required cookie @" + getName();
+            return "Missing required cookie '" + getName() + "'";
         } else {
-            return "Required parameter @" + getName();
+            return "Missing required parameter '" + getName() + "'";
         }
     }
 

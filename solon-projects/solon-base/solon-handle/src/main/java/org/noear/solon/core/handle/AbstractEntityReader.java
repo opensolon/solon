@@ -136,7 +136,7 @@ public abstract class AbstractEntityReader {
                 throw e;
             } catch (Exception e) {
                 String methodFullName = mWrap.getDeclaringClz().getName() + "::" + mWrap.getName() + "@" + pWrap.spec().getName();
-                throw new StatusException("Action parameter change failed: " + methodFullName, e, 400);
+                throw new StatusException("Parameter change failed: " + methodFullName, e, 400);
             }
         }
 
