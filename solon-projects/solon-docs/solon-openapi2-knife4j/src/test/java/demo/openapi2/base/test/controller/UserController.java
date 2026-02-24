@@ -24,6 +24,7 @@ import io.swagger.annotations.ApiOperation;
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.handle.Result;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,7 +41,10 @@ public class UserController {
     @Get
     @Mapping("/list")
     public List<UserVo> list(UserBo userBo) {
-        return null;
+        List<UserVo> list =  new ArrayList<>();
+        list.add(new UserVo().setUserId(12L));
+
+        return list;
     }
 
     @ApiOperation("page")
@@ -54,7 +58,7 @@ public class UserController {
     @Get
     @Mapping("/{id}")
     public UserVo get(Long id) {
-        return new UserVo();
+        return new UserVo().setUserId(id);
     }
 
     @ApiOperation("根据Id查询用户信息2")

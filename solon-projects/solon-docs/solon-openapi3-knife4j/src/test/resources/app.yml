@@ -7,7 +7,7 @@ solon.app:
 
 knife4j.enable: true
 knife4j.production: true
-knife4j.basic.enable: true
+knife4j.basic.enable: false
 knife4j.basic.username: admin
 knife4j.basic.password: admin
 knife4j.setting.enableOpenApi: false

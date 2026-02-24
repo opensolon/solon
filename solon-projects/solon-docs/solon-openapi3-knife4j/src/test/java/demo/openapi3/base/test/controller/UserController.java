@@ -44,7 +44,10 @@ public class UserController {
     @Get
     @Mapping("/list")
     public List<UserVo> list(UserBo userBo) {
-        return null;
+        List<UserVo> list =  new ArrayList<>();
+        list.add(new UserVo().setUserId(12L));
+
+        return list;
     }
 
     @Operation(summary = "page")
@@ -74,7 +77,7 @@ public class UserController {
     @Get
     @Mapping("/{id}")
     public UserVo get(Long id) {
-        return new UserVo();
+        return new UserVo().setUserId(id);
     }
 
     @Operation(summary = "根据Id查询用户信息2")
