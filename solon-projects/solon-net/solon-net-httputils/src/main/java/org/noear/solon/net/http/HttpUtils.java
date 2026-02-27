@@ -74,6 +74,8 @@ public interface HttpUtils {
 
     /**
      * 发起地址
+     *
+     * @since 3.9.5
      */
     String url();
 
