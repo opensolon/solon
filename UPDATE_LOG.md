@@ -31,12 +31,13 @@
 * 优化 solon-logging-log4j2 SolonTagsConverter 去掉一个注解 tags
 * fastjson2 升为 2.0.61
 * log4j 升为 2.25.3
+* snack4 升为 4.0.34
 
 
 ### v3.9.4
 
-* snack4 升为 4.0.33
 * 调整 solon-shell 移除内部弃用代码
+* snack4 升为 4.0.33
 
 ### v3.9.2
 
