@@ -27,7 +27,9 @@
 
 ### v3.9.5
 
+* 添加 solon-net-httputils HttpUtils.url() 方法
 * fastjson2 升为 2.0.61
+
 
 ### v3.9.4
 

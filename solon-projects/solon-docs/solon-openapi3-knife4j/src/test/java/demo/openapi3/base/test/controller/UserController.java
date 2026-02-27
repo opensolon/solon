@@ -89,7 +89,7 @@ public class UserController {
 
     @Operation(summary = "新增用户信息")
     @Post
-    @Mapping
+    @Mapping(multipart = true)
     public boolean save(UserBo userBo) {
         return true;
     }
@@ -97,7 +97,7 @@ public class UserController {
     @Operation(summary = "根据Id更新用户信息")
     @Put
     @Mapping
-    public boolean update(UserBo userBo) {
+    public boolean update(@Body UserBo userBo) {
         return true;
     }
 

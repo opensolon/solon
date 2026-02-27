@@ -77,6 +77,11 @@ public abstract class AbstractHttpUtils implements HttpUtils {
     }
 
     @Override
+    public String url() {
+        return _url;
+    }
+
+    @Override
     public HttpUtils serializer(Serializer serializer) {
         if (serializer != null) {
             if (serializer.mimeType() == null) {
@@ -337,7 +342,6 @@ public abstract class AbstractHttpUtils implements HttpUtils {
 
         return this;
     }
-
 
 
     @Override

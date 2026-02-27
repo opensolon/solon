@@ -73,6 +73,11 @@ public interface HttpUtils {
     }
 
     /**
+     * 发起地址
+     */
+    String url();
+
+    /**
      * 配置序列化器
      */
     HttpUtils serializer(Serializer serializer);
