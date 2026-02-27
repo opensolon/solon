@@ -29,6 +29,7 @@
 
 * 添加 solon-net-httputils HttpUtils.url() 方法
 * fastjson2 升为 2.0.61
+* log4j 升为 2.25.3
 
 
 ### v3.9.4
