@@ -28,7 +28,7 @@ import org.apache.logging.log4j.util.ReadOnlyStringMap;
  * @since 1.6
  */
 @Plugin(name = "tags", category = PatternConverter.CATEGORY)
-@ConverterKeys({"tags","tags"})
+@ConverterKeys({"tags"})
 public class SolonTagsConverter extends LogEventPatternConverter {
     private static final SolonTagsConverter INSTANCE =
             new SolonTagsConverter();

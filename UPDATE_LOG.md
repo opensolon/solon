@@ -28,6 +28,7 @@
 ### v3.9.5
 
 * 添加 solon-net-httputils HttpUtils.url() 方法
+* 优化 solon-logging-log4j2 SolonTagsConverter 去掉一个注解 tags
 * fastjson2 升为 2.0.61
 * log4j 升为 2.25.3
 
