@@ -27,6 +27,7 @@
 
 ### v3.9.5
 
+* 添加 solon Assert.isNumber, isBool 等给检测
 * 添加 solon-net-httputils HttpUtils.url() 方法
 * 优化 solon-logging-log4j2 SolonTagsConverter 去掉一个注解 tags
 * fastjson2 升为 2.0.61
