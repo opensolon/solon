@@ -310,6 +310,10 @@ public class ResourceUtil {
         }
     }
 
+    public static URL findResourceOrFile(String uri) {
+        return findResourceOrFile(null, uri);
+    }
+
     public static URL findResourceOrFile(ClassLoader classLoader, String uri) {
         if (hasClasspath(uri)) {
             //classpath:..
