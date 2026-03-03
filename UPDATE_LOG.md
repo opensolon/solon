@@ -30,6 +30,7 @@
 * 添加 solon Assert.isNumber, isBool 等给检测
 * 添加 solon-net-httputils HttpUtils.url() 方法
 * 优化 solon-logging-log4j2 SolonTagsConverter 去掉一个注解 tags
+* 修复 solon-scheduling-simple MDC tag(job) 污染其它日志的问题
 * fastjson2 升为 2.0.61
 * log4j 升为 2.25.3
 * snack4 升为 4.0.34

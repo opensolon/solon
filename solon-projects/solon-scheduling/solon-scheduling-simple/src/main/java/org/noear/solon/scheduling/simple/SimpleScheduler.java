@@ -203,6 +203,10 @@ public class SimpleScheduler implements Lifecycle {
             } else {
                 log.warn("Invoke failed!", e);
             }
+        } finally {
+            if (jobHolder.getSimpleName() != null) {
+                MDC.remove("job");
+            }
         }
     }
 }
