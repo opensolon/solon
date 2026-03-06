@@ -33,7 +33,8 @@
 * 修复 solon-scheduling-simple MDC tag(job) 污染其它日志的问题
 * fastjson2 升为 2.0.61
 * log4j 升为 2.25.3
-* snack4 升为 4.0.34
+* snack4 升为 4.0.35
+* jackson 升为 2.19.4
 
 
 ### v3.9.4
