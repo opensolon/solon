@@ -25,6 +25,11 @@
 * 调整 Plugin 统一交给 AppContext 管理（之前由 SolonApp 或 PluginPackage 管理）？？
 * 升级 mcp-java-sdk 为 0.17.x？？？
 
+
+### v3.9.6
+
+* snack4 升为 4.0.36
+
 ### v3.9.5
 
 * 添加 solon Assert.isNumber, isBool 等给检测
