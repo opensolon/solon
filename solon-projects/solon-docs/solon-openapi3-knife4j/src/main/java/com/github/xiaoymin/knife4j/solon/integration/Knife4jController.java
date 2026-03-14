@@ -33,11 +33,11 @@ public class Knife4jController {
     /**
      * swagger 获取分组信息
      */
-    @Produces("application/json; charset=utf-8")
-    @Mapping("swagger-resources")
-    public String resources() throws IOException {
-        return OpenApi3Utils.getApiGroupResourceJson();
-    }
+//    @Produces("application/json; charset=utf-8")
+//    @Mapping("swagger-resources")
+//    public String resources() throws IOException {
+//        return OpenApi3Utils.getApiGroupResourceJson();
+//    }
 
     // http://localhost:8081/v3/api-docs/swagger-config
     @Produces("application/json; charset=utf-8")

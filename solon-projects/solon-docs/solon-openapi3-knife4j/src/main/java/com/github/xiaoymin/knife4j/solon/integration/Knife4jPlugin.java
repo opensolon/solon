@@ -45,9 +45,11 @@ public class Knife4jPlugin implements Plugin {
             return;
         }
 
-        String uiPath = "/";
-        StaticMappings.add(uiPath, new ClassPathStaticRepository("META-INF/resources"));
-        context.app().router().add(uiPath, Knife4jController.class);         //注册控制器
+        StaticMappings.add("/doc.html", new ClassPathStaticRepository("META-INF/resources/"));
+        StaticMappings.add("/img/", new ClassPathStaticRepository("META-INF/resources/img/"));
+        StaticMappings.add("/webjars/", new ClassPathStaticRepository("META-INF/resources/webjars/"));
+
+        context.app().router().add("/", Knife4jController.class);
 
         //添加 auth
         context.subBeansOfType(DocDocket.class, bean -> {
