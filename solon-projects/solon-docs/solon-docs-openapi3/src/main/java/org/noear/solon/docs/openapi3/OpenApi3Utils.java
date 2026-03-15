@@ -19,14 +19,23 @@ import io.swagger.v3.oas.models.OpenAPI;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.BeanWrap;
+import org.noear.solon.core.LoadBalance;
 import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.util.PathUtil;
 import org.noear.solon.docs.DocDocket;
 import org.noear.solon.docs.models.ApiGroupResource;
 import org.noear.solon.docs.util.BasicAuthUtil;
+import org.noear.solon.exception.SolonException;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -105,10 +114,29 @@ public class OpenApi3Utils {
             docket.globalResponseCodes().put(200, "");
         }
 
+        if (docket.upstream() == null) {
+            //本地模式
+            return getSwaggerJson(docket, null);
+        } else {
+            //代理模式
+            URI upstreamTarget = docket.upstream().getTarget();
+            String targetAddr = LoadBalance.parse(upstreamTarget).getServer();
+            if (targetAddr == null) {
+                throw new SolonException("The target service does not exist (" + upstreamTarget + ")");
+            }
+
+            String url = PathUtil.joinUri(targetAddr, docket.upstream().getUri());
+            return httpGet(url, docket);
+        }
+
+    }
+
+    public static String getSwaggerJson(DocDocket docket, String description) throws IOException {
+        //本地模式
         OpenAPI customOpenAPI = Solon.context().getBean(OpenAPI.class);
 
 
-        OpenAPI openAPI = OpenApi3Builder.getInstance(customOpenAPI, docket).build();
+        OpenAPI openAPI = OpenApi3Builder.getInstance(customOpenAPI, docket).build(description);
 
         if (docket.serializer() == null) {
             return JacksonSerializer.getInstance().serialize(openAPI);
@@ -117,14 +145,49 @@ public class OpenApi3Utils {
         }
     }
 
-    public static String getSwaggerJson(DocDocket docket) throws IOException {
-        //本地模式
-        OpenAPI openAPI = OpenApi3Builder.getInstance(docket).build();
+    private static String httpGet(String urlStr, DocDocket docket) throws IOException {
+        // 打开连接
+        HttpURLConnection connection = (HttpURLConnection) new URL(urlStr).openConnection();
 
-        if (docket.serializer() == null) {
-            return JacksonSerializer.getInstance().serialize(openAPI);
+        if (Utils.isNotEmpty(docket.basicAuth())) {
+            for (Map.Entry<String, String> kv : docket.basicAuth().entrySet()) {
+                String auth = BasicAuthUtil.base64EncodeToStr(kv.getKey(), kv.getValue());
+                connection.setRequestProperty("Authorization", "Basic " + auth);
+                break;
+            }
+        }
+        // 设置请求方法为GET
+        int responseCode;
+        try {
+            connection.setRequestMethod("GET");
+            responseCode = connection.getResponseCode();
+        } catch (Exception e) {
+            return getSwaggerJson(docket, "ERROR: HTTP connection failed: " + urlStr);
+        }
+
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            // 接收响应
+            try (BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+                String inputLine;
+                StringBuilder response = new StringBuilder();
+
+                // 读取响应数据
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+
+                // 打印结果
+                String apiJson = response.toString();
+
+                if (Utils.isEmpty(apiJson)) {
+                    return getSwaggerJson(docket, "ERROR: HTTP GET blank content: " + urlStr);
+                } else {
+                    return apiJson;
+                }
+            }
         } else {
-            return docket.serializer().serialize(openAPI);
+            return getSwaggerJson(docket, "ERROR: HTTP GET failed: " + responseCode + ", " + urlStr);
+            //throw new SocketException("HTTP GET failed: " + responseCode + ", " + urlStr);
         }
     }
 }

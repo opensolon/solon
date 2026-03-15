@@ -29,7 +29,7 @@ public class DocTest {
                 .groupName(groupName)
                 .apis("com.swagger.demo");
 
-        String json = OpenApi3Utils.getSwaggerJson(docDocket);
+        String json = OpenApi3Utils.getSwaggerJson(docDocket, null);
         JsonNode jsonNode = JacksonSerializer.getInstance().getMapper().readTree(json);
 
         // 验证生成的JSON不是空的
@@ -96,7 +96,7 @@ public class DocTest {
         // 测试空配置的DocDocket
         DocDocket emptyDocket = new DocDocket();
 
-        String json = OpenApi3Utils.getSwaggerJson(emptyDocket);
+        String json = OpenApi3Utils.getSwaggerJson(emptyDocket, null);
 
         assert json != null : "Empty docket should still generate valid JSON";
 
@@ -113,8 +113,8 @@ public class DocTest {
         DocDocket docket1 = new DocDocket().groupName("测试分组1").apis("test.package1");
         DocDocket docket2 = new DocDocket().groupName("测试分组2").apis("test.package2");
 
-        String json1 = OpenApi3Utils.getSwaggerJson(docket1);
-        String json2 = OpenApi3Utils.getSwaggerJson(docket2);
+        String json1 = OpenApi3Utils.getSwaggerJson(docket1,null);
+        String json2 = OpenApi3Utils.getSwaggerJson(docket2, null);
 
         assert json1 != null && json2 != null : "Both dockets should generate valid JSON";
         assert !json1.equals(json2) : "Different configurations should produce different JSON";
@@ -133,7 +133,7 @@ public class DocTest {
                 .groupName(groupName)
                 .apis("demo.openapi3.base.test2");
 
-        String json = OpenApi3Utils.getSwaggerJson(docDocket);
+        String json = OpenApi3Utils.getSwaggerJson(docDocket, null);
         JsonNode jsonNode = JacksonSerializer.getInstance().getMapper().readTree(json);
 
         JsonNode post = jsonNode.get("paths").get("/appPage").get("post");
@@ -169,7 +169,7 @@ public class DocTest {
                 .groupName(groupName)
                 .apis("demo.openapi3.base.test2");
 
-        String json = OpenApi3Utils.getSwaggerJson(docDocket);
+        String json = OpenApi3Utils.getSwaggerJson(docDocket, null);
         JsonNode jsonNode = JacksonSerializer.getInstance().getMapper().readTree(json);
 
         JsonNode post = jsonNode.get("paths").get("/testRequestType/{appid}").get("post");

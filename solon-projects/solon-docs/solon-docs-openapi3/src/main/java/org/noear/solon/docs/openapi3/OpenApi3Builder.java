@@ -98,7 +98,7 @@ public class OpenApi3Builder {
         return new OpenApi3Builder(openAPI, docket);
     }
 
-    public OpenAPI build() {
+    public OpenAPI build(String description) {
         // 初始化 components
         openAPI.setComponents(new Components().schemas(new LinkedHashMap<>()));
         openAPI.setPaths(new Paths());
@@ -115,9 +115,13 @@ public class OpenApi3Builder {
         ApiLicense apiLicense = docket.info().license();
         ApiContact apiContact = docket.info().contact();
 
+        if (Utils.isEmpty(description)) {
+            description = docket.info().description();
+        }
+
         openAPI.info(new Info()
                 .title(StringUtils.getOrDefault(docket.info().title(), docket.groupName()))
-                .description(docket.info().description())
+                .description(description)
                 .termsOfService(docket.info().termsOfService())
                 .version(docket.info().version()));
 
