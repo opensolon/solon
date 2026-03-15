@@ -40,6 +40,7 @@ public class DocsPlugin implements Plugin {
     public void start(AppContext context) throws Throwable {
         final Props docsProps = context.cfg().getProp(SOLON_DOCS);
         final DocsProperties docsProperties;
+
         if (docsProps.size() > 0) {
             docsProperties = docsProps.toBean(DocsProperties.class);
         } else {
