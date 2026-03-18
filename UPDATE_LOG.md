@@ -31,7 +31,7 @@
 * 添加 solon-docs-openapi3 分布式文档支持
 * 优化 solon-openapi2-knife4j 的资源控制（避免多余的资源开放）
 * 优化 solon-openapi3-knife4j 的资源控制（避免多余的资源开放）
-* snack4 升为 4.0.39
+* snack4 升为 4.0.40
 
 ### v3.9.5
 
