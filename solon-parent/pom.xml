@@ -682,6 +682,11 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon-ai-skill-browser</artifactId>
+                <version>${solon-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon-ai-skill-cli</artifactId>
                 <version>${solon-ai.version}</version>
             </dependency>
