@@ -39,6 +39,8 @@
 * snack4 升为 4.0.41
 * jakarta.logback 升为 1.5.32
 * jackson3 升为 3.1.0
+* asm 升为 9.9.1
+* lombok 升为 1.18.44
 
 ### v3.9.5
 
