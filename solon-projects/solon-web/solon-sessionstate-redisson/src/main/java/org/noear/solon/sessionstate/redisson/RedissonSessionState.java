@@ -120,7 +120,7 @@ public class RedissonSessionState extends SessionStateBase {
 
             RMapCache<String, Object> hash = redisClient.getMapCache(sessionId());
             hash.expire(_expiry, TimeUnit.SECONDS);
-            hash.putIfAbsent(ServerConstants.SESSION_CREATION_TIME, now);
+            hash.putIfAbsent(ServerConstants.SESSION_CREATION_TIME, now, _expiry, TimeUnit.SECONDS);
         }
     }
 
@@ -133,7 +133,7 @@ public class RedissonSessionState extends SessionStateBase {
 
             RMapCache<String, Object> hash = redisClient.getMapCache(sessionId());
             hash.expire(_expiry, TimeUnit.SECONDS);
-            hash.put(ServerConstants.SESSION_LAST_ACCESS_TIME, now);
+            hash.put(ServerConstants.SESSION_LAST_ACCESS_TIME, now, _expiry, TimeUnit.SECONDS);
         }
     }
 }
