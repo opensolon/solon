@@ -81,7 +81,10 @@ public class JedisSessionState extends SessionStateBase {
 
     @Override
     public <T> T sessionGet(String key, Class<T> clz) {
-        String val = redisClient.openAndGet((ru) -> ru.key(sessionId()).expire(_expiry).hashGet(key));
+        String val = redisClient.openAndGet((ru) -> {
+            ru.key(sessionId()).expire(_expiry).delay();
+            return ru.key(sessionId()).hashGet(key);
+        });
 
         if (val == null) {
             return null;
@@ -111,7 +114,7 @@ public class JedisSessionState extends SessionStateBase {
 
     @Override
     public void sessionRemove(String key) {
-        redisClient.open((ru) -> ru.key(sessionId()).expire(_expiry).hashDel(key));
+        redisClient.open((ru) -> ru.key(sessionId()).hashDel(key));
     }
 
     @Override

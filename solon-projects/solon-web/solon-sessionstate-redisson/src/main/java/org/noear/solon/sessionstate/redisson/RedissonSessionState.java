@@ -81,6 +81,7 @@ public class RedissonSessionState extends SessionStateBase {
     @Override
     public <T> T sessionGet(String key, Class<T> clz) {
         RMapCache<String, Object> hash = redisClient.getMapCache(sessionId());
+        hash.expire(_expiry, TimeUnit.SECONDS);
         return (T) hash.get(key);
     }
 
