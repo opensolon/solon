@@ -28,12 +28,17 @@
 
 ### v3.9.6
 
-* 添加 solon-docs-openapi3 分布式文档支持
-* 优化 solon-openapi2-knife4j 的资源控制（避免多余的资源开放）
-* 优化 solon-openapi3-knife4j 的资源控制（避免多余的资源开放）
-* 优化 solon-sessionstate-jedis 超时处理（get 自动续时）
-* 优化 solon-sessionstate-redisson 超时处理（get 自动续时，sessionPublish、sessionRefresh 加越时）
+* 添加 `solon-docs-openapi3` 分布式文档支持
+* 添加 `solon-expression` 添加 `@bean` 表达式支持
+* 优化 `solon-flow` FlowContext 持久化，添加 stopped 属性
+* 优化 `solon-openapi2-knife4j` 的资源控制（避免多余的资源开放）
+* 优化 `solon-openapi3-knife4j` 的资源控制（避免多余的资源开放）
+* 优化 `solon-sessionstate-jedis` 超时处理（get 自动续时）
+* 优化 `solon-sessionstate-redisson` 超时处理（get 自动续时，sessionPublish、sessionRefresh 加越时）
+* 修复 `solon-cloud-gateway` CloudGatewayLocator.loadDiscoverConfig 可能出现 null 异常（允许没有发现服务）
 * snack4 升为 4.0.41
+* jakarta.logback 升为 1.5.32
+* jackson3 升为 3.1.0
 
 ### v3.9.5
 
