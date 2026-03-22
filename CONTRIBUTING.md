@@ -82,13 +82,15 @@
 |                                                 |                                  |
 | https://gitee.com/opensolon/solon-ai            | Solon Ai ,代码仓库                   | 
 | https://gitee.com/opensolon/solon-flow          | Solon Flow ,代码仓库                 | 
+| https://gitee.com/opensolon/solon-expression    | Solon Expression ,代码仓库           | 
 | https://gitee.com/opensolon/solon-cloud         | Solon Cloud ,代码仓库                | 
 | https://gitee.com/opensolon/solon-admin         | Solon Admin ,代码仓库                | 
-| https://gitee.com/opensolon/solon-jakarta       | Solon Jakarta ,代码仓库（base java17） | 
 | https://gitee.com/opensolon/solon-integration   | Solon Integration ,代码仓库          | 
+| https://gitee.com/opensolon/solon-java17        | Solon Jakarta ,代码仓库（base java17） | 
+| https://gitee.com/opensolon/solon-java25        | Solon Jakarta ,代码仓库（base java25） | 
 |                                                 |                                  |
+| https://gitee.com/opensolon/solon-maven-plugin  | Solon Maven ,插件代码仓库              | 
 | https://gitee.com/opensolon/solon-gradle-plugin | Solon Gradle ,插件代码仓库             | 
-| https://gitee.com/opensolon/solon-maven-plugin  | Solon Gradle ,插件代码仓库             | 
 |                                                 |                                  |
 | https://gitee.com/opensolon/solon-idea-plugin   | Solon Idea ,插件代码仓库               | 
 | https://gitee.com/opensolon/solon-vscode-plugin | Solon VsCode ,插件代码仓库             | 
