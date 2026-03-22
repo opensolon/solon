@@ -73,23 +73,28 @@ Solon
 ## 主要代码仓库
 
 
-| 代码仓库                                                                        | 描述                               | 
-|-----------------------------------------------------------------------------|----------------------------------| 
-| [/opensolon/solon](../../../../opensolon/solon)                             | Solon ,主代码仓库                     | 
-| [/opensolon/solon-examples](../../../../opensolon/solon-examples)           | Solon ,官网配套示例代码仓库                |
-|                                                                             |                                  |
-| [/opensolon/solon-expression](../../../../opensolon/solon-expression)       | Solon Expression ,代码仓库           | 
-| [/opensolon/solon-flow](../../../../opensolon/solon-flow)                   | Solon Flow ,代码仓库                 | 
-| [/opensolon/solon-ai](../../../../opensolon/solon-ai)                       | Solon Ai ,代码仓库                   | 
-| [/opensolon/solon-cloud](../../../../opensolon/solon-cloud)                 | Solon Cloud ,代码仓库                | 
-| [/opensolon/solon-admin](../../../../opensolon/solon-admin)                 | Solon Admin ,代码仓库                | 
-| [/opensolon/solon-integration](../../../../opensolon/solon-integration)     | Solon Integration ,代码仓库          | 
-| [/opensolon/solon-java17](../../../../opensolon/solon-java17)               | Solon Java17 ,代码仓库（base java17） | 
-| [/opensolon/solon-java25](../../../../opensolon/solon-java25)               | Solon Java25 ,代码仓库（base java25）  | 
-|                                                                             |                                  |
-| [/opensolon/solon-gradle-plugin](../../../../opensolon/solon-gradle-plugin) | Solon Gradle ,插件代码仓库             | 
-| [/opensolon/solon-idea-plugin](../../../../opensolon/solon-idea-plugin)     | Solon Idea ,插件代码仓库               | 
-| [/opensolon/solon-vscode-plugin](../../../../opensolon/solon-vscode-plugin) | Solon VsCode ,插件代码仓库             | 
+| 代码仓库                                                                        | 描述                                                              | 
+|-----------------------------------------------------------------------------|-----------------------------------------------------------------| 
+| [/opensolon/solon](../../../../opensolon/solon)                             | Solon ,主代码仓库                                                    | 
+| [/opensolon/solon-examples](../../../../opensolon/solon-examples)           | Solon ,官网配套示例代码仓库                                               |
+|                                                                             |                                                                 |
+| [/opensolon/solon-ai](../../../../opensolon/solon-ai)                       | Solon Ai ,代码仓库                                                  | 
+| [/opensolon/solon-flow](../../../../opensolon/solon-flow)                   | Solon Flow ,代码仓库                                                | 
+| [/opensolon/solon-expression](../../../../opensolon/solon-expression)       | Solon Expression ,代码仓库                                          | 
+| [/opensolon/solon-cloud](../../../../opensolon/solon-cloud)                 | Solon Cloud ,代码仓库                                               | 
+| [/opensolon/solon-admin](../../../../opensolon/solon-admin)                 | Solon Admin ,代码仓库                                               | 
+| [/opensolon/solon-integration](../../../../opensolon/solon-integration)     | Solon Integration ,代码仓库                                         | 
+| [/opensolon/solon-java17](../../../../opensolon/solon-java17)               | Solon Java17 ,代码仓库（base java17）                                 | 
+| [/opensolon/solon-java25](../../../../opensolon/solon-java25)               | Solon Java25 ,代码仓库（base java25）                                 | 
+|                                                                             |                                                                 |
+| [/opensolon/soloncode](../../../../opensolon/soloncode)                     | SolonCode(Java8 impl version of "Claude Code") ,Code repository |
+| [/opensolon/solonclaw](../../../../opensolon/solonclaw)                     | SolonClaw(Java8 impl version of "OpenClaw") ,Code repository    | 
+|                                                                             |                                                                 |
+| [/opensolon/solon-maven-plugin](../../../../opensolon/solon-maven-plugin)  | Solon Maven ,插件代码仓库                                             | 
+| [/opensolon/solon-gradle-plugin](../../../../opensolon/solon-gradle-plugin) | Solon Gradle ,插件代码仓库                                            | 
+|                                                                             |                                                                 |
+| [/opensolon/solon-idea-plugin](../../../../opensolon/solon-idea-plugin)     | Solon Idea ,插件代码仓库                                              | 
+| [/opensolon/solon-vscode-plugin](../../../../opensolon/solon-vscode-plugin) | Solon VsCode ,插件代码仓库                                            | 
 
 
 ## 生态架构图：

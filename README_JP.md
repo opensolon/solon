@@ -71,23 +71,28 @@ Solon
 ## 主要なコードリポジトリです
 
 
-| コードリポジトリです                                                                  | 記述します                                 | 
-|-----------------------------------------------------------------------------|---------------------------------------| 
-| [/opensolon/solon](../../../../opensolon/solon)                             | Solon ,メインコードのリポジトリです                 | 
-| [/opensolon/solon-examples](../../../../opensolon/solon-examples)           | Solon ,公式サイトの例コードリポジトリです              |
-|                                                                             |                                       |
-| [/opensolon/solon-expression](../../../../opensolon/solon-expression)       | Solon Expression ,コードリポジトリです          | 
-| [/opensolon/solon-flow](../../../../opensolon/solon-flow)                   | Solon Flow ,コードリポジトリです                | 
-| [/opensolon/solon-ai](../../../../opensolon/solon-ai)                       | Solon Ai ,コードリポジトリです                  | 
-| [/opensolon/solon-cloud](../../../../opensolon/solon-cloud)                 | Solon Cloud ,コードリポジトリです               | 
-| [/opensolon/solon-admin](../../../../opensolon/solon-admin)                 | Solon Admin ,コードリポジトリです               | 
-| [/opensolon/solon-integration](../../../../opensolon/solon-integration)     | Solon Integration ,コードリポジトリです         | 
-| [/opensolon/solon-java17](../../../../opensolon/solon-java17)               | Solon Java17 ,コードリポジトリです（base java17） | 
-| [/opensolon/solon-java25](../../../../opensolon/solon-java25)               | Solon Java25 ,コードリポジトリです（base java25） | 
-|                                                                             |                                       |
-| [/opensolon/solon-gradle-plugin](../../../../opensolon/solon-gradle-plugin) | Solon Gradle ,プラグインのリポジトリです           | 
-| [/opensolon/solon-idea-plugin](../../../../opensolon/solon-idea-plugin)     | Solon Idea ,プラグインのリポジトリです             | 
-| [/opensolon/solon-vscode-plugin](../../../../opensolon/solon-vscode-plugin) | Solon VsCode ,プラグインのリポジトリです           | 
+| コードリポジトリです                                                                  | 記述します                                                           | 
+|-----------------------------------------------------------------------------|-----------------------------------------------------------------| 
+| [/opensolon/solon](../../../../opensolon/solon)                             | Solon ,メインコードのリポジトリです                                           | 
+| [/opensolon/solon-examples](../../../../opensolon/solon-examples)           | Solon ,公式サイトの例コードリポジトリです                                        |
+|                                                                             |                                                                 |
+| [/opensolon/solon-ai](../../../../opensolon/solon-ai)                       | Solon Ai ,コードリポジトリです                                            | 
+| [/opensolon/solon-flow](../../../../opensolon/solon-flow)                   | Solon Flow ,コードリポジトリです                                          | 
+| [/opensolon/solon-expression](../../../../opensolon/solon-expression)       | Solon Expression ,コードリポジトリです                                    | 
+| [/opensolon/solon-cloud](../../../../opensolon/solon-cloud)                 | Solon Cloud ,コードリポジトリです                                         | 
+| [/opensolon/solon-admin](../../../../opensolon/solon-admin)                 | Solon Admin ,コードリポジトリです                                         | 
+| [/opensolon/solon-integration](../../../../opensolon/solon-integration)     | Solon Integration ,コードリポジトリです                                   | 
+| [/opensolon/solon-java17](../../../../opensolon/solon-java17)               | Solon Java17 ,コードリポジトリです（base java17）                           | 
+| [/opensolon/solon-java25](../../../../opensolon/solon-java25)               | Solon Java25 ,コードリポジトリです（base java25）                           | 
+|                                                                             |                                                                 |
+| [/opensolon/soloncode](../../../../opensolon/soloncode)                     | SolonCode(Java8 impl version of "Claude Code") ,Code repository |
+| [/opensolon/solonclaw](../../../../opensolon/solonclaw)                     | SolonClaw(Java8 impl version of "OpenClaw") ,Code repository    | 
+|                                                                             |                                                                 |
+| [/opensolon/solon-maven-plugin](../../../../opensolon/solon-gradle-plugin) | Solon Maven ,プラグインのリポジトリです                                      | 
+| [/opensolon/solon-gradle-plugin](../../../../opensolon/solon-gradle-plugin) | Solon Gradle ,プラグインのリポジトリです                                     | 
+|                                                                             |                                                                 |
+| [/opensolon/solon-idea-plugin](../../../../opensolon/solon-idea-plugin)     | Solon Idea ,プラグインのリポジトリです                                       | 
+| [/opensolon/solon-vscode-plugin](../../../../opensolon/solon-vscode-plugin) | Solon VsCode ,プラグインのリポジトリです                                     | 
 
 
 ## エコシステム：
