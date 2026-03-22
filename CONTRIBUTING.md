@@ -88,6 +88,9 @@
 | https://gitee.com/opensolon/solon-integration   | Solon Integration ,代码仓库          | 
 | https://gitee.com/opensolon/solon-java17        | Solon Jakarta ,代码仓库（base java17） | 
 | https://gitee.com/opensolon/solon-java25        | Solon Jakarta ,代码仓库（base java25） | 
+|                                                 |                                                                 |
+| https://gitee.com/opensolon/soloncode           | SolonCode(Java8 impl version of "Claude Code") ,Code repository |
+| https://gitee.com/opensolon/solonclaw           | SolonClaw(Java8 impl version of "OpenClaw") ,Code repository    | 
 |                                                 |                                  |
 | https://gitee.com/opensolon/solon-maven-plugin  | Solon Maven ,插件代码仓库              | 
 | https://gitee.com/opensolon/solon-gradle-plugin | Solon Gradle ,插件代码仓库             | 
