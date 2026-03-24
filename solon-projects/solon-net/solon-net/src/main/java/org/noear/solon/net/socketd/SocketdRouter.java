@@ -75,4 +75,13 @@ public class SocketdRouter {
     public Collection<String> getPaths() {
         return Collections.unmodifiableSet(paths);
     }
+
+    /**
+     * 移除监听
+     */
+    public void remove(String path) {
+        pathListener.doRemove(path);
+        paths.remove(path);
+    }
+
 }
