@@ -70,4 +70,11 @@ public class PathListenerPlus extends PathListener {
         pathRouteSelector.put(path, new ExpressListener(path, listener));
         return listener;
     }
+
+    /**
+     * 移除
+     */
+    public void doRemove(String path) {
+        pathRouteSelector.remove(path);
+    }
 }
