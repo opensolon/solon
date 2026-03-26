@@ -25,6 +25,10 @@
 * 调整 Plugin 统一交给 AppContext 管理（之前由 SolonApp 或 PluginPackage 管理）？？
 
 
+### v3.10.1
+
+* 修复 solon-net-httputil OkHttp 请求体封装问题，转为对应编码字节流
+
 ### v3.10.0
 
 * 添加 `solon-docs-openapi3` 分布式文档支持
