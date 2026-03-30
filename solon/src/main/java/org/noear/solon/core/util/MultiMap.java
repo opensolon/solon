@@ -30,6 +30,7 @@ import java.util.function.Consumer;
 public class MultiMap<T> implements Iterable<KeyValues<T>>, Serializable {
     protected final Map<String, KeyValues<T>> innerMap;
     protected final boolean ignoreCase;
+    private transient List<String> flags;
 
     public MultiMap() {
         this(true);
@@ -40,6 +41,26 @@ public class MultiMap<T> implements Iterable<KeyValues<T>>, Serializable {
         this.innerMap = createMap(0);
     }
 
+    //解析 args 用
+    public List<String> flags() {
+        if (flags == null) {
+            flags = new ArrayList<>();
+        }
+
+        return flags;
+    }
+
+    public String flagAt(int index) {
+        if (flags == null) {
+            return null;
+        } else {
+            if (flags.size() > index) {
+                return flags.get(index);
+            } else {
+                return null;
+            }
+        }
+    }
 
     @Override
     public Iterator<KeyValues<T>> iterator() {
@@ -239,11 +260,15 @@ public class MultiMap<T> implements Iterable<KeyValues<T>>, Serializable {
             for (String arg : args) {
                 int index = arg.indexOf('=');
                 if (index > 0) {
-                    String name = arg.substring(0, index);
+                    //key/val
+                    String name = arg.substring(0, index).replaceAll("^-*", "");
                     String value = arg.substring(index + 1);
-                    d.add(name.replaceAll("^-*", ""), value);
+                    d.add(name, value);
                 } else {
-                    d.add(arg.replaceAll("^-*", ""), "");
+                    //flag
+                    String flag = arg.replaceAll("^-*", "");
+                    d.add(flag, ""); //保持向下兼容，且方便名字检索
+                    d.flags().add(flag);
                 }
             }
         }

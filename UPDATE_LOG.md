@@ -27,6 +27,7 @@
 
 ### v3.10.1
 
+* 添加 solon MultiMap.flags 机制，更好的支持 args 解析
 * 修复 solon-net-httputil OkHttp 请求体封装问题，转为对应编码字节流
 
 ### v3.10.0
