@@ -33,10 +33,12 @@ import java.lang.reflect.*;
  * @since 3.7
  */
 public class ParamWrap {
+    private final MethodWrap mWrap;
     private final ParamEggg pe;
     private final ParameterizedType pType;
 
-    public ParamWrap(ParamEggg pe) {
+    public ParamWrap(MethodWrap mWrap, ParamEggg pe) {
+        this.mWrap = mWrap;
         this.pe = pe;
 
         if (pe.getTypeEggg().isParameterizedType()) {
@@ -44,6 +46,10 @@ public class ParamWrap {
         } else {
             pType = null;
         }
+    }
+
+    public MethodWrap getMethodWrap() {
+        return mWrap;
     }
 
     public ParamEggg getParamEggg() {
