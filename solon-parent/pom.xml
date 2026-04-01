@@ -68,7 +68,7 @@
 
         <asm.version>9.9.1</asm.version>
         <jspecify.version>1.0.0</jspecify.version>
-        <jline.version>3.30.6</jline.version>
+        <jline.version>3.30.9</jline.version>
 
         <r2dbc.version>1.0.0.RELEASE</r2dbc.version>
 
