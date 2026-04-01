@@ -55,7 +55,12 @@ public @interface Param {
     String defaultValue() default Constants.PARM_UNDEFINED_VALUE;
 
     /**
-     * 描述
+     * 格式（主要用于 ToolMapping）
+     */
+    String format() default "";
+
+    /**
+     * 描述（主要用于 ToolMapping）
      */
     String description() default "";
 }
