@@ -29,7 +29,8 @@
 
 * 添加 solon MultiMap.flags 机制，更好的支持 args 解析
 * 修复 solon-net-httputil OkHttp 请求体封装问题，转为对应编码字节流
-* jansi 升为 2.4.3（在 java25 下不会有警告了）
+* snack4 升为 4.0.42
+* jansi 升为 2.4.3
 * jline 升为 3.30.9
 
 ### v3.10.0
