@@ -31,13 +31,13 @@ public class LogbackPlugin extends LogIncubatorImpl implements Plugin {
         incubate();
     }
 
-    @Override
-    protected void doLoadUrl(URL url) throws Exception {
-        if (url == null) {
-            //说明没有指定配置文件。。。不需要再次默认加载
-            return;
-        }
-
-        super.doLoadUrl(url);
-    }
+//    @Override
+//    protected void doLoadUrl(URL url) throws Exception {
+//        if (url == null) {
+//            //说明没有指定配置文件。。。不需要再次默认加载
+//            return;
+//        }
+//
+//        super.doLoadUrl(url);
+//    }
 }
