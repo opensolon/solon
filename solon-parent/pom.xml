@@ -612,6 +612,11 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon-ai-repo-dashvector-official</artifactId>
+                <version>${solon-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon-ai-repo-weaviate</artifactId>
                 <version>${solon-ai.version}</version>
             </dependency>
