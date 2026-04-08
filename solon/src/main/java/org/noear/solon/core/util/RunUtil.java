@@ -16,6 +16,8 @@
 package org.noear.solon.core.util;
 
 import org.noear.solon.Utils;
+import org.noear.solon.util.CallableTx;
+import org.noear.solon.util.RunnableTx;
 
 import java.util.concurrent.*;
 import java.util.function.Supplier;
@@ -124,22 +126,38 @@ public class RunUtil {
 
     /**
      * 并行执行
-     *
-     * @deprecated 3.0 {@link #async(Runnable)}
      */
-    @Deprecated
-    public static Future<?> parallel(Runnable task) {
-        return runHolder.getParallelExecutor().submit(task);
+    public static <X extends Throwable> CompletableFuture<?> parallel(RunnableTx<X> task) {
+        CompletableFuture<?> future = new CompletableFuture<>();
+
+        runHolder.getParallelExecutor().submit(() -> {
+            try {
+                task.run();
+                future.complete(null);
+            } catch (Throwable e) {
+                future.completeExceptionally(e);
+            }
+        });
+
+        return future;
     }
 
     /**
      * 并行执行
-     *
-     * @deprecated 3.0 {@link #async(Runnable)}
      */
-    @Deprecated
-    public static <T> Future<T> parallel(Callable<T> task) {
-        return runHolder.getParallelExecutor().submit(task);
+    public static <T, X extends Throwable> CompletableFuture<T> parallel(CallableTx<T, X> task) {
+        CompletableFuture<T> future = new CompletableFuture<>();
+
+        runHolder.getParallelExecutor().submit(() -> {
+            try {
+                T t = task.call();
+                future.complete(t);
+            } catch (Throwable e) {
+                future.completeExceptionally(e);
+            }
+        });
+
+        return future;
     }
 
     /**
