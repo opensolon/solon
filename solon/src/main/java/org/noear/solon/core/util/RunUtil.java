@@ -131,7 +131,7 @@ public class RunUtil {
         CompletableFuture<Void> future = new CompletableFuture<>();
 
         try {
-            runHolder.getParallelExecutor().submit(() -> {
+            runHolder.getParallelExecutor().execute(() -> {
                 try {
                     task.run();
                     future.complete(null);
@@ -154,7 +154,7 @@ public class RunUtil {
         CompletableFuture<T> future = new CompletableFuture<>();
 
         try {
-            runHolder.getParallelExecutor().submit(() -> {
+            runHolder.getParallelExecutor().execute(() -> {
                 try {
                     T t = task.call();
                     future.complete(t);
