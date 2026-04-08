@@ -127,17 +127,22 @@ public class RunUtil {
     /**
      * 并行执行
      */
-    public static <X extends Throwable> CompletableFuture<?> parallel(RunnableTx<X> task) {
-        CompletableFuture<?> future = new CompletableFuture<>();
+    public static <X extends Throwable> CompletableFuture<Void> parallel(RunnableTx<X> task) {
+        CompletableFuture<Void> future = new CompletableFuture<>();
 
-        runHolder.getParallelExecutor().submit(() -> {
-            try {
-                task.run();
-                future.complete(null);
-            } catch (Throwable e) {
-                future.completeExceptionally(e);
-            }
-        });
+        try {
+            runHolder.getParallelExecutor().submit(() -> {
+                try {
+                    task.run();
+                    future.complete(null);
+                } catch (Throwable e) {
+                    future.completeExceptionally(e);
+                }
+            });
+        } catch (Throwable e) {
+            // 处理提交失败的情况（如线程池关闭、队列满）
+            future.completeExceptionally(e);
+        }
 
         return future;
     }
@@ -148,14 +153,19 @@ public class RunUtil {
     public static <T, X extends Throwable> CompletableFuture<T> parallel(CallableTx<T, X> task) {
         CompletableFuture<T> future = new CompletableFuture<>();
 
-        runHolder.getParallelExecutor().submit(() -> {
-            try {
-                T t = task.call();
-                future.complete(t);
-            } catch (Throwable e) {
-                future.completeExceptionally(e);
-            }
-        });
+        try {
+            runHolder.getParallelExecutor().submit(() -> {
+                try {
+                    T t = task.call();
+                    future.complete(t);
+                } catch (Throwable e) {
+                    future.completeExceptionally(e);
+                }
+            });
+        } catch (Throwable e) {
+            // 处理提交失败的情况（如线程池关闭、队列满）
+            future.completeExceptionally(e);
+        }
 
         return future;
     }
