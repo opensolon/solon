@@ -24,6 +24,10 @@
 * 添加 Plugin postStart 事件???
 * 调整 Plugin 统一交给 AppContext 管理（之前由 SolonApp 或 PluginPackage 管理）？？
 
+### v3.10.2
+
+* 调整 RunUtil 恢复 parallel 方法（之前标为弃用）
+* snack4 升为 4.0.43
 
 ### v3.10.1
 
