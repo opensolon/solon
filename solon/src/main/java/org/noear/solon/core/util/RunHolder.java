@@ -50,7 +50,7 @@ public class RunHolder {
                     if (Solon.appIf(app -> app.cfg().isEnabledVirtualThreads())) {
                         parallelExecutor = ThreadsUtil.newVirtualThreadPerTaskExecutor("Solon-executor-");
                     } else {
-                        int asyncPoolSize = Runtime.getRuntime().availableProcessors() * 4;
+                        int asyncPoolSize = Math.max(Runtime.getRuntime().availableProcessors() * 4, 16);
                         parallelExecutor = Executors.newFixedThreadPool(asyncPoolSize,
                                 new NamedThreadFactory("Solon-executor-"));
                     }
