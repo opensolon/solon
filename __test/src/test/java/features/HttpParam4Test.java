@@ -40,6 +40,28 @@ public class HttpParam4Test extends HttpTester {
 
         assert oNode2.get("id").getInt() == 1;
         assert new Datetime(oNode2.get("date").getDate()).getYear() > 2000;
+
+
+        json2 = path("/demo2/param4/json")
+                .data("id","2")
+                .data("name","noear")
+                .data("date", "2021-12-12").post();
+
+        oNode2 = ONode.ofJson(json2);
+
+        assert oNode2.get("id").getInt() == 2;
+        assert new Datetime(oNode2.get("date").getDate()).getYear() > 2000;
+
+        json2 = path("/demo2/param4/json")
+                .data("id","3")
+                .data("name","noear")
+                .data("date", "2021-12-12")
+                .multipart(true).post();
+
+        oNode2 = ONode.ofJson(json2);
+
+        assert oNode2.get("id").getInt() == 3;
+        assert new Datetime(oNode2.get("date").getDate()).getYear() > 2000;
     }
 
     @Test
