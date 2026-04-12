@@ -28,7 +28,7 @@
 
 * 调整 RunUtil 恢复 parallel 方法（之前标为弃用）
 * 调整 Log4j2Plugin，LogbackPlugin ，取消 doLoadUrl 重载
-* snack4 升为 4.0.44
+* snack4 升为 4.0.45
 
 ### v3.10.1
 
