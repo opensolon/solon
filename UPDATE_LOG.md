@@ -26,6 +26,7 @@
 
 ### v3.10.2
 
+* 添加 nami NamiFilter（替代旧的 Filter）更好表意
 * 调整 RunUtil 恢复 parallel 方法（之前标为弃用）
 * 调整 Log4j2Plugin，LogbackPlugin ，取消 doLoadUrl 重载
 * snack4 升为 4.0.45

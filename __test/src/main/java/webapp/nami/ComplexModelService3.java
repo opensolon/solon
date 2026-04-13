@@ -15,9 +15,8 @@
  */
 package webapp.nami;
 
-
-import org.noear.nami.Filter;
 import org.noear.nami.Invocation;
+import org.noear.nami.NamiFilter;
 import org.noear.nami.Result;
 import org.noear.nami.annotation.NamiBody;
 import org.noear.nami.annotation.NamiMapping;
@@ -30,7 +29,7 @@ import org.noear.solon.Utils;
  * @author noear 2022/12/6 created
  */
 @NamiClient(name="local", path="/nami/ComplexModelService3/", headers="TOKEN=a")
-public interface ComplexModelService3 extends Filter {
+public interface ComplexModelService3 extends NamiFilter {
     @NamiMapping("PUT")
     void save(@NamiBody ComplexModel model);
 
