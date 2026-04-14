@@ -26,6 +26,10 @@
 * 升级 mcp-java-sdk 为 0.17.x？？？
 
 
+### v3.9.7
+
+* 修复 solon-net-httputil OkHttp 请求体封装问题，转为对应编码字节流
+
 ### v3.9.6
 
 * 添加 `solon-docs-openapi3` 分布式文档支持
