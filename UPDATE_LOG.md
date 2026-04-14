@@ -46,6 +46,12 @@
 * 新增 solon-ai-dialect-claude 插件
 * 优化 solon-docs-openapi3 插件兼容性
 
+
+### 3.8.6
+
+* 修复 solon-net-httputil OkHttp 请求体封装问题，转为对应编码字节流
+
+
 ### v3.8.5
 
 * 优化 solon-logging-log4j2 默认配置改为 java 动态构建（更灵活）

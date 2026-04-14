@@ -59,7 +59,8 @@ public class OkHttpUtils extends AbstractHttpUtils implements HttpUtils {
     @Override
     public HttpUtils body(String txt, String contentType) {
         if (txt != null) {
-            _bodyRaw = RequestBody.create(txt, contentType == null ? null : MediaType.parse(contentType));
+//            _bodyRaw = RequestBody.create(txt, contentType == null ? null : MediaType.parse(contentType));
+            _bodyRaw = RequestBody.create(txt.getBytes(_charset), contentType == null ? null : MediaType.parse(contentType));
         }
 
         return this;
