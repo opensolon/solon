@@ -26,7 +26,7 @@
 * 升级 mcp-java-sdk 为 0.17.x？？？
 
 
-### v3.9.7
+### v3.9.8
 
 * 修复 solon-net-httputil OkHttp 请求体封装问题，转为对应编码字节流
 * snack 升为 4.0.45
