@@ -24,6 +24,12 @@
 * 添加 Plugin postStart 事件???
 * 调整 Plugin 统一交给 AppContext 管理（之前由 SolonApp 或 PluginPackage 管理）？？
 
+
+### v3.10.3
+
+* eggg 升为 1.0.12
+* snack4 升为 4.0.46
+
 ### v3.10.2
 
 * 添加 nami NamiFilter（替代 Filter）更好表意
