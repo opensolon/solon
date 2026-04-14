@@ -50,6 +50,7 @@
 ### 3.8.6
 
 * 修复 solon-net-httputil OkHttp 请求体封装问题，转为对应编码字节流
+* snack 升为 4.0.45
 
 
 ### v3.8.5
