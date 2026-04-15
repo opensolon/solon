@@ -51,6 +51,11 @@ public class MemCacheService implements CacheService {
         return this;
     }
 
+    public MemCacheService cacheKeyHead(String cacheKeyHead) {
+        _cacheKeyHead = cacheKeyHead;
+        return this;
+    }
+
     public MemCacheService(MemcachedClient client, int defSeconds) {
         this(client, null, defSeconds);
     }

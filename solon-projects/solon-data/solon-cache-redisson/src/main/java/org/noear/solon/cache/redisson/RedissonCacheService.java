@@ -51,6 +51,11 @@ public class RedissonCacheService implements CacheService {
         return this;
     }
 
+    public RedissonCacheService cacheKeyHead(String cacheKeyHead) {
+        _cacheKeyHead = cacheKeyHead;
+        return this;
+    }
+
     /**
      * 配置序列化
      * */

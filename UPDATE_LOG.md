@@ -25,6 +25,12 @@
 * 调整 Plugin 统一交给 AppContext 管理（之前由 SolonApp 或 PluginPackage 管理）？？
 
 
+### v3.10.4
+
+* 添加 solon-cache-spymemcached MemCacheService.cacheKeyHead 方法（修改缓存头）
+* 添加 solon-cache-redisson RedissonCacheService.cacheKeyHead 方法（修改缓存头）
+* 添加 solon-cache-jedis RedisCacheService.cacheKeyHead 方法（修改缓存头）
+
 ### v3.10.3
 
 * eggg 升为 1.0.12
