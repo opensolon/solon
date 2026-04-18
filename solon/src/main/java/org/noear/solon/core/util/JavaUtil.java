@@ -34,6 +34,11 @@ public class JavaUtil {
      */
     public static final boolean IS_WINDOWS = (File.separatorChar == '\\');
 
+    /**
+     * 是否为 Mac
+     */
+    public static final boolean IS_MAC;
+
     /*
      * 获取 Java 版本号
      * http://openjdk.java.net/jeps/223
@@ -53,5 +58,8 @@ public class JavaUtil {
             majorVersion = 8;
         }
         JAVA_MAJOR_VERSION = majorVersion;
+        // 操作系统初始化
+        String osName = System.getProperty("os.name");
+        IS_MAC = (osName != null && osName.toLowerCase().contains("mac"));
     }
 }

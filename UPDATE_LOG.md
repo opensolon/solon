@@ -30,6 +30,8 @@
 * 添加 solon-cache-spymemcached MemCacheService.cacheKeyHead 方法（修改缓存头）
 * 添加 solon-cache-redisson RedissonCacheService.cacheKeyHead 方法（修改缓存头）
 * 添加 solon-cache-jedis RedisCacheService.cacheKeyHead 方法（修改缓存头）
+* 添加 solon JavaUtil.IS_MAC 字段
+
 
 ### v3.10.3
 
