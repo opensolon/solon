@@ -17,7 +17,9 @@ package org.noear.solon.extend.impl;
 
 import org.noear.snack.ONode;
 import org.noear.snack.core.Feature;
+import org.noear.snack.core.Options;
 import org.noear.solon.Utils;
+import org.noear.solon.core.AppClassLoader;
 import org.noear.solon.core.PropsConverter;
 
 import java.lang.reflect.Constructor;
@@ -31,6 +33,13 @@ import java.util.Properties;
  * @since 1.6
  */
 public class PropsConverterExt extends PropsConverter {
+    private Options getOptions() {
+        Options tmp = Options.def().add(Feature.UseSetter);
+        tmp.setClassLoader(AppClassLoader.global());
+
+        return tmp;
+    }
+
     @Override
     public <T> T convert(Properties props, T target, Class<T> targetClz, Type targetType) {
         if (target == null) {
@@ -55,11 +64,11 @@ public class PropsConverterExt extends PropsConverter {
                 targetType = targetClz;
             }
 
-            return ONode.loadObj(props, Feature.UseSetter).toObject(targetType);
+            return ONode.loadObj(props, getOptions()).toObject(targetType);
         } else {
             //bindTo 可能会返回为 null
             if (props != null && props.size() > 0) {
-                ONode.loadObj(props, Feature.UseSetter).bindTo(target);
+                ONode.loadObj(props, getOptions()).bindTo(target);
             }
 
             return target;

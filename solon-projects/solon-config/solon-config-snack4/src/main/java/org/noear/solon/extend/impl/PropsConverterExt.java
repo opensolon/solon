@@ -35,11 +35,13 @@ import java.util.Properties;
  */
 public class PropsConverterExt extends PropsConverter {
 
+    private Options getOptions() {
+        return Options.of(Feature.Write_AllowUseSetter)
+                .classLoader(AppClassLoader.global());
+    }
+
     @Override
     public <T> T convert(Properties props, T target, Class<T> targetClz, Type targetType) {
-        Options options = Options.of(Feature.Write_AllowUseSetter)
-                .classLoader(AppClassLoader.global());
-
         if (target == null) {
             try {
                 //尝试用构造函数注入
@@ -62,11 +64,11 @@ public class PropsConverterExt extends PropsConverter {
                 targetType = targetClz;
             }
 
-            return ONode.ofBean(props, options).toBean(targetType);
+            return ONode.ofBean(props, getOptions()).toBean(targetType);
         } else {
             //bindTo 可能会返回为 null
             if (props != null && props.size() > 0) {
-                ONode.ofBean(props, options).bindTo(target);
+                ONode.ofBean(props, getOptions()).bindTo(target);
             }
 
             return target;
