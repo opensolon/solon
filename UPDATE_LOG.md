@@ -31,6 +31,7 @@
 * 添加 solon-cache-redisson RedissonCacheService.cacheKeyHead 方法（修改缓存头）
 * 添加 solon-cache-jedis RedisCacheService.cacheKeyHead 方法（修改缓存头）
 * 添加 solon JavaUtil.IS_MAC 字段
+* 修复 solon-config-snack3 不能通过属性反序列化外部扩展包里的类问题
 * 修复 solon-config-snack4 不能通过属性反序列化外部扩展包里的类问题
 * reactor-core 升为 3.8.5
 
