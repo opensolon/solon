@@ -27,6 +27,7 @@
         <maven-compiler.version>3.14.0</maven-compiler.version>
         <maven-assembly.version>3.7.0</maven-assembly.version>
         <maven-resources.version>3.3.1</maven-resources.version>
+        <maven-surefire.version>3.5.5</maven-surefire.version>
 
         <maven-war.version>3.4.0</maven-war.version>
 
@@ -2383,6 +2384,11 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-war-plugin</artifactId>
                     <version>${maven-war.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${maven-surefire.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.graalvm.buildtools</groupId>
