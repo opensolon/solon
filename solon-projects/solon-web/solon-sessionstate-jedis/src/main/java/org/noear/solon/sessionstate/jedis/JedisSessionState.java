@@ -35,7 +35,8 @@ public class JedisSessionState extends SessionStateBase {
 
     protected JedisSessionState(Context ctx) {
         super(ctx);
-        this.serializer = JavabinSerializer.instance;
+        Serializer<String> configuredSerializer = JedisSessionStateFactory.getInstance().serializer();
+        this.serializer = (configuredSerializer != null ? configuredSerializer : JavabinSerializer.instance);
         this.redisClient = JedisSessionStateFactory.getInstance().redisClient();
     }
 

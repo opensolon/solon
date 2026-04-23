@@ -1166,6 +1166,11 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon-serialization-javabin</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon-serialization-fury</artifactId>
                 <version>${solon.version}</version>
             </dependency>
