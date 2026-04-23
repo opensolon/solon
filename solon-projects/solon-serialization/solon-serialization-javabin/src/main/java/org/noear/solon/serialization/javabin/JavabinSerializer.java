@@ -13,30 +13,40 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.data.cache.impl;
+package org.noear.solon.serialization.javabin;
 
 import org.noear.solon.core.serialize.Serializer;
 import org.noear.solon.core.util.ClassUtil;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InvalidClassException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.lang.reflect.Type;
 import java.util.Base64;
 
 /**
  * Javabin 序列化实现。
- *
- * @author noear
- * @since 2.5
- * @deprecated since 3.11 -- 此实现未对反序列化类做白名单过滤（CWE-502）。
- * 请改用 {@code solon-serialization-javabin} 模块下的
- * {@code org.noear.solon.serialization.javabin.JavabinSerializer}；
- * 它默认按 {@code JavabinClassFilter.defaults()} 过滤，可通过
- * {@code classFilter().allow(...)} 放宽，并且覆盖了 {@code resolveProxyClass}
- * 防止动态代理绕过。
  */
-@Deprecated
 public class JavabinSerializer implements Serializer<String> {
+
     public static final JavabinSerializer instance = new JavabinSerializer();
+
+    private final JavabinClassFilter classFilter;
+
+    public JavabinSerializer() {
+        this(JavabinClassFilter.defaults());
+    }
+
+    public JavabinSerializer(JavabinClassFilter classFilter) {
+        this.classFilter = (classFilter != null ? classFilter : JavabinClassFilter.defaults());
+    }
+
+    public JavabinClassFilter classFilter() {
+        return classFilter;
+    }
 
     @Override
     public String name() {
@@ -54,52 +64,44 @@ public class JavabinSerializer implements Serializer<String> {
     }
 
     @Override
-    public Object deserialize(String dta, Type toType) {
+    public Object deserialize(String dta, Type toType) throws IOException {
         if (dta == null) {
             return null;
         }
 
-        //分析类加载器
         ClassLoader loader = ClassUtil.resolveClassLoader(toType);
 
         byte[] bytes = Base64.getDecoder().decode(dta);
         return deserializeDo(loader, bytes);
     }
 
-
     protected byte[] serializeDo(Object object) {
         if (object == null) {
             return null;
-        } else {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream(1024);
-
-            try {
-                ObjectOutputStream oos = new ObjectOutputStream(baos);
-                oos.writeObject(object);
-                oos.flush();
-            } catch (IOException e) {
-                throw new IllegalArgumentException("Failed to serialize object of type: " + object.getClass(), e);
-            }
-
-            return baos.toByteArray();
         }
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream(1024);
+        try {
+            ObjectOutputStream oos = new ObjectOutputStream(baos);
+            oos.writeObject(object);
+            oos.flush();
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Failed to serialize object of type: " + object.getClass(), e);
+        }
+        return baos.toByteArray();
     }
 
-    /**
-     * 反序列化
-     */
-    protected Object deserializeDo(ClassLoader loader, byte[] bytes) {
+    protected Object deserializeDo(ClassLoader loader, byte[] bytes) throws IOException {
         if (bytes == null) {
             return null;
-        } else {
-            try {
-                ObjectInputStream ois = new ObjectInputStreamEx(loader, new ByteArrayInputStream(bytes));
-                return ois.readObject();
-            } catch (IOException e) {
-                throw new IllegalArgumentException("Failed to deserialize object", e);
-            } catch (ClassNotFoundException e) {
-                throw new IllegalStateException("Failed to deserialize object type", e);
-            }
+        }
+        try {
+            ObjectInputStream ois = new SafeObjectInputStream(loader, classFilter, new ByteArrayInputStream(bytes));
+            return ois.readObject();
+        } catch (InvalidClassException e) {
+            throw e;
+        } catch (ClassNotFoundException e) {
+            throw new IOException("Failed to deserialize object type", e);
         }
     }
 }

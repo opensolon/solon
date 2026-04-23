@@ -23,11 +23,18 @@ import java.lang.reflect.Type;
 import java.util.Base64;
 
 /**
- * Javabin 序列化实现
+ * Javabin 序列化实现。
  *
  * @author noear
  * @since 1.5
+ * @deprecated since 3.11 -- 此实现未对反序列化类做白名单过滤（CWE-502）。
+ * 请改用 {@code solon-serialization-javabin} 模块下的
+ * {@code org.noear.solon.serialization.javabin.JavabinSerializer}；
+ * 它默认按 {@code JavabinClassFilter.defaults()} 过滤，可通过
+ * {@code classFilter().allow(...)} 放宽，并且覆盖了 {@code resolveProxyClass}
+ * 防止动态代理绕过。
  */
+@Deprecated
 public class JavabinSerializer implements Serializer<String> {
     public static final JavabinSerializer instance = new JavabinSerializer();
 

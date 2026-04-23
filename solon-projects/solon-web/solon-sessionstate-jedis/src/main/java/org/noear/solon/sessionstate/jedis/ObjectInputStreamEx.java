@@ -23,11 +23,15 @@ import java.io.ObjectInputStream;
 import java.io.ObjectStreamClass;
 
 /**
- * ObjectInputStream 增加类加载控制
+ * ObjectInputStream 增加类加载控制。
  *
  * @author noear
  * @since 2.8
+ * @deprecated since 3.11 -- 仅做 classloader 切换，不做类白名单过滤。
+ * 请改用 {@code solon-serialization-javabin} 模块下的
+ * {@code org.noear.solon.serialization.javabin.SafeObjectInputStream}。
  */
+@Deprecated
 public class ObjectInputStreamEx extends ObjectInputStream {
     private ClassLoader loader;
 

@@ -20,6 +20,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.SessionState;
 import org.noear.solon.core.handle.SessionStateFactory;
+import org.noear.solon.core.serialize.Serializer;
 
 import java.util.Properties;
 
@@ -48,9 +49,22 @@ public class JedisSessionStateFactory implements SessionStateFactory {
     }
 
     private RedisClient redisClient;
+    private Serializer<String> serializer;
 
     public RedisClient redisClient() {
         return redisClient;
+    }
+
+    /**
+     * 自定义 session 序列化器。
+     */
+    public JedisSessionStateFactory serializer(Serializer<String> serializer) {
+        this.serializer = serializer;
+        return this;
+    }
+
+    public Serializer<String> serializer() {
+        return serializer;
     }
 
     public static final int SESSION_STATE_PRIORITY = 2;
