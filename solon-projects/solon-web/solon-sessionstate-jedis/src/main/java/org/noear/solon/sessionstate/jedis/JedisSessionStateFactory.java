@@ -29,6 +29,7 @@ import java.util.Properties;
  */
 public class JedisSessionStateFactory implements SessionStateFactory {
     private static JedisSessionStateFactory instance;
+
     public static JedisSessionStateFactory getInstance() {
         if (instance == null) {
             instance = new JedisSessionStateFactory();
@@ -55,6 +56,10 @@ public class JedisSessionStateFactory implements SessionStateFactory {
         return redisClient;
     }
 
+    public Serializer<String> serializer() {
+        return serializer;
+    }
+
     /**
      * 自定义 session 序列化器。
      */
@@ -63,11 +68,8 @@ public class JedisSessionStateFactory implements SessionStateFactory {
         return this;
     }
 
-    public Serializer<String> serializer() {
-        return serializer;
-    }
-
     public static final int SESSION_STATE_PRIORITY = 2;
+
     @Override
     public int priority() {
         return SESSION_STATE_PRIORITY;
@@ -76,6 +78,6 @@ public class JedisSessionStateFactory implements SessionStateFactory {
 
     @Override
     public SessionState create(Context ctx) {
-        return new JedisSessionState(ctx);
+        return new JedisSessionState(ctx, redisClient, serializer);
     }
 }

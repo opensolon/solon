@@ -16,7 +16,6 @@
     <packaging>jar</packaging>
 
     <dependencies>
-
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon-serialization</artifactId>

@@ -17,6 +17,7 @@ package org.noear.solon.sessionstate.jedis;
 
 import org.noear.redisx.RedisClient;
 import org.noear.solon.Utils;
+import org.noear.solon.serialization.javabin.JavabinSerializer;
 import org.noear.solon.server.ServerConstants;
 import org.noear.solon.server.handle.SessionStateBase;
 import org.noear.solon.core.handle.Context;
@@ -33,11 +34,16 @@ public class JedisSessionState extends SessionStateBase {
     private RedisClient redisClient;
     private Serializer<String> serializer;
 
-    protected JedisSessionState(Context ctx) {
+    protected JedisSessionState(Context ctx, RedisClient redisClient, Serializer<String> serializer) {
         super(ctx);
-        Serializer<String> configuredSerializer = JedisSessionStateFactory.getInstance().serializer();
-        this.serializer = (configuredSerializer != null ? configuredSerializer : JavabinSerializer.instance);
-        this.redisClient = JedisSessionStateFactory.getInstance().redisClient();
+
+        if (serializer == null) {
+            this.serializer = JavabinSerializer.getInstance();
+        } else {
+            this.serializer = serializer;
+        }
+
+        this.redisClient = redisClient;
     }
 
     @Override

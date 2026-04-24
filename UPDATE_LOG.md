@@ -27,11 +27,14 @@
 
 ### v3.10.4
 
+* 新增 solon-serialization-javabin 插件（统一 JavabinSerializer 管理）
 * 添加 solon-cache-spymemcached MemCacheService.cacheKeyHead 方法（修改缓存头）
 * 添加 solon-cache-redisson RedissonCacheService.cacheKeyHead 方法（修改缓存头）
 * 添加 solon-cache-jedis RedisCacheService.cacheKeyHead 方法（修改缓存头）
 * 添加 solon JavaUtil.IS_MAC 字段
 * 添加 solon-parent maven-surefire-plugin 插件版本管理
+* 调整 solon-sessionstate-jedis 启用新的 JavabinSerializer
+* 调整 solon-cache-jedis 启用新的 JavabinSerializer
 * 修复 solon-config-snack3 不能通过属性反序列化外部扩展包里的类问题
 * 修复 solon-config-snack4 不能通过属性反序列化外部扩展包里的类问题
 * reactor-core 升为 3.8.5

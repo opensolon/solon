@@ -23,6 +23,11 @@
 
         <dependency>
             <groupId>org.noear</groupId>
+            <artifactId>solon-serialization-javabin</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
             <artifactId>solon-data</artifactId>
         </dependency>
 

@@ -33,11 +33,11 @@ public class SerializationJavabinPlugin implements Plugin {
 
     @Override
     public void start(AppContext context) {
-        applyConfig(JavabinSerializer.instance.classFilter());
+        applyConfig(JavabinSerializer.getInstance().classFilter());
 
-        JavabinSerializer serializer = JavabinSerializer.instance;
+        JavabinSerializer serializer = JavabinSerializer.getInstance();
         context.wrapAndPut(JavabinSerializer.class, serializer);
-        context.app().serializers().register("@type:java-bin", serializer);
+        context.app().serializers().register("@java-bin", serializer);
     }
 
     static void applyConfig(JavabinClassFilter filter) {

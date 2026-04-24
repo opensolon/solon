@@ -32,7 +32,11 @@ import java.util.Base64;
  */
 public class JavabinSerializer implements Serializer<String> {
 
-    public static final JavabinSerializer instance = new JavabinSerializer();
+    private static final JavabinSerializer instance = new JavabinSerializer();
+
+    public static JavabinSerializer getInstance() {
+        return instance;
+    }
 
     private final JavabinClassFilter classFilter;
 

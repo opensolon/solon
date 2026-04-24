@@ -20,7 +20,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.serialize.Serializer;
 import org.noear.solon.data.cache.CacheService;
-import org.noear.solon.data.cache.impl.JavabinSerializer;
+import org.noear.solon.serialization.javabin.JavabinSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -89,7 +89,7 @@ public class RedisCacheService implements CacheService {
         _cacheKeyHead = keyHeader;
         _defaultSeconds = defSeconds;
 
-        _serializer = JavabinSerializer.instance;
+        _serializer = JavabinSerializer.getInstance();
     }
 
     public RedisCacheService(Properties prop) {
@@ -129,7 +129,7 @@ public class RedisCacheService implements CacheService {
         _cacheKeyHead = keyHeader;
         _defaultSeconds = defSeconds;
 
-        _serializer = JavabinSerializer.instance;
+        _serializer = JavabinSerializer.getInstance();
 
         client = new RedisClient(prop, db, maxTotal);
     }
