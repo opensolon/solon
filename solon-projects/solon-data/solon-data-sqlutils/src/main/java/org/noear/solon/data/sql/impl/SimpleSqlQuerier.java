@@ -94,7 +94,8 @@ public class SimpleSqlQuerier implements SqlQuerier {
     }
 
     protected <T> Object queryRowDo(RowConverter<T> converter) throws SQLException {
-        try (StatementHolder holder = buildStatement(command, false, false)) {
+        try (StatementHolder holder = new StatementHolder()) {
+            buildStatement(holder, command, false, false);
             holder.rsts = holder.stmt.executeQuery();
 
             if (holder.rsts.next()) {
@@ -118,8 +119,8 @@ public class SimpleSqlQuerier implements SqlQuerier {
     }
 
     protected <T> List<T> queryRowListDo(RowConverter<T> converter) throws SQLException {
-        try (StatementHolder holder = buildStatement(command, false, false)) {
-
+        try (StatementHolder holder = new StatementHolder()) {
+            buildStatement(holder, command, false, false);
             holder.rsts = holder.stmt.executeQuery();
 
             List<T> list = new ArrayList<>();
@@ -145,11 +146,18 @@ public class SimpleSqlQuerier implements SqlQuerier {
     }
 
     protected <T> RowIterator<T> queryRowIteratorDo(int fetchSize, RowConverter<T> converter) throws SQLException {
-        StatementHolder holder = buildStatement(command, false, true);
-        holder.stmt.setFetchSize(fetchSize);
-        holder.rsts = holder.stmt.executeQuery();
+        StatementHolder holder = new StatementHolder();
+        try {
+            buildStatement(holder, command, false, true);
+            holder.stmt.setFetchSize(fetchSize);
+            holder.rsts = holder.stmt.executeQuery();
 
-        return new SimpleRowIterator(holder, converter);
+            return new SimpleRowIterator(holder, converter);
+        } catch (SQLException e) {
+            // 出现异常时关闭holder，执行成功时由iterator负责关闭holder
+            holder.close();
+            throw e;
+        }
     }
 
     @Override
@@ -158,7 +166,8 @@ public class SimpleSqlQuerier implements SqlQuerier {
     }
 
     protected int updateDo() throws SQLException {
-        try (StatementHolder holder = buildStatement(command, false, false)) {
+        try (StatementHolder holder = new StatementHolder()) {
+            buildStatement(holder, command, false, false);
             return holder.stmt.executeUpdate();
         }
     }
@@ -169,7 +178,8 @@ public class SimpleSqlQuerier implements SqlQuerier {
     }
 
     protected Object updateReturnKeyDo() throws SQLException {
-        try (StatementHolder holder = buildStatement(command, true, false)) {
+        try (StatementHolder holder = new StatementHolder()) {
+            buildStatement(holder, command, true, false);
             holder.stmt.executeUpdate();
             holder.rsts = holder.stmt.getGeneratedKeys();
 
@@ -187,7 +197,8 @@ public class SimpleSqlQuerier implements SqlQuerier {
     }
 
     protected int[] updateBatchDo() throws SQLException {
-        try (StatementHolder holder = buildStatement(command, false, false)) {
+        try (StatementHolder holder = new StatementHolder()) {
+            buildStatement(holder, command, false, false);
             return holder.stmt.executeBatch();
         }
     }
@@ -198,7 +209,8 @@ public class SimpleSqlQuerier implements SqlQuerier {
     }
 
     protected <T> List<T> updateBatchReturnKeysDo() throws SQLException {
-        try (StatementHolder holder = buildStatement(command, true, false)) {
+        try (StatementHolder holder = new StatementHolder()) {
+            buildStatement(holder, command, true, false);
             holder.stmt.executeBatch();
             holder.rsts = holder.stmt.getGeneratedKeys();
 
@@ -216,8 +228,7 @@ public class SimpleSqlQuerier implements SqlQuerier {
     /**
      * 开始命令处理
      */
-    protected StatementHolder buildStatement(SqlCommand cmd, boolean returnKeys, boolean isStream) throws SQLException {
-        StatementHolder holder = new StatementHolder();
+    protected StatementHolder buildStatement(StatementHolder holder, SqlCommand cmd, boolean returnKeys, boolean isStream) throws SQLException {
         holder.conn = getConnection();
 
         if (isStream) {

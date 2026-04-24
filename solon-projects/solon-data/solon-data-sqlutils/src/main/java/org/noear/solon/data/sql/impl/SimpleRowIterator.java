@@ -52,6 +52,7 @@ class SimpleRowIterator<T> implements RowIterator<T> {
 
             return rowCurrent != null;
         } catch (SQLException e) {
+            this.close();
             throw new RuntimeException(e);
         }
     }
