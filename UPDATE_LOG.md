@@ -38,6 +38,7 @@
 * 修复 solon-config-snack3 不能通过属性反序列化外部扩展包里的类问题
 * 修复 solon-config-snack4 不能通过属性反序列化外部扩展包里的类问题
 * reactor-core 升为 3.8.5
+* redisx 升为 1.8.5
 
 
 ### v3.10.3
