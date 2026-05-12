@@ -20,6 +20,7 @@ import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.net.http.HttpResponse;
 import org.reactivestreams.Subscriber;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.FluxSink;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -53,23 +54,25 @@ public class TextStreamUtil {
     private static Flux<String> parseLineStream(InputStream inputStream, Charset charset) {
         Charset finalCharset = (charset == null) ? Charset.forName(Solon.encoding()) : charset;
 
-        return Flux.generate(
-                () -> new CloseTrackableBufferedReader(new InputStreamReader(inputStream, finalCharset), 1024),
-                (reader, sink) -> {
-                    try {
-                        String line = reader.readLine();
-                        if (line == null) {
-                            sink.complete();
-                        } else {
-                            sink.next(line);
-                        }
-                    } catch (Exception e) {
-                        sink.error(e);
-                    }
-                    return reader;
-                },
-                reader -> RunUtil.runAndTry(reader::close)
-        );
+        return Flux.create(sink -> {
+            CloseTrackableBufferedReader reader = new CloseTrackableBufferedReader(new InputStreamReader(inputStream, finalCharset), 1024);
+
+            // 取消时立即关闭 reader，使阻塞中的 readLine() 抛出 IOException 退出
+            sink.onDispose(() -> RunUtil.runAndTry(reader::close));
+
+            try {
+                String line;
+                while (!sink.isCancelled() && !reader.isClosed() && (line = reader.readLine()) != null) {
+                    sink.next(line);
+                }
+                sink.complete();
+            } catch (Exception e) {
+                // 如果已取消（超时等），不向下游传播错误
+                if (!sink.isCancelled()) {
+                    sink.error(e);
+                }
+            }
+        }, FluxSink.OverflowStrategy.BUFFER);
     }
 
 
@@ -94,77 +97,71 @@ public class TextStreamUtil {
     private static Flux<ServerSentEvent> parseSseStream(InputStream inputStream, Charset charset) {
         Charset finalCharset = (charset == null) ? Charset.forName(Solon.encoding()) : charset;
 
-        return Flux.generate(
-                () -> new SseContext(new CloseTrackableBufferedReader(new InputStreamReader(inputStream, finalCharset), 1024)),
-                (ctx, sink) -> {
-                    try {
-                        String line;
-                        while ((line = ctx.reader.readLine()) != null) {
-                            if (line.isEmpty()) {
-                                // 1. 遇到空行：只要 meta 或 data 有内容，就分派事件
-                                if (ctx.data.length() > 0 || !ctx.meta.isEmpty()) {
-                                    String dataStr = ctx.data.toString();
-                                    sink.next(new ServerSentEvent(new HashMap<>(ctx.meta), dataStr));
+        return Flux.create(sink -> {
+            CloseTrackableBufferedReader reader = new CloseTrackableBufferedReader(new InputStreamReader(inputStream, finalCharset), 1024);
 
-                                    ctx.meta.clear();
-                                    ctx.data.setLength(0);
+            // 取消时立即关闭 reader，使阻塞中的 readLine() 抛出 IOException 退出
+            sink.onDispose(() -> RunUtil.runAndTry(reader::close));
 
-                                    if ("[DONE]".equals(dataStr)) {
-                                        sink.complete();
-                                    }
-                                    return ctx;
-                                }
-                            } else if (line.startsWith(":")) {
-                                // 2. 忽略注释行
-                                continue;
-                            } else {
-                                // 3. 通用解析逻辑：拆分 name 和 value
-                                int flagIdx = line.indexOf(':');
-                                String name, value;
-                                if (flagIdx > -1) {
-                                    name = line.substring(0, flagIdx);
-                                    int valIdx = flagIdx + 1;
-                                    // 规范：如果冒号后紧跟一个空格，则去掉该空格
-                                    if (line.length() > valIdx && line.charAt(valIdx) == ' ') {
-                                        valIdx++;
-                                    }
-                                    value = line.substring(valIdx);
-                                } else {
-                                    name = line;
-                                    value = "";
-                                }
+            // SSE 上下文
+            Map<String, String> meta = new HashMap<>();
+            StringBuilder data = new StringBuilder();
 
-                                // 4. 根据字段名分发
-                                if ("data".equals(name)) {
-                                    if (ctx.data.length() > 0) ctx.data.append("\n");
-                                    ctx.data.append(value);
-                                } else {
-                                    // event, id, retry 等都在这里
-                                    ctx.meta.put(name, value);
-                                }
+            try {
+                String line;
+                while (!sink.isCancelled() && !reader.isClosed() && (line = reader.readLine()) != null) {
+                    if (line.isEmpty()) {
+                        // 1. 遇到空行：只要 meta 或 data 有内容，就分派事件
+                        if (data.length() > 0 || !meta.isEmpty()) {
+                            String dataStr = data.toString();
+                            sink.next(new ServerSentEvent(new HashMap<>(meta), dataStr));
+
+                            meta.clear();
+                            data.setLength(0);
+
+                            if ("[DONE]".equals(dataStr)) {
+                                sink.complete();
+                                return;
                             }
                         }
-                        sink.complete();
-                    } catch (Exception e) {
-                        sink.error(e);
+                    } else if (line.startsWith(":")) {
+                        // 2. 忽略注释行
+                        continue;
+                    } else {
+                        // 3. 通用解析逻辑：拆分 name 和 value
+                        int flagIdx = line.indexOf(':');
+                        String name, value;
+                        if (flagIdx > -1) {
+                            name = line.substring(0, flagIdx);
+                            int valIdx = flagIdx + 1;
+                            // 规范：如果冒号后紧跟一个空格，则去掉该空格
+                            if (line.length() > valIdx && line.charAt(valIdx) == ' ') {
+                                valIdx++;
+                            }
+                            value = line.substring(valIdx);
+                        } else {
+                            name = line;
+                            value = "";
+                        }
+
+                        // 4. 根据字段名分发
+                        if ("data".equals(name)) {
+                            if (data.length() > 0) data.append("\n");
+                            data.append(value);
+                        } else {
+                            // event, id, retry 等都在这里
+                            meta.put(name, value);
+                        }
                     }
-                    return ctx;
-                },
-                ctx -> RunUtil.runAndTry(ctx.reader::close)
-        );
-    }
-
-    /**
-     * 内部状态类，用于在 generate 回调间保持上下文
-     */
-    private static class SseContext {
-        final CloseTrackableBufferedReader reader;
-        final Map<String, String> meta = new HashMap<>();
-        final StringBuilder data = new StringBuilder();
-
-        SseContext(CloseTrackableBufferedReader reader) {
-            this.reader = reader;
-        }
+                }
+                sink.complete();
+            } catch (Exception e) {
+                // 如果已取消（超时等），不向下游传播错误
+                if (!sink.isCancelled()) {
+                    sink.error(e);
+                }
+            }
+        }, FluxSink.OverflowStrategy.BUFFER);
     }
 
     //---------
