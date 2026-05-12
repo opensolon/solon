@@ -420,12 +420,12 @@ public class NetaHttpContext extends ContextBase {
                 _allows_write = false;
             }
 
-            if (sessionState() != null) {
-                try {
+            try {
+                if (sessionState() != null) {
                     sessionState().sessionPublish();
-                } catch (IOException e) {
-                    log.warn("Session publish failed", e);
                 }
+            } catch (Throwable e) {
+                // Solon may not be initialized in standalone mode
             }
 
             innerGetResponse().status(HttpStatus.valueOf(_status));
