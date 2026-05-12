@@ -1,0 +1,3 @@
+server.port: 8080
+server.http.gzip: false
+solon.app.enableHttp: true

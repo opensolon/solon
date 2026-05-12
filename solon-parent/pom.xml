@@ -33,9 +33,9 @@
 
         <solon.version>3.10.5-SNAPSHOT</solon.version>
         <solon-ai.version>3.10.5-SNAPSHOT</solon-ai.version>
-        <solon-flow.version>3.10.4</solon-flow.version>
+        <solon-flow.version>3.10.5-SNAPSHOT</solon-flow.version>
         <solon-expression.version>3.10.4</solon-expression.version>
-        <solon-cloud.version>3.10.4</solon-cloud.version>
+        <solon-cloud.version>3.10.5-SNAPSHOT</solon-cloud.version>
         <solon-admin.version>3.10.4</solon-admin.version>
         <solon-integration.version>3.10.4</solon-integration.version>
         <solon-java17.version>3.10.4</solon-java17.version>
@@ -388,6 +388,12 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-server-jdkhttp</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-server-netahttp</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 

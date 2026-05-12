@@ -28,3 +28,4 @@ nbdist/
 
 ### Mac files ###
 *.DS_Store
+.soloncode/
