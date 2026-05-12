@@ -158,7 +158,7 @@ public class RunnerUtils {
                     System.setProperty(NativeDetector.AOT_PROCESSING, "true");
                 }
 
-                AppContext appContext = startDo(mainClz, argsAry, klass, anno.enableHttp());
+                AppContext appContext = startDo(mainClz, argsAry, klass, anno.enableHttp(), anno.enableWebSocket());
 
                 if (anno.isAot()) {
                     new SolonAotTestProcessor(mainClz).process(appContext);
@@ -182,11 +182,11 @@ public class RunnerUtils {
             List<String> argsAry = new ArrayList<>();
             argsAry.add("-testing=1");
             argsAry.add("-debug=1");
-            return startDo(klass, argsAry, klass, false);
+            return startDo(klass, argsAry, klass, false, false);
         }
     }
 
-    private static AppContext startDo(Class<?> mainClz, List<String> argsAry, Class<?> klass, boolean enableHttp) throws Throwable {
+    private static AppContext startDo(Class<?> mainClz, List<String> argsAry, Class<?> klass, boolean enableHttp, boolean enableWebSocket) throws Throwable {
 
         if (mainClz == klass) {
             String[] args = argsAry.toArray(new String[argsAry.size()]);
@@ -195,6 +195,7 @@ public class RunnerUtils {
             testApp.start(x -> {
                 //默认关闭 http（避免与已经存在的服务端口冲突）
                 x.enableHttp(enableHttp);
+                x.enableWebSocket(enableWebSocket);
                 initDo(klass, x);
             });
 
@@ -217,6 +218,7 @@ public class RunnerUtils {
                         //默认关闭 http（避免与已经存在的服务端口冲突）
                         x.enableScanning(false);
                         x.enableHttp(enableHttp);
+                        x.enableWebSocket(enableWebSocket);
                         initDo(klass, x);
                     });
 
@@ -227,6 +229,7 @@ public class RunnerUtils {
                 testApp.start(x -> {
                     //默认关闭 http（避免与已经存在的服务端口冲突）
                     x.enableHttp(enableHttp);
+                    x.enableWebSocket(enableWebSocket);
                     initDo(klass, x);
                 });
 

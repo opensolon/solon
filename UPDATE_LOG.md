@@ -25,6 +25,10 @@
 * 调整 Plugin 统一交给 AppContext 管理（之前由 SolonApp 或 PluginPackage 管理）？？
 
 
+### v3.10.5
+
+* 添加 solon-text SolonTest.enableWebSocket 属性
+
 ### v3.10.4
 
 * 新增 solon-serialization-javabin 插件（统一 JavabinSerializer 管理）

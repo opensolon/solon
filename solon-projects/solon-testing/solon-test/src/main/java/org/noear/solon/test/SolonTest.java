@@ -74,6 +74,11 @@ public @interface SolonTest {
     boolean enableHttp() default false;
 
     /**
+     * 是否启用 webSocket
+     */
+    boolean enableWebSocket() default false;
+
+    /**
      * 是否为 aot 运行
      */
     boolean isAot() default false;
