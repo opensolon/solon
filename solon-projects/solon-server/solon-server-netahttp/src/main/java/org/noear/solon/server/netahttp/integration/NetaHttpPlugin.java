@@ -16,15 +16,15 @@
 package org.noear.solon.server.netahttp.integration;
 
 import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.core.*;
 import org.noear.solon.core.bean.LifecycleBean;
 import org.noear.solon.core.event.EventBus;
-import org.noear.solon.core.util.ClassUtil;
-import org.noear.solon.net.websocket.WebSocketRouter;
 import org.noear.solon.server.ServerConstants;
 import org.noear.solon.server.ServerProps;
 import org.noear.solon.server.prop.impl.HttpServerProps;
 import org.noear.solon.server.netahttp.NetaHttpServerComb;
+import org.noear.solon.server.prop.impl.WebSocketServerProps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,31 +55,6 @@ public final class NetaHttpPlugin implements Plugin {
             return;
         }
 
-        // 如果有 jetty 插件，就不启动了
-        if (ClassUtil.loadClass("org.noear.solon.server.jetty.integration.JettyPlugin") != null) {
-            return;
-        }
-
-        // 如果有 undertow 插件，就不启动了
-        if (ClassUtil.loadClass("org.noear.solon.server.undertow.integration.UndertowPlugin") != null) {
-            return;
-        }
-
-        // 如果有 tomcat 插件，就不启动了
-        if (ClassUtil.loadClass("org.noear.solon.server.tomcat.integration.TomcatPlugin") != null) {
-            return;
-        }
-
-        // 如果有 vertx 插件，就不启动了
-        if (ClassUtil.loadClass("org.noear.solon.server.vertx.integration.VxHttpPlugin") != null) {
-            return;
-        }
-
-        // 如果有 smarthttp 插件，就不启动了
-        if (ClassUtil.loadClass("org.noear.solon.server.smarthttp.integration.SmHttpPlugin") != null) {
-            return;
-        }
-
         if (context.isStarted()) {
             start0(context);
         } else {
@@ -104,6 +79,7 @@ public final class NetaHttpPlugin implements Plugin {
         long time_start = System.currentTimeMillis();
 
         _server = new NetaHttpServerComb(props);
+        _server.enableWebSocket(context.app().enableWebSocket());
         _server.setCoreThreads(props.getCoreThreads());
 
         if (props.isIoBound()) {
@@ -113,14 +89,10 @@ public final class NetaHttpPlugin implements Plugin {
 
         _server.setHandler(context.app()::tryHandle);
 
-        // 启用 WebSocket 支持（如果有 WebSocket 端点注册）
-        if (WebSocketRouter.getInstance().getPaths().size() > 0) {
-            _server.enableWebSocket(true);
-        }
-
         // 尝试事件扩展
         EventBus.publish(_server);
         _server.start(_host, _port);
+
 
         final String _wrapHost = props.getWrapHost();
         final int _wrapPort = props.getWrapPort();
@@ -130,6 +102,18 @@ public final class NetaHttpPlugin implements Plugin {
         long time_end = System.currentTimeMillis();
 
         String connectorInfo = "solon.connector:main: netahttp: Started ServerConnector@{HTTP/1.1,[http/1.1]}";
+        if (context.app().enableWebSocket()) {
+            //有名字定义时，添加信号注册
+            WebSocketServerProps wsProps = WebSocketServerProps.getInstance();
+            if (Utils.isNotEmpty(wsProps.getName())) {
+                SignalSim wsSignal = new SignalSim(wsProps.getName(), _wrapHost, _wrapPort, "ws", SignalType.WEBSOCKET);
+                context.app().signalAdd(wsSignal);
+            }
+
+            String wsServerUrl = props.buildWsServerUrl(_server.isSecure());
+            log.info(connectorInfo + "[WebSocket]}{" + wsServerUrl + "}");
+        }
+
         String httpServerUrl = props.buildHttpServerUrl(_server.isSecure());
         log.info(connectorInfo + "{" + httpServerUrl + "}");
         log.info("Server:main: netahttp: Started (" + solon_server_ver() + ") @" + (time_end - time_start) + "ms");
