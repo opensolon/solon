@@ -1,5 +1,6 @@
 package features;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.net.http.HttpUtils;
 import org.noear.solon.net.http.impl.okhttp.OkHttpUtilsFactory;
@@ -57,5 +58,21 @@ public class HttpOkTest {
         assert http(url404).body("{\"user\":\"noear\"}".getBytes())
                 .enablePrintln(true)
                 .execAsCode("POST") == 404;
+    }
+
+    @Test
+    public void http_timeout() throws Exception {
+        long startTimeMs = System.currentTimeMillis();
+
+        Assertions.assertThrows(Exception.class, () -> {
+            http("https://www.google.com/")
+                    .timeout(1)
+                    .get();
+        });
+
+        long spanTimeMs = System.currentTimeMillis() - startTimeMs;
+        System.out.println(spanTimeMs);
+
+        assert spanTimeMs < 3_000;
     }
 }

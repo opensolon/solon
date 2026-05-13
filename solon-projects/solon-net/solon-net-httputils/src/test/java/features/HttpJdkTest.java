@@ -1,5 +1,6 @@
 package features;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.net.http.HttpUtils;
 import org.noear.solon.net.http.impl.jdk.JdkHttpUtilsFactory;
@@ -11,7 +12,7 @@ public class HttpJdkTest {
     static final String url = "http://solon.noear.org";
     static final String url404 = "http://solon.noear.org/_test/_demo";
 
-    public static HttpUtils http(String url){
+    public static HttpUtils http(String url) {
         return JdkHttpUtilsFactory.getInstance().http(url);
     }
 
@@ -57,5 +58,21 @@ public class HttpJdkTest {
         assert http(url404).body("{\"user\":\"noear\"}".getBytes())
                 .enablePrintln(true)
                 .execAsCode("POST") == 404;
+    }
+
+    @Test
+    public void http_timeout() throws Exception {
+        long startTimeMs = System.currentTimeMillis();
+
+        Assertions.assertThrows(Exception.class, () -> {
+            http("https://www.google.com/")
+                    .timeout(1)
+                    .get();
+        });
+
+        long spanTimeMs = System.currentTimeMillis() - startTimeMs;
+        System.out.println(spanTimeMs);
+
+        assert spanTimeMs < 3_000;
     }
 }

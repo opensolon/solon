@@ -43,26 +43,36 @@ public class HttpTimeout implements Serializable {
     }
 
     /**
-     * @param timeout 所有超时（单位：秒）
+     * @param timeoutS 所有超时（单位：秒）
      */
-    public static HttpTimeout of(int timeout) {
+    public static HttpTimeout of(int timeoutS) {
+        return of(Duration.ofSeconds(timeoutS));
+    }
+
+    public static HttpTimeout of(Duration timeout) {
         HttpTimeout tmp = new HttpTimeout();
-        tmp.connectTimeout = Duration.ofSeconds(timeout);
-        tmp.writeTimeout = Duration.ofSeconds(timeout);
-        tmp.readTimeout = Duration.ofSeconds(timeout);
+        tmp.connectTimeout = timeout;
+        tmp.writeTimeout = timeout;
+        tmp.readTimeout = timeout;
         return tmp;
     }
 
     /**
-     * @param connectTimeout 连接超时（单位：秒）
-     * @param writeTimeout   写超时（单位：秒）
-     * @param readTimeout    读超时（单位：秒）
+     * @param connectTimeoutS 连接超时（单位：秒）
+     * @param writeTimeoutS   写超时（单位：秒）
+     * @param readTimeoutS    读超时（单位：秒）
      */
-    public static HttpTimeout of(int connectTimeout, int writeTimeout, int readTimeout) {
+    public static HttpTimeout of(int connectTimeoutS, int writeTimeoutS, int readTimeoutS) {
+        return of(Duration.ofSeconds(connectTimeoutS),
+                Duration.ofSeconds(writeTimeoutS),
+                Duration.ofSeconds(readTimeoutS));
+    }
+
+    public static HttpTimeout of(Duration connectTimeout, Duration writeTimeout, Duration readTimeout) {
         HttpTimeout tmp = new HttpTimeout();
-        tmp.connectTimeout = Duration.ofSeconds(connectTimeout);
-        tmp.writeTimeout = Duration.ofSeconds(writeTimeout);
-        tmp.readTimeout = Duration.ofSeconds(readTimeout);
+        tmp.connectTimeout = connectTimeout;
+        tmp.writeTimeout = writeTimeout;
+        tmp.readTimeout = readTimeout;
         return tmp;
     }
 
