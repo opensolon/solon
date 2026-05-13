@@ -314,15 +314,15 @@
 <!--            <artifactId>solon-server-grizzly-add-webscoket</artifactId>-->
 <!--        </dependency>-->
 
-                <dependency>
-                    <groupId>org.noear</groupId>
-                    <artifactId>solon-server-netahttp</artifactId>
-                </dependency>
+<!--                <dependency>-->
+<!--                    <groupId>org.noear</groupId>-->
+<!--                    <artifactId>solon-server-netahttp</artifactId>-->
+<!--                </dependency>-->
 
-<!--        <dependency>-->
-<!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon-server-smarthttp</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-server-smarthttp</artifactId>
+        </dependency>
 
 <!--                <dependency>-->
 <!--                    <groupId>org.noear</groupId>-->
