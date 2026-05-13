@@ -26,6 +26,7 @@
 
 ### v3.10.6
 
+* 优化 solon-net-httputils TextStreamUtil 的背压流控效果
 * snack4 升为 4.0.47
 
 ### v3.10.5
