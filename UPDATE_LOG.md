@@ -24,6 +24,9 @@
 * 添加 Plugin postStart 事件???
 * 调整 Plugin 统一交给 AppContext 管理（之前由 SolonApp 或 PluginPackage 管理）？？
 
+### v3.10.6
+
+* snack4 升为 4.0.47
 
 ### v3.10.5
 
