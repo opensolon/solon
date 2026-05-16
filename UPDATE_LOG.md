@@ -24,6 +24,11 @@
 * 添加 Plugin postStart 事件???
 * 调整 Plugin 统一交给 AppContext 管理（之前由 SolonApp 或 PluginPackage 管理）？？
 
+### v3.11.0
+
+* eggg 升为 1.0.13
+* snack4 升为 4.0.48
+
 ### v3.10.6
 
 * 优化 solon-net-httputils TextStreamUtil 的背压流控效果
