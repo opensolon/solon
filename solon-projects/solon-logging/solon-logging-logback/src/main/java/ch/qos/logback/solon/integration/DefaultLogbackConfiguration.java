@@ -92,7 +92,7 @@ public class DefaultLogbackConfiguration {
         putProperty(config, "FILE_LOG_ROLLING", "solon.logging.appender.file.rolling",
                 "${FILE_LOG_NAME}_%d{yyyy-MM-dd}_%i${FILE_LOG_EXTENSION}");
         putProperty(config, "FILE_LOG_PATTERN", "solon.logging.appender.file.pattern",
-                "%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [-%t][*%X{traceId}]%tags[%logger{20}]: %n%msg%n");
+                "%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} #${PID:-} [-%t][*%X{traceId}]%tags[%logger{20}]: %n%msg%n");
         putProperty(config, "FILE_LOG_LEVEL", "solon.logging.appender.file.level",
                 "INFO");
         putProperty(config, "FILE_LOG_MAX_HISTORY", "solon.logging.appender.file.maxHistory",
