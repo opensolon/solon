@@ -80,7 +80,7 @@
         <smarthttp.version>2.5.18</smarthttp.version>
         <grizzly.version>3.0.1</grizzly.version>
         <jetty.version>9.4.58.v20250814</jetty.version>
-        <undertow.version>2.2.38.Final</undertow.version>
+        <undertow.version>2.2.39.Final</undertow.version>
         <undertow.jastow.version>2.1.0.Final</undertow.jastow.version>
         <undertow.jboss-metadata.version>13.4.0.Final</undertow.jboss-metadata.version>
         <undertow.jboss-jsp.version>2.0.1.Final</undertow.jboss-jsp.version>
