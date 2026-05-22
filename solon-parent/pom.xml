@@ -571,7 +571,12 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>mcp-sdk</artifactId>
+                <artifactId>mcp-core</artifactId>
+                <version>${solon-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>mcp-json-jackson2</artifactId>
                 <version>${solon-ai.version}</version>
             </dependency>
             <dependency>

@@ -26,6 +26,7 @@
 
 ### v3.11.0
 
+* 新增 mcp-json-jackson2
 * eggg 升为 1.0.13
 * snack4 升为 4.0.49
 * undertow 升为 2.2.39.Final
