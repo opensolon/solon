@@ -28,6 +28,7 @@
 
 * 新增 mcp-json-jackson2
 * 新增 solon-view-aifei-enjoy 插件
+* 新增 solon-cache-caffeine3 插件
 * asm 升为 9.10
 * lombok 升为 1.18.46
 * slf4j 升为 2.0.18
