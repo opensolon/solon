@@ -48,6 +48,9 @@
 * vert.x 升为 4.5.27
 * tomcat 升为 9.0.118
 * undertow 升为 2.2.39.Final
+* activemq 升为 5.19.6
+* rocketmq5 升为 5.2.0
+* nacos3 升为 3.2.1
 
 ### v3.10.6
 
