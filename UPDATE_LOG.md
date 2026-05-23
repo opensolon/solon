@@ -29,6 +29,7 @@
 * 新增 mcp-json-jackson2
 * 新增 solon-view-aifei-enjoy 插件
 * asm 升为 9.10
+* log4j 升为 2.26.0
 * junit5 升为 5.14.4
 * eggg 升为 1.0.13
 * liquor 升为 1.6.8
