@@ -35,6 +35,7 @@
 * snakeyaml 升为 2.6
 * fastjson2 升为 2.0.62
 * jackson 升为 2.21.3
+* gson 升为 2.14.0
 * snack4 升为 4.0.49
 * redisson 升为 4.4.0
 * lettuce 升为 7.5.2.RELEASE
