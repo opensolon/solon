@@ -90,7 +90,7 @@
         <rxjava.version>3.1.9</rxjava.version>
         <netty.version>4.1.134.Final</netty.version>
         <reactor-core.version>3.8.5</reactor-core.version>
-        <reactor-netty-http.version>1.1.22</reactor-netty-http.version>
+        <reactor-netty-http.version>1.3.5</reactor-netty-http.version>
         <mutiny.version>1.10.0</mutiny.version>
 
 
