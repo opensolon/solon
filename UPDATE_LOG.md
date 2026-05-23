@@ -29,12 +29,12 @@
 * 新增 mcp-json-jackson2
 * 新增 solon-view-aifei-enjoy 插件
 * asm 升为 9.10
+* junit5 升为 5.14.4
 * eggg 升为 1.0.13
 * liquor 升为 1.6.8
 * hutool 升为 5.8.44
 * snakeyaml 升为 2.6
 * fastjson2 升为 2.0.62
-* jackson 升为 2.21.3
 * gson 升为 2.14.0
 * snack4 升为 4.0.49
 * redisson 升为 4.4.0
