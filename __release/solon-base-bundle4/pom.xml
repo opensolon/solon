@@ -29,6 +29,7 @@
         <module>../../solon-projects/solon-shell/solon-shell</module>
 
         <module>../../solon-projects/solon-view/solon-view</module>
+        <module>../../solon-projects/solon-view/solon-view-aifei-enjoy</module>
         <module>../../solon-projects/solon-view/solon-view-freemarker</module>
         <module>../../solon-projects/solon-view/solon-view-jsp</module>
         <module>../../solon-projects/solon-view/solon-view-velocity</module>

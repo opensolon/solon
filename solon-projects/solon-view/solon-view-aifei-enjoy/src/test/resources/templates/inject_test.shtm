@@ -1,0 +1,1 @@
+share: #(greeting.greet(name)); directive: #hello(name)
