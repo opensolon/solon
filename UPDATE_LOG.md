@@ -32,6 +32,7 @@
 * snack4 升为 4.0.49
 * netty 升为 4.1.134.Final
 * vert.x 升为 4.5.27
+* tomcat 升为 9.0.118
 * undertow 升为 2.2.39.Final
 
 ### v3.10.6
