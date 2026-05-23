@@ -104,7 +104,7 @@
         <brave-opentracing.version>1.0.0</brave-opentracing.version>
 
 
-        <snakeyaml.version>2.5</snakeyaml.version>
+        <snakeyaml.version>2.6</snakeyaml.version>
 
         <swagger.version>1.6.11</swagger.version>
         <swagger2.version>2.2.41</swagger2.version>
