@@ -30,6 +30,7 @@
 * 新增 solon-view-aifei-enjoy 插件
 * asm 升为 9.10
 * eggg 升为 1.0.13
+* liquor 升为 1.6.8
 * fastjson2 升为 2.0.62
 * snack4 升为 4.0.49
 * redisson 升为 4.4.0
