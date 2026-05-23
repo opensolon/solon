@@ -30,6 +30,7 @@
 * 新增 solon-view-aifei-enjoy 插件
 * asm 升为 9.10
 * eggg 升为 1.0.13
+* fastjson2 升为 2.0.62
 * snack4 升为 4.0.49
 * netty 升为 4.1.134.Final
 * vert.x 升为 4.5.27
