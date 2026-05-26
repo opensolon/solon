@@ -71,27 +71,7 @@ public class Props extends Properties {
         }
     }
 
-    /**
-     * @see Props:addAll
-     * @deprecated 3.0 {@link #addAll(Map)}}
-     */
-    @Deprecated
-    public Props(Map<String, String> data) {
-        super();
-        super.putAll(data);
-    }
 
-    /**
-     * @see Props:addAll
-     * @deprecated 3.0 {@link #addAll(Iterable<?>)}
-     */
-    @Deprecated
-    public Props(Iterable<KeyValues<String>> data) {
-        super();
-        for (KeyValues<String> kv : data) {
-            super.put(kv.getKey(), kv.getFirstValue());
-        }
-    }
 
     @Override
     public int size() {
@@ -247,28 +227,6 @@ public class Props extends Properties {
         } else {
             return convert.apply(temp);
         }
-    }
-
-
-    /**
-     * 查找 keyStarts 开头的所有配置；转为换一个类实例
-     *
-     * @param keyStarts key 的开始字符
-     * @deprecated 2.9 {@link #toBean(String,Class<?>)}
-     */
-    @Deprecated
-    public <T> T getBean(String keyStarts, Class<T> clz) {
-        return toBean(keyStarts, clz);
-    }
-
-    /**
-     * 转为换一个类实例
-     *
-     * @deprecated 2.9 {@link #toBean(Class<?>)}
-     */
-    @Deprecated
-    public <T> T getBean(Class<T> clz) {
-        return toBean(clz);
     }
 
     /**

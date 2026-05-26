@@ -107,36 +107,37 @@ public class AppContext extends BeanContainer {
     private final Set<InjectGather> gatherSet = new HashSet<>();
 
     /**
-     * 获取方法包装（方便 aot 收集）
+     * 方法包装（方便 aot 收集）
      *
      * @param method 方法
-     * @deprecated 3.7 {@link #methodWrap(ClassEggg, Method)}
      */
-    @Deprecated
-    public MethodWrap methodGet(Method method) {
-        return methodGet(method.getDeclaringClass(), method);
+    public MethodWrap methodWrap(Method method) {
+        return methodWrap(method.getDeclaringClass(), method);
     }
 
-
     /**
-     * 获取方法包装（方便 aot 收集）
+     * 方法包装（方便 aot 收集）
      *
      * @param method 方法
-     * @deprecated 3.7 {@link #methodWrap(ClassEggg, Method)}
      */
-    @Deprecated
-    public MethodWrap methodGet(Class<?> clz, Method method) {
+    public MethodWrap methodWrap(Class<?> clz, Method method) {
         MethodKey methodKey = new MethodKey(method, clz);
 
         return methodCached.computeIfAbsent(methodKey, k -> new MethodWrap(this, clz, EgggUtil.getClassEggg(clz).findMethodEgggOrNew(method)));
     }
 
+    /**
+     * 方法包装（方便 aot 收集）
+     */
     public MethodWrap methodWrap(ClassEggg ce, Method m) {
         MethodKey methodKey = new MethodKey(m, ce.getType());
 
         return methodCached.computeIfAbsent(methodKey, k -> new MethodWrap(this, ce.getType(), ce.findMethodEgggOrNew(m)));
     }
 
+    /**
+     * 方法包装（方便 aot 收集）
+     */
     public MethodWrap methodWrap(ClassEggg ce, MethodEggg me) {
         MethodKey methodKey = new MethodKey(me.getMethod(), ce.getType());
 
@@ -201,7 +202,7 @@ public class AppContext extends BeanContainer {
         });
 
         beanExtractorAdd(Bean.class, (bw, m, anno) -> {
-            tryBuildBeanOfMethod(m, bw, anno.priority(), (mw, raw) -> {
+            tryBuildBeanOfMethod(m, bw, (mw, raw) -> {
                 tryBuildBeanOfMethod3(mw, bw, raw, anno);
             });
 
@@ -362,7 +363,7 @@ public class AppContext extends BeanContainer {
             if (Utils.isEmpty(name) && vh.getTypeEggg().isParameterizedType()) {
                 TypeEggg typeEggg = vh.getTypeEggg();
 
-                if (List.class == vh.getType()) {
+                if (List.class == vh.getTypeEggg().getType()) {
                     //支持 List<Bean> 注入 //@since 3.0
                     Type tmp = typeEggg.getActualTypeArguments()[0];
 
@@ -384,7 +385,7 @@ public class AppContext extends BeanContainer {
                         //设置默认值（放下面）
                         vh.setValueDefault(() -> this.getBeansOfType((Class<? extends Object>) type, genericType));
                     }
-                } else if (Map.class == vh.getType()) {
+                } else if (Map.class == vh.getTypeEggg().getType()) {
                     //支持 Map<String,Bean> 注入 //@since 3.0
 
                     Type keyType = typeEggg.getActualTypeArguments()[0];
@@ -491,29 +492,15 @@ public class AppContext extends BeanContainer {
             singletonHint = "EntityConverter";
         }
 
-        //RenderFactory //将弃用 v3.6
-        if (bw.raw() instanceof RenderFactory) {
-            app().renders().register((RenderFactory) bw.raw());
-            singletonHint = "RenderFactory";
-        }
-
-        //ActionExecuteHandler //将弃用 v3.6
-        if (bw.raw() instanceof ActionExecuteHandler) {
-            //app().chains().addExecuteHandler(bw.raw(), bw.index());
-            app().chains().addEntityConverter(new EntityConverterFromExecutor(bw.raw()), bw.index());
-            singletonHint = "ActionExecuteHandler";
-            log.warn("The ActionExecuteHandler will be deprecated. Please use EntityConverter instead: {}", bw.clz().getName());
-        }
-
         //Filter
         if (bw.raw() instanceof Filter) {
-            app().filter(bw.index(), bw.raw());
+            app().router().filter(bw.index(), bw.raw());
             singletonHint = "Filter";
         }
 
         //RouterInterceptor
         if (bw.raw() instanceof RouterInterceptor) {
-            app().routerInterceptor(bw.index(), bw.raw());
+            app().router().routerInterceptor(bw.index(), bw.raw());
             singletonHint = "RouterInterceptor";
         }
 
@@ -919,14 +906,7 @@ public class AppContext extends BeanContainer {
      * 尝试托管方法调用
      */
     public void tryBuildBeanOfMethod(Method m, BeanWrap bw, BiConsumerEx<MethodEggg, Object> completionConsumer) throws Throwable {
-        tryBuildBeanOfMethod(m, bw, 0, completionConsumer);
-    }
-
-    /**
-     * 尝试托管方法调用
-     */
-    private void tryBuildBeanOfMethod(Method m, BeanWrap bw, int priority, BiConsumerEx<MethodEggg, Object> completionConsumer) throws Throwable {
-        if (NativeDetector.isAotRuntime()) {
+       if (NativeDetector.isAotRuntime()) {
             //如果是 aot 则注册函数
             aot().registerMethodEggg(bw.rawEggg().findMethodEgggOrNew(m));
         }
@@ -934,8 +914,7 @@ public class AppContext extends BeanContainer {
         Condition mc = m.getAnnotation(Condition.class);
 
         if (started == false && ConditionUtil.ifMissingBean(mc)) {
-            priority = (mc.priority() > 0 ? mc.priority() : priority);
-            lifecycle(Constants.LF_IDX_METHOD_CONDITION_IF_MISSING, priority, () -> tryBuildBeanOfMethod0(bw, m, mc, completionConsumer));
+            lifecycle(Constants.LF_IDX_METHOD_CONDITION_IF_MISSING, mc.priority(), () -> tryBuildBeanOfMethod0(bw, m, mc, completionConsumer));
         } else {
             tryBuildBeanOfMethod0(bw, m, mc, completionConsumer);
         }
@@ -1043,7 +1022,7 @@ public class AppContext extends BeanContainer {
         if (raw instanceof BeanWrap) {
             m_bw = (BeanWrap) raw;
         } else {
-            if (anno.autoInject() || anno.injected()) {
+            if (anno.autoInject()) {
                 //执行注入
                 beanInject(raw);
             }
@@ -1387,16 +1366,6 @@ public class AppContext extends BeanContainer {
                 }
             }
         }
-    }
-
-    /**
-     * 预停止（一般在插件预停止之后，再执行）
-     *
-     * @deprecated 3.7 {@link #preStop()}
-     */
-    @Deprecated
-    public void prestop() {
-        preStop();
     }
 
     /**

@@ -21,7 +21,7 @@ public class RenderDemoApp {
             });
 
             //通过过滤器，指定渲染处理器为 "customize"
-            app.filter(-999, (ctx,chain)->{
+            app.router().filter(-999, (ctx,chain)->{
                 ctx.attrSet("@render", "customize");
             });
         });

@@ -57,10 +57,6 @@ public class SnackDecoder implements Decoder {
 
     @Override
     public void pretreatment(Context ctx) {
-        if (ctx.config.getEncoder() instanceof EncoderTyped) {
-            ctx.headers.put(ContentTypes.HEADER_SERIALIZATION, ContentTypes.AT_TYPE_JSON);
-        }
-
         ctx.headers.put(ContentTypes.HEADER_ACCEPT, ContentTypes.JSON_VALUE);
     }
 }

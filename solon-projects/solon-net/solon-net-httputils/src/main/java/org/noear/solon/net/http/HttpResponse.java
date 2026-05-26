@@ -77,15 +77,6 @@ public interface HttpResponse extends Closeable {
     Charset contentCharset();
 
     /**
-     * @deprecated 3.6
-     *
-     */
-    @Deprecated
-    default Charset contentEncoding() {
-        return contentCharset();
-    }
-
-    /**
      * 获取小饼数组
      */
     List<String> cookies();

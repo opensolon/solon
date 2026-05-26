@@ -286,16 +286,6 @@ public class ClassUtil {
         return false;
     }
 
-    /**
-     * 查找 method
-     *
-     * @deprecated 3.7
-     */
-    @Deprecated
-    public static Collection<Method> findPublicMethods(Class<?> clz) {
-        throw new UnsupportedOperationException();
-        //return ClassWrap.get(clz).findPublicMethods();
-    }
 
     //A.class
     //a.*.class
@@ -334,20 +324,6 @@ public class ClassUtil {
         doScanClasses(AppClassLoader.global(), clzExpr, null, clzConsumer);
     }
 
-    /**
-     * 扫描类
-     *
-     * @param clzExpr   类名表达式（基于 import 表达式扩展）
-     * @param clzFilter 类过滤器
-     * @since 3.0
-     * @deprecated 3.7
-     */
-    @Deprecated
-    public static Collection<Class<?>> scanClasses(String clzExpr, Predicate<Class<?>> clzFilter) {
-        List<Class<?>> clzList = new ArrayList<>();
-        doScanClasses(AppClassLoader.global(), clzExpr, clzFilter, clzList::add);
-        return clzList;
-    }
 
     /**
      * 扫描类
@@ -375,21 +351,6 @@ public class ClassUtil {
         doScanClasses(classLoader, clzExpr, null, clzConsumer);
     }
 
-    /**
-     * 扫描类
-     *
-     * @param classLoader 类加载器
-     * @param clzExpr     类名表达式（基于 import 表达式扩展）
-     * @param clzFilter   类过滤器
-     * @since 3.0
-     * @deprecated 3.7
-     */
-    @Deprecated
-    public static Collection<Class<?>> scanClasses(ClassLoader classLoader, String clzExpr, Predicate<Class<?>> clzFilter) {
-        List<Class<?>> clzList = new ArrayList<>();
-        doScanClasses(classLoader, clzExpr, clzFilter, clzList::add);
-        return clzList;
-    }
 
     /**
      * 扫描类

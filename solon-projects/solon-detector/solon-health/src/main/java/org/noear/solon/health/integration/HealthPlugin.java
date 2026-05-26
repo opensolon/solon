@@ -32,8 +32,8 @@ public class HealthPlugin implements Plugin {
         //
         // HealthHandler 独立出来，便于其它检测路径的复用
         //
-        context.app().get(HealthHandler.HANDLER_PATH, HealthHandler.getInstance());
-        context.app().head(HealthHandler.HANDLER_PATH, HealthHandler.getInstance());
+        context.app().router().get(HealthHandler.HANDLER_PATH, HealthHandler.getInstance());
+        context.app().router().head(HealthHandler.HANDLER_PATH, HealthHandler.getInstance());
 
         //添加 HealthIndicator 自动注册
         context.subWrapsOfType(HealthIndicator.class, bw -> {

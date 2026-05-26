@@ -31,6 +31,7 @@ import java.net.URI;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.function.Supplier;
 import java.util.zip.GZIPOutputStream;
 
 /**
@@ -46,16 +47,14 @@ public abstract class Context {
      * 获取当前域的上下文
      */
     public static Context current() {
-        Context tmp = LOCAL.get();
+        return LOCAL.get();
+    }
 
-        if (tmp == null && Solon.appIf(app -> app.cfg().testing())) {
-            if (JavaUtil.JAVA_MAJOR_VERSION < 21) {
-                tmp = new ContextEmpty();
-                LOCAL.set(tmp);
-            }
-        }
-
-        return tmp;
+    /**
+     * @since 4.0
+     */
+    public static Context currentOr(Supplier<Context> supplier) {
+        return LOCAL.getOr(supplier);
     }
 
     /**

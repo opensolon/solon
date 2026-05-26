@@ -48,16 +48,6 @@ public interface Routing<T> {
     MethodType method();
 
     /**
-     * 路由目标
-     *
-     * @deprecated 3.7
-     */
-    @Deprecated
-    default T target() {
-        return target(null);
-    }
-
-    /**
      * 获取所有目标
      *
      * @since 3.7

@@ -46,14 +46,6 @@ public class ProtostuffBytesSerializer implements EntityBytesSerializer {
     }
 
     /**
-     * @deprecated 3.6 {@link #getDefault()}
-     * */
-    @Deprecated
-    public static ProtostuffBytesSerializer getInstance() {
-        return _default;
-    }
-
-    /**
      * 获取内容类型
      */
     @Override

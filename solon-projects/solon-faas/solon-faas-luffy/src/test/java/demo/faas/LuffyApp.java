@@ -23,7 +23,7 @@ import org.noear.solon.luffy.impl.JtFunctionLoaderFile;
 public class LuffyApp {
     public static void main(String[] args) {
         Solon.start(LuffyApp.class, args, app -> {
-            app.all("**", new LuffyHandler());
+            app.router().all("**", new LuffyHandler());
         });
     }
 }

@@ -35,6 +35,6 @@ public class I18nPlugin implements Plugin {
 
         context.getBeanAsync(LocaleResolver.class, I18nUtil::setLocaleResolver);
 
-        context.app().filter(Constants.FT_IDX_I18N, new I18nFilter());
+        context.app().router().filter(Constants.FT_IDX_I18N, new I18nFilter());
     }
 }

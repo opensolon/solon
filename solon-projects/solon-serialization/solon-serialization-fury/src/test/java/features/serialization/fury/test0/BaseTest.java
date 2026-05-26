@@ -20,7 +20,6 @@ import org.junit.jupiter.api.Test;
 import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.serialization.fury.FuryBytesSerializer;
 import org.noear.solon.serialization.fury.FuryEntityConverter;
-import org.noear.solon.serialization.fury.FuryRender;
 import org.noear.solon.test.SolonTest;
 
 import java.io.ByteArrayOutputStream;
@@ -36,7 +35,7 @@ import java.util.Map;
 @SolonTest
 public class BaseTest {
     @Test
-    public void hello2() throws Throwable{
+    public void hello2() throws Throwable {
         UserDo userDo = new UserDo();
 
         Map<String, Object> data = new HashMap<>();
@@ -47,8 +46,9 @@ public class BaseTest {
 
         userDo.setMap1(data);
 
-        ContextEmpty ctx = new ContextEmpty(){
+        ContextEmpty ctx = new ContextEmpty() {
             private ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
             @Override
             public OutputStream outputStream() {
                 return outputStream;
@@ -58,7 +58,7 @@ public class BaseTest {
             public void output(byte[] bytes) {
                 try {
                     outputStream().write(bytes);
-                }catch (IOException e){
+                } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
             }
@@ -69,11 +69,11 @@ public class BaseTest {
             }
         };
 
-        FuryRender render = new FuryRender(new FuryEntityConverter(new FuryBytesSerializer()));
-        render.render(userDo, ctx);
+        FuryEntityConverter entityConverter = new FuryEntityConverter(new FuryBytesSerializer());
+        entityConverter.write(userDo, ctx);
 
         FuryBytesSerializer serializer = new FuryBytesSerializer();
-        UserDo userDo2 = (UserDo)serializer.deserializeFromBody(ctx, UserDo.class);
+        UserDo userDo2 = (UserDo) serializer.deserializeFromBody(ctx, UserDo.class);
 
         System.out.println(userDo2);
 

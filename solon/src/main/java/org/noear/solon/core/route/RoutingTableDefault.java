@@ -20,6 +20,7 @@ import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.handle.Result;
 import org.noear.solon.core.util.Assert;
 import org.noear.solon.core.util.RankEntity;
+import org.noear.solon.lang.Nullable;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -41,7 +42,7 @@ public class RoutingTableDefault<T> implements RoutingTable<T> {
     /**
      * 获取版本对象（带缓存）
      */
-    private Version versionOf(String versionStr) {
+    private Version versionOf(@Nullable String versionStr) {
         if (Assert.isEmpty(versionStr)) {
             return null;
         }
@@ -59,7 +60,7 @@ public class RoutingTableDefault<T> implements RoutingTable<T> {
      * @param target     目标
      */
     @Override
-    public void add(String path, MethodType method, int index, String versionStr, T target) {
+    public void add(String path, MethodType method, int index, @Nullable String versionStr, T target) {
         String key = path + ":" + method.name;
 
         routingCache.computeIfAbsent(key, k -> {
@@ -175,7 +176,7 @@ public class RoutingTableDefault<T> implements RoutingTable<T> {
      * @param method 方法
      * @return 一个区配的目标
      */
-    public T matchOne(String path, String versionStr, MethodType method) {
+    public T matchOne(String path, @Nullable String versionStr, MethodType method) {
         Version version2 = versionOf(versionStr);
 
         for (RankEntity<Routing<T>> l : table) {
@@ -195,7 +196,7 @@ public class RoutingTableDefault<T> implements RoutingTable<T> {
      * @return 一个区配的目标
      */
     @Override
-    public Result<T> matchOneAndStatus(String path, String versionStr, MethodType method) {
+    public Result<T> matchOneAndStatus(String path, @Nullable String versionStr, MethodType method) {
         Version version2 = versionOf(versionStr);
 
         int degrees = 0;
@@ -225,7 +226,7 @@ public class RoutingTableDefault<T> implements RoutingTable<T> {
      * @return 一批区配的目标
      */
     @Override
-    public List<T> matchMore(String path, String versionStr, MethodType method) {
+    public List<T> matchMore(String path, @Nullable String versionStr, MethodType method) {
         Version version2 = versionOf(versionStr);
 
         return table.stream()

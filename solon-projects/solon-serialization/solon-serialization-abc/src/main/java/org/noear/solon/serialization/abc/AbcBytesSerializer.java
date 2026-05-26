@@ -41,15 +41,6 @@ public class AbcBytesSerializer implements EntityBytesSerializer {
         return _default;
     }
 
-    /**
-     * @deprecated 3.6 {@link #getDefault()}
-     */
-    @Deprecated
-    public static AbcBytesSerializer getInstance() {
-        return _default;
-    }
-
-
     @Override
     public String mimeType() {
         return label;

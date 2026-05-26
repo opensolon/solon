@@ -24,7 +24,7 @@ import java.io.IOException;
  * @since 1.9
  * @since 3.5
  */
-public class LimitedInputException extends org.noear.solon.boot.io.LimitedInputException {
+public class LimitedInputException extends IOException {
     public LimitedInputException() {
     }
 

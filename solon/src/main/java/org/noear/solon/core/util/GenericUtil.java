@@ -94,52 +94,6 @@ public class GenericUtil {
 
 
 
-
-
-    /**
-     * 审查类型
-     *
-     * @param type        原始类型
-     * @param genericInfo 泛型信息类
-     * @since 3.0
-     * @deprecated 3.7
-     * */
-    @Deprecated
-    public static Type reviewType(Type type, Type genericInfo) {
-        if (type instanceof TypeVariable || type instanceof ParameterizedType) {
-            return reviewType(type, EgggUtil.getTypeEggg(genericInfo).getGenericInfo());
-        } else {
-            return type;
-        }
-    }
-
-    /**
-     * 审查类型
-     *
-     * @param type        原始类型
-     * @param genericInfo 泛型信息
-     * @since 3.0
-     * @deprecated 3.7
-     * */
-    @Deprecated
-    public static Type reviewType(Type type, Map<String, Type> genericInfo) {
-        return GenericResolver.getDefault().reviewType(type, genericInfo);
-    }
-
-    /// ////////////////
-
-    /**
-     * 参数类型（泛型）匹配
-     *
-     * @param checkType 检测类型
-     * @param sourceType 源类型
-     * @deprecated 3.7 {@link #typeMatched(Type, Type)}
-     * */
-    @Deprecated
-    public static boolean genericMatched(ParameterizedType checkType, ParameterizedType sourceType) {
-        return typeMatched(checkType,sourceType);
-    }
-
     /**
      * 泛型类型匹配 (检查是否等效或兼容)
      *

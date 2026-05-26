@@ -23,7 +23,7 @@ import org.noear.solon.Solon;
 public class SeverDemo {
     public static void main(String[] args) {
         Solon.start(SeverDemo.class, args, app -> {
-            app.get("/", ctx -> {
+            app.router().get("/", ctx -> {
                 ctx.output("Hello World");
             });
         });

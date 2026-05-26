@@ -19,12 +19,16 @@ import org.junit.jupiter.api.extension.*;
 import org.noear.solon.SimpleSolonApp;
 import org.noear.solon.Solon;
 import org.noear.solon.core.AppContext;
+import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.handle.ContextEmpty;
+
+import java.lang.reflect.Method;
 
 /**
  * @author noear
  * @since 1.10
  */
-public class SolonJUnit5Extension implements TestInstanceFactory, AfterAllCallback {
+public class SolonJUnit5Extension implements TestInstanceFactory, AfterAllCallback, InvocationInterceptor {
     private AppContext appContext;
     private Class<?> klass;
 
@@ -58,5 +62,12 @@ public class SolonJUnit5Extension implements TestInstanceFactory, AfterAllCallba
                 }
             }
         }
+    }
+
+    @Override
+    public void interceptTestMethod(Invocation<Void> invocation, ReflectiveInvocationContext<Method> invocationContext, ExtensionContext extensionContext) throws Throwable {
+        Context.currentWith(new ContextEmpty(), () -> {
+            invocation.proceed();
+        });
     }
 }

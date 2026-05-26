@@ -31,7 +31,7 @@ public class WebStopPlugin implements Plugin {
 
         //开启WEB关闭
         if (enable) {
-            context.app().get(path, (c) -> {
+            context.app().router().get(path, (c) -> {
                 int delay2 = c.paramAsInt("delay", delay);
 
                 if (delay2 < 0) {

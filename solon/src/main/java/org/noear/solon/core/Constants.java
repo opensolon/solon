@@ -26,12 +26,6 @@ import org.noear.solon.core.util.MimeType;
 public interface Constants {
     String PARM_UNDEFINED_VALUE = "\n\t\t\n\t\t\n\ue000\ue001\ue002\n\t\t\t\t\n";
 
-    /**
-     * @deprecated 3.1 {@link org.noear.solon.core.util.MimeType}
-     */
-    @Deprecated
-    String HEADER_CONTENT_TYPE_DEF = MimeType.TEXT_PLAIN_UTF8_VALUE;
-
     //@since: 2.5
     String ATTR_CONTROLLER = "ATTR_CONTROLLER";
     String ATTR_MAIN_HANDLER = "ATTR_MAIN_HANDLER";
@@ -43,14 +37,6 @@ public interface Constants {
     String ATTR_RENDER = "@render";
 
     String AT_JSON = "@json";
-
-    /**
-     * @deprecated 3.6 {@link #AT_JSON}
-     * */
-    @Deprecated
-    String RENDER_JSON = "@json";
-    @Deprecated
-    String RENDER_TYPE_JSON = "@type_json";
 
     //@since: 3.0
     int FT_IDX_CONTEXT_PATH = -990;

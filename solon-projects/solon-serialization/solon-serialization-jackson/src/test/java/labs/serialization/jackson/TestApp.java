@@ -21,7 +21,7 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
-import org.noear.solon.serialization.jackson.JacksonRenderFactory;
+import org.noear.solon.serialization.jackson.JacksonStringSerializer;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -38,20 +38,20 @@ import java.util.Map;
 public class TestApp {
     public static void main(String[] args) {
         Solon.start(TestApp.class, args, app -> {
-            app.onEvent(JacksonRenderFactory.class, factory->initMvcJsonCustom(factory));
+            app.onEvent(JacksonStringSerializer.class, factory->initMvcJsonCustom(factory));
         });
     }
 
     /**
      * 初始化json定制（需要在插件运行前定制）
      */
-    private static void initMvcJsonCustom(JacksonRenderFactory factory) {
+    private static void initMvcJsonCustom(JacksonStringSerializer factory) {
         //通过转换器，做简单类型的定制
-        factory.addConvertor(Date.class, s -> s.getTime());
+        factory.addEncoder(Date.class, s -> s.getTime());
 
-        factory.addConvertor(LocalDate.class, s -> s.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        factory.addEncoder(LocalDate.class, s -> s.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 
-        factory.addConvertor(LocalDateTime.class, s -> s.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+        factory.addEncoder(LocalDateTime.class, s -> s.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
 
         factory.addEncoder(Date.class, new JsonSerializer<Date>() {
                     @Override

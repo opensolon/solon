@@ -19,10 +19,8 @@ import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.serialization.EntityBytesSerializer;
 import org.noear.solon.serialization.SerializerNames;
-import org.noear.solon.serialization.kryo.KryoActionExecutor;
 import org.noear.solon.serialization.kryo.KryoBytesSerializer;
 import org.noear.solon.serialization.kryo.KryoEntityConverter;
-import org.noear.solon.serialization.kryo.KryoRender;
 
 /**
  * @author noear
@@ -44,17 +42,5 @@ public class SerializationKryoPlugin implements Plugin {
 
         //会自动转为 executor, renderer
         context.app().chains().addEntityConverter(entityConverter);
-
-
-        //===> 以下将弃用 v3.6
-
-        //::render
-        KryoRender render = new KryoRender(entityConverter);
-        context.wrapAndPut(KryoRender.class, render); //用于扩展
-
-        //::actionExecutor
-        //支持 kryo 内容类型执行
-        KryoActionExecutor executor = new KryoActionExecutor(entityConverter);
-        context.wrapAndPut(KryoActionExecutor.class, executor); //用于扩展
     }
 }

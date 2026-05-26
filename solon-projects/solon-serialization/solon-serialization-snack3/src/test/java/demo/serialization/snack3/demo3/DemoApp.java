@@ -16,7 +16,7 @@
 package demo.serialization.snack3.demo3;
 
 import org.noear.solon.Solon;
-import org.noear.solon.serialization.snack3.SnackActionExecutor;
+import org.noear.solon.serialization.snack3.SnackEntityConverter;
 
 /**
  * @author noear 2022/10/31 created
@@ -24,8 +24,8 @@ import org.noear.solon.serialization.snack3.SnackActionExecutor;
 public class DemoApp {
     public static void main(String[] args) {
         Solon.start(demo.serialization.snack3.demo2.DemoApp.class, args, app -> {
-            app.context().getBeanAsync(SnackActionExecutor.class, executor -> {
-                executor.config().addDecoder(String.class, (node, type) -> {
+            app.context().getBeanAsync(SnackEntityConverter.class, executor -> {
+                executor.getSerializer().getDeserializeConfig().getOptions().addDecoder(String.class, (node, type) -> {
                     return node.getString();
                 });
             });

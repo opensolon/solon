@@ -35,17 +35,10 @@ import java.lang.reflect.*;
 public class ParamWrap {
     private final MethodWrap mWrap;
     private final ParamEggg pe;
-    private final ParameterizedType pType;
 
     public ParamWrap(MethodWrap mWrap, ParamEggg pe) {
         this.mWrap = mWrap;
         this.pe = pe;
-
-        if (pe.getTypeEggg().isParameterizedType()) {
-            pType = pe.getTypeEggg().getParameterizedType();
-        } else {
-            pType = null;
-        }
     }
 
     public MethodWrap getMethodWrap() {
@@ -105,24 +98,11 @@ public class ParamWrap {
         return pe.getTypeEggg();
     }
 
-    /**
-     * 获取类型
-     *
-     * @deprecated 3.7 {@link #getTypeEggg()}
-     */
-    @Deprecated
     public Class<?> getType() {
         return pe.getTypeEggg().getType();
     }
 
-    /**
-     * 获取泛型
-     *
-     * @deprecated 3.7 {@link #getTypeEggg()}
-     */
-    @Deprecated
-    @Nullable
-    public ParameterizedType getGenericType() {
-        return pType;
+    public Type getGenericType() {
+        return pe.getTypeEggg().getGenericType();
     }
 }

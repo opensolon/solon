@@ -61,7 +61,7 @@ public class LoggingPlugin implements Plugin {
         //init
         LogOptions.getLoggerLevelInit();
 
-        Solon.app().filter(Integer.MIN_VALUE,new MdcClearFilter());
+        Solon.app().router().filter(Integer.MIN_VALUE,new MdcClearFilter());
     }
 
     @Override

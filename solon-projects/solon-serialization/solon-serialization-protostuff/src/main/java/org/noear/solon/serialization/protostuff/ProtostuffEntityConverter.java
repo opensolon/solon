@@ -75,7 +75,7 @@ public class ProtostuffEntityConverter extends AbstractBytesEntityConverter<Prot
         }
 
         if (p.spec().isRequiredBody()) {
-            return getSerializer().deserializeFromBody(ctx, p.getType());
+            return getSerializer().deserializeFromBody(ctx, p.getTypeEggg().getType());
         } else {
             return null;
         }

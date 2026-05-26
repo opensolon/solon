@@ -143,16 +143,6 @@ public class PluginPackage {
     /**
      * 预停止插件包
      *
-     * @deprecated 3.7 {{@link #preStop()}}
-     */
-    @Deprecated
-    public void prestop() {
-        preStop();
-    }
-
-    /**
-     * 预停止插件包
-     *
      * @since 3.7
      */
     public void preStop() {

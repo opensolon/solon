@@ -96,11 +96,7 @@ public class SnackEntityConverter extends AbstractStringEntityConverter<SnackStr
                 //
                 if (tmp.contains(p.spec().getName())) {
                     //支持泛型的转换
-                    if (p.spec().isGenericType()) {
-                        return tmp.get(p.spec().getName()).toObject(p.getGenericType());
-                    } else {
-                        return tmp.get(p.spec().getName()).toObject(pt);
-                    }
+                    return tmp.get(p.spec().getName()).toObject(p.getGenericType());
                 }
             }
 
@@ -118,11 +114,7 @@ public class SnackEntityConverter extends AbstractStringEntityConverter<SnackStr
                 }
 
                 //支持泛型的转换 如：Map<T>
-                if (p.spec().isGenericType()) {
-                    return tmp.toObject(p.getGenericType());
-                } else {
-                    return tmp.toObject(pt);
-                }
+                return tmp.toObject(p.getGenericType());
             }
         }
 
@@ -133,13 +125,7 @@ public class SnackEntityConverter extends AbstractStringEntityConverter<SnackStr
             }
 
             //集合类型转换
-            if (p.spec().isGenericType()) {
-                //转换带泛型的集合
-                return tmp.toObject(p.getGenericType());
-            } else {
-                //不仅可以转换为List 还可以转换成Set
-                return tmp.toObject(pt);
-            }
+            return tmp.toObject(p.getGenericType());
         }
 
         return tmp.val().getRaw();

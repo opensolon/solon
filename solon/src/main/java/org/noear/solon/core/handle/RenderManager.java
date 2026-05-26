@@ -53,17 +53,6 @@ public class RenderManager implements Render {
         return _mapping.get(name);
     }
 
-    /**
-     * 登记渲染器
-     *
-     * @param renderFactory 渲染器工厂
-     */
-    public void register(RenderFactory renderFactory) {
-        Render render = renderFactory.create();
-        for (String mapping : renderFactory.mappings()) {
-            register(mapping, render);
-        }
-    }
 
     public void register(Render render) {
         String[] mappings = render.mappings();
@@ -130,81 +119,6 @@ public class RenderManager implements Render {
         _mapping.put(mapping, render);
 
         log.debug("Render mapping: " + mapping + "=" + clzName);
-    }
-
-    /**
-     * 渲染并返回
-     *
-     * @deprecated 3.6 {@link org.noear.solon.core.serialize.Serializer#serialize(Object)}
-     */
-    @Deprecated
-    public String renderAndReturn(ModelAndView modelAndView) {
-        try {
-            return renderAndReturn(modelAndView, Context.current());
-        } catch (Throwable ex) {
-            ex = Utils.throwableUnwrap(ex);
-            if (ex instanceof RuntimeException) {
-                throw (RuntimeException) ex;
-            } else {
-                throw new RuntimeException(ex);
-            }
-        }
-    }
-
-    /**
-     * 渲染并返回
-     *
-     * @deprecated 3.6 {@link org.noear.solon.core.serialize.Serializer#serialize(Object)}
-     */
-    @Deprecated
-    @Override
-    public String renderAndReturn(Object data, Context ctx) throws Throwable {
-        //如果是实体
-        if (data instanceof Entity) {
-            data = ((Entity) data).body();
-
-            if (data instanceof String) {
-                return (String) data;
-            }
-        }
-
-        if(data instanceof Stringable) {
-            return data.toString();
-        }
-
-        if (data instanceof ModelAndView) {
-            ModelAndView mv = (ModelAndView) data;
-
-            if (Utils.isNotEmpty(mv.view())) {
-                return getViewRender(ctx, mv).renderAndReturn(mv, ctx);
-            } else {
-                data = mv.model();
-            }
-        }
-
-        Render render = resolveRander(ctx);
-
-        if (render != null) {
-            //明确有渲染器
-            return render.renderAndReturn(data, ctx);
-        } else {
-            //如果未明确？
-            if (ctx.remoting() == false && data instanceof String) {
-                return ((String) data);
-            } else {
-                if (render == null) {
-                    render = _mapping.get(Constants.AT_JSON);
-                }
-
-                if (render != null) {
-                    return render.renderAndReturn(data, ctx);
-                } else {
-                    //最后只有 def
-                    //
-                    return _def.renderAndReturn(data, ctx);
-                }
-            }
-        }
     }
 
 

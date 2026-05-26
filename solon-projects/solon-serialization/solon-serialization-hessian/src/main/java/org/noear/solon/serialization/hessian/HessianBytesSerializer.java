@@ -52,14 +52,6 @@ public class HessianBytesSerializer implements EntityBytesSerializer {
     }
 
     /**
-     * @deprecated 3.6 {@link #getDefault()}
-     * */
-    @Deprecated
-    public static HessianBytesSerializer getInstance() {
-        return _default;
-    }
-
-    /**
      * 内容类型
      */
     @Override

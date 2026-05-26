@@ -18,9 +18,7 @@ package org.noear.solon.serialization.properties.integration;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.serialization.SerializerNames;
-import org.noear.solon.serialization.properties.PropertiesActionExecutor;
 import org.noear.solon.serialization.properties.PropertiesEntityConverter;
-import org.noear.solon.serialization.properties.PropertiesRenderFactory;
 import org.noear.solon.serialization.properties.PropertiesStringSerializer;
 
 public class SerializationPropertiesPlugin implements Plugin {
@@ -37,19 +35,5 @@ public class SerializationPropertiesPlugin implements Plugin {
 
         //会自动转为 executor, renderer
         context.app().chains().addEntityConverter(entityConverter);
-
-
-        //===> 以下将弃用 v3.6
-
-        //::renderFactory
-        //绑定属性
-        PropertiesRenderFactory renderFactory = new PropertiesRenderFactory(entityConverter);
-        context.wrapAndPut(PropertiesRenderFactory.class, renderFactory); //用于扩展
-
-        //::actionExecutor
-        //支持 props 内容类型执行
-        PropertiesActionExecutor actionExecutor = new PropertiesActionExecutor(entityConverter);
-        context.wrapAndPut(PropertiesActionExecutor.class, actionExecutor); //用于扩展
-
     }
 }

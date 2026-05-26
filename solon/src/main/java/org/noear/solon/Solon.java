@@ -17,7 +17,6 @@ package org.noear.solon;
 
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.AppClassLoader;
-import org.noear.solon.core.NvMap;
 import org.noear.solon.core.util.MultiMap;
 import org.noear.solon.logging.LogIncubator;
 import org.noear.solon.core.runtime.NativeDetector;
@@ -164,23 +163,6 @@ public class Solon {
     public static SolonApp start(Class<?> source, String[] args, ConsumerEx<SolonApp> initialize) {
         //1.初始化应用，加载配置
         MultiMap<String> argx = MultiMap.from(args);
-        return start(source, argx, initialize);
-    }
-
-    /**
-     * 启动应用（全局只启动一个）
-     *
-     * @param source     主应用包（用于定制Bean所在包）
-     * @param args       启动参数
-     * @param initialize 实始化函数
-     * @deprecated 3.6
-     */
-    @Deprecated
-    public static SolonApp start(Class<?> source, NvMap args, ConsumerEx<SolonApp> initialize) {
-        MultiMap<String> argx = new MultiMap<String>().then(e -> {
-            e.putAll(args);
-        });
-
         return start(source, argx, initialize);
     }
 

@@ -57,16 +57,6 @@ public class Utils {
     }
 
     /**
-     * 异步执行
-     *
-     * @deprecated 3.3 {@link RunUtil#async(Runnable)}
-     */
-    @Deprecated
-    public static Future<?> async(Runnable task) {
-        return RunUtil.async(task);
-    }
-
-    /**
      * Ping 一个地址
      *
      * @param address （例：192.168.1.1 或 192.168.1.1:8080）

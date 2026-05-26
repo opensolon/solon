@@ -19,10 +19,8 @@ import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.serialization.EntityBytesSerializer;
 import org.noear.solon.serialization.SerializerNames;
-import org.noear.solon.serialization.protostuff.ProtostuffActionExecutor;
 import org.noear.solon.serialization.protostuff.ProtostuffBytesSerializer;
 import org.noear.solon.serialization.protostuff.ProtostuffEntityConverter;
-import org.noear.solon.serialization.protostuff.ProtostuffRender;
 
 /**
  * @author noear
@@ -43,16 +41,5 @@ public class SerializationProtostuffPlugin implements Plugin {
 
         //会自动转为 executor, renderer
         context.app().chains().addEntityConverter(entityConverter);
-
-
-        //===> 以下将弃用 v3.6
-
-        //::render
-        ProtostuffRender render = new ProtostuffRender(entityConverter);
-        context.wrapAndPut(ProtostuffRender.class, render); //用于扩展
-
-        //支持 protostuff 内容类型执行
-        ProtostuffActionExecutor executor = new ProtostuffActionExecutor(entityConverter);
-        context.wrapAndPut(ProtostuffActionExecutor.class, executor); //用于扩展
     }
 }

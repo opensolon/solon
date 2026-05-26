@@ -22,7 +22,7 @@ import org.noear.solon.core.InjectGather;
 import org.noear.solon.core.VarHolder;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.function.Supplier;
 
 /**
@@ -35,7 +35,6 @@ import java.util.function.Supplier;
  * */
 public class VarHolderOfField implements VarHolder {
     private final FieldEggg fe;
-    private final ParameterizedType pType;
 
     private final Object obj;
     private final AppContext ctx;
@@ -53,12 +52,6 @@ public class VarHolderOfField implements VarHolder {
         this.obj = obj;
 
         this.gather = gather;
-
-        if (fe.getTypeEggg().isParameterizedType()) {
-            pType = fe.getTypeEggg().getParameterizedType();
-        } else {
-            pType = null;
-        }
     }
 
     /**
@@ -82,27 +75,10 @@ public class VarHolderOfField implements VarHolder {
         return fe.getTypeEggg();
     }
 
-    /**
-     * 获取字段类型
-     */
-    @Override
-    public Class<?> getType() {
-        return fe.getTypeEggg().getType();
-    }
-
-    /**
-     * 泛型（可能为null）
-     */
-    @Override
-    public ParameterizedType getGenericType() {
-        return pType;
-    }
-
-
     @Override
     public Class<?> getDependencyType() {
         if (dependencyType == null) {
-            return getType();
+            return getTypeEggg().getType();
         } else {
             return dependencyType;
         }
@@ -157,7 +133,7 @@ public class VarHolderOfField implements VarHolder {
         if (val != null) {
             fe.setValue(obj, val, false);
 
-            ctx.aot().registerJdkProxyType(getType(), val);
+            ctx.aot().registerJdkProxyType(getTypeEggg().getType(), val);
         }
 
         this.val = val;

@@ -19,8 +19,8 @@ import com.alibaba.fastjson.parser.DefaultJSONParser;
 import com.alibaba.fastjson.parser.deserializer.ObjectDeserializer;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.noear.solon.Solon;
-import org.noear.solon.serialization.fastjson.FastjsonActionExecutor;
-import org.noear.solon.serialization.fastjson.FastjsonRenderFactory;
+import org.noear.solon.serialization.fastjson.FastjsonEntityConverter;
+import org.noear.solon.serialization.fastjson.FastjsonStringSerializer;
 
 import java.lang.reflect.Type;
 
@@ -30,11 +30,11 @@ import java.lang.reflect.Type;
 public class DemoApp {
     public static void main(String[] args) {
         Solon.start(demo.serialization.fastjson.demo2.DemoApp.class, args, app -> {
-            app.onEvent(FastjsonRenderFactory.class, e->{
-                e.removeFeatures(SerializerFeature.BrowserCompatible);
+            app.onEvent(FastjsonStringSerializer.class, e->{
+                e.getSerializeConfig().removeFeatures(SerializerFeature.BrowserCompatible);
             });
 
-            app.onEvent(FastjsonActionExecutor.class, executor -> {
+            app.onEvent(FastjsonEntityConverter.class, executor -> {
                 executor.getSerializer().getDeserializeConfig().getConfig().putDeserializer(String.class, new ObjectDeserializer() {
                     @Override
                     public <T> T deserialze(DefaultJSONParser defaultJSONParser, Type type, Object o) {

@@ -58,7 +58,6 @@ public final class SolonProps extends Props {
     private boolean isFilesMode;//是否为文件模式
     private boolean isWhiteMode;//是否为名单模式（白名单模式）
     private boolean isSetupMode;//是否为安装模式
-    private boolean isAloneMode;//是否为独立模式（即独立运行模式）@deprecated
 
     private boolean enabledVirtualThreads = false; //solon.threads.virtual.enable: true
 
@@ -185,8 +184,7 @@ public final class SolonProps extends Props {
         isWhiteMode = "1".equals(getArg("white")); //安全模式（即白名单模式）//todo:默认不再为1, update by 2021.11.49
         //是否为漂移模式
         isDriftMode = "1".equals(getArg("drift")); //漂移模式（即ip会变,如k8s部署）
-        //是否为独立模式
-        isAloneMode = "1".equals(getArg("alone")); //独立模式
+
 
         //标识debug模式
         if (isDebugMode()) {
@@ -407,31 +405,6 @@ public final class SolonProps extends Props {
      */
     public List<PluginEntity> plugins() {
         return plugins;
-    }
-
-
-    /**
-     * 获取插件列表
-     *
-     * @deprecated 3.1 {@link #plugins}
-     */
-    @Deprecated
-    public List<PluginEntity> plugs() {
-        return plugins();
-    }
-
-    /**
-     * 对插件列表排序
-     *
-     * @deprecated 3.1
-     */
-    @Deprecated
-    public void plugsSort() {
-        if (plugins.size() > 0) {
-            //进行优先级顺排（数值要倒排）
-            //
-            Collections.sort(plugins);
-        }
     }
 
 
@@ -680,26 +653,6 @@ public final class SolonProps extends Props {
      */
     public void isDriftMode(boolean value) {
         this.isDriftMode = value;
-    }
-
-    /**
-     * 是否为独立模式
-     *
-     * @deprecated 3.0
-     */
-    @Deprecated
-    public boolean isAloneMode() {
-        return isAloneMode;
-    }
-
-    /**
-     * 设置独立模式
-     *
-     * @deprecated
-     */
-    @Deprecated
-    public void isAloneMode(boolean value) {
-        this.isAloneMode = value;
     }
 
     /**

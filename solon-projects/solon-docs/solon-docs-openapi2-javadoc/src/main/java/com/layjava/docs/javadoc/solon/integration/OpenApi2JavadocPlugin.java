@@ -30,7 +30,7 @@ public class OpenApi2JavadocPlugin implements Plugin {
     @Override
     public void start(AppContext context) throws Throwable {
         // 注册路由
-        Solon.app().add("/", OpenApiController.class);
+        Solon.app().router().add("/", OpenApiController.class);
     }
 
 }

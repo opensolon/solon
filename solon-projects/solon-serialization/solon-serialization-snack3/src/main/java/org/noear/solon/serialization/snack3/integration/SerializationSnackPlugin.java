@@ -39,25 +39,5 @@ public class SerializationSnackPlugin implements Plugin {
 
         //会自动转为 executor, renderer
         context.app().chains().addEntityConverter(entityConverter);
-
-
-        //===> 以下将弃用 v3.6
-
-        //::renderFactory
-        //绑定属性
-        SnackRenderFactory renderFactory = new SnackRenderFactory(entityConverter);
-        context.wrapAndPut(SnackRenderFactory.class, renderFactory); //用于扩展
-
-        //::actionExecutor
-        //支持 json 内容类型执行
-        SnackActionExecutor actionExecutor = new SnackActionExecutor(entityConverter);
-        context.wrapAndPut(SnackActionExecutor.class, actionExecutor); //用于扩展
-
-
-        //::renderTypedFactory
-        SnackRenderTypedFactory renderTypedFactory = new SnackRenderTypedFactory();
-        context.wrapAndPut(SnackRenderTypedFactory.class, renderTypedFactory); //用于扩展
-        context.app().renders().register(renderTypedFactory);
-        context.app().serializers().register(SerializerNames.AT_JSON_TYPED, renderTypedFactory.getSerializer());
     }
 }

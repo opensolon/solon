@@ -17,7 +17,7 @@ public class RouterTableTest {
         router.add("/**/$*", MethodType.GET, 0, null, "a");
         router.add("/**/@*", MethodType.GET, 0, null, "b");
 
-        assert "a".equals(router.matchOne("/log/list/$你好", MethodType.GET));
-        assert "b".equals(router.matchOne("/log/list/@你好", MethodType.GET));
+        assert "a".equals(router.matchOne("/log/list/$你好", null, MethodType.GET));
+        assert "b".equals(router.matchOne("/log/list/@你好", null, MethodType.GET));
     }
 }

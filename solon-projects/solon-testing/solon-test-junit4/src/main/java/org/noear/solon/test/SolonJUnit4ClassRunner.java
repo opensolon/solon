@@ -16,11 +16,14 @@
 package org.noear.solon.test;
 
 import org.junit.runners.BlockJUnit4ClassRunner;
+import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.Statement;
 import org.noear.solon.SimpleSolonApp;
 import org.noear.solon.Solon;
 import org.noear.solon.core.AppContext;
+import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.handle.ContextEmpty;
 
 public class SolonJUnit4ClassRunner extends BlockJUnit4ClassRunner {
     private AppContext appContext;
@@ -70,5 +73,19 @@ public class SolonJUnit4ClassRunner extends BlockJUnit4ClassRunner {
                 }
             }
         }
+    }
+
+    @Override
+    protected Statement methodInvoker(FrameworkMethod method, Object test) {
+        Statement original = super.methodInvoker(method, test);
+
+        return new Statement() {
+            @Override
+            public void evaluate() throws Throwable {
+                Context.currentWith(new ContextEmpty(), () -> {
+                    original.evaluate();
+                });
+            }
+        };
     }
 }

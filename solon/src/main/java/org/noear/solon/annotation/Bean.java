@@ -61,14 +61,6 @@ public @interface Bean {
      */
     int index() default 0;
 
-    /**
-     * 优先（产生之前的运行优先级；越大越优）
-     *
-     * @deprecated 3.5 {@link Condition#priority()}
-     */
-    @Deprecated
-    int priority() default 0;
-
     /// ///////////////
 
     /**
@@ -85,14 +77,6 @@ public @interface Bean {
      * 注销方法
      */
     String destroyMethod() default "";
-
-    /**
-     * 要注入的
-     *
-     * @deprecated 3.6 {@link #autoInject()}
-     */
-    @Deprecated
-    boolean injected() default false;
 
     /**
      * 自动注入

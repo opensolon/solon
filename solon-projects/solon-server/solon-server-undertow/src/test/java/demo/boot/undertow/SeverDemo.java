@@ -31,7 +31,7 @@ public class SeverDemo {
                 });
             }
 
-            app.get("/", ctx -> {
+            app.router().get("/", ctx -> {
                 ctx.output("Hello World");
             });
         });

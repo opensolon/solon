@@ -14,7 +14,7 @@ import org.noear.solon.core.handle.Context;
 public class App {
     public static void main(String[] args) throws Exception {
         Solon.start(App.class, args, app -> {
-            app.filter((ctx, chain) -> {
+            app.router().filter((ctx, chain) -> {
                 try {
                     chain.doFilter(ctx);
                 } catch (Throwable ex) {

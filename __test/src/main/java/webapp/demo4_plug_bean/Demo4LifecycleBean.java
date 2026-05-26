@@ -23,6 +23,6 @@ import org.noear.solon.core.bean.LifecycleBean;
 public class Demo4LifecycleBean implements LifecycleBean {
     @Override
     public void start() throws Throwable {
-        Solon.app().get("/demo4/*", c -> c.output("是插件生出了我..."));
+        Solon.app().router().get("/demo4/*", c -> c.output("是插件生出了我..."));
     }
 }

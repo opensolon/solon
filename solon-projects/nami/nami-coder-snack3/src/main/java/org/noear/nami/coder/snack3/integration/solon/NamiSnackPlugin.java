@@ -18,7 +18,6 @@ package org.noear.nami.coder.snack3.integration.solon;
 import org.noear.nami.NamiManager;
 import org.noear.nami.coder.snack3.SnackDecoder;
 import org.noear.nami.coder.snack3.SnackEncoder;
-import org.noear.nami.coder.snack3.SnackTypeEncoder;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 
@@ -31,6 +30,5 @@ public class NamiSnackPlugin implements Plugin {
     public void start(AppContext context) {
         NamiManager.reg(SnackDecoder.instance);
         NamiManager.reg(SnackEncoder.instance);
-        NamiManager.reg(SnackTypeEncoder.instance);
     }
 }

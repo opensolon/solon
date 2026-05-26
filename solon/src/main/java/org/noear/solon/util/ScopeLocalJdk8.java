@@ -42,6 +42,17 @@ public class ScopeLocalJdk8<T> implements ScopeLocal<T> {
     }
 
     @Override
+    public T getOr(Supplier<T> supplier) {
+        T rst = ref.get();
+
+        if (rst == null) {
+            return supplier.get();
+        } else {
+            return rst;
+        }
+    }
+
+    @Override
     public <X extends Throwable> void with(T value, RunnableTx<X> runnable) throws X {
         T bak = ref.get();
         try {
@@ -99,19 +110,5 @@ public class ScopeLocalJdk8<T> implements ScopeLocal<T> {
                 ref.set(bak);
             }
         }
-    }
-
-    /// ///////////////////////////////////////
-
-    @Override
-    public void set(T value) {
-        log.warn("ScopeLocal.set will be removed, please use ScopeLocal.with. applyFor: {}", applyFor.getName());
-        ref.set(value);
-    }
-
-    @Override
-    public void remove() {
-        log.warn("ScopeLocal.remove will be removed, please use ScopeLocal.with. applyFor: {}", applyFor.getName());
-        ref.remove();
     }
 }

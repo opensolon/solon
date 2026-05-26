@@ -16,7 +16,7 @@
 package demo.serialization.jackson.demo2;
 
 import org.noear.solon.Solon;
-import org.noear.solon.serialization.jackson.JacksonRenderFactory;
+import org.noear.solon.serialization.jackson.JacksonStringSerializer;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -28,20 +28,20 @@ import java.util.Date;
 public class DemoApp {
     public static void main(String[] args) {
         Solon.start(DemoApp.class, args, app -> {
-            app.onEvent(JacksonRenderFactory.class, e -> {
+            app.onEvent(JacksonStringSerializer.class, e -> {
                 initMvcJsonCustom(e);
             });
         });
     }
 
     //初始化json定制（需要在插件运行前定制）
-    private static void initMvcJsonCustom(JacksonRenderFactory factory) {
+    private static void initMvcJsonCustom(JacksonStringSerializer factory) {
         //示例1：通过转换器，做简单类型的定制
-        factory.addConvertor(Date.class, s -> s.getTime());
+        factory.addEncoder(Date.class, s -> s.getTime());
 
-        factory.addConvertor(LocalDate.class, s -> s.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        factory.addEncoder(LocalDate.class, s -> s.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 
-        factory.addConvertor(Long.class, s -> String.valueOf(s));
+        factory.addEncoder(Long.class, s -> String.valueOf(s));
 
         //示例2：通过编码器，做复杂类型的原生定制（基于框架原生接口）
         //factory.addEncoder(Date.class, (ser, obj, o1, type, i) -> {

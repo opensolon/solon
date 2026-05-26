@@ -19,10 +19,8 @@ import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.serialization.EntityBytesSerializer;
 import org.noear.solon.serialization.SerializerNames;
-import org.noear.solon.serialization.fury.FuryActionExecutor;
 import org.noear.solon.serialization.fury.FuryBytesSerializer;
 import org.noear.solon.serialization.fury.FuryEntityConverter;
-import org.noear.solon.serialization.fury.FuryRender;
 
 public class SerializationFuryPlugin implements Plugin {
 
@@ -40,17 +38,5 @@ public class SerializationFuryPlugin implements Plugin {
 
         //会自动转为 executor, renderer
         context.app().chains().addEntityConverter(entityConverter);
-
-
-        //===> 以下将弃用 v3.6
-
-        //::render
-        FuryRender render = new FuryRender(entityConverter);
-        context.wrapAndPut(FuryRender.class, render); //用于扩展
-
-        //::actionExecutor
-        //支持 fury 内容类型执行
-        FuryActionExecutor executor = new FuryActionExecutor(entityConverter);
-        context.wrapAndPut(FuryActionExecutor.class, executor); //用于扩展
     }
 }

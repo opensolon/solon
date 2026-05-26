@@ -185,13 +185,6 @@ public class MethodDesc {
 
             parameters.add(p1w);
 
-            if (p1w.isBody()) {
-                NamiBody namiBodyAnno = p1.getAnnotation(NamiBody.class);
-                if (namiBodyAnno != null && namiBodyAnno.contentType().length() > 0) {
-                    headers.putIfAbsent(ContentTypes.HEADER_CONTENT_TYPE, namiBodyAnno.contentType());
-                }
-            }
-
             if (File.class.isAssignableFrom(p1.getType()) || UploadedFile.class.isAssignableFrom(p1.getType())) {
                 headers.put(ContentTypes.HEADER_CONTENT_TYPE, ContentTypes.FORM_DATA_VALUE);
             }

@@ -124,15 +124,6 @@ public class PluginEntity implements Comparable<PluginEntity> {
         }
     }
 
-    /**
-     * 预停止
-     *
-     * @deprecated 3.7 {@link #preStop()}
-     */
-    @Deprecated
-    public void prestop() {
-        preStop();
-    }
 
     /**
      * 预停止

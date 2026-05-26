@@ -34,7 +34,7 @@ public class ServerDemo {
                 app.context().lifecycle(new ServerImpl());
             }
 
-            app.get("/get", c -> {
+            app.router().get("/get", c -> {
                 c.output("htllo");
             });
         });

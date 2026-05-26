@@ -21,8 +21,8 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import org.noear.solon.annotation.Managed;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
-import org.noear.solon.serialization.jackson.xml.JacksonXmlActionExecutor;
-import org.noear.solon.serialization.jackson.xml.JacksonXmlRenderFactory;
+import org.noear.solon.serialization.jackson.xml.JacksonXmlEntityConverter;
+import org.noear.solon.serialization.jackson.xml.JacksonXmlStringSerializer;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -41,19 +41,17 @@ public class Config {
      *   <LinkedHashMap><time1>2024-05-25 21:57</time1><time2>2024-05-25</time2><time3>1716645462333</time3></LinkedHashMap>
      *
      * </pre>
-     * @param factory
-     * @param executor
      */
     @Managed
-    public void jsonInit(@Inject JacksonXmlRenderFactory factory, @Inject JacksonXmlActionExecutor executor){
+    public void jsonInit(@Inject JacksonXmlStringSerializer serializer){
         //通过转换器，做简单类型的定制
-        factory.addConvertor(Date.class, s -> s.getTime());
+        serializer.addEncoder(Date.class, s -> s.getTime());
 
-        factory.addConvertor(LocalDate.class, s -> s.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        serializer.addEncoder(LocalDate.class, s -> s.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 
-        factory.addConvertor(LocalDateTime.class, s -> s.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+        serializer.addEncoder(LocalDateTime.class, s -> s.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
 
-        factory.addEncoder(Date.class, new JsonSerializer<Date>() {
+        serializer.addEncoder(Date.class, new JsonSerializer<Date>() {
             @Override
             public void serialize(Date date, JsonGenerator out, SerializerProvider sp) throws IOException {
                 out.writeNumber(date.getTime());

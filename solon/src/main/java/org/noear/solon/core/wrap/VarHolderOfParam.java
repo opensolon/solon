@@ -24,7 +24,7 @@ import org.noear.solon.core.VarHolder;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Executable;
 import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.function.Supplier;
 
 /**
@@ -37,7 +37,6 @@ import java.util.function.Supplier;
  * */
 public class VarHolderOfParam implements VarHolder {
     private final ParamEggg pe;
-    private final ParameterizedType pType;
 
     private final AppContext ctx;
     private Class<?> dependencyType;
@@ -53,12 +52,6 @@ public class VarHolderOfParam implements VarHolder {
         this.ctx = ctx;
         this.pe = pe;
         this.gather = gather;
-
-        if (pe.getTypeEggg().isParameterizedType()) {
-            pType = pe.getTypeEggg().getParameterizedType();
-        } else {
-            pType = null;
-        }
     }
 
     /**
@@ -82,22 +75,6 @@ public class VarHolderOfParam implements VarHolder {
         return pe.getTypeEggg();
     }
 
-    /**
-     * 类型
-     */
-    @Override
-    public Class<?> getType() {
-        return pe.getType();
-    }
-
-    /**
-     * 泛型（可能为 null）
-     */
-    @Override
-    public ParameterizedType getGenericType() {
-        return pType;
-    }
-
 
     /**
      * 获取依赖类型
@@ -105,7 +82,7 @@ public class VarHolderOfParam implements VarHolder {
     @Override
     public Class<?> getDependencyType() {
         if (dependencyType == null) {
-            return getType();
+            return pe.getTypeEggg().getType();
         } else {
             return dependencyType;
         }

@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.noear.solon.annotation.Import;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.handle.ContextEmpty;
-import org.noear.solon.serialization.jackson.JacksonRenderFactory;
+import org.noear.solon.serialization.jackson.JacksonEntityConverter;
 import org.noear.solon.test.SolonTest;
 
 import java.text.SimpleDateFormat;
@@ -29,7 +29,7 @@ public class JacksonFormatTest {
     private static final SimpleDateFormat TIME_FORMATTER = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @Inject
-    JacksonRenderFactory renderFactory;
+    JacksonEntityConverter entityConverter;
 
     @Test
     public void customDatePatternTest() throws Throwable {
@@ -38,7 +38,7 @@ public class JacksonFormatTest {
         timeModel.setDateWithoutFormat(TIME_FORMATTER.parse(FORMATTED_TIME));
 
         ContextEmpty ctx = new ContextEmpty();
-        renderFactory.create().render(timeModel, ctx);
+        entityConverter.write(timeModel, ctx);
         String jsonString = ctx.attr("output");
         System.out.println(jsonString);
 

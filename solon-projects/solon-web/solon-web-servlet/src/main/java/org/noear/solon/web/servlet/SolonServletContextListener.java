@@ -53,7 +53,7 @@ public class SolonServletContextListener implements ServletContextListener {
             //设定 contextPath
             String contextPath = sce.getServletContext().getContextPath();
             if (contextPath.length() > 1) {
-                Solon.app().filterIfAbsent(Constants.FT_IDX_CONTEXT_PATH, new ContextPathFilter(contextPath, false));
+                Solon.app().router().filterIfAbsent(Constants.FT_IDX_CONTEXT_PATH, new ContextPathFilter(contextPath, false));
             }
         });
 

@@ -267,7 +267,7 @@ public class RunnerUtils {
 
         //添加 Mock 注解支持
         context.beanInjectorAdd(Mock.class, (vh, anno) -> {
-            Object val = Mockito.mock(vh.getType(), anno.answer());
+            Object val = Mockito.mock(vh.getTypeEggg().getType(), anno.answer());
             vh.setValue(val);
         });
     }

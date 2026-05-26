@@ -38,18 +38,6 @@ public class ScanUtil {
     }
 
     /**
-     * 设置扫描器（用户层扩展）
-     *
-     * @deprecated 3.7
-     */
-    @Deprecated
-    public static void setScanner(Scanner scanner) {
-        if (scanner != null) {
-            ScanUtil.global = scanner;
-        }
-    }
-
-    /**
      * 扫描路径下的的资源（path 扫描路径）
      *
      * @param path   路径

@@ -29,7 +29,7 @@ import java.util.Map;
 public class DemoApp implements Detector {
     public static void main(String[] args) {
         Solon.start(DemoApp.class, args, app -> {
-            app.get("/", c -> c.redirect("/healthz"));
+            app.router().get("/", c -> c.redirect("/healthz"));
         });
     }
 

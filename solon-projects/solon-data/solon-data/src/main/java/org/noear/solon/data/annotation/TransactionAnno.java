@@ -28,16 +28,6 @@ import java.lang.annotation.Annotation;
  */
 public class TransactionAnno implements Transaction {
 
-    public static TransactionAnno ofTran(Tran anno) {
-        TransactionAnno anno2 = new TransactionAnno();
-        anno2.policy(anno.policy());
-        anno2.isolation(anno.isolation());
-        anno2.readOnly(anno.readOnly());
-        anno2.message(anno.message());
-        return anno2;
-    }
-
-
     /**
      * 事务传导策略
      */

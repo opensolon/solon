@@ -41,7 +41,7 @@ public class QpsDetector extends AbstractDetector {
 
         flowHelper = new FlowHelper(FlowType.Second);
 
-        Solon.app().filter((ctx, chain) -> {
+        Solon.app().router().filter((ctx, chain) -> {
             long start = System.currentTimeMillis();
 
             try {

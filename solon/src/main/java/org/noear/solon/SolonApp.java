@@ -23,8 +23,8 @@ import org.noear.solon.core.event.*;
 import org.noear.solon.core.exception.StatusException;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.route.Router;
+import org.noear.solon.core.route.RouterDefault;
 import org.noear.solon.core.route.RouterHandler;
-import org.noear.solon.core.route.RouterWrapper;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.serialize.SerializerManager;
 import org.noear.solon.core.util.ConsumerEx;
@@ -55,7 +55,7 @@ import org.slf4j.LoggerFactory;
  * @author noear
  * @since 1.0
  */
-public class SolonApp extends RouterWrapper {
+public class SolonApp {
     static final Logger log = LoggerFactory.getLogger(SolonApp.class);
 
     private final SolonProps _cfg; //属性配置
@@ -66,6 +66,10 @@ public class SolonApp extends RouterWrapper {
     private final RenderManager _renderManager; //渲染管理器
     private final HandlerPipeline _handler = new HandlerPipeline();
 
+    private final Router _router;
+    private final RouterHandler _routerHandler;
+    private final ChainManager _chainManager;
+
     private final Class<?> _source; //应用加载源
     private final URL _sourceLocation;
     private final long _startupTime;
@@ -75,19 +79,8 @@ public class SolonApp extends RouterWrapper {
     /**
      * 应用上下文
      */
-    @Override
     public AppContext context() {
         return _context;
-    }
-
-    /**
-     * 转换管理器
-     *
-     * @deprecated 3.6 {@link #converters()}
-     */
-    @Deprecated
-    public ConverterManager converterManager() { //预计 v4.0 后标为弃用
-        return converters();
     }
 
     /**
@@ -99,15 +92,6 @@ public class SolonApp extends RouterWrapper {
         return _converterManager;
     }
 
-    /**
-     * 序列化管理器
-     *
-     * @deprecated 3.6 {@link #serializers()}
-     */
-    @Deprecated
-    public SerializerManager serializerManager() { //预计 v4.0 后标为弃用
-        return serializers();
-    }
 
     /**
      * 序列化管理器
@@ -118,15 +102,6 @@ public class SolonApp extends RouterWrapper {
         return _serializerManager;
     }
 
-    /**
-     * 渲染管理器
-     *
-     * @deprecated 3.6 {@link #renders()}
-     */
-    @Deprecated
-    public RenderManager renderManager() { //预计 v4.0 后标为弃用
-        return renders();
-    }
 
     /**
      * 渲染管理器
@@ -137,15 +112,6 @@ public class SolonApp extends RouterWrapper {
         return _renderManager;
     }
 
-    /**
-     * 工厂管理器
-     *
-     * @deprecated 3.6 {@link #factories()}
-     */
-    @Deprecated
-    public FactoryManager factoryManager() { //预计 v4.0 后标为弃用
-        return FactoryManager.getGlobal();
-    }
 
     /**
      * 工厂管理器
@@ -159,38 +125,25 @@ public class SolonApp extends RouterWrapper {
     /**
      * 路由器处理器
      */
-    @Override
     public RouterHandler routerHandler() {
-        return super.routerHandler();
+        return _routerHandler;
     }
 
     /**
      * 路由器
      */
-    @Override
     public Router router() {
-        return super.router();
+        return _router;
     }
 
-    /**
-     * 处理链管理器
-     *
-     * @deprecated 3.7 {@link #chains()}
-     */
-    @Deprecated
-    @Override
-    public ChainManager chainManager() { //预计 v4.0 后标为弃用
-        return super.chains();
-    }
 
     /**
      * 处理链管理器
      *
      * @since 3.6
      */
-    @Override
     public ChainManager chains() {
-        return super.chains();
+        return _chainManager;
     }
 
     /**
@@ -233,7 +186,10 @@ public class SolonApp extends RouterWrapper {
         _enableScanning = ("0".equals(args.get("scanning")) == false); //不等于0，则启用扫描
 
         //初始化路由
-        initRouter(this);
+        _chainManager = new ChainManager(this);
+        _router = new RouterDefault(_chainManager);
+        _routerHandler = new RouterHandler(_router, _chainManager);
+
 
         _handler.next(routerHandler());
     }
@@ -405,7 +361,7 @@ public class SolonApp extends RouterWrapper {
 
         //3.1.尝试设置 context-path
         if (Utils.isNotEmpty(this.cfg().serverContextPath())) {
-            filterIfAbsent(Constants.FT_IDX_CONTEXT_PATH, new ContextPathFilter());
+            router().filterIfAbsent(Constants.FT_IDX_CONTEXT_PATH, new ContextPathFilter());
         }
 
         log.debug("AppContext start");

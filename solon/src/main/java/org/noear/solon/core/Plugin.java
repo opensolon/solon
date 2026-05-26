@@ -29,14 +29,6 @@ public interface Plugin {
      */
     void start(AppContext context) throws Throwable;
 
-    /**
-     * 预停止（在应用容器预停止前执行）
-     *
-     * @deprecated 3.7 {@link #preStop()}
-     */
-    @Deprecated
-    default void prestop() throws Throwable {
-    }
 
     /**
      * 预停止（在应用容器预停止前执行）
@@ -44,7 +36,7 @@ public interface Plugin {
      * @since 3.7
      */
     default void preStop() throws Throwable {
-        prestop(); //向下兼容
+
     }
 
 

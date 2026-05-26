@@ -25,7 +25,7 @@ import java.util.concurrent.Executor;
  * @since 2.2
  * @since 3.5
  */
-public interface HttpServerConfigure extends org.noear.solon.boot.http.HttpServerConfigure {
+public interface HttpServerConfigure {
     /**
      * 是否支持 http2
      */

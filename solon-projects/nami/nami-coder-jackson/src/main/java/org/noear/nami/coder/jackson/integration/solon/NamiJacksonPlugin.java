@@ -18,7 +18,6 @@ package org.noear.nami.coder.jackson.integration.solon;
 import org.noear.nami.NamiManager;
 import org.noear.nami.coder.jackson.JacksonDecoder;
 import org.noear.nami.coder.jackson.JacksonEncoder;
-import org.noear.nami.coder.jackson.JacksonTypeEncoder;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 
@@ -31,6 +30,5 @@ public class NamiJacksonPlugin implements Plugin {
     public void start(AppContext context) {
         NamiManager.reg(JacksonDecoder.instance);
         NamiManager.reg(JacksonEncoder.instance);
-        NamiManager.reg(JacksonTypeEncoder.instance);
     }
 }

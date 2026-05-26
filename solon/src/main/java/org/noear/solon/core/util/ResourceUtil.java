@@ -349,29 +349,6 @@ public class ResourceUtil {
     //a.**.B //算类名
 
 
-    /**
-     * 扫描类
-     *
-     * @param clzExpr 类表达式（基于 import 表达式扩展）
-     * @deprecated 3.0 {@link ClassUtil#scanClasses(String)}
-     */
-    @Deprecated
-    public static Collection<Class<?>> scanClasses(String clzExpr) {
-        return ClassUtil.scanClasses(clzExpr);
-    }
-
-    /**
-     * 扫描类
-     *
-     * @param classLoader 类加载器
-     * @param clzExpr     类名表达式（基于 import 表达式扩展）
-     * @deprecated 3.0 {@link ClassUtil#scanClasses(ClassLoader, String)}
-     */
-    @Deprecated
-    public static Collection<Class<?>> scanClasses(ClassLoader classLoader, String clzExpr) {
-        return ClassUtil.scanClasses(classLoader, clzExpr);
-    }
-
     //a.xml
     //a.*.xml
     //classpath:a/**/*.xml

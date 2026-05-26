@@ -20,6 +20,8 @@ import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.*;
+import org.noear.solon.data.cache.impl.JsonSerializer;
+import org.noear.solon.serialization.properties.PropertiesStringSerializer;
 import org.noear.solon.server.http.HttpServerConfigure;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.core.AppContext;
@@ -30,13 +32,11 @@ import org.noear.solon.scheduling.annotation.EnableAsync;
 import org.noear.solon.scheduling.annotation.EnableRetry;
 import org.noear.solon.security.web.SecurityFilter;
 import org.noear.solon.security.web.header.XContentTypeOptionsHeaderHandler;
-import org.noear.solon.serialization.properties.PropertiesActionExecutor;
 import org.noear.solon.view.freemarker.FreemarkerRender;
 import org.noear.solon.web.staticfiles.StaticMappings;
 import org.noear.solon.web.staticfiles.repository.ClassPathStaticRepository;
 import org.noear.solon.web.staticfiles.repository.ExtendStaticRepository;
 import org.noear.solon.web.staticfiles.repository.FileStaticRepository;
-import org.noear.solon.serialization.JsonRenderFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import webapp.demo2_mvc.PathPrefixController;
@@ -95,7 +95,7 @@ public class App {
 
             //x.onStatus(404, c->c.render("404了"));
 
-            x.filter(new SecurityFilter(new XContentTypeOptionsHeaderHandler()));
+            x.router().filter(new SecurityFilter(new XContentTypeOptionsHeaderHandler()));
 
             x.factories().threadLocalFactory((applyFor, inheritance0) -> {
                 if (inheritance0) {
@@ -105,11 +105,11 @@ public class App {
                 }
             });
 
-            x.context().getBeanAsync(JsonRenderFactory.class, e -> {
+            x.context().getBeanAsync(JsonSerializer.class, e -> {
                 System.out.println("JsonRenderFactory event: xxxxx: " + e.getClass().getSimpleName());
             });
 
-            x.context().getBeanAsync(PropertiesActionExecutor.class, e -> {
+            x.context().getBeanAsync(PropertiesStringSerializer.class, e -> {
                 e.allowPostForm(true);
             });
 
@@ -198,7 +198,7 @@ public class App {
 
 
         //socket server
-        app.socketd("/seb/test", (c) -> {
+        app.router().socketd("/seb/test", (c) -> {
             String msg = c.body();
             c.output("收到了...:" + msg);
         });

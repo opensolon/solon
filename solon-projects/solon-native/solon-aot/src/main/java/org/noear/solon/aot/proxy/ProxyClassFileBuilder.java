@@ -16,12 +16,14 @@
 package org.noear.solon.aot.proxy;
 
 import com.squareup.javapoet.*;
-import org.noear.solon.core.util.GenericUtil;
+import org.noear.eggg.ClassEggg;
+import org.noear.eggg.MethodEggg;
+import org.noear.eggg.ParamEggg;
+import org.noear.solon.core.util.EgggUtil;
 
 import javax.lang.model.element.Modifier;
 import java.lang.reflect.*;
 import java.util.Collection;
-import java.util.Map;
 
 /**
  * 类文件构建器
@@ -57,11 +59,12 @@ public class ProxyClassFileBuilder {
 
 
         //获取所有函数
-        Collection<Method> methodAll = MethodFinder.findMethodAll(typeElement);
+        ClassEggg classEggg = EgggUtil.getClassEggg(typeElement);
+        Collection<MethodEggg> methodAll = MethodFinder.findMethodAll(classEggg);
 
         if(methodAll.size() > 0) {
             //添加代理函数
-            addMethodAll(proxyTypeBuilder, typeElement, methodAll);
+            addMethodAll(proxyTypeBuilder, methodAll);
             //添加静态代码块
             addStaticBlock(proxyTypeBuilder, packageName, className, methodAll);
         }
@@ -111,7 +114,7 @@ public class ProxyClassFileBuilder {
     /**
      * 添加静态代码块
      */
-    private void addStaticBlock(TypeSpec.Builder proxyTypeBuilder, String packageName, String className, Collection<Method> methodAll) {
+    private void addStaticBlock(TypeSpec.Builder proxyTypeBuilder, String packageName, String className, Collection<MethodEggg> methodAll) {
         int methodIndex = 0;
 
         StringBuilder codeBuilder = new StringBuilder(150);
@@ -119,7 +122,7 @@ public class ProxyClassFileBuilder {
         codeBuilder.append("try {\n");
         codeBuilder.append("  Class<?> clazz = $T.class;\n\n");
 
-        for (Method methodElement : methodAll) {
+        for (MethodEggg methodElement : methodAll) {
             //添加函数
             if (MethodFinder.allowMethod(methodElement) == false) {
                 //静态 或 只读 或 私有；不需要重写
@@ -181,20 +184,19 @@ public class ProxyClassFileBuilder {
     /**
      * 添加所有函数
      */
-    private void addMethodAll(TypeSpec.Builder proxyTypeBuilder,Class<?> typeElement, Collection<Method> methodAll) {
+    private void addMethodAll(TypeSpec.Builder proxyTypeBuilder, Collection<MethodEggg> methodAll) {
         int methodIndex = 0;
-        Map<String,Type> typeGenericMap = GenericUtil.getGenericInfo(typeElement);
 
-        for (Method e : methodAll) {
+        for (MethodEggg e : methodAll) {
             //添加函数
-            methodIndex = addMethod(proxyTypeBuilder, typeGenericMap, e, methodIndex);
+            methodIndex = addMethod(proxyTypeBuilder, e, methodIndex);
         }
     }
 
     /**
      * 添加具本函数
      */
-    private int addMethod(TypeSpec.Builder proxyTypeBuilder, Map<String,Type> typeGenericMap, Method methodElement, int methodIndex) {
+    private int addMethod(TypeSpec.Builder proxyTypeBuilder, MethodEggg methodElement, int methodIndex) {
         if (MethodFinder.allowMethod(methodElement) == false) {
             //静态 或 只读 或 私有；不需要重写
             return methodIndex;
@@ -205,11 +207,11 @@ public class ProxyClassFileBuilder {
         proxyTypeBuilder.addField(Method.class, methodFieldName, Modifier.PRIVATE, Modifier.STATIC);
 
         //Type returnType = TypeNameUtil.getType(typeGenericMap, methodElement.getReturnType(), methodElement.getGenericReturnType());
-        TypeName returnTypeName = TypeNameUtil.getTypeName(typeGenericMap, methodElement.getReturnType(), methodElement.getGenericReturnType());
+        TypeName returnTypeName = TypeNameUtil.getTypeName(methodElement, methodElement.getReturnTypeEggg());
 
         StringBuilder codeBuilder = new StringBuilder(150);
 
-        boolean isPublic = java.lang.reflect.Modifier.isPublic(methodElement.getModifiers());
+        boolean isPublic = methodElement.isPublic();
 
         //生成方法
         MethodSpec.Builder methodBuilder = MethodSpec
@@ -219,13 +221,13 @@ public class ProxyClassFileBuilder {
                 .returns(returnTypeName);
 
         //添加可抛类型
-        for (Class<?> tt : methodElement.getExceptionTypes()) {
+        for (Class<?> tt : methodElement.getMethod().getExceptionTypes()) {
             methodBuilder.addException(TypeName.get(tt));
         }
 
         //添加函数泛型
-        for (TypeVariable te : methodElement.getTypeParameters()) {
-            TypeVariableName teName = TypeNameUtil.getTypeVariableName(typeGenericMap, te);
+        for (TypeVariable te : methodElement.getMethod().getTypeParameters()) {
+            TypeVariableName teName = TypeNameUtil.getTypeVariableName(methodElement, te);
             methodBuilder.addTypeVariable(teName);
         }
 
@@ -235,8 +237,8 @@ public class ProxyClassFileBuilder {
                 .append("new Object[]{");
 
         //添加函数参数
-        for (Parameter pe : methodElement.getParameters()) {
-            TypeName paramType = TypeNameUtil.getTypeName(typeGenericMap, pe.getType(), pe.getParameterizedType());
+        for (ParamEggg pe : methodElement.getParamEgggAry()) {
+            TypeName paramType = TypeNameUtil.getTypeName(methodElement, pe.getTypeEggg());
 
             String paramName = pe.getName();
 

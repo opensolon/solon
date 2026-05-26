@@ -129,15 +129,6 @@ public class ChainManager {
      */
     private final List<RankEntity<RouterInterceptor>> routerInterceptorNodes = new ArrayList<>();
 
-    /**
-     * 获取所有路由拦截器
-     *
-     * @deprecated 3.7 {@link #getRouterInterceptorNodes()}
-     */
-    @Deprecated
-    public Collection<RouterInterceptor> getInterceptorNodes() {
-        return getRouterInterceptorNodes();
-    }
 
     /**
      * 获取所有路由拦截器
@@ -161,16 +152,6 @@ public class ChainManager {
 
     /**
      * 添加路由拦截器
-     *
-     * @deprecated 3.7 {@link #addRouterInterceptor(RouterInterceptor, int)}
-     */
-    @Deprecated
-    public void addInterceptor(RouterInterceptor interceptor, int index) {
-        addRouterInterceptor(interceptor, index);
-    }
-
-    /**
-     * 添加路由拦截器
      */
     public void addRouterInterceptor(RouterInterceptor interceptor, int index) {
         SYNC_LOCK.lock();
@@ -186,15 +167,7 @@ public class ChainManager {
         }
     }
 
-    /**
-     * 添加路由拦截器，如果有相同类的则不加
-     *
-     * @deprecated 3.7 {@link #addRouterInterceptorIfAbsent(RouterInterceptor, int)}
-     */
-    @Deprecated
-    public void addInterceptorIfAbsent(RouterInterceptor interceptor, int index) {
-        addRouterInterceptorIfAbsent(interceptor, index);
-    }
+
 
     /**
      * 添加路由拦截器，如果有相同类的则不加
@@ -220,15 +193,6 @@ public class ChainManager {
         }
     }
 
-    /**
-     * 移除路由拦截器
-     *
-     * @deprecated 3.7 {@link #removeRouterInterceptor(Class)}
-     */
-    @Deprecated
-    public <T extends RouterInterceptor> void removeInterceptor(Class<T> clz) {
-        removeRouterInterceptor(clz);
-    }
 
     /**
      * 移除路由拦截器
@@ -497,69 +461,5 @@ public class ChainManager {
         } else {
             return entityConverterDefault;
         }
-    }
-
-
-    //=========
-
-    /**
-     * @deprecated 3.6 {@link #defEntityConverter(EntityConverter)}
-     */
-    @Deprecated
-    public void defExecuteHandler(ActionExecuteHandler e) {
-        if (e != null) {
-            defEntityConverter(new EntityConverterFromExecutor(e));
-        }
-    }
-
-    /**
-     * 添加Action执行器
-     *
-     * @deprecated 3.6 {@link #addEntityConverter(EntityConverter)}
-     */
-    @Deprecated
-    public void addExecuteHandler(ActionExecuteHandler e) {
-        if (e != null) {
-            addEntityConverter(new EntityConverterFromExecutor(e), 0);
-        }
-    }
-
-    /**
-     * 添加Action执行器
-     *
-     * @param index 顺序位
-     * @deprecated 3.6 {@link #addEntityConverter(EntityConverter, int)}
-     */
-    @Deprecated
-    public void addExecuteHandler(ActionExecuteHandler e, int index) {
-        if (e != null) {
-            addEntityConverter(new EntityConverterFromExecutor(e), index);
-        }
-    }
-
-    /**
-     * 移除Action执行器
-     *
-     * @deprecated 3.6 {@link #removeEntityConverter(Class)}
-     */
-    @Deprecated
-    public void removeExecuteHandler(Class<?> clz) {
-        removeEntityConverter(clz);
-    }
-
-    /**
-     * @deprecated 3.6 {@link #getCanReadEntityConverter(Context, int)}
-     */
-    @Deprecated
-    public ActionExecuteHandler getExecuteHandler(Context c, int paramSize) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    /**
-     * @deprecated 3.6 {@link #getEntityConverterDefault()}
-     */
-    @Deprecated
-    public ActionExecuteHandler getExecuteHandlerDefault() {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

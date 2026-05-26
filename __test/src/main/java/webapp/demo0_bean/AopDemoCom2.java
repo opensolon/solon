@@ -17,7 +17,7 @@ package webapp.demo0_bean;
 
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.Managed;
-import org.noear.solon.data.annotation.Tran;
+import org.noear.solon.data.annotation.Transaction;
 
 /**
  * @author noear 2023/10/14 created
@@ -29,7 +29,8 @@ public class AopDemoCom2 {
 
     @Inject
     AopDemoCom2 self;
-    @Tran
+
+    @Transaction
     public void test(){
         self.test1();
         self.test2();

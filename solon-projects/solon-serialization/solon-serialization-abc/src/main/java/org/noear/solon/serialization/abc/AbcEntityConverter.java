@@ -75,7 +75,7 @@ public class AbcEntityConverter extends AbstractBytesEntityConverter<AbcBytesSer
         }
 
         if (p.spec().isRequiredBody()) {
-            return serializer.deserializeFromBody(ctx, p.getType());
+            return serializer.deserializeFromBody(ctx, p.getTypeEggg().getType());
         } else {
             return null;
         }

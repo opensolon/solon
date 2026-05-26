@@ -46,14 +46,6 @@ public class KryoBytesSerializer implements EntityBytesSerializer {
         return _default;
     }
 
-    /**
-     * @deprecated 3.6 {@link #getDefault()}
-     * */
-    @Deprecated
-    public static KryoBytesSerializer getInstance() {
-        return _default;
-    }
-
 
     private final Queue<Kryo> objects = new ConcurrentLinkedQueue<>();
 

@@ -18,7 +18,6 @@ package org.noear.nami.coder.fastjson.integration.solon;
 import org.noear.nami.NamiManager;
 import org.noear.nami.coder.fastjson.FastjsonDecoder;
 import org.noear.nami.coder.fastjson.FastjsonEncoder;
-import org.noear.nami.coder.fastjson.FastjsonTypeEncoder;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 
@@ -31,6 +30,5 @@ public class NamiFastjsonPlugin implements Plugin {
     public void start(AppContext context) {
         NamiManager.reg(FastjsonDecoder.instance);
         NamiManager.reg(FastjsonEncoder.instance);
-        NamiManager.reg(FastjsonTypeEncoder.instance);
     }
 }

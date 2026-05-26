@@ -21,7 +21,7 @@ import org.noear.solon.core.AppContext;
 import org.noear.solon.core.aspect.Invocation;
 import org.noear.solon.core.aspect.MethodInterceptor;
 import org.noear.solon.core.util.RunnableEx;
-import org.noear.solon.data.annotation.TranAnno;
+import org.noear.solon.data.annotation.TransactionAnno;
 import org.noear.solon.data.tran.TranUtils;
 import org.noear.solon.test.annotation.Rollback;
 
@@ -67,16 +67,6 @@ public class RollbackInterceptor implements MethodInterceptor {
     /**
      * 回滚事务
      *
-     * @deprecated 3.5 {@link #rollbackDo(AppContext, RunnableEx)}
-     */
-    @Deprecated
-    public static void rollbackDo(RunnableEx runnable) throws Throwable {
-        rollbackDo(Solon.context(), runnable);
-    }
-
-    /**
-     * 回滚事务
-     *
      * @since 3.5
      */
     public static void rollbackDo(AppContext context, RunnableEx runnable) throws Throwable {
@@ -85,7 +75,7 @@ public class RollbackInterceptor implements MethodInterceptor {
             context.app().chains().addRouterInterceptorIfAbsent(RollbackRouterInterceptor.getInstance(), Integer.MAX_VALUE);
 
             //当前
-            TranUtils.execute(new TranAnno(), () -> {
+            TranUtils.execute(new TransactionAnno(), () -> {
                 runnable.run();
                 throw new RollbackException();
             });

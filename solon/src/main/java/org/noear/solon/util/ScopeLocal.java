@@ -18,6 +18,8 @@ package org.noear.solon.util;
 import org.noear.solon.core.FactoryManager;
 import org.noear.solon.lang.Preview;
 
+import java.util.function.Supplier;
+
 /**
  * 作用域变量
  *
@@ -49,6 +51,13 @@ public interface ScopeLocal<T> {
     T get();
 
     /**
+     * 获取
+     *
+     * @since 4.0
+     */
+    T getOr(Supplier<T> supplier);
+
+    /**
      * 使用值并运行
      */
     <X extends Throwable> void with(T value, RunnableTx<X> runnable) throws X;
@@ -67,18 +76,4 @@ public interface ScopeLocal<T> {
      * 使用值并调用
      */
     <R, X extends Throwable> R with(T value, FunctionTx<T, ? extends R, X> function) throws X;
-
-    /// ////////////////////////////
-
-    /**
-     * @deprecated 3.8.0
-     */
-    @Deprecated
-    void set(T value);
-
-    /**
-     * @deprecated 3.8.0
-     */
-    @Deprecated
-    void remove();
 }

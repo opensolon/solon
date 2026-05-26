@@ -387,31 +387,11 @@ public interface HttpUtils {
      */
     Flux<String> execAsLineStream(String method);
 
-    /**
-     * 执行请求并返回文本流
-     *
-     * @deprecated 3.1 {@link #execAsLineStream(String)}
-     */
-    @Deprecated
-    default Flux<String> execAsTextStream(String method) {
-        return execAsLineStream(method);
-    }
-
 
     /**
      * 执行请求并返回服务端推送事件流
      */
     Flux<ServerSentEvent> execAsSseStream(String method);
-
-    /**
-     * 执行请求并返回服务端推送事件流
-     *
-     * @deprecated 3.1 {@link #execAsSseStream(String)}
-     */
-    @Deprecated
-    default Flux<ServerSentEvent> execAsEventStream(String method) {
-        return execAsSseStream(method);
-    }
 
     /**
      * 执行请求并返回响应
@@ -429,87 +409,6 @@ public interface HttpUtils {
     default HttpUtils fill(Consumer<HttpUtils> consumer) {
         consumer.accept(this);
         return this;
-    }
-
-
-    /////////////
-
-    /**
-     * 主体配置
-     *
-     * @deprecated 3.0 {@link #body(String, String)}
-     */
-    @Deprecated
-    default HttpUtils bodyTxt(String txt, String contentType) {
-        log.warn("'HttpUtils.bodyTxt(.,.)' will be removed, please use 'HttpUtils.body(.,.)'!");
-        return body(txt, contentType);
-    }
-
-    /**
-     * 主体配置
-     *
-     * @deprecated 3.0 {@link #bodyOfTxt(String)}
-     */
-    @Deprecated
-    default HttpUtils bodyTxt(String txt) {
-        log.warn("'HttpUtils.bodyTxt(.)' will be removed, please use 'HttpUtils.bodyOfTxt(.)'!");
-        return bodyOfTxt(txt);
-    }
-
-    /**
-     * 主体配置
-     *
-     * @deprecated 3.0 {@link #bodyOfJson(String)}
-     */
-    @Deprecated
-    default HttpUtils bodyJson(String txt) {
-        log.warn("'HttpUtils.bodyJson(.)' will be removed, please use 'HttpUtils.bodyOfJson(.)'!");
-        return bodyOfJson(txt);
-    }
-
-
-    /**
-     * 主体配置
-     *
-     * @deprecated 3.0 {@link #body(byte[], String)}
-     */
-    @Deprecated
-    default HttpUtils bodyRaw(byte[] bytes, String contentType) {
-        log.warn("'HttpUtils.bodyRaw(.,.)' will be removed, please use 'HttpUtils.body(.,.)'!");
-        return body(bytes, contentType);
-    }
-
-    /**
-     * 主体配置
-     *
-     * @deprecated 3.0 {@link #body(byte[])}
-     */
-    @Deprecated
-    default HttpUtils bodyRaw(byte[] bytes) {
-        log.warn("'HttpUtils.bodyRaw(.)' will be removed, please use 'HttpUtils.body(.)'!");
-        return body(bytes);
-    }
-
-    /**
-     * 主体配置
-     *
-     * @deprecated 3.0 {@link #body(InputStream)}
-     */
-    @Deprecated
-    default HttpUtils bodyRaw(InputStream raw) {
-        log.warn("'HttpUtils.bodyRaw(.)' will be removed, please use 'HttpUtils.body(.)'!");
-        return body(raw);
-    }
-
-    /**
-     * 主体配置
-     *
-     * @deprecated 3.0 {@link #body(byte[], String)}
-     */
-    @Deprecated
-    default HttpUtils bodyRaw(InputStream raw, String contentType) {
-        log.warn("'HttpUtils.bodyRaw(.,.)' will be removed, please use 'HttpUtils.body(.,.)'!");
-        return body(raw, contentType);
     }
 
 

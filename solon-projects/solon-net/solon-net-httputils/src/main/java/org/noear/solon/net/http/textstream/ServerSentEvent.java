@@ -87,45 +87,6 @@ public class ServerSentEvent implements Serializable {
         return comment;
     }
 
-    /**
-     * @deprecated 3.1 {@link #getId()}
-     */
-    @Deprecated
-    public String id() {
-        return id;
-    }
-
-    /**
-     * @deprecated 3.1 {@link #getEvent()}
-     */
-    @Deprecated
-    public String event() {
-        return event;
-    }
-
-    /**
-     * @deprecated 3.1 {@link #getData()}
-     */
-    @Deprecated
-    public String data() {
-        return this.data;
-    }
-
-    /**
-     * @deprecated 3.1 {@link #getRetry()}
-     */
-    @Deprecated
-    public String retry() {
-        return this.retry;
-    }
-
-    /**
-     * @deprecated 3.1 {@link #getComment()}
-     */
-    @Deprecated
-    public String comment() {
-        return comment;
-    }
 
     @Override
     public String toString() {

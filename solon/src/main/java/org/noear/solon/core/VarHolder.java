@@ -16,10 +16,9 @@
 package org.noear.solon.core;
 
 import org.noear.eggg.TypeEggg;
-import org.noear.solon.lang.Nullable;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.function.Supplier;
 
 /**
@@ -66,20 +65,24 @@ public interface VarHolder {
 
     /**
      * 获取类型
-     *
-     * @deprecated 3.7 {@link #getTypeEggg()}
      */
-    @Deprecated
-    Class<?> getType();
+    default Class<?> getType() {
+        return getTypeEggg().getType();
+    }
 
     /**
-     * 获取泛型（可能为 null）
-     *
-     * @deprecated 3.7 {@link #getTypeEggg()}
+     * 获取泛型
      */
-    @Deprecated
-    @Nullable
-    ParameterizedType getGenericType();
+    default Type getGenericType() {
+        return getTypeEggg().getGenericType();
+    }
+
+    /**
+     * 是否为泛型
+     * */
+    default boolean isGenericType() {
+        return getTypeEggg().isParameterizedType();
+    }
 
     /**
      * 获取注解集合

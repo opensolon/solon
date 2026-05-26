@@ -114,36 +114,6 @@ public final class FactoryManager {
 
     /// ///////
     //
-    // mvcFactory 对接
-    //
-
-    /**
-     * @deprecated 3.6
-     *
-     */
-    @Deprecated
-    public boolean hasMvcFactory() {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * @deprecated 3.6
-     *
-     */
-    public MvcFactory mvcFactory() {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * @deprecated 3.6
-     *
-     */
-    public void mvcFactory(MvcFactory factory) {
-        throw new UnsupportedOperationException();
-    }
-
-    /// ///////
-    //
     // loadBalanceFactory 对接
     //
 

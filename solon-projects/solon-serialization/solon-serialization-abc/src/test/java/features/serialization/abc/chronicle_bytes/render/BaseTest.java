@@ -19,7 +19,6 @@ import org.junit.jupiter.api.Test;
 import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.serialization.abc.AbcBytesSerializer;
 import org.noear.solon.serialization.abc.AbcEntityConverter;
-import org.noear.solon.serialization.abc.AbcRender;
 import org.noear.solon.test.SolonTest;
 
 import java.io.ByteArrayOutputStream;
@@ -59,8 +58,8 @@ public class BaseTest {
             }
         };
 
-        AbcRender render = new AbcRender(new AbcEntityConverter(new AbcBytesSerializer()));
-        render.render(userDo, ctx);
+        AbcEntityConverter entityConverter = new AbcEntityConverter(new AbcBytesSerializer());
+        entityConverter.write(userDo, ctx);
 
         AbcBytesSerializer serializer = new AbcBytesSerializer();
         UserDo userDo2 = (UserDo)serializer.deserializeFromBody(ctx, UserDo.class);

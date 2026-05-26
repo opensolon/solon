@@ -16,7 +16,6 @@
 package demo;
 
 import org.noear.solon.data.annotation.Transaction;
-import org.noear.solon.data.annotation.TranAnno;
 import org.noear.solon.data.tran.TranListener;
 import org.noear.solon.data.tran.TranUtils;
 
@@ -24,14 +23,6 @@ import org.noear.solon.data.tran.TranUtils;
  * @author noear 2022/6/30 created
  */
 public class DemoTest {
-
-    //两者效果相同
-
-    public void test1() throws Throwable{
-        TranUtils.execute(new TranAnno().readOnly(true),()->{
-            //..
-        });
-    }
 
     @Transaction(readOnly = true)
     public void test2(){

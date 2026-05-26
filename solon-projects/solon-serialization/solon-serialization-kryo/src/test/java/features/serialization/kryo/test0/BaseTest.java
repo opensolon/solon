@@ -20,7 +20,6 @@ import org.junit.jupiter.api.Test;
 import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.serialization.kryo.KryoBytesSerializer;
 import org.noear.solon.serialization.kryo.KryoEntityConverter;
-import org.noear.solon.serialization.kryo.KryoRender;
 import org.noear.solon.test.SolonTest;
 
 import java.io.ByteArrayOutputStream;
@@ -69,8 +68,8 @@ public class BaseTest {
             }
         };
 
-        KryoRender render = new KryoRender(new KryoEntityConverter(new KryoBytesSerializer()));
-        render.render(userDo, ctx);
+        KryoEntityConverter entityConverter = new KryoEntityConverter(new KryoBytesSerializer());
+        entityConverter.write(userDo, ctx);
 
         KryoBytesSerializer serializer = new KryoBytesSerializer();
         UserDo userDo2 = (UserDo)serializer.deserializeFromBody(ctx, UserDo.class);

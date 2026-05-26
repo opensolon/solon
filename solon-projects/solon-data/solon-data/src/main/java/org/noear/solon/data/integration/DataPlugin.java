@@ -22,7 +22,6 @@ import org.noear.solon.data.datasource.DsBuilder;
 import org.noear.solon.data.datasource.DsInjector;
 import org.noear.solon.data.datasource.RoutingDataSource;
 import org.noear.solon.data.tran.TranManager;
-import org.noear.solon.data.tran.interceptor.TranInterceptor;
 import org.noear.solon.data.tran.interceptor.TransactionInterceptor;
 
 /**
@@ -38,7 +37,6 @@ public class DataPlugin implements Plugin {
             TranManager.routing(RoutingDataSource.class, (r) -> r.determineCurrentTarget());
 
             //添加注解支持
-            context.beanInterceptorAdd(Tran.class, TranInterceptor.instance, 120);
             context.beanInterceptorAdd(Transaction.class, TransactionInterceptor.instance, 120);
         }
 

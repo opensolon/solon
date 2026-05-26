@@ -19,7 +19,7 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
 import org.noear.solon.core.route.RouterInterceptor;
 import org.noear.solon.core.route.RouterInterceptorChain;
-import org.noear.solon.data.annotation.TranAnno;
+import org.noear.solon.data.annotation.TransactionAnno;
 import org.noear.solon.data.tran.TranUtils;
 
 /**
@@ -39,7 +39,7 @@ public class RollbackRouterInterceptor implements RouterInterceptor {
 
     @Override
     public void doIntercept(Context ctx, Handler mainHandler, RouterInterceptorChain chain) throws Throwable {
-        TranUtils.execute(new TranAnno(), () -> {
+        TranUtils.execute(new TransactionAnno(), () -> {
             chain.doIntercept(ctx, mainHandler);
             throw new RollbackException();
         });

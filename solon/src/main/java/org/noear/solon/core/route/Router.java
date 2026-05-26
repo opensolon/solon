@@ -344,44 +344,4 @@ public interface Router {
     default void socketd(String path, Handler handler) {
         add(path, MethodType.SOCKET, handler);
     }
-
-
-    //------------- Deprecated
-
-
-    /**
-     * 获取某个处理点的所有路由记录（管理用）
-     *
-     * @return 处理点的所有路由记录
-     * @deprecated 3.7 避免与 get(path,hander) 疑似冲突 {@link #findAll()}
-     */
-    @Deprecated
-    default Collection<Routing<Handler>> getAll() {
-        return findAll();
-    }
-
-    /**
-     * 获取某个路径的某个处理点的路由记录（管理用）
-     *
-     * @param pathPrefix 路径前缀
-     * @return 路径处理点的路由记录
-     * @since 2.6
-     * @deprecated 3.7 避免与 get(path,hander) 疑似冲突 {@link #findBy(String)}
-     */
-    @Deprecated
-    default Collection<Routing<Handler>> getBy(String pathPrefix) {
-        return findBy(pathPrefix);
-    }
-
-    /**
-     * 获取某个控制器的路由记录（管理用）
-     *
-     * @param controllerClz 控制器类
-     * @return 控制器处理点的路由记录
-     * @deprecated 3.7 避免与 get(path,hander) 疑似冲突 {@link #findBy(Class)}
-     */
-    @Deprecated
-    default Collection<Routing<Handler>> getBy(Class<?> controllerClz) {
-        return findBy(controllerClz);
-    }
 }

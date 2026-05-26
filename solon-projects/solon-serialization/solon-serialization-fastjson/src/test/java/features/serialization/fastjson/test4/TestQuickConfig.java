@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 import org.noear.solon.annotation.Import;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.handle.ContextEmpty;
-import org.noear.solon.serialization.fastjson.FastjsonRenderFactory;
+import org.noear.solon.serialization.fastjson.FastjsonEntityConverter;
 import org.noear.solon.test.SolonTest;
 
 import java.util.Date;
@@ -35,7 +35,7 @@ import java.util.Map;
 @SolonTest
 public class TestQuickConfig {
     @Inject
-    FastjsonRenderFactory renderFactory;
+    FastjsonEntityConverter entityConverter;
 
     @Test
     public void hello2() throws Throwable{
@@ -50,13 +50,13 @@ public class TestQuickConfig {
         userDo.setMap1(data);
 
         ContextEmpty ctx = new ContextEmpty();
-        renderFactory.create().render(userDo, ctx);
+        entityConverter.write(userDo, ctx);
         String output = ctx.attr("output");
 
         System.out.println(output);
 
         //err: long 型 null 的没有转成字符串 "0"
-        assert "{\"b0\":false,\"b1\":true,\"d0\":0,\"d1\":1.0,\"list0\":[],\"map0\":null,\"map1\":{\"null\":null,\"time\":\"2023-01-16 17:39:53\",\"long\":\"12\",\"int\":12},\"n0\":\"0\",\"n1\":\"1\",\"obj0\":null,\"s0\":\"\",\"s1\":\"noear\",\"type\":\"MANAGE\"}".equals(output);
+        assert "{\"b0\":0,\"b1\":1,\"d0\":0,\"d1\":1.0,\"list0\":[],\"map0\":null,\"map1\":{\"null\":null,\"time\":\"2023-01-16 17:39:53\",\"long\":\"12\",\"int\":12},\"n0\":\"0\",\"n1\":\"1\",\"obj0\":null,\"s0\":\"\",\"s1\":\"noear\",\"type\":\"MANAGE\"}".equals(output);
     }
 
     @Test
@@ -66,7 +66,7 @@ public class TestQuickConfig {
         customDateDo2.setDate2(new Date(1673861993477L));
 
         ContextEmpty ctx = new ContextEmpty();
-        renderFactory.create().render(customDateDo2, ctx);
+        entityConverter.write(customDateDo2, ctx);
         String output = ctx.attr("output");
 
         System.out.println(output);

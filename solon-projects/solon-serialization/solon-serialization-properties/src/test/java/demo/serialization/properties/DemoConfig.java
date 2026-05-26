@@ -16,7 +16,7 @@
 package demo.serialization.properties;
 
 import org.noear.solon.annotation.Configuration;
-import org.noear.solon.serialization.properties.PropertiesActionExecutor;
+import org.noear.solon.serialization.properties.PropertiesEntityConverter;
 
 /**
  * @author noear
@@ -24,7 +24,7 @@ import org.noear.solon.serialization.properties.PropertiesActionExecutor;
  */
 @Configuration
 public class DemoConfig {
-    public void xxx(PropertiesActionExecutor actionExecutor){
-        actionExecutor.allowPostForm(true);
+    public void xxx(PropertiesEntityConverter entityConverter){
+        entityConverter.getSerializer().allowPostForm(true);
     }
 }

@@ -26,13 +26,13 @@ public class App {
     public static void main(String[] args) {
         Solon.start(App.class, args, x -> {
             //例：增加全局处理（用过滤器模式）
-            x.filter(-1, new CrossFilter().allowedOrigins("*")); //加-1 优先级更高
+            x.router().filter(-1, new CrossFilter().allowedOrigins("*")); //加-1 优先级更高
 
             //例：或者增某段路径的处理
-            x.filter(new CrossFilter().pathPatterns("/user/**").allowedOrigins("*"));
+            x.router().filter(new CrossFilter().pathPatterns("/user/**").allowedOrigins("*"));
 
             //例：或者增某段路径的处理
-            x.routerInterceptor(new CrossInterceptor().pathPatterns("/user/**").allowedOrigins("*"));
+            x.router().routerInterceptor(new CrossInterceptor().pathPatterns("/user/**").allowedOrigins("*"));
         }).router().findAll().forEach(e -> {
             System.out.println(e.method() + " " + e.path());
         });

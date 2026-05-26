@@ -8,7 +8,7 @@ import org.noear.solon.Solon;
 public class MainTest {
     public static void main(String[] args) {
         Solon.start(MainTest.class, args, app -> {
-            app.get("/", c -> c.output("Hello!"));
+            app.router().get("/", c -> c.output("Hello!"));
         });
     }
 }

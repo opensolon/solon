@@ -78,16 +78,6 @@ public class SseEvent implements Stringable {
     }
 
 
-    /**
-     * 构建为事件文本
-     *
-     * @deprecated 3.1 {@link #toString()}
-     */
-    @Deprecated
-    public String build() {
-        return toString();
-    }
-
     @Override
     public String toString() {
         return buf.toString();

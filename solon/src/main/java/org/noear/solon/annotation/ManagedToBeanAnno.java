@@ -78,16 +78,6 @@ public class ManagedToBeanAnno implements Bean {
     /// ////
 
     @Override
-    public int priority() {
-        return 0;
-    }
-
-    @Override
-    public boolean injected() {
-        return anno.autoInject();
-    }
-
-    @Override
     public boolean autoInject() {
         return anno.autoInject();
     }

@@ -50,9 +50,8 @@ public class RunUtil {
     }
 
     /**
-     * @deprecated 3.0
+     * 设置并行执行器
      */
-    @Deprecated
     public static void setParallelExecutor(ExecutorService parallelExecutor) {
         runHolder.setParallelExecutor(parallelExecutor);
     }

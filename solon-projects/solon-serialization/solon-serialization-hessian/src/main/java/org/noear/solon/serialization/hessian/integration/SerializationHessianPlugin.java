@@ -19,10 +19,8 @@ import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.serialization.EntityBytesSerializer;
 import org.noear.solon.serialization.SerializerNames;
-import org.noear.solon.serialization.hessian.HessianActionExecutor;
 import org.noear.solon.serialization.hessian.HessianBytesSerializer;
 import org.noear.solon.serialization.hessian.HessianEntityConverter;
-import org.noear.solon.serialization.hessian.HessianRender;
 
 public class SerializationHessianPlugin implements Plugin {
 
@@ -40,17 +38,5 @@ public class SerializationHessianPlugin implements Plugin {
 
         //会自动转为 executor, renderer
         context.app().chains().addEntityConverter(entityConverter);
-
-
-        //===> 以下将弃用 v3.6
-
-        //::render
-        HessianRender render = new HessianRender(entityConverter);
-        context.wrapAndPut(HessianRender.class, render); //用于扩展
-
-        //::actionExecutor
-        //支持 hessian 内容类型执行
-        HessianActionExecutor executor = new HessianActionExecutor(entityConverter);
-        context.wrapAndPut(HessianActionExecutor.class, executor); //用于扩展
     }
 }

@@ -20,6 +20,7 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.lang.Nullable;
 
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 
 /**
  * 变量说明
@@ -66,7 +67,8 @@ public interface VarSpec {
 
     /**
      * 获取默认值
-     * */
+     *
+     */
     String getDefaultValue();
 
     /**
@@ -78,28 +80,22 @@ public interface VarSpec {
 
     /**
      * 获取类型
-     *
-     * @deprecated 3.7 {@link #getTypeEggg()}
-     * */
-    @Deprecated
-    Class<?> getType();
+     */
+    default Class<?> getType() {
+        return getTypeEggg().getType();
+    }
 
     /**
      * 获取泛型
-     *
-     * @deprecated 3.7 {@link #getTypeEggg()}
-     * */
-    @Deprecated
-    @Nullable
-    ParameterizedType getGenericType();
+     */
+    default Type getGenericType() {
+        return getTypeEggg().getGenericType();
+    }
 
     /**
      * 是否为泛型
-     *
-     * @deprecated 3.7 {@link #getTypeEggg()}
      * */
-    @Deprecated
-    default boolean isGenericType(){
+    default boolean isGenericType() {
         return getTypeEggg().isParameterizedType();
     }
 
@@ -118,7 +114,7 @@ public interface VarSpec {
 
     /**
      * 获取值
-     * */
+     */
     default String[] getValues(Context ctx) {
         if (isRequiredHeader()) {
             return ctx.headerValues(getName());

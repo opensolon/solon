@@ -15,7 +15,9 @@
  */
 package org.noear.solon.aot.proxy;
 
-import java.lang.reflect.Method;
+import org.noear.eggg.ClassEggg;
+import org.noear.eggg.MethodEggg;
+
 import java.lang.reflect.Modifier;
 import java.util.*;
 
@@ -29,9 +31,9 @@ public class MethodFinder {
     /**
      * 是否允许函数处理
      */
-    public static boolean allowMethod(Method element) {
+    public static boolean allowMethod(MethodEggg methodEggg) {
+        int modifiers = methodEggg.getMethod().getModifiers();
 
-        int modifiers = element.getModifiers();
         if (Modifier.isStatic(modifiers) ||
                 Modifier.isFinal(modifiers) ||
                 Modifier.isAbstract(modifiers) ||
@@ -47,14 +49,12 @@ public class MethodFinder {
 
     /**
      * 查找类的所有公有函数（包括父类）
-     *
-     * @param type 类型
      */
-    public static Collection<Method> findMethodAll(Class<?> type) {
-        List<Method> methods = new ArrayList<>();
+    public static Collection<MethodEggg> findMethodAll(ClassEggg classEggg) {
+        List<MethodEggg> methods = new ArrayList<>();
 
-        for (Method m : type.getMethods()) {
-            if (m.getDeclaringClass() != Object.class) {
+        for (MethodEggg m : classEggg.getPublicMethodEgggs()) {
+            if (m.getMethod().getDeclaringClass() != Object.class) {
                 methods.add(m);
             }
         }

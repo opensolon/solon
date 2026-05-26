@@ -48,14 +48,6 @@ public class FuryBytesSerializer implements EntityBytesSerializer {
         return _default;
     }
 
-    /**
-     * @deprecated 3.6 {@link #getDefault()}
-     * */
-    @Deprecated
-    public static FuryBytesSerializer getInstance() {
-        return _default;
-    }
-
 
     private final Collection<String> blackList;
     private final AllowListChecker blackListChecker;
