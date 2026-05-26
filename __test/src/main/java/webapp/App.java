@@ -21,6 +21,7 @@ import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.*;
 import org.noear.solon.data.cache.impl.JsonSerializer;
+import org.noear.solon.serialization.EntityStringSerializer;
 import org.noear.solon.serialization.properties.PropertiesStringSerializer;
 import org.noear.solon.server.http.HttpServerConfigure;
 import org.noear.solon.cloud.CloudClient;
@@ -105,8 +106,8 @@ public class App {
                 }
             });
 
-            x.context().getBeanAsync(JsonSerializer.class, e -> {
-                System.out.println("JsonRenderFactory event: xxxxx: " + e.getClass().getSimpleName());
+            x.context().getBeanAsync(EntityStringSerializer.class, e -> {
+                System.out.println("EntityStringSerializer event: xxxxx: " + e.getClass().getSimpleName());
             });
 
             x.context().getBeanAsync(PropertiesStringSerializer.class, e -> {
