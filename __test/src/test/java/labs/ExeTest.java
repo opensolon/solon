@@ -28,12 +28,12 @@ public class ExeTest {
         Solon.start(ExeTest.class, args, app -> {
             app.chains().defEntityConverter(new EntityConverterDefault() {
                 @Override
-                protected Object changeValueDo(Context ctx, ParamWrap p, String name, Class<?> type, String value) {
+                protected Object changeValueDo(Context ctx, ParamWrap pWrap, String pName, Class<?> type, String value) {
                     if(type.isEnum()){
 
                     }
 
-                    return super.changeValueDo(ctx, p, name, type, value);
+                    return super.changeValueDo(ctx, pWrap, pName, type, value);
                 }
             });
         });

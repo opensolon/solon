@@ -57,25 +57,25 @@ public class AbcEntityConverter extends AbstractBytesEntityConverter<AbcBytesSer
      * 转换 value
      *
      * @param ctx     请求上下文
-     * @param p       参数包装器
-     * @param pi      参数序位
+     * @param pWrap   参数包装器
+     * @param pIdx    参数序位
      * @param pt      参数类型
      * @param bodyRef 主体对象
      */
     @Override
-    protected Object changeValue(Context ctx, ParamWrap p, int pi, Class<?> pt, LazyReference bodyRef) throws Throwable {
-        if (p.spec().isRequiredPath() || p.spec().isRequiredCookie() || p.spec().isRequiredHeader()) {
+    protected Object changeValue(Context ctx, ParamWrap pWrap, int pIdx, Class<?> pt, LazyReference bodyRef) throws Throwable {
+        if (pWrap.spec().isRequiredPath() || pWrap.spec().isRequiredCookie() || pWrap.spec().isRequiredHeader()) {
             //如果是 path、cookie, header
-            return super.changeValue(ctx, p, pi, pt, bodyRef);
+            return super.changeValue(ctx, pWrap, pIdx, pt, bodyRef);
         }
 
-        if (p.spec().isRequiredBody() == false && ctx.paramMap().containsKey(p.spec().getName())) {
+        if (pWrap.spec().isRequiredBody() == false && ctx.paramMap().containsKey(pWrap.spec().getName())) {
             //有可能是path、queryString变量
-            return super.changeValue(ctx, p, pi, pt, bodyRef);
+            return super.changeValue(ctx, pWrap, pIdx, pt, bodyRef);
         }
 
-        if (p.spec().isRequiredBody()) {
-            return serializer.deserializeFromBody(ctx, p.getType());
+        if (pWrap.spec().isRequiredBody()) {
+            return serializer.deserializeFromBody(ctx, pWrap.getType());
         } else {
             return null;
         }

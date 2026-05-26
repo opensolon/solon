@@ -64,45 +64,45 @@ public class FastjsonEntityConverter extends AbstractStringEntityConverter<Fastj
      * 转换 value
      *
      * @param ctx     请求上下文
-     * @param p       参数包装器
-     * @param pi      参数序位
+     * @param pWrap   参数包装器
+     * @param pIdx    参数序位
      * @param pt      参数类型
      * @param bodyRef 主体对象
      */
     @Override
-    protected Object changeValue(Context ctx, ParamWrap p, int pi, Class<?> pt, LazyReference bodyRef) throws Throwable {
-        if (p.spec().isRequiredPath() || p.spec().isRequiredCookie() || p.spec().isRequiredHeader()) {
+    protected Object changeValue(Context ctx, ParamWrap pWrap, int pIdx, Class<?> pt, LazyReference bodyRef) throws Throwable {
+        if (pWrap.spec().isRequiredPath() || pWrap.spec().isRequiredCookie() || pWrap.spec().isRequiredHeader()) {
             //如果是 path、cookie, header
-            return super.changeValue(ctx, p, pi, pt, bodyRef);
+            return super.changeValue(ctx, pWrap, pIdx, pt, bodyRef);
         }
 
-        if (p.spec().isRequiredBody() == false && ctx.paramMap().containsKey(p.spec().getName())) {
+        if (pWrap.spec().isRequiredBody() == false && ctx.paramMap().containsKey(pWrap.spec().getName())) {
             //有可能是path、queryString变量
-            return super.changeValue(ctx, p, pi, pt, bodyRef);
+            return super.changeValue(ctx, pWrap, pIdx, pt, bodyRef);
         }
 
         Object bodyObj = bodyRef.get();
 
         if (bodyObj == null) {
-            return super.changeValue(ctx, p, pi, pt, bodyRef);
+            return super.changeValue(ctx, pWrap, pIdx, pt, bodyRef);
         }
 
         if (bodyObj instanceof JSONObject) {
             JSONObject tmp = (JSONObject) bodyObj;
 
-            if (p.spec().isRequiredBody() == false) {
+            if (pWrap.spec().isRequiredBody() == false) {
                 //
                 //如果没有 body 要求；尝试找按属性找
                 //
-                if (tmp.containsKey(p.spec().getName())) {
+                if (tmp.containsKey(pWrap.spec().getName())) {
                     //支持泛型的转换
-                    return tmp.getObject(p.spec().getName(), p.getGenericType());
+                    return tmp.getObject(pWrap.spec().getName(), pWrap.getGenericType());
                 }
             }
 
             //尝试 body 转换
             if (pt.isPrimitive() || pt.getTypeName().startsWith("java.lang.")) {
-                return super.changeValue(ctx, p, pi, pt, bodyRef);
+                return super.changeValue(ctx, pWrap, pIdx, pt, bodyRef);
             } else {
                 if (List.class.isAssignableFrom(pt)) {
                     return null;
@@ -113,7 +113,7 @@ public class FastjsonEntityConverter extends AbstractStringEntityConverter<Fastj
                 }
 
                 //支持泛型的转换 如：Map<T>
-                return tmp.toJavaObject(p.getGenericType());
+                return tmp.toJavaObject(pWrap.getGenericType());
             }
         }
 
@@ -124,7 +124,7 @@ public class FastjsonEntityConverter extends AbstractStringEntityConverter<Fastj
                 return null;
             }
             //集合类型转换
-            return tmp.toJavaObject(p.getGenericType());
+            return tmp.toJavaObject(pWrap.getGenericType());
         }
 
         return bodyObj;

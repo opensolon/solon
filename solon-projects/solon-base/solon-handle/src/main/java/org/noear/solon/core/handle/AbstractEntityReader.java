@@ -192,17 +192,17 @@ public abstract class AbstractEntityReader {
      * 尝试将值按类型转换
      *
      * @param ctx     请求上下文
-     * @param p       参数包装
-     * @param pi      参数序位
+     * @param pWrap   参数包装
+     * @param pIdx    参数序位
      * @param pt      参数类型
      * @param bodyRef 主体对象
      */
-    protected Object changeValue(Context ctx, ParamWrap p, int pi, Class<?> pt, LazyReference bodyRef) throws Throwable {
-        String pn = p.spec().getName();        //参数名
-        String pv = p.spec().getValue(ctx);    //参数值
+    protected Object changeValue(Context ctx, ParamWrap pWrap, int pIdx, Class<?> pt, LazyReference bodyRef) throws Throwable {
+        String pn = pWrap.spec().getName();        //参数名
+        String pv = pWrap.spec().getValue(ctx);    //参数值
 
         if (pv == null) {
-            pv = p.spec().getDefaultValue();
+            pv = pWrap.spec().getDefaultValue();
         }
 
         if (pv == null) {
@@ -216,8 +216,8 @@ public abstract class AbstractEntityReader {
                 //2.如果是 UploadedFile[] 类型
                 return ctx.fileValues(pn);
             } else {
-                if (p.getTypeEggg().isParameterizedType() && List.class.isAssignableFrom(pt)) {
-                    Type pta0 = p.getTypeEggg().getActualTypeArguments()[0];
+                if (pWrap.getTypeEggg().isParameterizedType() && List.class.isAssignableFrom(pt)) {
+                    Type pta0 = pWrap.getTypeEggg().getActualTypeArguments()[0];
                     if (UploadedFile.class.equals(pta0)) {
                         return Arrays.asList(ctx.fileValues(pn));
                     }
@@ -233,37 +233,37 @@ public abstract class AbstractEntityReader {
                         return null;
                     } else {
                         //尝试转为实体
-                        return changeEntityDo(ctx, p, pn, pt);
+                        return changeEntityDo(ctx, pWrap, pn, pt);
                     }
                 }
             }
         } else {
             //如果拿到了具体的参数值，则开始转换
-            return changeValueDo(ctx, p, pn, pt, pv);
+            return changeValueDo(ctx, pWrap, pn, pt, pv);
         }
     }
 
     /**
      * 尝试将值转换为目标值
      *
-     * @param ctx  请求上下文
-     * @param p    参数包装
-     * @param name 数据名字
-     * @param type 数据类型
+     * @param ctx   请求上下文
+     * @param pWrap 参数包装
+     * @param pName 数据名字
+     * @param type  数据类型
      */
-    protected Object changeValueDo(Context ctx, ParamWrap p, String name, Class<?> type, String value) {
-        return ConvertUtil.to(p.spec(), value, ctx);
+    protected Object changeValueDo(Context ctx, ParamWrap pWrap, String pName, Class<?> type, String value) {
+        return ConvertUtil.to(pWrap.spec(), value, ctx);
     }
 
     /**
      * 尝试将值转换为目标实体
      *
-     * @param ctx  请求上下文
-     * @param p    参数包装
-     * @param name 数据名字
-     * @param type 数据类型
+     * @param ctx   请求上下文
+     * @param pWrap 参数包装
+     * @param pName 数据名字
+     * @param type  数据类型
      */
-    protected Object changeEntityDo(Context ctx, ParamWrap p, String name, Class<?> type) throws Exception {
+    protected Object changeEntityDo(Context ctx, ParamWrap pWrap, String pName, Class<?> type) throws Exception {
         MultiMap<String> map = ctx.paramMap();
 
         return ClassUtil.makeObject(type, map::get, ctx);

@@ -58,22 +58,22 @@ public class KryoEntityConverter extends AbstractBytesEntityConverter<KryoBytesS
      * 转换 value
      *
      * @param ctx     请求上下文
-     * @param p       参数包装器
-     * @param pi      参数序位
+     * @param pWrap   参数包装器
+     * @param pIdx    参数序位
      * @param pt      参数类型
      * @param bodyRef 主体对象
      * @since 1.11 增加 requireBody 支持
      */
     @Override
-    protected Object changeValue(Context ctx, ParamWrap p, int pi, Class<?> pt, LazyReference bodyRef) throws Throwable {
-        if (p.spec().isRequiredPath() || p.spec().isRequiredCookie() || p.spec().isRequiredHeader()) {
+    protected Object changeValue(Context ctx, ParamWrap pWrap, int pIdx, Class<?> pt, LazyReference bodyRef) throws Throwable {
+        if (pWrap.spec().isRequiredPath() || pWrap.spec().isRequiredCookie() || pWrap.spec().isRequiredHeader()) {
             //如果是 path、cookie, header
-            return super.changeValue(ctx, p, pi, pt, bodyRef);
+            return super.changeValue(ctx, pWrap, pIdx, pt, bodyRef);
         }
 
-        if (p.spec().isRequiredBody() == false && ctx.paramMap().containsKey(p.spec().getName())) {
+        if (pWrap.spec().isRequiredBody() == false && ctx.paramMap().containsKey(pWrap.spec().getName())) {
             //有可能是path、queryString变量
-            return super.changeValue(ctx, p, pi, pt, bodyRef);
+            return super.changeValue(ctx, pWrap, pIdx, pt, bodyRef);
         }
 
         Object bodyObj = bodyRef.get();
@@ -81,15 +81,15 @@ public class KryoEntityConverter extends AbstractBytesEntityConverter<KryoBytesS
         if (bodyObj == null) {
             return null;
         } else {
-            if (p.spec().isRequiredBody()) {
+            if (pWrap.spec().isRequiredBody()) {
                 return bodyObj;
             }
 
             if (bodyObj instanceof Map) {
                 Map<String, Object> tmp = (Map<String, Object>) bodyObj;
 
-                if (tmp.containsKey(p.spec().getName())) {
-                    return tmp.get(p.spec().getName());
+                if (tmp.containsKey(pWrap.spec().getName())) {
+                    return tmp.get(pWrap.spec().getName());
                 }
             }
 
