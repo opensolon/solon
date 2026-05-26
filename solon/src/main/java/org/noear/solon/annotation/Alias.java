@@ -24,7 +24,7 @@ import java.lang.annotation.*;
  * @since 1.5
  * */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD})
+@Target({ElementType.METHOD, ElementType.FIELD})
 @Documented
 public @interface Alias {
     String value() default "";
