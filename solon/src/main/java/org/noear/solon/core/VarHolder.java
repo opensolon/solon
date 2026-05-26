@@ -78,13 +78,6 @@ public interface VarHolder {
     }
 
     /**
-     * 是否为泛型
-     * */
-    default boolean isGenericType() {
-        return getTypeEggg().isParameterizedType();
-    }
-
-    /**
      * 获取注解集合
      */
     Annotation[] getAnnoS();

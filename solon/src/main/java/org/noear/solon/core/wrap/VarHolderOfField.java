@@ -78,7 +78,7 @@ public class VarHolderOfField implements VarHolder {
     @Override
     public Class<?> getDependencyType() {
         if (dependencyType == null) {
-            return getTypeEggg().getType();
+            return getType();
         } else {
             return dependencyType;
         }
@@ -133,7 +133,7 @@ public class VarHolderOfField implements VarHolder {
         if (val != null) {
             fe.setValue(obj, val, false);
 
-            ctx.aot().registerJdkProxyType(getTypeEggg().getType(), val);
+            ctx.aot().registerJdkProxyType(getType(), val);
         }
 
         this.val = val;

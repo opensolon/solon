@@ -363,7 +363,7 @@ public class AppContext extends BeanContainer {
             if (Utils.isEmpty(name) && vh.getTypeEggg().isParameterizedType()) {
                 TypeEggg typeEggg = vh.getTypeEggg();
 
-                if (List.class == vh.getTypeEggg().getType()) {
+                if (List.class == vh.getType()) {
                     //支持 List<Bean> 注入 //@since 3.0
                     Type tmp = typeEggg.getActualTypeArguments()[0];
 
@@ -385,7 +385,7 @@ public class AppContext extends BeanContainer {
                         //设置默认值（放下面）
                         vh.setValueDefault(() -> this.getBeansOfType((Class<? extends Object>) type, genericType));
                     }
-                } else if (Map.class == vh.getTypeEggg().getType()) {
+                } else if (Map.class == vh.getType()) {
                     //支持 Map<String,Bean> 注入 //@since 3.0
 
                     Type keyType = typeEggg.getActualTypeArguments()[0];

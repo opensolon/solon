@@ -93,13 +93,6 @@ public interface VarSpec {
     }
 
     /**
-     * 是否为泛型
-     * */
-    default boolean isGenericType() {
-        return getTypeEggg().isParameterizedType();
-    }
-
-    /**
      * 获取参数值
      */
     default String getValue(Context ctx) {
