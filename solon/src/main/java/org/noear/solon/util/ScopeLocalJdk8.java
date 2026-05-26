@@ -43,12 +43,12 @@ public class ScopeLocalJdk8<T> implements ScopeLocal<T> {
 
     @Override
     public T getOr(Supplier<T> supplier) {
-        T rst = ref.get();
+        T tmp = ref.get();
 
-        if (rst == null) {
+        if (tmp == null) {
             return supplier.get();
         } else {
-            return rst;
+            return tmp;
         }
     }
 
