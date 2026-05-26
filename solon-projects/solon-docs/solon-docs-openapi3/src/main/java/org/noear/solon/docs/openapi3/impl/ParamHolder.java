@@ -214,11 +214,11 @@ public class ParamHolder {
 
     public boolean isIgnore() {
         if (param != null) {
-            if (Context.class.equals(param.getTypeEggg().getType())) {
+            if (Context.class.equals(param.getType())) {
                 return true;
             }
 
-            return SessionState.class.equals(param.getTypeEggg().getType());
+            return SessionState.class.equals(param.getType());
         }
 
         return false;

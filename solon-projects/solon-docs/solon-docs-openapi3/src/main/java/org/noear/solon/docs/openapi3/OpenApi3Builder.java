@@ -401,8 +401,8 @@ public class OpenApi3Builder {
                     parameter.setDescription(annotation.description());
                 } else {
                     // 从 schema 中获取参数描述信息
-                    Class<?> dataTypeClass = paramHolder.getParam().getTypeEggg().getType();
-                    Type dataGenericType = paramHolder.getParam().getTypeEggg().getGenericType();
+                    Class<?> dataTypeClass = paramHolder.getParam().getType();
+                    Type dataGenericType = paramHolder.getParam().getGenericType();
                     String schemaName = this.getSchemaName(dataTypeClass, dataGenericType);
                     Schema<?> schema = openAPI.getComponents().getSchemas().get(schemaName);
                     if (schema != null) {
@@ -1055,7 +1055,7 @@ public class OpenApi3Builder {
 //        }
 
         if (paramHolder.getParam() != null) {
-            Class<?> dataTypeClass = paramHolder.getParam().getTypeEggg().getType();
+            Class<?> dataTypeClass = paramHolder.getParam().getType();
             if (dataTypeClass.isPrimitive()) {
                 return null;
             }
@@ -1068,7 +1068,7 @@ public class OpenApi3Builder {
                 return null;
             }
 
-            Type dataGenericType = paramHolder.getParam().getTypeEggg().getGenericType();
+            Type dataGenericType = paramHolder.getParam().getGenericType();
 
             if (Collection.class.isAssignableFrom(dataTypeClass) && dataGenericType instanceof ParameterizedType) {
                 Type itemType = ((ParameterizedType) dataGenericType).getActualTypeArguments()[0];

@@ -28,11 +28,7 @@ public class TypeReferenceImpl<T> extends TypeReference<T> {
     protected final Type _type2;
 
     public TypeReferenceImpl(ParamWrap p) {
-        if (p.getTypeEggg().isParameterizedType()) {
-            this._type2 = p.getTypeEggg().getGenericType();
-        } else {
-            this._type2 = p.getTypeEggg().getType();
-        }
+        this._type2 = p.getGenericType();
     }
 
     public TypeReferenceImpl(Type type) {

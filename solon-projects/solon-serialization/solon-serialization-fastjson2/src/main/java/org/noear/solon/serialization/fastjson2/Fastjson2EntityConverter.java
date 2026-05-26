@@ -98,11 +98,7 @@ public class Fastjson2EntityConverter extends AbstractStringEntityConverter<Fast
                 //
                 if (tmp.containsKey(p.spec().getName())) {
                     //支持泛型的转换
-                    if (p.getTypeEggg().isParameterizedType()) {
-                        return tmp.getObject(p.spec().getName(), p.getTypeEggg().getGenericType());
-                    } else {
-                        return tmp.getObject(p.spec().getName(), pt);
-                    }
+                    return tmp.getObject(p.spec().getName(), p.getGenericType());
                 }
             }
 
@@ -119,11 +115,7 @@ public class Fastjson2EntityConverter extends AbstractStringEntityConverter<Fast
                 }
 
                 //支持泛型的转换 如：Map<T>
-                if (p.getTypeEggg().isParameterizedType()) {
-                    return tmp.to(p.getTypeEggg().getGenericType());
-                } else {
-                    return tmp.to(pt);
-                }
+                return tmp.to(p.getGenericType());
             }
         }
 
@@ -134,13 +126,7 @@ public class Fastjson2EntityConverter extends AbstractStringEntityConverter<Fast
                 return null;
             }
             //集合类型转换
-            if (p.getTypeEggg().isParameterizedType()) {
-                //转换带泛型的集合
-                return tmp.to(p.getTypeEggg().getGenericType());
-            } else {
-                //不仅可以转换为List 还可以转换成Set
-                return tmp.to(pt);
-            }
+            return tmp.to(p.getGenericType());
         }
 
         return bodyObj;

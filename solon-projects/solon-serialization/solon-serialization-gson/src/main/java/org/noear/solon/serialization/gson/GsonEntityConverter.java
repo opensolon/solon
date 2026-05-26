@@ -97,11 +97,7 @@ public class GsonEntityConverter extends AbstractStringEntityConverter<GsonStrin
                 //
                 if (tmp.has(p.spec().getName())) {
                     //支持泛型的转换
-                    if (p.getTypeEggg().isParameterizedType()) {
-                        return serializer.deserialize(tmp.get(p.spec().getName()), p.getTypeEggg().getGenericType());
-                    } else {
-                        return serializer.deserialize(tmp.get(p.spec().getName()), pt);
-                    }
+                    return serializer.deserialize(tmp.get(p.spec().getName()), p.getGenericType());
                 }
             }
 
@@ -118,11 +114,7 @@ public class GsonEntityConverter extends AbstractStringEntityConverter<GsonStrin
                 }
 
                 //支持泛型的转换 如：Map<T>
-                if (p.getTypeEggg().isParameterizedType()) {
-                    return serializer.deserialize(tmp, p.getTypeEggg().getGenericType());
-                } else {
-                    return serializer.deserialize(tmp, pt);
-                }
+                return serializer.deserialize(tmp, p.getGenericType());
             }
         }
 
@@ -133,13 +125,7 @@ public class GsonEntityConverter extends AbstractStringEntityConverter<GsonStrin
                 return null;
             }
             //集合类型转换
-            if (p.getTypeEggg().isParameterizedType()) {
-                //转换带泛型的集合
-                return serializer.deserialize(tmp, p.getTypeEggg().getGenericType());
-            } else {
-                //不仅可以转换为List 还可以转换成Set
-                return serializer.deserialize(tmp, pt);
-            }
+            return serializer.deserialize(tmp, p.getGenericType());
         }
 
         return bodyObj;

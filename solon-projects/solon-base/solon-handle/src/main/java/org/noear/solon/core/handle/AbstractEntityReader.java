@@ -217,7 +217,7 @@ public abstract class AbstractEntityReader {
                 return ctx.fileValues(pn);
             } else {
                 if (p.getTypeEggg().isParameterizedType() && List.class.isAssignableFrom(pt)) {
-                    Type pta0 = p.getParamEggg().getTypeEggg().getActualTypeArguments()[0];
+                    Type pta0 = p.getTypeEggg().getActualTypeArguments()[0];
                     if (UploadedFile.class.equals(pta0)) {
                         return Arrays.asList(ctx.fileValues(pn));
                     }

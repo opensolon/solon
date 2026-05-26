@@ -617,7 +617,7 @@ public class OpenApi2Builder {
     private void parseActionParametersByFields(ParamHolder paramHolder, List<Parameter> paramList) {
 
         //做为 字段
-        ClassEggg ce = paramHolder.getParam().getParamEggg().getTypeEggg().getClassEggg();
+        ClassEggg ce = paramHolder.getParam().getTypeEggg().getClassEggg();
         for (FieldEggg fe : ce.getAllFieldEgggs()) {
             if (fe.isTransient()) {
                 continue;
