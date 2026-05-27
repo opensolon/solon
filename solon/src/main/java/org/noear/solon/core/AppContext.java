@@ -98,6 +98,12 @@ public class AppContext extends BeanContainer {
         return this;
     }
 
+    /**
+     * 解析占位符：`${user.name}-hello`
+     */
+    public String resolvePlaceholders(String expr) {
+        return SnelUtil.evalTmpl(expr, cfg());
+    }
 
     private final Set<RankEntity<Lifecycle>> lifecycleBeans = new HashSet<>();
 
@@ -906,7 +912,7 @@ public class AppContext extends BeanContainer {
      * 尝试托管方法调用
      */
     public void tryBuildBeanOfMethod(Method m, BeanWrap bw, BiConsumerEx<MethodEggg, Object> completionConsumer) throws Throwable {
-       if (NativeDetector.isAotRuntime()) {
+        if (NativeDetector.isAotRuntime()) {
             //如果是 aot 则注册函数
             aot().registerMethodEggg(bw.rawEggg().findMethodEgggOrNew(m));
         }
