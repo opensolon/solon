@@ -27,8 +27,6 @@ import java.util.function.Supplier;
  * @since 3.8.0
  * */
 public class ScopeLocalJdk8<T> implements ScopeLocal<T> {
-    private static final Logger log = LoggerFactory.getLogger(ScopeLocalJdk8.class);
-
     private final ThreadLocal<T> ref = FactoryManager.getGlobal().newThreadLocal(ScopeLocalJdk8.class, false);
     private final Class<?> applyFor;
 

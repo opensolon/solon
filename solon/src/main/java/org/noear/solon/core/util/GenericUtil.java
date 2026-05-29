@@ -43,14 +43,7 @@ public class GenericUtil {
      * */
     @Deprecated
     public static Class<?>[] resolveTypeArguments(Class<?> clazz, Class<?> genericIfc) {
-        List<Class<?>> types = new ArrayList<>();
-        for (Type type : EgggUtil.findGenericList(clazz, genericIfc)) {
-            if (type instanceof Class<?>) {
-                types.add((Class<?>) type);
-            }
-        }
-
-        return types.toArray(new Class<?>[types.size()]);
+        return EgggUtil.resolveTypeArguments(clazz, genericIfc);
     }
 
 
@@ -62,7 +55,7 @@ public class GenericUtil {
      * */
     @Deprecated
     public static ParameterizedType toParameterizedType(Type type) throws RuntimeException{
-        return toParameterizedType(type, null);
+        return EgggUtil.toParameterizedType(type, null);
     }
 
     /**
@@ -74,7 +67,7 @@ public class GenericUtil {
      * */
     @Deprecated
     public static ParameterizedType toParameterizedType(Type type, Map<String, Type> genericInfo) throws RuntimeException{
-       return GenericResolver.getDefault().toParameterizedType(type, genericInfo);
+       return EgggUtil.toParameterizedType(type, genericInfo);
     }
 
     ///////////////////////////
