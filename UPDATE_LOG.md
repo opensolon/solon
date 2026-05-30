@@ -44,6 +44,7 @@
 * hutool 升为 5.8.44
 * snakeyaml 升为 2.6
 * fastjson2 升为 2.0.62
+* jackson2 升为 2.21.4
 * gson 升为 2.14.0
 * snack4 升为 4.0.50
 * redisson 升为 4.4.0
