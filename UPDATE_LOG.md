@@ -56,3 +56,5 @@
 * undertow 升为 2.2.39.Final
 * rocketmq5 升为 5.2.0
 * nacos3 升为 3.2.1
+* swagger 升为 1.6.16
+* swagger 升为 2.2.50

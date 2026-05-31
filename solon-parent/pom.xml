@@ -106,8 +106,8 @@
 
         <snakeyaml.version>2.6</snakeyaml.version>
 
-        <swagger.version>1.6.11</swagger.version>
-        <swagger2.version>2.2.41</swagger2.version>
+        <swagger.version>1.6.16</swagger.version>
+        <swagger2.version>2.2.50</swagger2.version>
         <knife4j.version>4.5.0</knife4j.version>
         <therapi-runtime-javadoc.version>0.13.0</therapi-runtime-javadoc.version>
 
