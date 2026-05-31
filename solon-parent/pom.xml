@@ -78,7 +78,7 @@
 
         <smartsocket.version>1.7.4</smartsocket.version>
         <smarthttp.version>2.5.18</smarthttp.version>
-        <feat-core.version>2.0.0</feat-core.version>
+        <feat-core.version>2.1.0</feat-core.version>
         <grizzly.version>3.0.1</grizzly.version>
         <jetty.version>9.4.58.v20250814</jetty.version>
         <undertow.version>2.2.39.Final</undertow.version>
