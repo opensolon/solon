@@ -32,6 +32,7 @@
 * 新增 solon-view-aifei-enjoy 插件
 * 新增 solon-cache-caffeine3 插件
 * 新增 solon-ai-skill-openapi （solon-ai-skill-restapi 标为弃用）
+* 新增 solon-ai-talent-mount 才能插件
 * 添加 solon `ScopeLocal.getOr(Supplier)` 方法
 * 添加 solon `AppContext.resolvePlaceholders` 方法
 * asm 升为 9.10

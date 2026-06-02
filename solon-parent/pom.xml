@@ -774,6 +774,11 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon-ai-talent-mount</artifactId>
+                <version>${solon-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon-ai-talent-pdf</artifactId>
                 <version>${solon-ai.version}</version>
             </dependency>
