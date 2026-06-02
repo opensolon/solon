@@ -156,7 +156,7 @@
         <rocketmq5.version>5.2.0</rocketmq5.version>
         <activemq.version>5.16.7</activemq.version>
         <rabbitmq.version>5.19.0</rabbitmq.version>
-        <kafka_2.13.version>3.9.1</kafka_2.13.version>
+        <kafka_2.13.version>3.9.2</kafka_2.13.version>
         <kafka.version>3.9.2</kafka.version>
         <pulsar.version>2.11.2</pulsar.version>
 

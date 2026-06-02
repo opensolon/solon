@@ -51,6 +51,7 @@
 * redisson 升为 3.52.0
 * lettuce 升为 6.8.2.RELEASE
 * reactor-netty-http 升为 1.3.5
+* kafka 升为 3.9.2
 * netty 升为 4.1.134.Final
 * vert.x 升为 4.5.27
 * tomcat 升为 9.0.118
