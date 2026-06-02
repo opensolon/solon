@@ -15,6 +15,8 @@
  */
 package org.noear.solon.server.feathttp;
 
+import io.github.smartboot.socket.extension.plugins.SslPlugin;
+import io.github.smartboot.socket.extension.ssl.factory.SSLContextFactory;
 import org.noear.solon.Utils;
 import org.noear.solon.server.ServerConstants;
 import org.noear.solon.server.ServerLifecycle;
@@ -25,14 +27,13 @@ import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Handler;
 import org.noear.solon.lang.Nullable;
 import org.noear.solon.server.ssl.SslConfig;
-import org.smartboot.socket.extension.plugins.SslPlugin;
-import org.smartboot.socket.extension.ssl.factory.SSLContextFactory;
 import tech.smartboot.feat.core.server.HttpServer;
 import tech.smartboot.feat.core.server.ServerOptions;
 import tech.smartboot.feat.core.server.impl.HttpEndpoint;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLEngine;
+import java.lang.reflect.Field;
 import java.nio.channels.AsynchronousSocketChannel;
 import java.util.concurrent.Executor;
 
@@ -50,6 +51,17 @@ public class FeatHttpServer implements ServerLifecycle {
     protected SslConfig sslConfig = new SslConfig(ServerConstants.SIGNAL_HTTP);
     protected boolean enableDebug = false;
     protected boolean isSecure;
+
+    static {
+        // 关闭 feat-core 自带的 banner
+        try {
+            Field field = HttpServer.class.getDeclaredField("bannerEnabled");
+            field.setAccessible(true);
+            field.set(null, false);
+        } catch (Exception ignored) {
+            // feat-core 版本变更导致字段不存在时忽略
+        }
+    }
 
     public FeatHttpServer(HttpServerProps props) {
         this.props = props;
@@ -110,7 +122,6 @@ public class FeatHttpServer implements ServerLifecycle {
 
         options.debug(enableDebug);
 
-        options.bannerEnabled(false);
         options.readBufferSize(1024 * 8); //默认: 8k
         options.threadNum(coreThreads);
 
