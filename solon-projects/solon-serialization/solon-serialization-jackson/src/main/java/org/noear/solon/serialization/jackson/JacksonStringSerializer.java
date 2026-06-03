@@ -18,10 +18,7 @@ package org.noear.solon.serialization.jackson;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.ser.std.DateSerializer;
 import org.noear.solon.Utils;
 import org.noear.solon.core.convert.Converter;
@@ -39,8 +36,6 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import com.fasterxml.jackson.databind.MapperFeature;
 
 /**
  * Jackson json 序列化
@@ -230,6 +225,16 @@ public class JacksonStringSerializer implements EntityStringSerializer {
         } else {
             return null;
         }
+    }
+
+    /**
+     * 添加解码器
+     *
+     * @param clz     类型
+     * @param decoder 解码器
+     */
+    public <T> void addDecoder(Class<T> clz, JsonDeserializer<T> decoder) {
+        getDeserializeConfig().getCustomModule().addDeserializer(clz, decoder);
     }
 
     /**

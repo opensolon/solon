@@ -217,6 +217,16 @@ public class GsonStringSerializer implements EntityStringSerializer {
     }
 
     /**
+     * 添加解码器
+     *
+     * @param clz     类型
+     * @param decoder 解码器
+     */
+    public <T> void addDecoder(Class<T> clz, JsonDeserializer<T> decoder){
+        getDeserializeConfig().getBuilder().registerTypeAdapter(clz, decoder);
+    }
+
+    /**
      * 添加编码器
      */
     public <T> void addEncoder(Class<T> clz, JsonSerializer<T> encoder) {

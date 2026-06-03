@@ -17,6 +17,7 @@ package org.noear.solon.serialization.snack4;
 
 import org.noear.snack4.ONode;
 import org.noear.snack4.Feature;
+import org.noear.snack4.codec.ObjectDecoder;
 import org.noear.snack4.codec.ObjectEncoder;
 import org.noear.solon.Utils;
 import org.noear.solon.core.convert.Converter;
@@ -180,6 +181,16 @@ public class Snack4StringSerializer implements EntityStringSerializer {
         } else {
             return null;
         }
+    }
+
+    /**
+     * 添加解码器
+     *
+     * @param clz     类型
+     * @param decoder 解码器
+     */
+    public <T> void addDecoder(Class<T> clz, ObjectDecoder<T> decoder) {
+        getDeserializeConfig().getOptions().addDecoder(clz, decoder);
     }
 
     /**

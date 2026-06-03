@@ -18,6 +18,7 @@ package org.noear.solon.serialization.fastjson;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.parser.Feature;
 import com.alibaba.fastjson.parser.ParserConfig;
+import com.alibaba.fastjson.parser.deserializer.ObjectDeserializer;
 import com.alibaba.fastjson.serializer.*;
 import org.noear.solon.Utils;
 import org.noear.solon.core.convert.Converter;
@@ -216,6 +217,22 @@ public class FastjsonStringSerializer implements EntityStringSerializer {
                     getDeserializeConfig().getFeatures());
         } else {
             return null;
+        }
+    }
+
+    /**
+     * 添加解码器
+     *
+     * @param clz     类型
+     * @param decoder 解码器
+     */
+    public void addDecoder(Type clz, ObjectDeserializer decoder){
+        getDeserializeConfig().getConfig().putDeserializer(clz, decoder);
+
+        if (clz == Long.class) {
+            getDeserializeConfig().getConfig().putDeserializer(Long.TYPE, decoder);
+        } else if (clz == Integer.class) {
+            getDeserializeConfig().getConfig().putDeserializer(Integer.TYPE, decoder);
         }
     }
 

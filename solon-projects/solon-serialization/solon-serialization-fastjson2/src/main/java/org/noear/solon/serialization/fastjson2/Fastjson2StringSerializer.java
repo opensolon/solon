@@ -18,6 +18,7 @@ package org.noear.solon.serialization.fastjson2;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONReader;
 import com.alibaba.fastjson2.JSONWriter;
+import com.alibaba.fastjson2.reader.ObjectReader;
 import com.alibaba.fastjson2.reader.ObjectReaderProvider;
 import com.alibaba.fastjson2.writer.ObjectWriter;
 import com.alibaba.fastjson2.writer.ObjectWriterProvider;
@@ -184,6 +185,16 @@ public class Fastjson2StringSerializer implements EntityStringSerializer {
         } else {
             return null;
         }
+    }
+
+    /**
+     * 添加解码器
+     *
+     * @param clz     类型
+     * @param decoder 解码器
+     */
+    public <T> void addDecoder(Class<T> clz, ObjectReader<T> decoder) {
+        getDeserializeConfig().getContext().getProvider().register(clz, decoder);
     }
 
     /**
