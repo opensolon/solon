@@ -39,12 +39,12 @@ public class RedissonCacheService implements CacheService {
     protected String _cacheKeyHead;
     protected int _defaultSeconds;
     protected Serializer<String> _serializer = null;
-    protected boolean _enableMd5key = true;
+    protected boolean _enableMd5key = false;
 
     protected final RedissonClient client;
 
     /**
-     * 启用 Md5 key（默认为 true）
+     * 启用 Md5 key
      * */
     public RedissonCacheService enableMd5key(boolean enable) {
         _enableMd5key = enable;

@@ -35,6 +35,8 @@
 * 新增 solon-ai-talent-mount 才能插件
 * 添加 solon `ScopeLocal.getOr(Supplier)` 方法
 * 添加 solon `AppContext.resolvePlaceholders` 方法
+* 调整 solon-cache-caffeine 增加 md5 控制、默认时间、缓存头控制支持
+* 调整 `solon-cache-*` enableMd5key 默认为 false 
 * asm 升为 9.10
 * lombok 升为 1.18.46
 * slf4j 升为 2.0.18

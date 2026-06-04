@@ -40,6 +40,21 @@ public class CaffeineCacheService implements CacheService {
     private MyExpiry expiry;
     private String _cacheKeyHead;
     private int _defaultSeconds;
+    private boolean _enableMd5key = false;
+
+    /**
+     * 启用 Md5 key
+     *
+     */
+    public CaffeineCacheService enableMd5key(boolean enable) {
+        _enableMd5key = enable;
+        return this;
+    }
+
+    public CaffeineCacheService cacheKeyHead(String cacheKeyHead) {
+        _cacheKeyHead = cacheKeyHead;
+        return this;
+    }
 
     public CaffeineCacheService(Cache<String, Object> client, int defSeconds) {
         this(client, null, defSeconds);
@@ -90,10 +105,16 @@ public class CaffeineCacheService implements CacheService {
 
     @Override
     public void store(String key, Object obj, int seconds) {
+        String newKey = newKey(key);
+
         lock.lock();
         try {
-            expiry.setSupplier(() -> TimeUnit.SECONDS.toNanos(seconds));
-            client.put(key, obj);
+            if (seconds > 0) {
+                expiry.setSupplier(() -> TimeUnit.SECONDS.toNanos(seconds));
+            } else {
+                expiry.setSupplier(() -> TimeUnit.SECONDS.toNanos(_defaultSeconds));
+            }
+            client.put(newKey, obj);
             expiry.setSupplier(null);
         } finally {
             lock.unlock();
@@ -102,19 +123,25 @@ public class CaffeineCacheService implements CacheService {
 
     @Override
     public void remove(String key) {
-        client.invalidate(key);
+        String newKey = newKey(key);
+
+        client.invalidate(newKey);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public <T> T get(String key, Type type) {
-        return (T) client.getIfPresent(key);
+        String newKey = newKey(key);
+
+        return (T) client.getIfPresent(newKey);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public <T> T getOrStore(String key, Type type, int seconds, Supplier<T> supplier) {
-        return (T) client.get(key, (k) -> supplier.get());
+        String newKey = newKey(key);
+
+        return (T) client.get(newKey, (k) -> supplier.get());
     }
 
     private static class MyExpiry implements Expiry<String, Object> {
@@ -153,6 +180,22 @@ public class CaffeineCacheService implements CacheService {
                 return supplier.get();
             }
             return TimeUnit.SECONDS.toNanos(defaultSeconds);
+        }
+    }
+
+    protected String newKey(String key) {
+        if (_cacheKeyHead == null) {
+            if (_enableMd5key) {
+                return Utils.md5(key);
+            } else {
+                return key;
+            }
+        } else {
+            if (_enableMd5key) {
+                return _cacheKeyHead + ":" + Utils.md5(key);
+            } else {
+                return _cacheKeyHead + ":" + key;
+            }
         }
     }
 }

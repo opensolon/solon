@@ -42,7 +42,7 @@ public class MemCacheService implements CacheService {
     //重写时可能会用到
     protected String _cacheKeyHead;
     protected int _defaultSeconds;
-    protected boolean _enableMd5key = true;
+    protected boolean _enableMd5key = false;
 
     protected final MemcachedClient client;
 
