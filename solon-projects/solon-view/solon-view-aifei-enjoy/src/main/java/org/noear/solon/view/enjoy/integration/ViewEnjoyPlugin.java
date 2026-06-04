@@ -17,6 +17,7 @@ package org.noear.solon.view.enjoy.integration;
 
 import cn.aifei.enjoy.Directive;
 import cn.aifei.enjoy.Engine;
+import java.util.Objects;
 import org.noear.solon.Solon;
 import org.noear.solon.auth.AuthUtil;
 import org.noear.solon.auth.tags.AuthConstants;
@@ -28,47 +29,64 @@ import org.noear.solon.view.enjoy.EnjoyRender;
 import org.noear.solon.view.enjoy.tags.AuthPermissionsTag;
 import org.noear.solon.view.enjoy.tags.AuthRolesTag;
 
-import java.util.Objects;
-
 public class ViewEnjoyPlugin implements Plugin {
-    @SuppressWarnings("unchecked")
-    @Override
-    public void start(AppContext context) {
-        EnjoyRender render = new EnjoyRender();
+  @SuppressWarnings("unchecked")
+  @Override
+  public void start(AppContext context) {
+    EnjoyRender render = new EnjoyRender();
 
-        context.app().shared().forEach((k, v) -> {
-            render.putVariable(k, v);
-        });
-
-        context.app().onSharedAdd((k, v) -> {
-            render.putVariable(k, v);
-        });
-
-        Engine.setDirectiveFactory((cls) -> Objects.requireNonNull(Solon.context()).getBean(cls));
-        context.lifecycle(Constants.LF_IDX_PLUGIN_BEAN_USES, () -> {
-            context.beanForeach((k, v) -> {
-                if (k.startsWith("view:")) { //java view widget
-                    if (Directive.class.isAssignableFrom(v.clz())) {
-                        Class<? extends Directive> clz = (Class<? extends Directive>) v.clz();
-                        render.putDirective(k.split(":")[1], clz);
-                    }
-
-                    return;
-                }
-
-                if (k.startsWith("share:")) { //java share object
-                    render.putVariable(k.split(":")[1], v.raw());
-                    return;
-                }
+    context
+        .app()
+        .shared()
+        .forEach(
+            (k, v) -> {
+              render.putVariable(k, v);
             });
+
+    context
+        .app()
+        .onSharedAdd(
+            (k, v) -> {
+              render.putVariable(k, v);
+            });
+
+    Engine.setDirectiveFactory(
+        (cls) -> {
+          Directive directive = Objects.requireNonNull(Solon.context()).getBean(cls);
+          if (directive != null) {
+            return directive;
+          }
+
+          // 兜底
+          return ClassUtil.newInstance(cls);
+        });
+    context.lifecycle(
+        Constants.LF_IDX_PLUGIN_BEAN_USES,
+        () -> {
+          context.beanForeach(
+              (k, v) -> {
+                if (k.startsWith("view:")) { // java view widget
+                  if (Directive.class.isAssignableFrom(v.clz())) {
+                    Class<? extends Directive> clz = (Class<? extends Directive>) v.clz();
+                    render.putDirective(k.split(":")[1], clz);
+                  }
+
+                  return;
+                }
+
+                if (k.startsWith("share:")) { // java share object
+                  render.putVariable(k.split(":")[1], v.raw());
+                  return;
+                }
+              });
         });
 
-        context.app().renders().register(render);
-        context.wrapAndPut(EnjoyRender.class, render); //用于扩展
+    context.app().renders().register(render);
+    context.wrapAndPut(EnjoyRender.class, render); // 用于扩展
 
-        if (ClassUtil.hasClass(() -> AuthUtil.class)) {
-            render.putDirective(AuthConstants.TAG_authPermissions, AuthPermissionsTag.class);
-            render.putDirective(AuthConstants.TAG_authRoles, AuthRolesTag.class);
-        }
+    if (ClassUtil.hasClass(() -> AuthUtil.class)) {
+      render.putDirective(AuthConstants.TAG_authPermissions, AuthPermissionsTag.class);
+      render.putDirective(AuthConstants.TAG_authRoles, AuthRolesTag.class);
     }
+  }
 }
