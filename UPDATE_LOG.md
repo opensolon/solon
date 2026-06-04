@@ -31,7 +31,7 @@
 * 新增 mcp-json-jackson2
 * 新增 solon-view-aifei-enjoy 插件
 * 新增 solon-cache-caffeine3 插件
-* 新增 solon-ai-skill-openapi （solon-ai-skill-restapi 标为弃用）
+* 新增 solon-ai-talent-gateway（由 solon-ai-skill-restapi 和 solon-ai-skill-toolgateway 合并而来）
 * 新增 solon-ai-talent-mount 才能插件
 * 添加 solon `ScopeLocal.getOr(Supplier)` 方法
 * 添加 solon `AppContext.resolvePlaceholders` 方法

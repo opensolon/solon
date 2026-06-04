@@ -784,11 +784,6 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon-ai-talent-openapi</artifactId>
-                <version>${solon-ai.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.noear</groupId>
                 <artifactId>solon-ai-talent-social</artifactId>
                 <version>${solon-ai.version}</version>
             </dependency>
@@ -804,7 +799,7 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon-ai-talent-toolgateway</artifactId>
+                <artifactId>solon-ai-talent-gateway</artifactId>
                 <version>${solon-ai.version}</version>
             </dependency>
             <dependency>
