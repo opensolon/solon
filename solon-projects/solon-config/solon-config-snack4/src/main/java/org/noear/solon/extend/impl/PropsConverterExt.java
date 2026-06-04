@@ -34,10 +34,15 @@ import java.util.Properties;
  * @since 3.7
  */
 public class PropsConverterExt extends PropsConverter {
+    private static volatile Options options;
 
-    private Options getOptions() {
-        return Options.of(Feature.Write_AllowUseSetter)
-                .classLoader(AppClassLoader.global());
+    public static Options getOptions() {
+        if (options == null) {
+            options = Options.of(Feature.Write_AllowUseSetter)
+                    .classLoader(AppClassLoader.global());
+        }
+
+        return options;
     }
 
     @Override
