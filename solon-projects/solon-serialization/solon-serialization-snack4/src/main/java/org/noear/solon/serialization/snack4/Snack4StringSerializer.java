@@ -119,7 +119,7 @@ public class Snack4StringSerializer implements EntityStringSerializer {
      */
     @Override
     public String name() {
-        return "snack3-json";
+        return "snack4-json";
     }
 
     /**
