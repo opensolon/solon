@@ -36,8 +36,9 @@
 * 添加 solon `ScopeLocal.getOr(Supplier)` 方法
 * 添加 solon `AppContext.resolvePlaceholders` 方法
 * 添加 solon-config-snack4 开放属性序列化的 Options 定制支持
+* 优化 solon-server-xxx MultipartUtil 字段处理 RunUtil.runAndTry(part::delete) 尝试删除
 * 调整 solon-cache-caffeine 增加 md5 控制、默认时间、缓存头控制支持
-* 调整 `solon-cache-*` enableMd5key 默认为 false 
+* 调整 solon-cache-xxx enableMd5key 默认为 false 
 * 修复 solon-serialization-snack4 Snack4StringSerializer.name 为 “snack4-json”
 * eggg 升为 1.1.3
 * snack4 升为 4.0.51
