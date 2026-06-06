@@ -39,19 +39,20 @@
 * 调整 solon-cache-caffeine 增加 md5 控制、默认时间、缓存头控制支持
 * 调整 `solon-cache-*` enableMd5key 默认为 false 
 * 修复 solon-serialization-snack4 Snack4StringSerializer.name 为 “snack4-json”
+* eggg 升为 1.1.3
+* snack4 升为 4.0.51
+* liquor 升为 1.6.8
+* socketd 升为 2.6.0
 * asm 升为 9.10
 * lombok 升为 1.18.46
 * slf4j 升为 2.0.18
 * log4j 升为 2.26.0
 * junit5 升为 5.14.4
-* eggg 升为 1.1.3
-* liquor 升为 1.6.8
 * hutool 升为 5.8.44
 * snakeyaml 升为 2.6
 * fastjson2 升为 2.0.62
 * jackson2 升为 2.21.4
 * gson 升为 2.14.0
-* snack4 升为 4.0.51
 * redisson 升为 3.52.0
 * lettuce 升为 6.8.2.RELEASE
 * reactor-netty-http 升为 1.3.5
