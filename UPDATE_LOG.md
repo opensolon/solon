@@ -43,6 +43,7 @@
 * snack4 升为 4.0.51
 * liquor 升为 1.6.8
 * socketd 升为 2.6.0
+* folkmq 升为 1.8.0-M1
 * asm 升为 9.10
 * lombok 升为 1.18.46
 * slf4j 升为 2.0.18
