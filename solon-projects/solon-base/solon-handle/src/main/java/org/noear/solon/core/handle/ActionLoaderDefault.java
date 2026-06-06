@@ -102,7 +102,7 @@ public class ActionLoaderDefault extends HandlerAide implements ActionLoader {
             bPath = "";
             bVersion = null;
         } else {
-            bPath = Utils.annoAlias(bMapping.value(), bMapping.path());
+            bPath = Utils.valueOr(bMapping.value(), bMapping.path());
 
             if (Utils.isNotEmpty(bMapping.version())) {
                 bVersion = bMapping.version();
@@ -220,7 +220,7 @@ public class ActionLoaderDefault extends HandlerAide implements ActionLoader {
 
         //构建 path and method
         if (m_map != null) {
-            m_path = Utils.annoAlias(m_map.value(), m_map.path());
+            m_path = Utils.valueOr(m_map.value(), m_map.path());
 
             if (m_limitMethodSet.size() == 0) {
                 //如果没有找到，则用Mapping上自带的

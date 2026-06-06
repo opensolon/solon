@@ -20,7 +20,6 @@ import org.noear.solon.Utils;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.core.*;
 import org.noear.solon.core.exception.StatusException;
-import org.noear.solon.core.route.RoutingDefault;
 import org.noear.solon.core.route.RoutingTable;
 import org.noear.solon.core.route.RoutingTableDefault;
 import org.noear.solon.core.util.PathUtil;
@@ -87,7 +86,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
             throw new IllegalStateException("No Mapping!");
         }
 
-        mapping = Utils.annoAlias(mappingAnno.value(), mappingAnno.path());
+        mapping = Utils.valueOr(mappingAnno.value(), mappingAnno.path());
 
         //默认为404错误输出
         mainDef = (c) -> {

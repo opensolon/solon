@@ -50,7 +50,7 @@ public class QuartzSchedulerProxy implements Lifecycle {
     }
 
     private JobKey getJobKey(String name) {
-        String jobGroup = Utils.annoAlias(Solon.cfg().appName(), "solon");
+        String jobGroup = Utils.valueOr(Solon.cfg().appName(), "solon");
         return JobKey.jobKey(name, jobGroup);
     }
 
@@ -90,7 +90,7 @@ public class QuartzSchedulerProxy implements Lifecycle {
     public void register(JobHolder jobHolder) throws SchedulerException {
         tryInitScheduler();
 
-        String jobGroup = Utils.annoAlias(Solon.cfg().appName(), "solon");
+        String jobGroup = Utils.valueOr(Solon.cfg().appName(), "solon");
 
         if (Utils.isEmpty(jobHolder.getScheduled().cron())) {
             regJobByFixedRate(jobHolder, jobHolder.getScheduled().fixedRate(), jobGroup);

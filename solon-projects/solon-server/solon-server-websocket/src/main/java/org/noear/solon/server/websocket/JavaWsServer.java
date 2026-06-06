@@ -95,7 +95,7 @@ public class JavaWsServer extends WebSocketServer {
 
         SubProtocolCapable subProtocolCapable = webSocketRouter.getSubProtocol(path);
         if (subProtocolCapable != null) {
-            String reqProtocols = Utils.annoAlias(request.getFieldValue(SubProtocolCapable.SEC_WEBSOCKET_PROTOCOL), "");
+            String reqProtocols = Utils.valueOr(request.getFieldValue(SubProtocolCapable.SEC_WEBSOCKET_PROTOCOL), "");
             String protocols = subProtocolCapable.getSubProtocols(Arrays.asList(reqProtocols.split(",")));
 
             if (Utils.isNotEmpty(protocols)) {

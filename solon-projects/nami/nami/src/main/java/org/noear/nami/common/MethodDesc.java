@@ -137,7 +137,7 @@ public class MethodDesc {
                 if (mappingAnno.method().length > 0) {
                     action = mappingAnno.method()[0].name();
                 }
-                path = Utils.annoAlias(mappingAnno.value(), mappingAnno.path());
+                path = Utils.valueOr(mappingAnno.value(), mappingAnno.path());
             }
 
             if (mappingAnno.headers().length > 0) {

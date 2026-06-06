@@ -44,7 +44,7 @@ public interface HandlerSlots {
      * 添加主体处理
      */
     default void add(Mapping mapping, Set<MethodType> methodTypes, int index, Handler handler) {
-        String path = Utils.annoAlias(mapping.value(), mapping.path());
+        String path = Utils.valueOr(mapping.value(), mapping.path());
 
         for (MethodType m1 : methodTypes) {
             add(path, m1, index, handler);

@@ -71,7 +71,7 @@ public class ParameterDesc {
 
         Param paramAnno = parameter.getAnnotation(Param.class);
         if (paramAnno != null) {
-            name = Utils.annoAlias(paramAnno.value(), paramAnno.name());
+            name = Utils.valueOr(paramAnno.value(), paramAnno.name());
             return;
         }
 
@@ -79,21 +79,21 @@ public class ParameterDesc {
         Header headerAnno = parameter.getAnnotation(Header.class);
         if (headerAnno != null) {
             isHeader = true;
-            name = Utils.annoAlias(headerAnno.value(), headerAnno.name());
+            name = Utils.valueOr(headerAnno.value(), headerAnno.name());
             return;
         }
 
         Cookie cookieAnno = parameter.getAnnotation(Cookie.class);
         if (cookieAnno != null) {
             isCookie = true;
-            name = Utils.annoAlias(cookieAnno.value(), cookieAnno.name());
+            name = Utils.valueOr(cookieAnno.value(), cookieAnno.name());
             return;
         }
 
         Path pathAnno = parameter.getAnnotation(Path.class);
         if (pathAnno != null) {
             isPath = true;
-            name = Utils.annoAlias(pathAnno.value(), pathAnno.name());
+            name = Utils.valueOr(pathAnno.value(), pathAnno.name());
             return;
         }
     }

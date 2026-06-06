@@ -335,8 +335,8 @@ public class OpenApi2Builder {
 
             String operationMethod = BuilderHelper.getHttpMethod(actionHolder, apiAction);
 
-            String operationConsumes = Utils.annoAlias(apiAction.consumes(), actionHolder.action().consumes());
-            String operationProduces = Utils.annoAlias(apiAction.produces(), actionHolder.action().produces());
+            String operationConsumes = Utils.valueOr(apiAction.consumes(), actionHolder.action().consumes());
+            String operationProduces = Utils.valueOr(apiAction.produces(), actionHolder.action().produces());
             boolean isRequiredBody = false;
             if (operationConsumes != null && operationConsumes.contains("json") && operationMethod.equals(ApiEnum.METHOD_GET) == false) {
                 isRequiredBody = true;

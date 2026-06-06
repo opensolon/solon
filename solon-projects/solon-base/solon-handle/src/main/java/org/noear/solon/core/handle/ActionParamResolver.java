@@ -78,7 +78,7 @@ public class ActionParamResolver {
             return false;
         }
 
-        String name2 = Utils.annoAlias(paramAnno.value(), paramAnno.name());
+        String name2 = Utils.valueOr(paramAnno.value(), paramAnno.name());
         if (Utils.isNotEmpty(name2)) {
             vo.name = name2;
         }
@@ -99,7 +99,7 @@ public class ActionParamResolver {
             return false;
         }
 
-        String name2 = Utils.annoAlias(pathAnno.value(), pathAnno.name());
+        String name2 = Utils.valueOr(pathAnno.value(), pathAnno.name());
         if (Utils.isNotEmpty(name2)) {
             vo.name = name2;
         }
@@ -123,7 +123,7 @@ public class ActionParamResolver {
             return false;
         }
 
-        String name2 = Utils.annoAlias(headerAnno.value(), headerAnno.name());
+        String name2 = Utils.valueOr(headerAnno.value(), headerAnno.name());
         if (Utils.isNotEmpty(name2)) {
             vo.name = name2;
         }
@@ -148,7 +148,7 @@ public class ActionParamResolver {
             return false;
         }
 
-        String name2 = Utils.annoAlias(cookieAnno.value(), cookieAnno.name());
+        String name2 = Utils.valueOr(cookieAnno.value(), cookieAnno.name());
         if (Utils.isNotEmpty(name2)) {
             vo.name = name2;
         }

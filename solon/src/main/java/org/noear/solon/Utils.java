@@ -30,7 +30,6 @@ import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.*;
-import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Function;
@@ -139,13 +138,40 @@ public class Utils {
      *
      * @param v1 值1
      * @param v2 值2
+     * @deprecated 4.0
      */
+    @Deprecated
     public static String annoAlias(String v1, String v2) {
         if (isEmpty(v1)) {
             return v2;
         } else {
             return v1;
         }
+    }
+
+    /**
+     * 获取值（多可选值）
+     *
+     * @param v1 值1
+     * @param v2 值2
+     * @since 4.0
+     */
+    public static String valueOr(String v1, String v2) {
+        return isNotEmpty(v1) ? v1 : v2;
+    }
+
+    /**
+     * 获取值（多可选值）
+     *
+     * @param v1 值1
+     * @param v2 值2
+     * @param v3 值3
+     * @since 4.0
+     */
+    public static String valueOr(String v1, String v2, String v3) {
+        if (isNotEmpty(v1)) return v1;
+        if (isNotEmpty(v2)) return v2;
+        return v3;
     }
 
     /**

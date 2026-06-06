@@ -233,7 +233,7 @@ public class AppContext extends BeanContainer {
 
         //注册 @Component 构建器
         beanBuilderAdd(Component.class, (clz, bw, anno) -> {
-            String beanName = Utils.annoAlias(anno.value(), anno.name());
+            String beanName = Utils.valueOr(anno.value(), anno.name());
 
             bw.nameSet(beanName);
             bw.tagSet(anno.tag());
@@ -247,7 +247,7 @@ public class AppContext extends BeanContainer {
 
         //注册 @Managed 构建器
         beanBuilderAdd(Managed.class, (clz, bw, anno) -> {
-            String beanName = Utils.annoAlias(anno.value(), anno.name());
+            String beanName = Utils.valueOr(anno.value(), anno.name());
 
             bw.nameSet(beanName);
             bw.tagSet(anno.tag());
@@ -1040,7 +1040,7 @@ public class AppContext extends BeanContainer {
             m_bw = new BeanWrap(this, beanClz, raw, null, false, anno.initMethod(), anno.destroyMethod());
         }
 
-        String beanName = Utils.annoAlias(anno.value(), anno.name());
+        String beanName = Utils.valueOr(anno.value(), anno.name());
 
         m_bw.nameSet(beanName);
         m_bw.tagSet(anno.tag());

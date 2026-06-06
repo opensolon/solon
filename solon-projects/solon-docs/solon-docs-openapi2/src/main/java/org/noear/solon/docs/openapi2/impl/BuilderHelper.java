@@ -141,7 +141,7 @@ public class BuilderHelper {
             return "";
         }
 
-        String path = Utils.annoAlias(mapping.value(), mapping.path());
+        String path = Utils.valueOr(mapping.value(), mapping.path());
         if (path.startsWith("/")) {
             return path.substring(1);
         } else {

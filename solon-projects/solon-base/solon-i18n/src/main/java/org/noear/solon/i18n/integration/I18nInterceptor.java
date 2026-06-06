@@ -48,7 +48,7 @@ public final class I18nInterceptor implements MethodInterceptor {
             if (anno != null && ctx != null) {
                 ModelAndView mv = (ModelAndView) rst;
 
-                String bundleName = Utils.annoAlias(anno.value(), anno.bundle());
+                String bundleName = Utils.valueOr(anno.value(), anno.bundle());
                 I18nBundle bundle;
 
                 if (Utils.isEmpty(bundleName)) {

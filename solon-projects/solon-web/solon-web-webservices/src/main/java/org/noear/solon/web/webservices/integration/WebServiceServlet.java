@@ -47,7 +47,7 @@ public class WebServiceServlet extends CXFNonSpringServlet {
         for (BeanWrap bw : wsBeanBuilder.getWsBeanWarps()) {
             // 获取 name 属性
             WebService anno = bw.clz().getAnnotation(WebService.class);
-            String name = Utils.annoAlias(anno.name(), anno.serviceName());
+            String name = Utils.valueOr(anno.name(), anno.serviceName());
             // 获取 Web 服务地址
             String wsAddress = getAddress(name, bw.clz());
             // 获取 Web 服务实现类（找到唯一的实现类）

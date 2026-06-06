@@ -148,8 +148,8 @@ public class ActionDefault extends HandlerAide implements Action {
                 mMultipart = true;
             }
 
-            mName = Utils.annoAlias(mapping.value(), mapping.path());
-            mVersion = Utils.annoAlias(mapping.version(), bVersion);
+            mName = Utils.valueOr(mapping.value(), mapping.path());
+            mVersion = Utils.valueOr(mapping.version(), bVersion);
         }
 
         if (Utils.isEmpty(path)) {
