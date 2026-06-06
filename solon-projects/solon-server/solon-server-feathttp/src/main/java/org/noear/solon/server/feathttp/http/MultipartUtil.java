@@ -15,6 +15,7 @@
  */
 package org.noear.solon.server.feathttp.http;
 
+import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.server.ServerProps;
 import org.noear.solon.core.exception.StatusException;
 import org.noear.solon.core.handle.Context;
@@ -61,6 +62,7 @@ public class MultipartUtil {
                     doBuildFiles(name, filesMap, part);
                 } else {
                     ctx.paramMap().add(name, IoUtil.transferToString(part.getInputStream(), ServerProps.request_encoding));
+                    RunUtil.runAndTry(part::delete);
                 }
             }
         } catch (Exception e) {
