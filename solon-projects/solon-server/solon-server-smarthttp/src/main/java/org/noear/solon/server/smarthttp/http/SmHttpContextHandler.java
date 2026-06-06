@@ -26,8 +26,8 @@ import org.smartboot.http.server.HttpRequest;
 import org.smartboot.http.server.HttpResponse;
 import org.smartboot.http.server.HttpServerHandler;
 import org.smartboot.http.server.impl.Request;
-import org.smartboot.socket.util.AttachKey;
-import org.smartboot.socket.util.Attachment;
+import org.smartboot.http.server.util.AttachKey;
+import org.smartboot.http.server.util.Attachment;
 
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;

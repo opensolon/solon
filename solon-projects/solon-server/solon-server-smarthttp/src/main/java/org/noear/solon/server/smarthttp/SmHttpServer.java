@@ -30,11 +30,12 @@ import org.noear.solon.lang.Nullable;
 import org.smartboot.http.server.HttpBootstrap;
 import org.smartboot.http.server.HttpServerConfiguration;
 import org.smartboot.http.server.impl.Request;
-import org.smartboot.socket.extension.plugins.SslPlugin;
-import org.smartboot.socket.extension.ssl.factory.SSLContextFactory;
+import io.github.smartboot.socket.extension.plugins.SslPlugin;
+import io.github.smartboot.socket.extension.ssl.factory.SSLContextFactory;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLEngine;
+import java.nio.channels.AsynchronousSocketChannel;
 import java.util.concurrent.Executor;
 
 /**
@@ -102,7 +103,7 @@ public class SmHttpServer implements ServerLifecycle {
                 }
 
                 @Override
-                public void initSSLEngine(SSLEngine sslEngine) {
+                public void initSSLEngine(AsynchronousSocketChannel channel, SSLEngine sslEngine) {
                     sslEngine.setUseClientMode(false);
                 }
             });

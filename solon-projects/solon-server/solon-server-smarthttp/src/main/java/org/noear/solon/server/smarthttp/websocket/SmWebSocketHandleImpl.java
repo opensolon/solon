@@ -30,8 +30,8 @@ import org.smartboot.http.server.handler.WebSocketDefaultHandler;
 import org.smartboot.http.server.impl.Request;
 import org.smartboot.http.server.impl.WebSocketRequestImpl;
 import org.smartboot.http.server.impl.WebSocketResponseImpl;
-import org.smartboot.socket.util.AttachKey;
-import org.smartboot.socket.util.Attachment;
+import org.smartboot.http.server.util.AttachKey;
+import org.smartboot.http.server.util.Attachment;
 
 import java.net.URI;
 import java.nio.ByteBuffer;
