@@ -57,7 +57,6 @@ import org.noear.solon.validation.annotation.NotBlank;
 import org.noear.solon.validation.annotation.NotEmpty;
 import org.noear.solon.validation.annotation.NotNull;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -647,7 +646,10 @@ public class OpenApi3Builder {
             schema.setType("array");
         }
 
-        if (clazz.isEnum()) {
+        if (clazz == String.class) {
+            schema.setType("string");
+            return schemaName;
+        } else if (clazz.isEnum()) {
             schema.setType("string");
             // 设置枚举值
             Object[] enumConstants = clazz.getEnumConstants();
