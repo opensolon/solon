@@ -15,6 +15,12 @@
  */
 package org.noear.solon.server.feathttp.http;
 
+import java.io.*;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.UploadedFile;
@@ -33,452 +39,444 @@ import tech.smartboot.feat.core.common.HttpStatus;
 import tech.smartboot.feat.core.server.HttpRequest;
 import tech.smartboot.feat.core.server.HttpResponse;
 
-import java.io.*;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Map;
-import java.util.concurrent.CompletableFuture;
-
 /**
  * @author airhead
  */
 public class FeatHttpContext extends ContextBase {
-    static final Logger log = LoggerFactory.getLogger(FeatHttpContext.class);
-    /// ////////////////////
+  static final Logger log = LoggerFactory.getLogger(FeatHttpContext.class);
+  /// ////////////////////
 
-    protected final AsyncContextState asyncState = new AsyncContextState();
-    private HttpRequest _request;
-    private HttpResponse _response;
-    private CompletableFuture<Void> _future;
-    private boolean _loadMultipartFormData = false;
-    private URI _uri;
-    private String _url;
-    private String queryString;
-    private MultiMap<String> _paramMap;
-    private MultiMap<String> _cookieMap;
-    private MultiMap<String> _headerMap;
-    private ByteArrayOutputStream _outputStreamTmp;
-    private int _status = 200;
-    private boolean _headers_sent = false;
-    private boolean _allows_write = true;
+  protected final AsyncContextState asyncState = new AsyncContextState();
+  private HttpRequest _request;
+  private HttpResponse _response;
+  private CompletableFuture<Void> _future;
+  private boolean _loadMultipartFormData = false;
+  private URI _uri;
+  private String _url;
+  private String queryString;
+  private MultiMap<String> _paramMap;
+  private MultiMap<String> _cookieMap;
+  private MultiMap<String> _headerMap;
+  private ByteArrayOutputStream _outputStreamTmp;
+  private int _status = 200;
+  private boolean _headers_sent = false;
+  private boolean _allows_write = true;
 
-    public FeatHttpContext(HttpRequest request, CompletableFuture<Void> future) {
-        _request = request;
-        _response = request.getResponse();
-        _future = future;
+  public FeatHttpContext(HttpRequest request, CompletableFuture<Void> future) {
+    _request = request;
+    _response = request.getResponse();
+    _future = future;
+  }
+
+  @Override
+  public boolean isHeadersSent() {
+    return _headers_sent;
+  }
+
+  @Override
+  public Object request() {
+    return _request;
+  }
+
+  @Override
+  public String remoteIp() {
+    return _request.getRemoteAddr();
+  }
+
+  @Override
+  public int remotePort() {
+    return _request.getRemoteAddress().getPort();
+  }
+
+  @Override
+  public int localPort() {
+    return _request.getLocalAddress().getPort();
+  }
+
+  @Override
+  public String method() {
+    return _request.getMethod();
+  }
+
+  @Override
+  public String protocol() {
+    return _request.getProtocol().getProtocol();
+  }
+
+  @Override
+  public URI uri() {
+    if (_uri == null) {
+      _uri = this.parseURI(url());
+    }
+    return _uri;
+  }
+
+  @Override
+  public boolean isSecure() {
+    return _request.isSecure();
+  }
+
+  @Override
+  public String url() {
+    if (_url == null) {
+      _url = _request.getRequestURL();
     }
 
-    @Override
-    public boolean isHeadersSent() {
-        return _headers_sent;
-    }
+    return _url;
+  }
 
-    @Override
-    public Object request() {
-        return _request;
-    }
+  @Override
+  public long contentLength() {
+    return _request.getContentLength();
+  }
 
-    @Override
-    public String remoteIp() {
-        return _request.getRemoteAddr();
-    }
+  @Override
+  public String queryString() {
+    try {
+      if (queryString == null) {
+        queryString = _request.getQueryString();
 
-    @Override
-    public int remotePort() {
-        return _request.getRemoteAddress().getPort();
-    }
-
-    @Override
-    public int localPort() {
-        return _request.getLocalAddress().getPort();
-    }
-
-    @Override
-    public String method() {
-        return _request.getMethod();
-    }
-
-    @Override
-    public String protocol() {
-        return _request.getProtocol().getProtocol();
-    }
-
-    @Override
-    public URI uri() {
-        if (_uri == null) {
-            _uri = this.parseURI(url());
-        }
-        return _uri;
-    }
-
-    @Override
-    public boolean isSecure() {
-        return _request.isSecure();
-    }
-
-    @Override
-    public String url() {
-        if (_url == null) {
-            _url = _request.getRequestURL();
-        }
-
-        return _url;
-    }
-
-    @Override
-    public long contentLength() {
-        return _request.getContentLength();
-    }
-
-    @Override
-    public String queryString() {
-        try {
-            if (queryString == null) {
-                queryString = _request.getQueryString();
-
-                if (queryString == null) {
-                    queryString = "";
-                } else {
-                    queryString = ServerProps.urlDecode(queryString);
-                }
-            }
-
-            return queryString;
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public String body(String charset) throws IOException {
-        try {
-            return super.body(charset);
-        } catch (Exception e) {
-            throw MultipartUtil.status4xx(this, e);
-        }
-    }
-
-    @Override
-    public InputStream bodyAsStream() throws IOException {
-        return _request.getInputStream();
-    }
-
-    @Override
-    public MultiMap<String> paramMap() {
-        paramsMapInit();
-
-        return _paramMap;
-    }
-
-    @Override
-    public MultiMap<UploadedFile> fileMap() {
-        if (isMultipartFormData()) {
-            loadMultipartFormData();
-        }
-
-        return _fileMap;
-    }
-
-    @Override
-    public MultiMap<String> cookieMap() {
-        if (_cookieMap == null) {
-            _cookieMap = new MultiMap<>(false);
-
-            DecodeUtils.decodeCookies(this, header(HeaderNames.HEADER_COOKIE));
-        }
-
-        return _cookieMap;
-    }
-
-    //=================================
-
-    @Override
-    public MultiMap<String> headerMap() {
-        if (_headerMap == null) {
-            _headerMap = new MultiMap<String>();
-
-            for (String k : _request.getHeaderNames()) {
-                _headerMap.holder(k).setValues(new ArrayList<>(_request.getHeaders(k)));
-            }
-        }
-
-        return _headerMap;
-    }
-
-    @Override
-    public Object response() {
-        return _response;
-    }
-
-    @Override
-    protected void contentTypeDoSet(String contentType) {
-        if (charset != null && contentType != null) {
-            if (contentType.length() > 0 && contentType.indexOf(";") < 0) {
-                headerSet(HeaderNames.HEADER_CONTENT_TYPE, contentType + ";charset=" + charset);
-                return;
-            }
-        }
-
-        headerSet(HeaderNames.HEADER_CONTENT_TYPE, contentType);
-    }
-
-    @Override
-    public void contentLength(long size) {
-        _response.setContentLength(size);
-    }
-
-    @Override
-    public void output(byte[] bytes) {
-        try {
-            OutputStream out = outputStream();
-
-            if (!_allows_write) {
-                return;
-            }
-
-            out.write(bytes);
-        } catch (Throwable ex) {
-            throw new RuntimeException(ex);
-        }
-    }
-
-    @Override
-    public void output(InputStream stream) {
-        try {
-            OutputStream out = outputStream();
-
-            if (!_allows_write) {
-                return;
-            }
-
-            IoUtil.transferTo(stream, out);
-        } catch (Throwable ex) {
-            throw new RuntimeException(ex);
-        }
-    }
-
-    @Override
-    public OutputStream outputStream() throws IOException {
-        sendHeaders(false);
-
-        if (_allows_write) {
-            return _response.getOutputStream();
+        if (queryString == null) {
+          queryString = "";
         } else {
-            if (_outputStreamTmp == null) {
-                _outputStreamTmp = new ByteArrayOutputStream();
-            } else {
-                _outputStreamTmp.reset();
-            }
-
-            return _outputStreamTmp;
+          queryString = ServerProps.urlDecode(queryString);
         }
+      }
+
+      return queryString;
+    } catch (UnsupportedEncodingException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  @Override
+  public String body(String charset) throws IOException {
+    try {
+      return super.body(charset);
+    } catch (Exception e) {
+      throw MultipartUtil.status4xx(this, e);
+    }
+  }
+
+  @Override
+  public InputStream bodyAsStream() throws IOException {
+    return _request.getInputStream();
+  }
+
+  @Override
+  public MultiMap<String> paramMap() {
+    paramsMapInit();
+
+    return _paramMap;
+  }
+
+  @Override
+  public MultiMap<UploadedFile> fileMap() {
+    if (isMultipartFormData()) {
+      loadMultipartFormData();
     }
 
-    @Override
-    public void headerSet(String key, String val) {
-        //用put才有效
-        _response.setHeader(key, val);
+    return _fileMap;
+  }
+
+  @Override
+  public MultiMap<String> cookieMap() {
+    if (_cookieMap == null) {
+      _cookieMap = new MultiMap<>(false);
+
+      DecodeUtils.decodeCookies(this, header(HeaderNames.HEADER_COOKIE));
     }
 
-    @Override
-    public void headerAdd(String key, String val) {
-        _response.addHeader(key, val);
+    return _cookieMap;
+  }
+
+  // =================================
+
+  @Override
+  public MultiMap<String> headerMap() {
+    if (_headerMap == null) {
+      _headerMap = new MultiMap<String>();
+
+      for (String k : _request.getHeaderNames()) {
+        _headerMap.holder(k).setValues(new ArrayList<>(_request.getHeaders(k)));
+      }
     }
 
-    @Override
-    public String headerOfResponse(String name) {
-        return _response.getHeader(name);
+    return _headerMap;
+  }
+
+  @Override
+  public Object response() {
+    return _response;
+  }
+
+  @Override
+  protected void contentTypeDoSet(String contentType) {
+    if (charset != null && contentType != null) {
+      if (contentType.length() > 0 && contentType.indexOf(";") < 0) {
+        headerSet(HeaderNames.HEADER_CONTENT_TYPE, contentType + ";charset=" + charset);
+        return;
+      }
     }
 
-    @Override
-    public Collection<String> headerValuesOfResponse(String name) {
-        return _response.getHeaders(name);
+    headerSet(HeaderNames.HEADER_CONTENT_TYPE, contentType);
+  }
+
+  @Override
+  public void contentLength(long size) {
+    _response.setContentLength(size);
+  }
+
+  @Override
+  public void output(byte[] bytes) {
+    try {
+      OutputStream out = outputStream();
+
+      if (!_allows_write) {
+        return;
+      }
+
+      out.write(bytes);
+    } catch (Throwable ex) {
+      throw new RuntimeException(ex);
+    }
+  }
+
+  @Override
+  public void output(InputStream stream) {
+    try {
+      OutputStream out = outputStream();
+
+      if (!_allows_write) {
+        return;
+      }
+
+      IoUtil.transferTo(stream, out);
+    } catch (Throwable ex) {
+      throw new RuntimeException(ex);
+    }
+  }
+
+  @Override
+  public OutputStream outputStream() throws IOException {
+    sendHeaders(false);
+
+    if (_allows_write) {
+      return _response.getOutputStream();
+    } else {
+      if (_outputStreamTmp == null) {
+        _outputStreamTmp = new ByteArrayOutputStream();
+      } else {
+        _outputStreamTmp.reset();
+      }
+
+      return _outputStreamTmp;
+    }
+  }
+
+  @Override
+  public void headerSet(String key, String val) {
+    // 用put才有效
+    _response.setHeader(key, val);
+  }
+
+  @Override
+  public void headerAdd(String key, String val) {
+    _response.addHeader(key, val);
+  }
+
+  @Override
+  public String headerOfResponse(String name) {
+    return _response.getHeader(name);
+  }
+
+  @Override
+  public Collection<String> headerValuesOfResponse(String name) {
+    return _response.getHeaders(name);
+  }
+
+  @Override
+  public Collection<String> headerNamesOfResponse() {
+    return _response.getHeaderNames();
+  }
+
+  @Override
+  public void cookieSet(org.noear.solon.core.handle.Cookie cookie) {
+    Cookie c = new Cookie(cookie.name, cookie.value);
+
+    if (cookie.maxAge >= 0) {
+      c.setMaxAge(cookie.maxAge);
     }
 
-    @Override
-    public Collection<String> headerNamesOfResponse() {
-        return _response.getHeaderNames();
+    if (Utils.isNotEmpty(cookie.domain)) {
+      c.setDomain(cookie.domain);
     }
 
-    @Override
-    public void cookieSet(org.noear.solon.core.handle.Cookie cookie) {
-        Cookie c = new Cookie(cookie.name, cookie.value);
+    if (Utils.isNotEmpty(cookie.path)) {
+      c.setPath(cookie.path);
+    }
 
-        if (cookie.maxAge >= 0) {
-            c.setMaxAge(cookie.maxAge);
+    c.setSecure(cookie.secure);
+    c.setHttpOnly(cookie.httpOnly);
+
+    _response.addCookie(c);
+  }
+
+  @Override
+  public void redirect(String url, int code) {
+    url = RedirectUtils.getRedirectPath(url);
+
+    headerSet(HeaderNames.HEADER_LOCATION, url);
+    statusDoSet(code);
+  }
+
+  @Override
+  public int status() {
+    return _status;
+  }
+
+  @Override
+  protected void statusDoSet(int status) {
+    _status = status;
+  }
+
+  @Override
+  public void flush() throws IOException {
+    if (_allows_write) {
+      outputStream().flush();
+    }
+  }
+
+  @Override
+  public void close() throws IOException {
+    _response.close();
+  }
+
+  @Override
+  public boolean asyncSupported() {
+    return true;
+  }
+
+  @Override
+  public void asyncListener(ContextAsyncListener listener) {
+    asyncState.addListener(listener);
+  }
+
+  @Override
+  public void asyncStart(long timeout, Runnable runnable) {
+    if (asyncState.isStarted == false) {
+      asyncState.isStarted = true;
+      asyncState.asyncDelay(timeout, this, this::innerCommit);
+
+      if (runnable != null) {
+        runnable.run();
+      }
+
+      asyncState.onStart(this);
+    }
+  }
+
+  @Override
+  public boolean asyncStarted() {
+    return asyncState.isStarted;
+  }
+
+  @Override
+  public void asyncComplete() {
+    if (asyncState.isStarted) {
+      try {
+        innerCommit();
+      } catch (Throwable e) {
+        log.warn("Async completion failed", e);
+        asyncState.onError(this, e);
+      } finally {
+        asyncState.onComplete(this);
+      }
+    }
+  }
+
+  ///////////////////////
+  // for async
+
+  protected HttpRequest innerGetRequest() {
+    return _request;
+  }
+
+  protected HttpResponse innerGetResponse() {
+    return _response;
+  }
+
+  @Override
+  protected void innerCommit() throws IOException {
+    try {
+      if (getHandled() || status() >= 200) {
+        sendHeaders(true);
+      } else {
+        status(404);
+        sendHeaders(true);
+      }
+    } finally {
+      _future.complete(null);
+    }
+  }
+
+  private void loadMultipartFormData() {
+    if (_loadMultipartFormData) {
+      return;
+    } else {
+      _loadMultipartFormData = true;
+    }
+
+    // 文件上传需要
+    if (isMultipartFormData()) {
+      MultipartUtil.buildParamsAndFiles(this, _fileMap);
+    }
+  }
+
+  /**
+   * @since 2.7
+   * @since 2.9
+   */
+  private void paramsMapInit() {
+    if (_paramMap == null) {
+      _paramMap = new MultiMap<String>();
+
+      try {
+        // 编码窗体预处理（不再需要了）
+        // DecodeUtils.decodeFormUrlencoded(this);
+
+        // 多分段处理
+        if (autoMultipart()) {
+          loadMultipartFormData();
         }
 
-        if (Utils.isNotEmpty(cookie.domain)) {
-            c.setDomain(cookie.domain);
+        for (Map.Entry<String, String[]> entry : _request.getParameters().entrySet()) {
+          String key = ServerProps.urlDecode(entry.getKey());
+          _paramMap.holder(key).setValues(entry.getValue());
         }
-
-        if (Utils.isNotEmpty(cookie.path)) {
-            c.setPath(cookie.path);
-        }
-
-        c.setSecure(cookie.secure);
-        c.setHttpOnly(cookie.httpOnly);
-
-        _response.addCookie(c);
+      } catch (Exception e) {
+        throw MultipartUtil.status4xx(this, e);
+      }
     }
+  }
 
-    @Override
-    public void redirect(String url, int code) {
-        url = RedirectUtils.getRedirectPath(url);
+  private void sendHeaders(boolean isCommit) throws IOException {
+    if (!_headers_sent) {
+      _headers_sent = true;
 
-        headerSet(HeaderNames.HEADER_LOCATION, url);
-        statusDoSet(code);
+      if ("HEAD".equals(method())) {
+        _allows_write = false;
+      }
+
+      if (sessionState() != null) {
+        sessionState().sessionPublish();
+      }
+
+      _response.setHttpStatus(HttpStatus.valueOf(status()));
+
+      if (isCommit || _allows_write == false) {
+        _response.setContentLength(0);
+      }
     }
-
-    @Override
-    public int status() {
-        return _status;
-    }
-
-    @Override
-    protected void statusDoSet(int status) {
-        _status = status;
-    }
-
-    @Override
-    public void flush() throws IOException {
-        if (_allows_write) {
-            outputStream().flush();
-        }
-    }
-
-    @Override
-    public void close() throws IOException {
-        _response.close();
-    }
-
-    @Override
-    public boolean asyncSupported() {
-        return true;
-    }
-
-    @Override
-    public void asyncListener(ContextAsyncListener listener) {
-        asyncState.addListener(listener);
-    }
-
-    @Override
-    public void asyncStart(long timeout, Runnable runnable) {
-        if (asyncState.isStarted == false) {
-            asyncState.isStarted = true;
-            asyncState.asyncDelay(timeout, this, this::innerCommit);
-
-            if (runnable != null) {
-                runnable.run();
-            }
-
-            asyncState.onStart(this);
-        }
-    }
-
-    @Override
-    public boolean asyncStarted() {
-        return asyncState.isStarted;
-    }
-
-    @Override
-    public void asyncComplete() {
-        if (asyncState.isStarted) {
-            try {
-                innerCommit();
-            } catch (Throwable e) {
-                log.warn("Async completion failed", e);
-                asyncState.onError(this, e);
-            } finally {
-                asyncState.onComplete(this);
-            }
-        }
-    }
-
-
-    ///////////////////////
-    // for async
-
-    protected HttpRequest innerGetRequest() {
-        return _request;
-    }
-
-    protected HttpResponse innerGetResponse() {
-        return _response;
-    }
-
-    @Override
-    protected void innerCommit() throws IOException {
-        try {
-            if (getHandled() || status() >= 200) {
-                sendHeaders(true);
-            } else {
-                status(404);
-                sendHeaders(true);
-            }
-        } finally {
-            _future.complete(null);
-        }
-    }
-
-    private void loadMultipartFormData() {
-        if (_loadMultipartFormData) {
-            return;
-        } else {
-            _loadMultipartFormData = true;
-        }
-
-        //文件上传需要
-        if (isMultipartFormData()) {
-            MultipartUtil.buildParamsAndFiles(this, _fileMap);
-        }
-    }
-
-    /**
-     * @since 2.7
-     * @since 2.9
-     */
-    private void paramsMapInit() {
-        if (_paramMap == null) {
-            _paramMap = new MultiMap<String>();
-
-            try {
-                //编码窗体预处理（不再需要了）
-                //DecodeUtils.decodeFormUrlencoded(this);
-
-                //多分段处理
-                if (autoMultipart()) {
-                    loadMultipartFormData();
-                }
-
-                for (Map.Entry<String, String[]> entry : _request.getParameters().entrySet()) {
-                    String key = ServerProps.urlDecode(entry.getKey());
-                    _paramMap.holder(key).setValues(entry.getValue());
-                }
-            } catch (Exception e) {
-                throw MultipartUtil.status4xx(this, e);
-            }
-        }
-    }
-
-    private void sendHeaders(boolean isCommit) throws IOException {
-        if (!_headers_sent) {
-            _headers_sent = true;
-
-            if ("HEAD".equals(method())) {
-                _allows_write = false;
-            }
-
-            if (sessionState() != null) {
-                sessionState().sessionPublish();
-            }
-
-            _response.setHttpStatus(HttpStatus.valueOf(status()));
-
-            if (isCommit || _allows_write == false) {
-                _response.setContentLength(0);
-            }
-        }
-    }
+  }
 }

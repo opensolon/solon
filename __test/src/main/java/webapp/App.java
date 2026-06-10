@@ -16,14 +16,15 @@
 package webapp;
 
 //import cn.dev33.satoken.SaManager;
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
+import java.util.Locale;
+import java.util.Properties;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.*;
-import org.noear.solon.data.cache.impl.JsonSerializer;
-import org.noear.solon.serialization.EntityStringSerializer;
-import org.noear.solon.serialization.properties.PropertiesStringSerializer;
-import org.noear.solon.server.http.HttpServerConfigure;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.ExtendLoader;
@@ -33,6 +34,9 @@ import org.noear.solon.scheduling.annotation.EnableAsync;
 import org.noear.solon.scheduling.annotation.EnableRetry;
 import org.noear.solon.security.web.SecurityFilter;
 import org.noear.solon.security.web.header.XContentTypeOptionsHeaderHandler;
+import org.noear.solon.serialization.EntityStringSerializer;
+import org.noear.solon.serialization.properties.PropertiesStringSerializer;
+import org.noear.solon.server.http.HttpServerConfigure;
 import org.noear.solon.view.freemarker.FreemarkerRender;
 import org.noear.solon.web.staticfiles.StaticMappings;
 import org.noear.solon.web.staticfiles.repository.ClassPathStaticRepository;
@@ -42,12 +46,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import webapp.demo2_mvc.PathPrefixController;
 import webapp.demo6_aop.TestImport;
-
-import java.io.ByteArrayOutputStream;
-import java.io.OutputStreamWriter;
-import java.nio.charset.Charset;
-import java.util.Locale;
-import java.util.Properties;
 
 @Managed
 @EnableAsync
@@ -135,6 +133,11 @@ public class App {
             StaticMappings.add("/down/Solon-0.1.1.zip", new FileStaticRepository("/Users/noear/Movies/"));
             StaticMappings.add("/down/PdfLoaderTest.pdf", new FileStaticRepository("/Users/noear/Movies/"));
             StaticMappings.add("/down/Socket.D-JS uniapp demo.mov", new FileStaticRepository("/Users/noear/Movies/"));
+
+            // 测试用例开启调试
+            x.onEvent(HttpServerConfigure.class, e -> {
+                e.enableDebug(true);
+            });
         });
 
         initApp(Solon.app());
