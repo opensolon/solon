@@ -15,6 +15,7 @@
  */
 package org.noear.solon.server.feathttp.http;
 
+import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.concurrent.RejectedExecutionException;
@@ -54,16 +55,13 @@ public class FeatHttpContextHandler implements HttpHandler {
   public void handle(HttpRequest httpRequest, CompletableFuture<Void> future) throws Throwable {
     FeatHttpContext ctx = new FeatHttpContext(httpRequest, future);
 
-    if (executor == null) {
+    if (executor == null || (isWebSocketUpgrade(httpRequest))) {
       handle0(ctx, future);
       return;
     }
 
     try {
-      executor.execute(
-          () -> {
-            handle0(ctx, future);
-          });
+      executor.execute(() -> handle0(ctx, future));
     } catch (RejectedExecutionException e) {
       handle0(ctx, future);
     }
@@ -71,18 +69,6 @@ public class FeatHttpContextHandler implements HttpHandler {
 
   @Override
   public void handle(HttpRequest httpRequest) throws Throwable {
-    // WebSocket upgrade detection
-    if (enableWebSocket) {
-      String upgradeHeader = httpRequest.getHeader("Upgrade");
-      if ("websocket".equalsIgnoreCase(upgradeHeader)) {
-        FeatHttpWebSocketUpgrade wsUpgrade = new FeatHttpWebSocketUpgrade();
-        wsUpgrade.captureHttpRequest(httpRequest);
-        wsUpgrade.setupSubProtocol(httpRequest);
-        httpRequest.upgrade(wsUpgrade);
-        return;
-      }
-    }
-
     // Normal HTTP handling (sync fallback)
     CompletableFuture<Void> future = new CompletableFuture<>();
     handle(httpRequest, future);
@@ -129,6 +115,15 @@ public class FeatHttpContextHandler implements HttpHandler {
         ctx.headerSet("Solon-Server", FeatHttpPlugin.solon_server_ver());
       }
 
+      HttpRequest httpRequest = ctx.innerGetRequest();
+      if (isWebSocketUpgrade(httpRequest)) {
+        FeatHttpWebSocketUpgrade wsUpgrade = new FeatHttpWebSocketUpgrade();
+        wsUpgrade.captureHttpRequest(httpRequest);
+        wsUpgrade.setupSubProtocol(httpRequest);
+        httpRequest.upgrade(wsUpgrade);
+        return;
+      }
+
       handler.handle(ctx);
 
       if (ctx.asyncStarted() == false) {
@@ -139,6 +134,17 @@ public class FeatHttpContextHandler implements HttpHandler {
       log.warn(e.getMessage(), e);
 
       ctx.innerGetResponse().setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  private boolean isWebSocketUpgrade(HttpRequest request) {
+    try {
+      Collection<String> upgradeValues = request.getHeaders("Upgrade");
+      return enableWebSocket
+          && upgradeValues != null
+          && upgradeValues.stream().anyMatch("websocket"::equalsIgnoreCase);
+    } catch (Exception e) {
+      return false;
     }
   }
 }

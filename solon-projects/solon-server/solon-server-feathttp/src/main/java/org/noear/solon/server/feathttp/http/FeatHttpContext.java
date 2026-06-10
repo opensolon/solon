@@ -398,14 +398,6 @@ public class FeatHttpContext extends ContextBase {
   ///////////////////////
   // for async
 
-  protected HttpRequest innerGetRequest() {
-    return _request;
-  }
-
-  protected HttpResponse innerGetResponse() {
-    return _response;
-  }
-
   @Override
   protected void innerCommit() throws IOException {
     try {
@@ -478,5 +470,13 @@ public class FeatHttpContext extends ContextBase {
         _response.setContentLength(0);
       }
     }
+  }
+
+  HttpRequest innerGetRequest() {
+    return _request;
+  }
+
+  HttpResponse innerGetResponse() {
+    return _response;
   }
 }
