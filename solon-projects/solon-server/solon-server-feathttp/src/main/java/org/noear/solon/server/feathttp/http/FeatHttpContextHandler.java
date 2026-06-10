@@ -15,149 +15,130 @@
  */
 package org.noear.solon.server.feathttp.http;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
+import java.util.concurrent.RejectedExecutionException;
+import org.noear.solon.core.handle.Handler;
 import org.noear.solon.server.ServerProps;
 import org.noear.solon.server.feathttp.integration.FeatHttpPlugin;
 import org.noear.solon.server.feathttp.websocket.FeatHttpWebSocketUpgrade;
-import org.noear.solon.core.handle.Handler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tech.smartboot.feat.core.common.HttpStatus;
 import tech.smartboot.feat.core.server.HttpHandler;
 import tech.smartboot.feat.core.server.HttpRequest;
-import tech.smartboot.feat.core.server.HttpResponse;
 import tech.smartboot.feat.core.server.impl.HttpEndpoint;
-
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
-import java.util.concurrent.RejectedExecutionException;
 
 /**
  * @author airhead
  */
 public class FeatHttpContextHandler implements HttpHandler {
-    static final Logger log = LoggerFactory.getLogger(FeatHttpContextHandler.class);
+  static final Logger log = LoggerFactory.getLogger(FeatHttpContextHandler.class);
+  private final Handler handler;
+  protected Executor executor;
+  private boolean enableWebSocket;
 
-    protected Executor executor;
-    private final Handler handler;
-    private boolean enableWebSocket;
+  public FeatHttpContextHandler(Handler handler) {
+    this.handler = handler;
+  }
 
-    public FeatHttpContextHandler(Handler handler) {
-        this.handler = handler;
+  public void setExecutor(Executor executor) {
+    this.executor = executor;
+  }
+
+  public void setEnableWebSocket(boolean enableWebSocket) {
+    this.enableWebSocket = enableWebSocket;
+  }
+
+  @Override
+  public void handle(HttpRequest httpRequest, CompletableFuture<Void> future) throws Throwable {
+    FeatHttpContext ctx = new FeatHttpContext(httpRequest, future);
+
+    if (executor == null) {
+      handle0(ctx, future);
+      return;
     }
 
-    public void setExecutor(Executor executor) {
-        this.executor = executor;
+    try {
+      executor.execute(
+          () -> {
+            handle0(ctx, future);
+          });
+    } catch (RejectedExecutionException e) {
+      handle0(ctx, future);
+    }
+  }
+
+  @Override
+  public void handle(HttpRequest httpRequest) throws Throwable {
+    // WebSocket upgrade detection
+    if (enableWebSocket) {
+      String upgradeHeader = httpRequest.getHeader("Upgrade");
+      if ("websocket".equalsIgnoreCase(upgradeHeader)) {
+        FeatHttpWebSocketUpgrade wsUpgrade = new FeatHttpWebSocketUpgrade();
+        wsUpgrade.captureHttpRequest(httpRequest);
+        wsUpgrade.setupSubProtocol(httpRequest);
+        httpRequest.upgrade(wsUpgrade);
+        return;
+      }
     }
 
-    public void setEnableWebSocket(boolean enableWebSocket) {
-        this.enableWebSocket = enableWebSocket;
+    // Normal HTTP handling (sync fallback)
+    CompletableFuture<Void> future = new CompletableFuture<>();
+    handle(httpRequest, future);
+  }
+
+  @Override
+  public void onClose(HttpEndpoint endpoint) {
+    Object attachment = endpoint.getAioSession().getAttachment();
+    if (attachment == null) {
+      return;
     }
 
-    @Override
-    public void onClose(HttpEndpoint endpoint) {
-        Object attachment = endpoint.getAioSession().getAttachment();
-        if (attachment == null) {
-            return;
-        }
-
-        if (attachment instanceof FeatHttpContext) {
-            FeatHttpContext ctx = (FeatHttpContext) attachment;
-            if (ctx.asyncStarted()) {
-                try {
-                    try {
-                        ctx.asyncState.onComplete(ctx);
-                    } catch (Throwable e) {
-                        log.warn(e.getMessage(), e);
-                    }
-                } finally {
-                    endpoint.getAioSession().setAttachment(null);
-                }
-            }
-        }
-    }
-
-    @Override
-    public void handle(HttpRequest httpRequest) throws Throwable {
-        // WebSocket upgrade detection
-        if (enableWebSocket) {
-            String upgradeHeader = httpRequest.getHeader("Upgrade");
-            if ("websocket".equalsIgnoreCase(upgradeHeader)) {
-                FeatHttpWebSocketUpgrade wsUpgrade = new FeatHttpWebSocketUpgrade();
-                wsUpgrade.captureHttpRequest(httpRequest);
-                wsUpgrade.setupSubProtocol(httpRequest);
-                httpRequest.upgrade(wsUpgrade);
-                return;
-            }
-        }
-
-        // Normal HTTP handling (sync fallback)
-        CompletableFuture<Void> future = new CompletableFuture<>();
-        handle(httpRequest, future);
-    }
-
-    @Override
-    public void handle(HttpRequest httpRequest, CompletableFuture<Void> future) throws Throwable {
-        HttpResponse httpResponse = httpRequest.getResponse();
-        FeatHttpContext ctx = new FeatHttpContext(httpRequest, future);
-
-        if (httpRequest instanceof HttpEndpoint) {
-            ((HttpEndpoint) httpRequest).getAioSession().setAttachment(ctx);
-        }
-
+    if (attachment instanceof FeatHttpContext) {
+      FeatHttpContext ctx = (FeatHttpContext) attachment;
+      if (ctx.asyncStarted()) {
         try {
-            if (executor == null) {
-                handle0(ctx, future);
-            } else {
-                try {
-                    executor.execute(() -> {
-                        handle0(ctx, future);
-                    });
-                } catch (RejectedExecutionException e) {
-                    handle0(ctx, future);
-                }
-            }
-        } finally {
-            if (ctx.asyncStarted() == false) {
-                if (httpRequest instanceof HttpEndpoint) {
-                    ((HttpEndpoint) httpRequest).getAioSession().setAttachment(null);
-                }
-            }
-        }
-    }
-
-    protected void handle0(FeatHttpContext ctx, CompletableFuture<Void> future) {
-        try {
-            handleDo(ctx);
-        } catch (Throwable e) {
-            e.printStackTrace();
-        } finally {
-            if (ctx.asyncStarted() == false) {
-                future.complete(null);
-            }
-        }
-    }
-
-    protected void handleDo(FeatHttpContext ctx) {
-        try {
-            if ("PRI".equals(ctx.method())) {
-                ctx.innerGetResponse().setHttpStatus(HttpStatus.NOT_IMPLEMENTED);
-                return;
-            }
-
-            if (ServerProps.output_meta) {
-                ctx.headerSet("Solon-Server", FeatHttpPlugin.solon_server_ver());
-            }
-
-            handler.handle(ctx);
-
-            if (ctx.asyncStarted() == false) {
-                ctx.innerCommit();
-            }
-
-        } catch (Throwable e) {
+          try {
+            ctx.asyncState.onComplete(ctx);
+          } catch (Throwable e) {
             log.warn(e.getMessage(), e);
-
-            ctx.innerGetResponse().setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+          }
+        } finally {
+          endpoint.getAioSession().setAttachment(null);
         }
+      }
     }
+  }
+
+  protected void handle0(FeatHttpContext ctx, CompletableFuture<Void> future) {
+    try {
+      handleDo(ctx);
+    } catch (Throwable e) {
+      log.warn(e.getMessage(), e);
+    } finally {
+      if (ctx.asyncStarted() == false) {
+        future.complete(null);
+      }
+    }
+  }
+
+  protected void handleDo(FeatHttpContext ctx) {
+    try {
+      if (ServerProps.output_meta) {
+        ctx.headerSet("Solon-Server", FeatHttpPlugin.solon_server_ver());
+      }
+
+      handler.handle(ctx);
+
+      if (ctx.asyncStarted() == false) {
+        ctx.innerCommit();
+      }
+
+    } catch (Throwable e) {
+      log.warn(e.getMessage(), e);
+
+      ctx.innerGetResponse().setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
 }
