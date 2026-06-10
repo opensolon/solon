@@ -43,7 +43,7 @@ public final class FeatHttpPlugin implements Plugin {
     }
 
     public static String solon_server_ver() {
-        return "feat-core 2.0/" + Solon.version();
+        return "FeatHttp 2.1/" + Solon.version();
     }
 
     @Override
