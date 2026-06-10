@@ -42,10 +42,10 @@
 * 调整 solon Utils.annoAlias 标为弃用（由 Utils.valueOr 替代）
 * 修复 solon-serialization-snack4 Snack4StringSerializer.name 为 “snack4-json”
 * eggg 升为 1.1.3
-* snack4 升为 4.0.51
+* snack4 升为 4.0.52
 * liquor 升为 1.6.8
 * socketd 升为 2.6.0
-* folkmq 升为 1.8.0-M1
+* folkmq 升为 1.8.0
 * asm 升为 9.10
 * lombok 升为 1.18.46
 * slf4j 升为 2.0.18
