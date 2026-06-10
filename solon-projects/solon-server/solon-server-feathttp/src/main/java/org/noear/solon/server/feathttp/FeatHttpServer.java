@@ -17,143 +17,145 @@ package org.noear.solon.server.feathttp;
 
 import io.github.smartboot.socket.extension.plugins.SslPlugin;
 import io.github.smartboot.socket.extension.ssl.factory.SSLContextFactory;
+import java.lang.reflect.Field;
+import java.nio.channels.AsynchronousSocketChannel;
+import java.util.concurrent.Executor;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLEngine;
 import org.noear.solon.Utils;
-import org.noear.solon.server.ServerConstants;
-import org.noear.solon.server.ServerLifecycle;
-import org.noear.solon.server.ServerProps;
-import org.noear.solon.server.prop.impl.HttpServerProps;
-import org.noear.solon.server.feathttp.http.FeatHttpContextHandler;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Handler;
 import org.noear.solon.lang.Nullable;
+import org.noear.solon.server.ServerConstants;
+import org.noear.solon.server.ServerLifecycle;
+import org.noear.solon.server.ServerProps;
+import org.noear.solon.server.feathttp.http.FeatHttpContextHandler;
+import org.noear.solon.server.prop.impl.HttpServerProps;
 import org.noear.solon.server.ssl.SslConfig;
 import tech.smartboot.feat.core.server.HttpServer;
 import tech.smartboot.feat.core.server.ServerOptions;
 import tech.smartboot.feat.core.server.impl.HttpEndpoint;
-
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLEngine;
-import java.lang.reflect.Field;
-import java.nio.channels.AsynchronousSocketChannel;
-import java.util.concurrent.Executor;
 
 /**
  * @author noear
  * @since 2.2
  */
 public class FeatHttpServer implements ServerLifecycle {
-    protected final HttpServerProps props;
-    protected HttpServer server = null;
-    protected Handler handler;
-    protected int coreThreads;
-    protected Executor workExecutor;
-    protected boolean enableWebSocket;
-    protected SslConfig sslConfig = new SslConfig(ServerConstants.SIGNAL_HTTP);
-    protected boolean enableDebug = false;
-    protected boolean isSecure;
+  static {
+    // 关闭 feat-core 自带的 banner
+    try {
+      Field field = HttpServer.class.getDeclaredField("bannerEnabled");
+      field.setAccessible(true);
+      field.set(null, false);
+    } catch (Exception ignored) {
+      // feat-core 版本变更导致字段不存在时忽略
+    }
+  }
 
-    static {
-        // 关闭 feat-core 自带的 banner
-        try {
-            Field field = HttpServer.class.getDeclaredField("bannerEnabled");
-            field.setAccessible(true);
-            field.set(null, false);
-        } catch (Exception ignored) {
-            // feat-core 版本变更导致字段不存在时忽略
-        }
+  protected final HttpServerProps props;
+  protected HttpServer server = null;
+  protected Handler handler;
+  protected int coreThreads;
+  protected Executor workExecutor;
+  protected boolean enableWebSocket;
+  protected SslConfig sslConfig = new SslConfig(ServerConstants.SIGNAL_HTTP);
+  protected boolean enableDebug = false;
+  protected boolean isSecure;
+
+  public FeatHttpServer(HttpServerProps props) {
+    this.props = props;
+  }
+
+  public boolean isSecure() {
+    return isSecure;
+  }
+
+  public void enableSsl(boolean enable, @Nullable SSLContext sslContext) {
+    sslConfig.set(enable, sslContext);
+  }
+
+  public void enableDebug(boolean enable) {
+    enableDebug = enable;
+  }
+
+  public void enableWebSocket(boolean enableWebSocket) {
+    this.enableWebSocket = enableWebSocket;
+  }
+
+  public void setHandler(Handler handler) {
+    this.handler = handler;
+  }
+
+  public void setWorkExecutor(Executor executor) {
+    this.workExecutor = executor;
+  }
+
+  public void setCoreThreads(int coreThreads) {
+    this.coreThreads = coreThreads;
+  }
+
+  @Override
+  public void start(String host, int port) throws Throwable {
+    ServerOptions options = new ServerOptions();
+    if (Utils.isNotEmpty(host)) {
+      options.host(host);
     }
 
-    public FeatHttpServer(HttpServerProps props) {
-        this.props = props;
-    }
+    if (sslConfig.isSslEnable()) {
+      SSLContext sslContext = sslConfig.getSslContext();
 
-    public boolean isSecure() {
-        return isSecure;
-    }
-
-    public void enableSsl(boolean enable, @Nullable SSLContext sslContext) {
-        sslConfig.set(enable, sslContext);
-    }
-
-    public void enableDebug(boolean enable) {
-        enableDebug = enable;
-    }
-
-    public void enableWebSocket(boolean enableWebSocket) {
-        this.enableWebSocket = enableWebSocket;
-    }
-
-    public void setHandler(Handler handler) {
-        this.handler = handler;
-    }
-
-    public void setWorkExecutor(Executor executor) {
-        this.workExecutor = executor;
-    }
-
-    public void setCoreThreads(int coreThreads) {
-        this.coreThreads = coreThreads;
-    }
-
-    @Override
-    public void start(String host, int port) throws Throwable {
-        ServerOptions options = new ServerOptions();
-        if (Utils.isNotEmpty(host)) {
-            options.host(host);
-        }
-
-        if (sslConfig.isSslEnable()) {
-            SSLContext sslContext = sslConfig.getSslContext();
-
-            SslPlugin<HttpEndpoint> sslPlugin = new SslPlugin<>(new SSLContextFactory() {
+      SslPlugin<HttpEndpoint> sslPlugin =
+          new SslPlugin<>(
+              new SSLContextFactory() {
                 @Override
                 public SSLContext create() throws Exception {
-                    return sslContext;
+                  return sslContext;
                 }
 
                 @Override
                 public void initSSLEngine(AsynchronousSocketChannel channel, SSLEngine sslEngine) {
-                    sslEngine.setUseClientMode(false);
+                  sslEngine.setUseClientMode(false);
                 }
-            });
-            options.addPlugin(sslPlugin);
-            isSecure = true;
-        }
-
-        options.debug(enableDebug);
-
-        options.readBufferSize(1024 * 8); //默认: 8k
-        options.threadNum(coreThreads);
-
-        options.setIdleTimeout(props.getIdleTimeoutOrDefault());
-
-        if (ServerProps.request_maxHeaderSize > 0) {
-            options.readBufferSize(ServerProps.request_maxHeaderSize);
-        }
-
-        if (ServerProps.request_maxBodySize > 0) {
-            options.setMaxRequestSize(ServerProps.request_maxBodySize);
-        }
-
-        FeatHttpContextHandler handlerTmp = new FeatHttpContextHandler(handler);
-        handlerTmp.setEnableWebSocket(enableWebSocket);
-
-        //非虚拟时，添加二级线程池（不能在 core 里添加虚拟线程）
-        handlerTmp.setExecutor(workExecutor);
-
-        //ServerOptions
-        EventBus.publish(options);
-
-        server = new HttpServer(options);
-        server.httpHandler(handlerTmp);
-        server.listen(host, port);
+              });
+      options.addPlugin(sslPlugin);
+      isSecure = true;
     }
 
-    @Override
-    public void stop() throws Throwable {
-        if (server != null) {
-            server.shutdown();
-            server = null;
-        }
+    options.debug(enableDebug);
+
+    // 默认: 8k
+    options.readBufferSize(1024 * 8);
+    options.threadNum(coreThreads);
+
+    options.setIdleTimeout(props.getIdleTimeoutOrDefault());
+
+    if (ServerProps.request_maxHeaderSize > 0) {
+      options.readBufferSize(ServerProps.request_maxHeaderSize);
     }
+
+    if (ServerProps.request_maxBodySize > 0) {
+      options.setMaxRequestSize(ServerProps.request_maxBodySize);
+    }
+
+    FeatHttpContextHandler handlerTmp = new FeatHttpContextHandler(handler);
+    handlerTmp.setEnableWebSocket(enableWebSocket);
+
+    // 非虚拟时，添加二级线程池（不能在 core 里添加虚拟线程）
+    handlerTmp.setExecutor(workExecutor);
+
+    // ServerOptions
+    EventBus.publish(options);
+
+    server = new HttpServer(options);
+    server.httpHandler(handlerTmp);
+    server.listen(host, port);
+  }
+
+  @Override
+  public void stop() throws Throwable {
+    if (server != null) {
+      server.shutdown();
+      server = null;
+    }
+  }
 }
