@@ -168,12 +168,18 @@ public class ServerProps {
             return def;
         }
 
-        if (tmp.endsWith("mb")) {
+        if (tmp.endsWith("gb")) {
+            long val = Long.parseLong(tmp.substring(0, tmp.length() - 2));
+            return val * 1024L * 1024L * 1024L;
+        } else if (tmp.endsWith("mb")) {
             long val = Long.parseLong(tmp.substring(0, tmp.length() - 2));
             return val * 1024L * 1024L;
         } else if (tmp.endsWith("kb")) {
             long val = Long.parseLong(tmp.substring(0, tmp.length() - 2));
             return val * 1024L;
+        } else if (tmp.endsWith("b")) {
+            long val = Long.parseLong(tmp.substring(0, tmp.length() - 1));
+            return val;
         } else {
             long val = Long.parseLong(tmp); //支持-1
 
