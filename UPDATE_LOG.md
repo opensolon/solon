@@ -28,6 +28,7 @@
 ### v4.0.1
 
 * 调整 solon 暂时恢复 PathAnalyzer 类
+* 优化 solon-server 配置大小支持全单位，增加gb和b
 
 ### v4.0.0  (2026-05-26)
 
