@@ -29,4 +29,9 @@ public class StaticTest extends HttpTester {
     public void file() throws Exception {
         assert path("/file-a/a.htm").get().equals("a");
     }
+
+    @Test
+    public void file_special_chars() throws Exception {
+        assert path("/file-a/a%20%231.htm").get().equals("special");
+    }
 }
