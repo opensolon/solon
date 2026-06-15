@@ -127,7 +127,7 @@ public class App {
 
             x.router().addPathPrefix("/pp1/", clz -> clz == PathPrefixController.class);
 
-            StaticMappings.add("/file-a/", new ClassPathStaticRepository("static_test"));
+            StaticMappings.add("/file-a/", new ClassPathStaticRepository("static_test2"));
             StaticMappings.add("/ext/", new ExtendStaticRepository());
             StaticMappings.add("/sa-token/", new FileStaticRepository("/Users/noear/Downloads/"));
             StaticMappings.add("/down/Solon-0.1.1.zip", new FileStaticRepository("/Users/noear/Movies/"));
