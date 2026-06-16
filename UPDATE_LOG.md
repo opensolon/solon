@@ -25,7 +25,7 @@
 
 
 
-### v4.0.1
+### v4.0.2
 
 * 新增 solon-server-feathttp 插件（试用）
 * 调整 solon 暂时恢复 PathAnalyzer 类
