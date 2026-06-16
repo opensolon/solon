@@ -27,6 +27,7 @@
 
 ### v4.0.1
 
+* 新增 solon-server-feathttp 插件（试用）
 * 调整 solon 暂时恢复 PathAnalyzer 类
 * 优化 solon-server 配置大小支持全单位，增加gb和b
 * snack4 升为 4.0.53
