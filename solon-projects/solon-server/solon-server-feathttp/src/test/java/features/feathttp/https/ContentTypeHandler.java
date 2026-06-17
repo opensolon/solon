@@ -1,4 +1,4 @@
-package features.smarthttp.https;
+package features.feathttp.https;
 
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Mapping;

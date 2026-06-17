@@ -1,4 +1,4 @@
-package features.smarthttp.websocket;
+package features.feathttp.websocket;
 
 /**
  * 线程工具类

@@ -53,6 +53,6 @@ This project includes:
   solon-security-vault under The Apache Software License, Version 2.0
   solon-serialization under The Apache Software License, Version 2.0
   solon-server under The Apache Software License, Version 2.0
-  solon-server-smarthttp under The Apache Software License, Version 2.0
+  solon-server-feathttp under The Apache Software License, Version 2.0
   solon-test under The Apache Software License, Version 2.0
 

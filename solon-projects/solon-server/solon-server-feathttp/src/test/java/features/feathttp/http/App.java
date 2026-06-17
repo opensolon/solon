@@ -1,4 +1,4 @@
-package features.smarthttp.http;
+package features.feathttp.http;
 
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Controller;

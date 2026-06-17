@@ -1,4 +1,4 @@
-package features.smarthttp.websocket;
+package features.feathttp.websocket;
 
 import org.noear.solon.net.annotation.ServerEndpoint;
 import org.noear.solon.net.websocket.WebSocket;
