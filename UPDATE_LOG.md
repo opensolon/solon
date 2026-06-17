@@ -23,7 +23,9 @@
 * 添加 Plugin postStart 事件???
 * 调整 Plugin 统一交给 AppContext 管理（之前由 SolonApp 或 PluginPackage 管理）？？
 
+### v4.0.3
 
+* 新增 solon-ai-talent-code 才能插件（从 solon-ai-harness 分离出来）
 
 ### v4.0.2
 
