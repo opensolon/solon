@@ -25,6 +25,7 @@
 
 ### v4.0.3
 
+* 新增 solon-ai-loop
 * 新增 solon-ai-talent-code 才能插件（从 solon-ai-harness 分离出来）
 
 ### v4.0.2
