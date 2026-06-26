@@ -27,6 +27,9 @@
 
 * 新增 solon-ai-loop
 * 新增 solon-ai-talent-code 才能插件（从 solon-ai-harness 分离出来）
+* 调整 solon 临时恢复 BeanContainer.wrapPublish
+* 调整 solon 临时恢复 ResourceUtil.scanClasses
+
 
 ### v4.0.2
 

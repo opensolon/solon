@@ -425,6 +425,16 @@ public abstract class BeanContainer {
         beanBasePublish(wrap);
     }
 
+    /**
+     * wrap 发布，触发基类订阅 （自动支持 @Managed, @Bean, @Component 的 wrap）
+     *
+     * @deprecated 3.0 {@link #beanPublish(BeanWrap)}
+     */
+    @Deprecated
+    public void wrapPublish(BeanWrap wrap) {
+        beanBasePublish(wrap);
+    }
+
 
     //public abstract BeanWrap wrap(Class<?> clz, Object raw);
 
