@@ -29,6 +29,7 @@
 * 新增 solon-ai-talent-code 才能插件（从 solon-ai-harness 分离出来）
 * 添加 solon ScopeLocal.Factory 接口
 * 添加 solon ScopeLocalJdk25 自动加载机制
+* 添加 solon-lib solon-java25 包（作自动加载用）
 * 调整 solon 临时恢复 BeanContainer.wrapPublish
 * 调整 solon 临时恢复 ResourceUtil.scanClasses
 
