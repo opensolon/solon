@@ -48,7 +48,7 @@ public final class FactoryManager {
 
         if (JavaUtil.JAVA_MAJOR_VERSION >= 25) {
             // >=25 则自动加载；<25 手动配置
-            scopeLocalFactory = ClassUtil.tryInstance("org.noear.solon.extend.impl.ScopeLocalJdk25Factory");
+            scopeLocalFactory = ClassUtil.tryInstance("org.noear.solon.extend.impl.ScopeLocalFactoryExt");
         }
 
         if (scopeLocalFactory == null) {
