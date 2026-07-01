@@ -22,6 +22,11 @@
             <artifactId>solon</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-java25</artifactId>
+        </dependency>
+
         <!-- 提供 Handler 处理支持插件（job,web,message） -->
         <dependency>
             <groupId>org.noear</groupId>
