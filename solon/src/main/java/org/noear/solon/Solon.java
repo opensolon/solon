@@ -60,7 +60,7 @@ public class Solon {
      * 框架版本号
      */
     public static String version() {
-        return "4.0.3-SNAPSHOT";
+        return "4.0.3";
     }
 
     /**
