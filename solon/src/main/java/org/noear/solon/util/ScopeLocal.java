@@ -42,6 +42,11 @@ public interface ScopeLocal<T> {
         return FactoryManager.getGlobal().newScopeLocal(applyFor);
     }
 
+    @FunctionalInterface
+    static interface Factory {
+        <T> ScopeLocal<T> create(Class<?> applyFor);
+    }
+
     /// //////////////////////////
 
 
