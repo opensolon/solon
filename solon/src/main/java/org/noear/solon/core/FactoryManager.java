@@ -17,6 +17,7 @@ package org.noear.solon.core;
 
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.util.ClassUtil;
+import org.noear.solon.core.util.JavaUtil;
 import org.noear.solon.util.ScopeLocalJdk8;
 import org.noear.solon.util.ScopeLocal;
 
@@ -37,8 +38,22 @@ public final class FactoryManager {
         return global;
     }
 
+
+    private ActionLoaderFactory actionLoaderFactory;
+    private LoadBalance.Factory loadBalanceFactory = (g, s) -> null;
+    private ScopeLocal.Factory scopeLocalFactory;
+
     public FactoryManager() {
         actionLoaderFactory = ClassUtil.tryInstance("org.noear.solon.extend.impl.ActionLoaderFactoryExt");
+
+        if (JavaUtil.JAVA_MAJOR_VERSION >= 25) {
+            // >=25 则自动加载；<25 手动配置
+            scopeLocalFactory = ClassUtil.tryInstance("org.noear.solon.extend.impl.ScopeLocalJdk25Factory");
+        }
+
+        if (scopeLocalFactory == null) {
+            scopeLocalFactory = ScopeLocalJdk8::new;
+        }
     }
 
     /// ///////
@@ -77,8 +92,6 @@ public final class FactoryManager {
     // scopeLocalFactory 对接
     //
 
-    private ScopeLocal.Factory scopeLocalFactory = ScopeLocalJdk8::new;
-
     public void scopeLocalFactory(ScopeLocal.Factory factory) {
         if (factory != null) {
             this.scopeLocalFactory = factory;
@@ -93,7 +106,7 @@ public final class FactoryManager {
     //
     // loadBalanceFactory 对接
     //
-    private LoadBalance.Factory loadBalanceFactory = (g, s) -> null;
+
 
     /**
      * 配置负载工厂
@@ -117,7 +130,6 @@ public final class FactoryManager {
     // loadBalanceFactory 对接
     //
 
-    private ActionLoaderFactory actionLoaderFactory;
 
     public ActionLoaderFactory actionLoaderFactory() {
         if (actionLoaderFactory == null) {
