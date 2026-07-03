@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>4.0.3</version>
+    <version>4.0.4-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -31,7 +31,7 @@
 
         <maven-war.version>3.4.0</maven-war.version>
 
-        <solon.version>4.0.3</solon.version>
+        <solon.version>4.0.4-SNAPSHOT</solon.version>
         <solon-ai.version>4.0.3</solon-ai.version>
         <solon-flow.version>4.0.3</solon-flow.version>
         <solon-expression.version>4.0.3</solon-expression.version>
@@ -117,7 +117,7 @@
         <fury.version>0.10.3</fury.version>
         <hessian.version>4.0.66</hessian.version>
         <hessian-sofa.version>4.0.4</hessian-sofa.version>
-        <hessian-lite.version>4.0.3</hessian-lite.version>
+        <hessian-lite.version>4.0.4-SNAPSHOT</hessian-lite.version>
         <protostuff.version>1.8.0</protostuff.version>
         <kryo.version>5.6.2</kryo.version>
         <agrona-sbe.version>1.22.0</agrona-sbe.version>
@@ -133,7 +133,7 @@
         <hamcrest.version>2.2</hamcrest.version>
         <mockito.version>4.11.0</mockito.version>
 
-        <hikaricp.version>4.0.3</hikaricp.version>
+        <hikaricp.version>4.0.4-SNAPSHOT</hikaricp.version>
         <hikaricp5.version>5.1.0</hikaricp5.version>
 
         <guava.version>33.5.0-jre</guava.version>
