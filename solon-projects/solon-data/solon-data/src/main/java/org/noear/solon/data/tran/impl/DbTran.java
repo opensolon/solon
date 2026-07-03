@@ -18,7 +18,9 @@ package org.noear.solon.data.tran.impl;
 import org.noear.solon.Utils;
 import org.noear.solon.core.util.RunnableEx;
 import org.noear.solon.data.annotation.Transaction;
+import org.noear.solon.data.datasource.DataSourceWrapper;
 import org.noear.solon.data.datasource.RoutingDataSourceMapping;
+import org.noear.solon.data.datasource.UntransactionDataSource;
 import org.noear.solon.data.tran.*;
 
 import javax.sql.DataSource;
@@ -66,21 +68,36 @@ public abstract class DbTran extends DbTranNode implements TranNode {
             if (conMap.containsKey(ds)) {
                 return conMap.get(ds);
             } else {
+                //支持'非事务数据源'（在动态数据源路由后，可能解析出 UntransactionDataSource）
+                if (ds instanceof DataSourceWrapper) {
+                    DataSourceWrapper dsw = (DataSourceWrapper) ds;
+                    if (dsw instanceof UntransactionDataSource || dsw.getReal() instanceof UntransactionDataSource) {
+                        //不使用事务
+                        return ds.getConnection();
+                    }
+                }
+
                 Connection con = ds.getConnection();
 
-                if (con.getAutoCommit() != false) {
-                    con.setAutoCommit(false);
+                try {
+                    if (con.getAutoCommit() != false) {
+                        con.setAutoCommit(false);
+                    }
+
+                    if (con.isReadOnly() != meta.readOnly()) {
+                        con.setReadOnly(meta.readOnly());
+                    }
+
+                    if (meta.isolation().level > 0) {
+                        con.setTransactionIsolation(meta.isolation().level);
+                    }
+
+                    conMap.putIfAbsent(ds, con);
+                } catch (SQLException e) {
+                    //可能不支持事务
+                    log.warn("Transaction invalid: {}", e.getMessage());
                 }
 
-                if (con.isReadOnly() != meta.readOnly()) {
-                    con.setReadOnly(meta.readOnly());
-                }
-
-                if (meta.isolation().level > 0) {
-                    con.setTransactionIsolation(meta.isolation().level);
-                }
-
-                conMap.putIfAbsent(ds, con);
                 return con;
             }
         }
