@@ -23,6 +23,10 @@
 * 添加 Plugin postStart 事件???
 * 调整 Plugin 统一交给 AppContext 管理（之前由 SolonApp 或 PluginPackage 管理）？？
 
+### v4.0.4
+
+* 优化 solon-data 数据库事务连接配置，仅在值变化时设置自动提交和只读模式
+
 ### v4.0.3
 
 * 新增 solon-ai-loop

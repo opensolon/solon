@@ -67,8 +67,15 @@ public abstract class DbTran extends DbTranNode implements TranNode {
                 return conMap.get(ds);
             } else {
                 Connection con = ds.getConnection();
-                con.setAutoCommit(false);
-                con.setReadOnly(meta.readOnly());
+
+                if (con.getAutoCommit() != false) {
+                    con.setAutoCommit(false);
+                }
+
+                if (con.isReadOnly() != meta.readOnly()) {
+                    con.setReadOnly(meta.readOnly());
+                }
+
                 if (meta.isolation().level > 0) {
                     con.setTransactionIsolation(meta.isolation().level);
                 }
