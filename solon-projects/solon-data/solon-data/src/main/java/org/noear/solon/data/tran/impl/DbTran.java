@@ -84,12 +84,23 @@ public abstract class DbTran extends DbTranNode implements TranNode {
                         con.setAutoCommit(false);
                     }
 
-                    if (con.isReadOnly() != meta.readOnly()) {
-                        con.setReadOnly(meta.readOnly());
+                    try {
+                        if (con.isReadOnly() != meta.readOnly()) {
+                            con.setReadOnly(meta.readOnly());
+                        }
+                    } catch (SQLException e) {
+                        //可能不支持事务只读模式
+                        log.warn("Transaction readonly nonsupport: {}", e.getMessage());
                     }
 
-                    if (meta.isolation().level > 0) {
-                        con.setTransactionIsolation(meta.isolation().level);
+
+                    try {
+                        if (meta.isolation().level > 0) {
+                            con.setTransactionIsolation(meta.isolation().level);
+                        }
+                    } catch (SQLException e) {
+                        //可能不支持事务隔离策略
+                        log.warn("Transaction isolation nonsupport: {}", e.getMessage());
                     }
 
                     conMap.putIfAbsent(ds, con);
