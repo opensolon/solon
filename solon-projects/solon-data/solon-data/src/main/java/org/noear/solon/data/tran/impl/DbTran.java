@@ -84,6 +84,8 @@ public abstract class DbTran extends DbTranNode implements TranNode {
                         con.setAutoCommit(false);
                     }
 
+                    conMap.putIfAbsent(ds, con);
+
                     try {
                         if (con.isReadOnly() != meta.readOnly()) {
                             con.setReadOnly(meta.readOnly());
@@ -102,8 +104,6 @@ public abstract class DbTran extends DbTranNode implements TranNode {
                         //可能不支持事务隔离策略
                         log.warn("Transaction isolation nonsupport: {}", e.getMessage());
                     }
-
-                    conMap.putIfAbsent(ds, con);
                 } catch (SQLException e) {
                     //可能不支持事务
                     log.warn("Transaction invalid: {}", e.getMessage());
