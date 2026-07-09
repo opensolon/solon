@@ -465,7 +465,7 @@ public abstract class AbstractHttpUtils implements HttpUtils {
                         return TextStreamUtil.parseLineStream(resp);
                     } else {
                         // 保持原有的错误构造逻辑
-                        return Flux.error(createHttpException(resp));
+                        return Flux.error(resp.createError());
                     }
                 });
     }
@@ -482,21 +482,9 @@ public abstract class AbstractHttpUtils implements HttpUtils {
                         return TextStreamUtil.parseSseStream(resp);
                     } else {
                         // 保持原有的错误构造逻辑
-                        return Flux.error(createHttpException(resp));
+                        return Flux.error(resp.createError());
                     }
                 });
-    }
-
-    /**
-     * 提取公共异常构造逻辑（保持原逻辑：尝试读取 body 报错）
-     */
-    private HttpException createHttpException(HttpResponse resp) {
-        String message = RunUtil.callAndTry(resp::bodyAsString);
-        if (Utils.isEmpty(message)) {
-            return new HttpException("Error code: " + resp.code());
-        } else {
-            return new HttpException("Error code: " + resp.code() + ", message: " + message);
-        }
     }
 
     /**
