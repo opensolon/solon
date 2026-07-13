@@ -25,7 +25,7 @@
 
 ### v4.0.4
 
-* 添加 solon RunHolder 线程池配置支持（solon.threads.parallelPoolSize / solon.threads.scheduledPoolSize）
+* 添加 solon RunHolder 线程池配置支持（solon.task.execution.pool.size / solon.task.scheduling.pool.size）
 * 优化 solon-data 数据库事务连接配置，仅在值变化时设置自动提交和只读模式
 
 ### v4.0.3

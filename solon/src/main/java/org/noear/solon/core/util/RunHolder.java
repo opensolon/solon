@@ -40,11 +40,11 @@ public class RunHolder {
     /**
      * 并行线程池大小配置
      */
-    private static final String PROP_PARALLEL_POOL_SIZE = "solon.threads.parallelPoolSize";
+    private static final String EXECUTION_POOL_SIZE = "solon.task.execution.pool.size";
     /**
      * 调度线程池大小配置
      */
-    private static final String PROP_SCHEDULED_POOL_SIZE = "solon.threads.scheduledPoolSize";
+    private static final String SCHEDULING_POOL_SIZE = "solon.task.scheduling.pool.size";
 
     /**
      * 异步执行器（一般用于执行 @Async 注解任务）
@@ -154,7 +154,7 @@ public class RunHolder {
      * 配置：solon.threads.parallelPoolSize，支持固定值 16 或内核倍数 x4
      */
     private int getParallelPoolSize() {
-        int poolSize = getPoolSizeOfConfig(PROP_PARALLEL_POOL_SIZE);
+        int poolSize = getPoolSizeOfConfig(EXECUTION_POOL_SIZE);
         if (poolSize > 0) {
             return poolSize;
         } else {
@@ -168,7 +168,7 @@ public class RunHolder {
      * 配置：solon.threads.scheduledPoolSize，支持固定值 8 或内核倍数 x2
      */
     private int getScheduledPoolSize() {
-        int poolSize = getPoolSizeOfConfig(PROP_SCHEDULED_POOL_SIZE);
+        int poolSize = getPoolSizeOfConfig(SCHEDULING_POOL_SIZE);
         if (poolSize > 0) {
             return poolSize;
         } else {
