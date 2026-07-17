@@ -37,7 +37,7 @@
         <solon-expression.version>4.0.3</solon-expression.version>
         <solon-cloud.version>4.0.3</solon-cloud.version>
         <solon-admin.version>4.0.3</solon-admin.version>
-        <solon-integration.version>4.0.3</solon-integration.version>
+        <solon-integration.version>4.0.4-SNAPSHOT</solon-integration.version>
         <solon-java17.version>4.0.3</solon-java17.version>
         <solon-java25.version>4.0.3</solon-java25.version>
 
