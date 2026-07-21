@@ -114,8 +114,9 @@ public class OkHttpDispatcherLoader {
                             .sslSocketFactory(ssl.getSocketFactory(), ssl.getX509TrustManager())
                             .hostnameVerifier(ssl.getHostnameVerifier())
                             .connectionSpecs(Arrays.asList(ConnectionSpec.COMPATIBLE_TLS, ConnectionSpec.CLEARTEXT))
-                            .followRedirects(true)
-                            .followSslRedirects(true)
+                            // 禁用 OkHttp 自动重定向，由手动逻辑处理以尊重 maxRedirects 配置
+                            .followRedirects(false)
+                            .followSslRedirects(false)
                             .build();
                 }
             } finally {

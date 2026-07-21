@@ -46,7 +46,7 @@ public class JdkHttpResponse implements HttpResponse {
     private final int statusCode;
     private final String statusMessage;
     private final MultiMap<String> headers;
-    private MultiMap<String> cookies;
+    private volatile MultiMap<String> cookies;
     private final InputStream body;
 
     public JdkHttpResponse(JdkHttpUtils utils, int statusCode, HttpURLConnection http) throws IOException {
@@ -73,13 +73,22 @@ public class JdkHttpResponse implements HttpResponse {
             String encoding = http.getHeaderField("Content-Encoding");
 
             if (Utils.isNotEmpty(encoding)) {
-                if ("gzip".equalsIgnoreCase(encoding)) {
-                    if (inputStream instanceof GZIPInputStream == false) {
-                        inputStream = new GZIPInputStream(inputStream);
+                try {
+                    if ("gzip".equalsIgnoreCase(encoding)) {
+                        if (inputStream instanceof GZIPInputStream == false) {
+                            inputStream = new GZIPInputStream(inputStream);
+                        }
+                    } else if ("deflate".equalsIgnoreCase(encoding)) {
+                        if (inputStream instanceof InflaterInputStream == false) {
+                            inputStream = new InflaterInputStream(inputStream, new Inflater(true));
+                        }
                     }
-                } else if ("deflate".equalsIgnoreCase(encoding)) {
-                    if (inputStream instanceof InflaterInputStream == false) {
-                        inputStream = new InflaterInputStream(inputStream, new Inflater(true));
+                } catch (IOException e) {
+                    // Content-Encoding 标注了压缩但实际 body 未压缩，关闭原始流并回退
+                    inputStream.close();
+                    inputStream = statusCode < 400 ? http.getInputStream() : http.getErrorStream();
+                    if (inputStream == null) {
+                        inputStream = new ByteArrayInputStream(new byte[0]);
                     }
                 }
             }
@@ -156,7 +165,7 @@ public class JdkHttpResponse implements HttpResponse {
     }
 
 
-    private Charset _contentCharset;
+    private volatile Charset _contentCharset;
     @Override
     public Charset contentCharset() {
         if (_contentCharset == null) {
@@ -175,7 +184,12 @@ public class JdkHttpResponse implements HttpResponse {
                 if (charset.indexOf(';') > 0) {
                     charset = charset.substring(0, charset.indexOf(';'));
                 }
-                return Charset.forName(charset.trim());
+                try {
+                    return Charset.forName(charset.trim());
+                } catch (Exception e) {
+                    // 非法或未知的 charset 名称，返回 null 让调用方回退到默认字符集
+                    return null;
+                }
             }
         }
 
@@ -246,7 +260,7 @@ public class JdkHttpResponse implements HttpResponse {
         return new HttpResponseException(this, http.getRequestMethod(), http.getURL());
     }
 
-    private Map<String, List<String>> headerMap;
+    private volatile Map<String, List<String>> headerMap;
     @Override
     public Map<String, List<String>> headerMap() {
         if (headerMap == null) {

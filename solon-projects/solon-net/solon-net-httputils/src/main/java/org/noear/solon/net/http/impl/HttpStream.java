@@ -17,6 +17,7 @@ package org.noear.solon.net.http.impl;
 
 import org.noear.solon.Utils;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -54,10 +55,13 @@ public class HttpStream {
         if (file != null) {
             return file.length();
         } else if (content != null) {
-            // available() 不保证返回完整长度，仅用于已知长度的流（如 ByteArrayInputStream）
-            int avail = content.available();
-            if (avail > 0) {
-                return avail;
+            // available() 仅对 ByteArrayInputStream 等已知长度的流可靠
+            // 对 BufferedInputStream 等包装流可能仅返回缓冲区剩余字节数而非完整长度
+            if (content instanceof ByteArrayInputStream) {
+                int avail = content.available();
+                if (avail > 0) {
+                    return avail;
+                }
             }
         }
         // 未知长度，返回 -1 让底层使用 chunked encoding

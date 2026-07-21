@@ -40,7 +40,7 @@ import java.util.Map;
 public class OkHttpResponse implements HttpResponse {
     private final OkHttpUtils utils;
     private final Response response;
-    private MultiMap<String> cookies;
+    private volatile MultiMap<String> cookies;
     private final int statusCode;
     private final String statusMessage;
 
@@ -175,7 +175,7 @@ public class OkHttpResponse implements HttpResponse {
         return new HttpResponseException(this, response.request().method(), response.request().url().url());
     }
 
-    private Map<String, List<String>> headerMap;
+    private volatile Map<String, List<String>> headerMap;
 
     @Override
     public Map<String, List<String>> headerMap() {

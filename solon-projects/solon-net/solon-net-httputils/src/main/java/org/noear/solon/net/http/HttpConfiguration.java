@@ -30,7 +30,7 @@ import java.util.*;
  * @since 3.9 增加连接池/并发/重定向等配置
  */
 public class HttpConfiguration {
-    private static volatile Set<HttpExtension> extensions = new LinkedHashSet<>();
+    private static volatile Set<HttpExtension> extensions = Collections.synchronizedSet(new LinkedHashSet<>());
     private static volatile HttpUtilsFactory factory = new HttpUtilsFactoryDefault();
 
     /**

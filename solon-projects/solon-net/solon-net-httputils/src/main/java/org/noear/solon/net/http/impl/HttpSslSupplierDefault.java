@@ -50,7 +50,7 @@ public class HttpSslSupplierDefault implements HttpSslSupplier {
     /**
      * 获取任意信任ssl上下文
      */
-    private SSLContext anySslContext;
+    private volatile SSLContext anySslContext;
 
     protected SSLContext getAnySslContext() {
         if (anySslContext == null) {

@@ -464,8 +464,10 @@ public abstract class AbstractHttpUtils implements HttpUtils {
                         // 直接使用非弃用的 Flux 返回接口
                         return TextStreamUtil.parseLineStream(resp);
                     } else {
-                        // 保持原有的错误构造逻辑
-                        return Flux.error(resp.createError());
+                        // 错误响应必须关闭以归还连接，避免连接泄漏
+                        HttpResponseException ex = resp.createError();
+                        RunUtil.runAndTry(resp::close);
+                        return Flux.error(ex);
                     }
                 });
     }
@@ -481,8 +483,10 @@ public abstract class AbstractHttpUtils implements HttpUtils {
                         // 直接使用非弃用的 Flux 返回接口
                         return TextStreamUtil.parseSseStream(resp);
                     } else {
-                        // 保持原有的错误构造逻辑
-                        return Flux.error(resp.createError());
+                        // 错误响应必须关闭以归还连接，避免连接泄漏
+                        HttpResponseException ex = resp.createError();
+                        RunUtil.runAndTry(resp::close);
+                        return Flux.error(ex);
                     }
                 });
     }

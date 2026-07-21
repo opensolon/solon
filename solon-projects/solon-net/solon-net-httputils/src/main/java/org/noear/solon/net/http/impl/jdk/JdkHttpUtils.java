@@ -337,19 +337,23 @@ public class JdkHttpUtils extends AbstractHttpUtils implements HttpUtils {
         void write(HttpURLConnection http, MultiMap<String> paramMap) throws IOException {
             http.setRequestProperty("Content-Type", contentType);
 
-            try (OutputStream out = http.getOutputStream()) {
-                StringBuilder builder = new StringBuilder(128);
-                for (KeyValues<String> kv : paramMap) {
-                    // urlEncode : if charset is empty not do Encode
-                    for (Object val : kv.getValues()) {
-                        builder.append(HttpUtils.urlEncode(kv.getKey(), charset.name()));
-                        builder.append("=");
-                        builder.append(HttpUtils.urlEncode(String.valueOf(val), charset.name()));
-                        builder.append("&");
+                try (OutputStream out = http.getOutputStream()) {
+                    StringBuilder builder = new StringBuilder(128);
+                    for (KeyValues<String> kv : paramMap) {
+                        // urlEncode : if charset is empty not do Encode
+                        for (Object val : kv.getValues()) {
+                            builder.append(HttpUtils.urlEncode(kv.getKey(), charset.name()));
+                            builder.append("=");
+                            builder.append(HttpUtils.urlEncode(String.valueOf(val), charset.name()));
+                            builder.append("&");
+                        }
                     }
-                }
 
-                String data = builder.delete(builder.length() - 1, builder.length()).toString();
+                    if (builder.length() > 0) {
+                        builder.delete(builder.length() - 1, builder.length());
+                    }
+                
+                    String data = builder.toString();
 
                 out.write(data.getBytes(charset));
                 out.flush();

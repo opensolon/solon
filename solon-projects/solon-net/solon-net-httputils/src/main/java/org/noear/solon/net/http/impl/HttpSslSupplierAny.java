@@ -38,7 +38,7 @@ public class HttpSslSupplierAny implements HttpSslSupplier {
     }
 
 
-    private SSLContext anySslContext;
+    private volatile SSLContext anySslContext;
 
     @Override
     public SSLContext getSslContext() {

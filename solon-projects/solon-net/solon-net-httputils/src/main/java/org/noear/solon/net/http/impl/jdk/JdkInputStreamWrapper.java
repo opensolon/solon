@@ -21,13 +21,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 /**
  * Http 输入流包装器
  * <p>
  * 默认关闭时仅关闭流，不 disconnect，以支持 JVM keep-alive 连接复用。
  * 可通过 {@link HttpConfiguration#setForceDisconnectOnClose(boolean)} 恢复旧行为。
  * <p>
- * 注意：forceDisconnect=true 在高流量场景下会彻底摧毁连接复用，"3. 连接重建开销大幅增加。
+ * 注意：forceDisconnect=true 在高流量场景下会彻底摧毁连接复用，连接重建开销大幅增加。
  * 仅在服务端不兼容 keep-alive 或调试连接问题时开启。
  *
  * @author noear
@@ -38,7 +40,7 @@ public class JdkInputStreamWrapper extends InputStream {
     private final HttpURLConnection http;
     private final InputStream in;
     private final boolean forceDisconnect;
-    private volatile boolean closed;
+    private final AtomicBoolean closed = new AtomicBoolean(false);
 
     public JdkInputStreamWrapper(HttpURLConnection http, InputStream in) {
         this(http, in, HttpConfiguration.isForceDisconnectOnClose());
@@ -88,10 +90,9 @@ public class JdkInputStreamWrapper extends InputStream {
 
     @Override
     public void close() throws IOException {
-        if (closed) {
+        if (!closed.compareAndSet(false, true)) {
             return;
         }
-        closed = true;
 
         IOException closeEx = null;
         try {
