@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -42,10 +43,14 @@ import java.util.concurrent.TimeUnit;
  *
  * @author noear
  * @since 1.5
- * */
+ * @since 3.9 共享连接池与调度器，支持高并发连接复用
+ */
 public class OkHttpUtils extends AbstractHttpUtils implements HttpUtils {
     protected static final Logger log = LoggerFactory.getLogger(OkHttpUtils.class);
-    protected static final OkHttpDispatcherLoader dispatcherLoader = new OkHttpDispatcherLoader(); //这是连接池定义
+    /** 共享调度器与连接池，见 {@link OkHttpDispatcherLoader} */
+    protected static final OkHttpDispatcherLoader dispatcherLoader = OkHttpDispatcherLoader.getInstance();
+
+    private int redirectCount;
 
     public OkHttpUtils(String url) {
         super(url);
@@ -223,43 +228,63 @@ public class OkHttpUtils extends AbstractHttpUtils implements HttpUtils {
         }
     }
 
+    /**
+     * 获取请求级 OkHttpClient（从共享 base newBuilder 派生，保持连接池与调度器复用）
+     */
     protected OkHttpClient getClient() {
         if (_sslSupplier == null) {
             _sslSupplier = HttpSslSupplierDefault.getInstance();
         }
 
-        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        OkHttpClient base = dispatcherLoader.getBaseClient();
 
-        if (_timeout != null) {
-            builder.connectTimeout(_timeout.getConnectTimeout().getSeconds(), TimeUnit.SECONDS)
-                    .writeTimeout(_timeout.getWriteTimeout().getSeconds(), TimeUnit.SECONDS)
-                    .readTimeout(_timeout.getReadTimeout().getSeconds(), TimeUnit.SECONDS);
-        } else {
-            builder.connectTimeout(10, TimeUnit.SECONDS)
-                    .writeTimeout(60, TimeUnit.SECONDS)
-                    .readTimeout(60, TimeUnit.SECONDS);
+        // 快路径：默认超时 + 默认 SSL + 无代理 + 无调试拦截器时直接复用 base
+        boolean needDebugInterceptor = log.isDebugEnabled() && ClassUtil.hasClass(() -> CurlInterceptor.class);
+        boolean defaultSsl = (_sslSupplier == HttpSslSupplierDefault.getInstance());
+        boolean defaultTimeout = isDefaultTimeout(_timeout);
+
+        if (defaultTimeout && defaultSsl && _proxy == null && !needDebugInterceptor) {
+            return base;
         }
 
-        builder.dispatcher(dispatcherLoader.getDispatcher())
-                .sslSocketFactory(_sslSupplier.getSocketFactory(), _sslSupplier.getX509TrustManager())
-                .hostnameVerifier(_sslSupplier.getHostnameVerifier())
-                .connectionSpecs(getConnectionSpecs());
+        // newBuilder() 会共享 connectionPool 与 dispatcher
+        OkHttpClient.Builder builder = base.newBuilder();
 
-        builder.followRedirects(true).followSslRedirects(true);
+        if (_timeout != null) {
+            builder.connectTimeout(timeoutMillis(_timeout.getConnectTimeout()), TimeUnit.MILLISECONDS)
+                    .writeTimeout(timeoutMillis(_timeout.getWriteTimeout()), TimeUnit.MILLISECONDS)
+                    .readTimeout(timeoutMillis(_timeout.getReadTimeout()), TimeUnit.MILLISECONDS);
+        }
 
+        if (!defaultSsl) {
+            builder.sslSocketFactory(_sslSupplier.getSocketFactory(), _sslSupplier.getX509TrustManager())
+                    .hostnameVerifier(_sslSupplier.getHostnameVerifier());
+        }
 
-        if (log.isDebugEnabled() && ClassUtil.hasClass(() -> CurlInterceptor.class)) {
+        if (needDebugInterceptor) {
             builder.addInterceptor(new CurlInterceptor(msg -> {
                 log.debug(msg);
             }));
         }
-
 
         if (_proxy != null) {
             builder.proxy(_proxy);
         }
 
         return builder.build();
+    }
+
+    private static long timeoutMillis(Duration d) {
+        return d == null ? 0L : Math.max(0L, d.toMillis());
+    }
+
+    private static boolean isDefaultTimeout(HttpTimeout timeout) {
+        if (timeout == null) {
+            return true;
+        }
+        return timeoutMillis(timeout.getConnectTimeout()) == 10_000L
+                && timeoutMillis(timeout.getWriteTimeout()) == 60_000L
+                && timeoutMillis(timeout.getReadTimeout()) == 60_000L;
     }
 
     protected List<ConnectionSpec> getConnectionSpecs() {
@@ -270,7 +295,15 @@ public class OkHttpUtils extends AbstractHttpUtils implements HttpUtils {
         int statusCode = response.code();
 
         if (isRedirected(statusCode)) {
+            if (++redirectCount > HttpConfiguration.getMaxRedirects()) {
+                response.close();
+                throw new IOException("Too many redirects: " + redirectCount + ", url: " + _url);
+            }
+
             String location = response.header("Location");
+            // 重定向响应体不再使用，关闭以归还连接
+            response.close();
+
             if (Utils.isEmpty(location)) {
                 //如果没有，则异常
                 throw new IOException("Redirect location header unfound, original url: " + _url);

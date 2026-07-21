@@ -26,7 +26,7 @@ import java.io.Reader;
  * @since 3.2
  */
 public class CloseTrackableBufferedReader extends BufferedReader {
-    private boolean isClosed = false;
+    private volatile boolean isClosed = false;
 
     public CloseTrackableBufferedReader(Reader in) {
         super(in);

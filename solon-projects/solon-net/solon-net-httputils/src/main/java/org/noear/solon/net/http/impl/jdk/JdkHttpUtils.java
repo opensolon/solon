@@ -17,6 +17,7 @@ package org.noear.solon.net.http.impl.jdk;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.util.*;
+import org.noear.solon.net.http.HttpConfiguration;
 import org.noear.solon.net.http.HttpException;
 import org.noear.solon.net.http.HttpResponse;
 import org.noear.solon.net.http.HttpUtils;
@@ -39,9 +40,11 @@ import java.util.concurrent.CompletableFuture;
 
 /**
  * Http 工具 JDK HttpURLConnection 实现
+ * <p>连接复用依赖 JVM keep-alive（默认 close 不 disconnect）</p>
  *
  * @author noear
  * @since 3.0
+ * @since 3.9 默认 keep-alive 友好关闭；异步线程池可配置上限
  */
 public class JdkHttpUtils extends AbstractHttpUtils implements HttpUtils {
     static final Set<String> METHODS_NOBODY;
@@ -53,7 +56,10 @@ public class JdkHttpUtils extends AbstractHttpUtils implements HttpUtils {
         METHODS_NOBODY.add("OPTIONS");
     }
 
-    protected static final JdkHttpDispatcherLoader dispatcherLoader = new JdkHttpDispatcherLoader(); //这是连接池定义
+    /** 异步请求调度线程池（非连接池；连接复用依赖 JVM keep-alive） */
+    protected static final JdkHttpDispatcherLoader dispatcherLoader = new JdkHttpDispatcherLoader();
+
+    private int redirectCount;
 
     public JdkHttpUtils(String url) {
         super(url);
@@ -228,7 +234,15 @@ public class JdkHttpUtils extends AbstractHttpUtils implements HttpUtils {
         int statusCode = _builder.getResponseCode();
 
         if (isRedirected(statusCode)) {
+            if (++redirectCount > HttpConfiguration.getMaxRedirects()) {
+                _builder.disconnect();
+                throw new IOException("Too many redirects: " + redirectCount + ", url: " + _url);
+            }
+
             String location = _builder.getHeaderField("Location");
+            // 重定向响应不再使用，断开当前连接
+            _builder.disconnect();
+
             if (Utils.isEmpty(location)) {
                 //如果没有，则异常
                 throw new IOException("Redirect location header unfound, original url: " + _url);
@@ -352,7 +366,13 @@ public class JdkHttpUtils extends AbstractHttpUtils implements HttpUtils {
         String query = queryOf > 0 ? url.substring(queryOf) : "";
 
         if (hostAndPath.length() > 0) {
-            String hostAndPath0 = URLDecoder.decode(hostAndPath, charset.name());
+            String hostAndPath0;
+            try {
+                hostAndPath0 = URLDecoder.decode(hostAndPath, charset.name());
+            } catch (IllegalArgumentException e) {
+                // URL 中包含非法的 %（未编码），不进行解码和重新编码
+                hostAndPath0 = hostAndPath;
+            }
 
             if (hostAndPath.equals(hostAndPath0)) {
                 hostAndPath = HttpUtils.urlEncode(hostAndPath, charset.name());
@@ -361,7 +381,12 @@ public class JdkHttpUtils extends AbstractHttpUtils implements HttpUtils {
         }
 
         if (query.length() > 0) {
-            String query0 = URLDecoder.decode(query, charset.name());
+            String query0;
+            try {
+                query0 = URLDecoder.decode(query, charset.name());
+            } catch (IllegalArgumentException e) {
+                query0 = query;
+            }
             if (query.equals(query0)) {
                 query = HttpUtils.urlEncode(query, charset.name());
                 query = query.replace("%3F", "?")

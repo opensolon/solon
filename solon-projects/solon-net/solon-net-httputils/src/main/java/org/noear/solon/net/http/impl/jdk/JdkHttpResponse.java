@@ -95,6 +95,10 @@ public class JdkHttpResponse implements HttpResponse {
             List<String> kvAry = headers("Set-Cookie");
             for (String kvStr : kvAry) {
                 int eqIdx = kvStr.indexOf("=");
+                // 防御：如果 Set-Cookie 值中不含 '='，跳过该 cookie 避免异常
+                if (eqIdx < 0) {
+                    continue;
+                }
                 int smIdx = kvStr.indexOf(";", eqIdx);
 
                 String key = kvStr.substring(0, eqIdx);
@@ -210,15 +214,17 @@ public class JdkHttpResponse implements HttpResponse {
     @Override
     public String bodyAsString() throws IOException {
         try {
-            if (Utils.isEmpty(http.getContentEncoding())) {
-                if (utils.charset() == null) {
-                    return IoUtil.transferToString(body(), Solon.encoding());
+            // 优先使用 Content-Type 中的 charset，其次使用客户端配置的 charset，最后使用系统默认编码
+            // 注意：Content-Encoding（gzip/deflate）已在构造器中解压，此处不应作为字符集使用
+            Charset charset = contentCharset();
+            if (charset == null) {
+                if (utils.charset() != null) {
+                    charset = utils.charset();
                 } else {
-                    return IoUtil.transferToString(body(), utils.charset().name());
+                    charset = Charset.forName(Solon.encoding());
                 }
-            } else {
-                return IoUtil.transferToString(body(), http.getContentEncoding());
             }
+            return IoUtil.transferToString(body(), charset.name());
         } finally {
             body().close();
         }

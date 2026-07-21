@@ -18,11 +18,10 @@ package org.noear.solon.net.http.textstream;
 import org.noear.solon.Solon;
 import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.net.http.HttpResponse;
-import org.reactivestreams.Subscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
+import reactor.core.scheduler.Schedulers;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
@@ -46,15 +45,19 @@ public class TextStreamUtil {
 
     /**
      * 将 HTTP 响应解析为逐行文本流 Flux
+     * <p>流结束/取消/出错时关闭 response，以归还连接</p>
      */
     public static Flux<String> parseLineStream(HttpResponse response) {
-        return parseLineStream(response.body(), response.contentCharset());
+        return parseLineStream(response.body(), response.contentCharset())
+                .doFinally(signal -> RunUtil.runAndTry(response::close));
     }
+
+    private static final int DEFAULT_BUFFER_SIZE = 256;
 
     private static Flux<String> parseLineStream(InputStream inputStream, Charset charset) {
         Charset finalCharset = (charset == null) ? Charset.forName(Solon.encoding()) : charset;
 
-        return Flux.create(sink -> {
+        return Flux.<String>create(sink -> {
             CloseTrackableBufferedReader reader = new CloseTrackableBufferedReader(new InputStreamReader(inputStream, finalCharset), 1024);
 
             // 取消时立即关闭 reader，使阻塞中的 readLine() 抛出 IOException 退出
@@ -72,12 +75,9 @@ public class TextStreamUtil {
                     sink.error(e);
                 }
             }
-        }, FluxSink.OverflowStrategy.BUFFER);
+        }, FluxSink.OverflowStrategy.BUFFER)
+                .subscribeOn(Schedulers.boundedElastic());
     }
-
-
-
-    // --- SSE 相关 ---
 
 
     /**
@@ -89,15 +89,17 @@ public class TextStreamUtil {
 
     /**
      * 将 HTTP 响应解析为 SSE 事件流 Flux
+     * <p>流结束/取消/出错时关闭 response，以归还连接</p>
      */
     public static Flux<ServerSentEvent> parseSseStream(HttpResponse response) {
-        return parseSseStream(response.body(), response.contentCharset());
+        return parseSseStream(response.body(), response.contentCharset())
+                .doFinally(signal -> RunUtil.runAndTry(response::close));
     }
 
     private static Flux<ServerSentEvent> parseSseStream(InputStream inputStream, Charset charset) {
         Charset finalCharset = (charset == null) ? Charset.forName(Solon.encoding()) : charset;
 
-        return Flux.create(sink -> {
+        return Flux.<ServerSentEvent>create(sink -> {
             CloseTrackableBufferedReader reader = new CloseTrackableBufferedReader(new InputStreamReader(inputStream, finalCharset), 1024);
 
             // 取消时立即关闭 reader，使阻塞中的 readLine() 抛出 IOException 退出
@@ -161,6 +163,7 @@ public class TextStreamUtil {
                     sink.error(e);
                 }
             }
-        }, FluxSink.OverflowStrategy.BUFFER);
+        }, FluxSink.OverflowStrategy.BUFFER)
+                .subscribeOn(Schedulers.boundedElastic());
     }
 }

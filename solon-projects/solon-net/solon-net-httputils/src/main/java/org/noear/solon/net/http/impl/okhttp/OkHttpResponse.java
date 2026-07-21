@@ -58,6 +58,10 @@ public class OkHttpResponse implements HttpResponse {
             List<String> kvAry = headers("Set-Cookie");
             for (String kvStr : kvAry) {
                 int eqIdx = kvStr.indexOf("=");
+                // 防御：如果 Set-Cookie 值中不含 '='，跳过该 cookie 避免异常
+                if (eqIdx < 0) {
+                    continue;
+                }
                 int smIdx = kvStr.indexOf(";", eqIdx);
 
                 String key = kvStr.substring(0, eqIdx);

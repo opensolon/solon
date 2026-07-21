@@ -19,17 +19,20 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.util.NamedThreadFactory;
 import org.noear.solon.core.util.ThreadsUtil;
+import org.noear.solon.net.http.HttpConfiguration;
 
 import java.util.concurrent.*;
 
 /**
- * Http 调度加载器（用于懒加载）
+ * Http 异步调度加载器（用于懒加载）
+ * <p>这是异步请求的线程池，不是连接池。连接复用依赖 JVM keep-alive。</p>
  *
  * @author noear
  * @since 3.3
+ * @since 4.0.4 线程池上限可配置，默认 daemon 线程
  */
 public class JdkHttpDispatcherLoader {
-    private ExecutorService dispatcher;
+    private volatile ExecutorService dispatcher;
 
     public ExecutorService getDispatcher() {
         if (dispatcher == null) {
@@ -39,10 +42,13 @@ public class JdkHttpDispatcherLoader {
                     if (Solon.appIf(app -> app.cfg().isEnabledVirtualThreads())) {
                         dispatcher = ThreadsUtil.newVirtualThreadPerTaskExecutor("http-dispatcher-");
                     } else {
-                        dispatcher = new ThreadPoolExecutor(0, Integer.MAX_VALUE,
+                        int maxThreads = Math.max(1, HttpConfiguration.getMaxRequests());
+                        int coreThreads = Math.max(2, maxThreads / 4);
+                        dispatcher = new ThreadPoolExecutor(coreThreads, maxThreads,
                                 60, TimeUnit.SECONDS,
-                                new SynchronousQueue<>()
-                                , new NamedThreadFactory("http-dispatcher-").daemon(false));
+                                new LinkedBlockingQueue<>(64),
+                                new NamedThreadFactory("http-dispatcher-").daemon(true),
+                                new ThreadPoolExecutor.CallerRunsPolicy());
                     }
                 }
             } finally {

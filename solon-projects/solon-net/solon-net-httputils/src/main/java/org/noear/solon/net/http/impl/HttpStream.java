@@ -53,9 +53,15 @@ public class HttpStream {
     public long getContentLength() throws IOException {
         if (file != null) {
             return file.length();
-        } else {
-            return content.available();
+        } else if (content != null) {
+            // available() 不保证返回完整长度，仅用于已知长度的流（如 ByteArrayInputStream）
+            int avail = content.available();
+            if (avail > 0) {
+                return avail;
+            }
         }
+        // 未知长度，返回 -1 让底层使用 chunked encoding
+        return -1;
     }
 
     public String getContentType() {
