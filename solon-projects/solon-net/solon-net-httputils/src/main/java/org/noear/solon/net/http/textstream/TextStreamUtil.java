@@ -116,12 +116,15 @@ public class TextStreamUtil {
                         // 1. 遇到空行：只要 meta 或 data 有内容，就分派事件
                         if (data.length() > 0 || !meta.isEmpty()) {
                             String dataStr = data.toString();
-                            sink.next(new ServerSentEvent(new HashMap<>(meta), dataStr));
+                            ServerSentEvent event = new ServerSentEvent(new HashMap<>(meta), dataStr);
+                            sink.next(event);
 
                             meta.clear();
                             data.setLength(0);
 
-                            if ("[DONE]".equals(dataStr)) {
+                            // 使用 trim 后的 event.getData() 进行 [DONE] 检测，
+                            // 与 ServerSentEvent 构造器内 data.trim() 保持一致
+                            if ("[DONE]".equals(event.getData())) {
                                 sink.complete();
                                 return;
                             }

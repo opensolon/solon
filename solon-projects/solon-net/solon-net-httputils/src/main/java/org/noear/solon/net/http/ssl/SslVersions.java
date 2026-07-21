@@ -22,11 +22,27 @@ package org.noear.solon.net.http.ssl;
  * @since 3.5
  */
 public interface SslVersions {
+    /**
+     * @deprecated SSL 协议已不安全，建议使用 TLSv12 或 TLSv13
+     */
+    @Deprecated
     String SSL = "SSL";
+    /**
+     * @deprecated SSLv2 已不安全，建议使用 TLSv12 或 TLSv13
+     */
+    @Deprecated
     String SSLv2 = "SSLv2";
+    /**
+     * @deprecated SSLv3 已不安全，建议使用 TLSv12 或 TLSv13
+     */
+    @Deprecated
     String SSLv3 = "SSLv3";
     String TLS = "TLS";
     String TLSv1 = "TLSv1";
     String TLSv11 = "TLSv1.1";
     String TLSv12 = "TLSv1.2";
+    /**
+     * @since JDK 11+
+     */
+    String TLSv13 = "TLSv1.3";
 }

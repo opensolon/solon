@@ -18,6 +18,8 @@ package org.noear.solon.net.http;
 import org.noear.solon.Solon;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.ConsumerEx;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 预热工具
@@ -26,6 +28,7 @@ import org.noear.solon.core.util.ConsumerEx;
  * @since 2.8
  */
 public final class PreheatUtils {
+    private static final Logger log = LoggerFactory.getLogger(PreheatUtils.class);
 
     /**
      * 预热本地地址
@@ -47,7 +50,7 @@ public final class PreheatUtils {
             handling.accept(http);
             System.out.println("[Preheat] " + path + " : preheat succeeded");
         } catch (Throwable e) {
-            e.printStackTrace();
+            log.warn("[Preheat] {} : preheat failed", path, e);
         }
     }
 }

@@ -170,7 +170,7 @@ public class JdkHttpUtils extends AbstractHttpUtils implements HttpUtils {
             tmp.setHostnameVerifier(_sslSupplier.getHostnameVerifier());
         }
 
-        _builder.setInstanceFollowRedirects(true);
+        _builder.setInstanceFollowRedirects(false);
 
         if (_timeout != null) {
             //调整 timeout

@@ -288,6 +288,7 @@ public class OkHttpUtils extends AbstractHttpUtils implements HttpUtils {
     }
 
     protected List<ConnectionSpec> getConnectionSpecs() {
+        // 已内联到 OkHttpDispatcherLoader，此方法保留以兼容子类覆写
         return Arrays.asList(ConnectionSpec.COMPATIBLE_TLS, ConnectionSpec.CLEARTEXT);
     }
 

@@ -31,7 +31,7 @@ public class SslAnyTrustManager extends X509ExtendedTrustManager {
     public static final SslAnyTrustManager INSTANCE = new SslAnyTrustManager();
 
 
-    private final X509Certificate[] EMPTY_ACCEPTED_ISSUERS = {};
+    private static final X509Certificate[] EMPTY_ACCEPTED_ISSUERS = {};
 
     @Override
     public X509Certificate[] getAcceptedIssuers() {

@@ -23,6 +23,7 @@ import org.noear.solon.exception.SolonException;
 import org.noear.solon.net.http.HttpResponse;
 import org.noear.solon.net.http.HttpResponseException;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -73,6 +74,12 @@ public class JdkHttpResponse implements HttpResponse {
             String encoding = http.getHeaderField("Content-Encoding");
 
             if (Utils.isNotEmpty(encoding)) {
+                // 用 BufferedInputStream 包装以便 GZIP/deflate 失败时可 reset 回退
+                if (!(inputStream instanceof BufferedInputStream)) {
+                    inputStream = new BufferedInputStream(inputStream, 8192);
+                }
+                inputStream.mark(8192);
+
                 try {
                     if ("gzip".equalsIgnoreCase(encoding)) {
                         if (inputStream instanceof GZIPInputStream == false) {
@@ -84,10 +91,12 @@ public class JdkHttpResponse implements HttpResponse {
                         }
                     }
                 } catch (IOException e) {
-                    // Content-Encoding 标注了压缩但实际 body 未压缩，关闭原始流并回退
-                    inputStream.close();
-                    inputStream = statusCode < 400 ? http.getInputStream() : http.getErrorStream();
-                    if (inputStream == null) {
+                    // Content-Encoding 标注了压缩但实际 body 未压缩，
+                    // reset 到标记位置，使用原始未解压流
+                    try {
+                        inputStream.reset();
+                    } catch (IOException ignored) {
+                        // reset 失败说明流已损坏，使用空流兜底
                         inputStream = new ByteArrayInputStream(new byte[0]);
                     }
                 }

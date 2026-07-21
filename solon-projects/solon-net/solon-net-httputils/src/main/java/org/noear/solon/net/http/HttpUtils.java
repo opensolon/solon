@@ -23,8 +23,6 @@ import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.core.util.MimeType;
 import org.noear.solon.lang.Preview;
 import org.noear.solon.net.http.textstream.ServerSentEvent;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 
 import java.io.File;
@@ -47,7 +45,7 @@ import java.util.function.Consumer;
  * */
 @Preview("3.0")
 public interface HttpUtils {
-    static final Logger log = LoggerFactory.getLogger(HttpUtils.class);
+
 
     /**
      * 创建

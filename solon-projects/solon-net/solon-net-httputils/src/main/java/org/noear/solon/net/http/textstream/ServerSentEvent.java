@@ -142,7 +142,9 @@ public class ServerSentEvent implements Serializable {
         }
 
         public Builder retry(Duration retry) {
-            sse.retry = String.valueOf(retry.toMillis());
+            if (retry != null) {
+                sse.retry = String.valueOf(retry.toMillis());
+            }
             return this;
         }
 

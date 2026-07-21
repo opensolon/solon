@@ -136,12 +136,13 @@ public class HttpUtilsBuilder {
      * 构建 Http 工具
      */
     public HttpUtils build(String url) {
+        String base = this.baseUri;
         if (Utils.isNotEmpty(service)) {
-            baseUri = LoadBalanceUtils.getServer(group, service);
+            base = LoadBalanceUtils.getServer(group, service);
         }
 
-        if (Utils.isNotEmpty(baseUri)) {
-            url = PathUtil.joinUri(baseUri, url);
+        if (Utils.isNotEmpty(base)) {
+            url = PathUtil.joinUri(base, url);
         }
 
         if (utilsFactory == null) {
