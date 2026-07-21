@@ -114,24 +114,26 @@ public class HttpChannel extends ChannelBase implements Channel {
             return null;
         }
 
-        //2.构建结果
-        Result result = new Result(response.code(), response.bodyAsBytes());
+        //2.构建结果（try-with-resources 确保响应连接归还/关闭）
+        try (HttpResponse resp = response) {
+            Result result = new Result(resp.code(), resp.bodyAsBytes());
 
-        //2.1.设置头
-        for (String name : response.headerNames()) {
-            for (String v : response.headers(name)) {
-                result.headerAdd(name, v);
+            //2.1.设置头
+            for (String name : resp.headerNames()) {
+                for (String v : resp.headers(name)) {
+                    result.headerAdd(name, v);
+                }
             }
-        }
 
-        //2.2.设置字符码
-        Charset contentEncoding = response.contentCharset();
-        if (contentEncoding != null) {
-            result.charsetSet(contentEncoding);
-        }
+            //2.2.设置字符码
+            Charset contentEncoding = resp.contentCharset();
+            if (contentEncoding != null) {
+                result.charsetSet(contentEncoding);
+            }
 
-        //3.返回结果
-        return result;
+            //3.返回结果
+            return result;
+        }
     }
 
     protected HttpResponse bodyRequest(Context ctx, HttpUtils http, Encoder encoder) throws Throwable {
