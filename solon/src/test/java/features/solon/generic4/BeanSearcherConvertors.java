@@ -85,7 +85,6 @@ public class BeanSearcherConvertors {
         return new EnumFieldConvertor();
     }
 
-    // 在 springboot 那边，是用单独类处理的；在 solon 这边，用函数
     @Managed
     @Condition(onMissingBean = JsonFieldConvertor.class)
     public JsonFieldConvertor jsonFieldConvertor() {

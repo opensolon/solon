@@ -804,13 +804,13 @@ public class PropsRelaxedBindingTest {
     @Test
     public void multiSegment_keys_relaxed() {
         Props props = new Props();
-        props.put("spring.datasource.jdbc-url", "jdbc:s");
+        props.put("test.datasource.jdbc-url", "jdbc:s");
         props.put("my.app.server-port", "80");
 
-        assertEquals("jdbc:s", props.get("spring.datasource.jdbcUrl"));
+        assertEquals("jdbc:s", props.get("test.datasource.jdbcUrl"));
         assertEquals("80", props.get("my.app.serverPort"));
         assertEquals("80", props.getProp("my.app").get("serverPort"));
-        assertEquals("jdbc:s", props.getMap("spring.datasource").get("jdbcUrl"));
+        assertEquals("jdbc:s", props.getMap("test.datasource").get("jdbcUrl"));
     }
 
     @Test
