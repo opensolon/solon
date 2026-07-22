@@ -29,6 +29,7 @@
 * 优化 solon-data 数据库事务连接配置，仅在值变化时设置自动提交和只读模式
 * 优化 nami-channel-http HttpChannel 响应关闭处理
 * 优化 solon-net-httputils 适配
+* snack4 升为 4.0.55
 
 ### v4.0.3
 
