@@ -1,0 +1,6 @@
+bean-searcher:
+  params:
+    pagination:
+      start: 1
+  exporter:
+    batch-delay: PT0.5S
