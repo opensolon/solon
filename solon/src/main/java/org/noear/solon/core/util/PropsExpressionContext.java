@@ -60,14 +60,14 @@ public class PropsExpressionContext extends EnhanceContext<Properties, PropsExpr
         String val = null;
 
         if (target != null) {
-            //从"目标属性"获取
-            val = target.getProperty(name);
+            //从"目标属性"获取（支持 kebab/camel 宽松匹配）
+            val = PropUtil.getPropertyRelaxed(target, name);
         }
 
         if (val == null) {
-            //从"主属性"获取
+            //从"主属性"获取（支持 kebab/camel 宽松匹配）
             if (main != null) {
-                val = main.getProperty(name);
+                val = PropUtil.getPropertyRelaxed(main, name);
             }
 
             if (val == null) {

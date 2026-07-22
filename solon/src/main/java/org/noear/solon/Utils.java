@@ -355,22 +355,41 @@ public class Utils {
 
     /**
      * 蛇形转驼峰
+     * <p>
+     * 单遍扫描实现，避免 {@code split("-")} 产生临时数组。语义与原 split 版保持一致
+     *（含空段、首尾 {@code -} 等边界）。
      *
      * @since 2.8
      */
     public static String snakeToCamel(String name) {
-        if (name.indexOf('-') < 0) {
+        if (name == null || name.indexOf('-') < 0) {
             return name;
         }
 
-        String[] ss = name.split("-");
         StringBuilder sb = new StringBuilder(name.length());
-        sb.append(ss[0]);
-        for (int i = 1; i < ss.length; i++) {
-            if (ss[i].length() > 1) {
-                sb.append(ss[i].substring(0, 1).toUpperCase()).append(ss[i].substring(1));
-            } else {
-                sb.append(ss[i].toUpperCase());
+        int segStart = 0;
+        int part = 0;
+        int len = name.length();
+
+        for (int i = 0; i <= len; i++) {
+            if (i == len || name.charAt(i) == '-') {
+                int segLen = i - segStart;
+                if (part == 0) {
+                    // 首段原样（可为空）
+                    if (segLen > 0) {
+                        sb.append(name, segStart, i);
+                    }
+                } else if (segLen > 0) {
+                    // 配置键几乎都是 ASCII；段首 a-z 走快路径
+                    char c = name.charAt(segStart);
+                    sb.append((c >= 'a' && c <= 'z') ? (char) (c - 32) : Character.toUpperCase(c));
+                    if (segLen > 1) {
+                        sb.append(name, segStart + 1, i);
+                    }
+                }
+                // segLen == 0：空段，不追加
+                part++;
+                segStart = i + 1;
             }
         }
 

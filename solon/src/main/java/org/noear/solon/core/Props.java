@@ -89,10 +89,36 @@ public class Props extends Properties {
     }
 
     /**
-     * 获取属性
+     * 获取属性（支持 kebab-case / camelCase 宽松匹配）。
+     * <p>
+     * 注意：此为 {@code get(String)} 重载，不等价于 {@link Map#get(Object)}
+     * （后者仅按物理键查找）。
+     *
+     * @see #getProperty(String)
      */
     public String get(String key) {
         return getProperty(key);
+    }
+
+    /**
+     * 获取属性（支持 kebab-case / camelCase 宽松匹配）。
+     *
+     * @since 4.0
+     */
+    @Override
+    public String getProperty(String key) {
+        String val = super.getProperty(key);
+        if (val != null) {
+            return val;
+        }
+
+        // alternate：无别名返 null（无预检双扫描）
+        String alt = PropNameMapper.alternate(key);
+        if (alt != null) {
+            return super.getProperty(alt);
+        }
+
+        return null;
     }
 
     /**
@@ -397,9 +423,23 @@ public class Props extends Properties {
         doFind(keyStarts, consumer);
     }
 
+    /**
+     * 查找前缀匹配的配置项。
+     * <p>
+     * 按逻辑键去重：{@code jdbc-url} 与 {@code jdbcUrl} 视为同一项，
+     * 默认以 camel 形式输出（便于 Bean 字段绑定）。物理存储仍只保留原文键。
+     * <p>
+     * 同逻辑键存在多个物理键时：优先取「物理键已是 logical（camel）」的值；
+     * 若都是或都不是，保留先遍历到的项（稳定可测）。
+     */
     protected void doFind(String keyStarts, BiConsumer<String, String> consumer) {
         String key2 = keyStarts;
         int idx2 = key2.length();
+        // 用 size()（含 defaults 可见项）估容，减少 defaults 较多时的扩容
+        int cap = Math.max(16, size() / 2 + 1);
+        // logical -> value；同逻辑键时 camel 物理键优先
+        Map<String, String> values = new LinkedHashMap<>(cap);
+        Set<String> preferred = new HashSet<>(cap);
 
         forEach((k, v) -> {
             if (k instanceof String && v instanceof String) {
@@ -407,16 +447,24 @@ public class Props extends Properties {
 
                 if (keyStr.startsWith(key2)) {
                     String key = keyStr.substring(idx2);
+                    String logical = PropNameMapper.logicalKey(key);
+                    boolean isPreferred = key.equals(logical);
 
-                    consumer.accept(key, (String) v);
-
-                    if (key.indexOf('-') >= 0) {
-                        String camelKey = Utils.snakeToCamel(key);
-                        consumer.accept(camelKey, (String) v);
+                    if (!values.containsKey(logical)) {
+                        values.put(logical, (String) v);
+                        if (isPreferred) {
+                            preferred.add(logical);
+                        }
+                    } else if (isPreferred && !preferred.contains(logical)) {
+                        // 先到的是 kebab，后到 camel：改为 camel 值
+                        values.put(logical, (String) v);
+                        preferred.add(logical);
                     }
                 }
             }
         });
+
+        values.forEach(consumer);
     }
 
     /**
@@ -453,13 +501,39 @@ public class Props extends Properties {
     }
 
     /**
-     * 设置应用属性
+     * 设置应用属性（只写原文键，不物化 kebab/camel 别名副本）。
+     * <p>
+     * 别名冲突检测仅在调试模式下开启（{@link org.noear.solon.SolonProps#isDebugMode()})；
+     * 批量 load 永远跳过检测。
      */
     @Override
     public Object put(Object key, Object value) {
+        return putDo(key, value, true);
+    }
+
+    /**
+     * @param checkConflict 是否检查别名键冲突（批量 load 时关闭；开启时仍需 debug 模式）
+     */
+    protected Object putDo(Object key, Object value, boolean checkConflict) {
         SYNC_LOCK.lock();
 
         try {
+            // 别名等价键已存在且值不同：仅 debug 模式提示（读时精确键优先，不会静默合并）
+            // 用 Solon.cfg() 短接，避免 appIf lambda 分配
+            if (checkConflict && key instanceof String && value != null) {
+                SolonProps cfg = Solon.cfg();
+                if (cfg != null && cfg.isDebugMode()) {
+                    String alt = PropNameMapper.alternate((String) key);
+                    if (alt != null) {
+                        Object old = super.get(alt);
+                        if (old != null && !value.equals(old)) {
+                            System.err.println("Solon-Warning: Props key conflict: '"
+                                    + key + "' vs '" + alt + "' (different values)");
+                        }
+                    }
+                }
+            }
+
             Object obj = super.put(key, value);
 
             if (key instanceof String && value instanceof String) {
@@ -651,20 +725,14 @@ public class Props extends Properties {
                     }
 
                     if (v1 != null) {
-                        put(k1, v1);
+                        // 存储保真：只写原文键，不再为 xxx-yyy 物化 camel 副本。
+                        // kebab/camel 兼容由 getProperty / doFind 读时映射完成。
+                        // 批量加载跳过别名冲突检查（手动 put 仍会检查）
+                        putDo(k1, v1, false);
 
-                        if (key.indexOf('-') < 0) {
-                            if (toSystem) {
-                                //带 - 的不同步到 System
-                                System.getProperties().put(k1, v1);
-                            }
-                        } else {
-                            String camelKey = Utils.snakeToCamel(key);
-                            if (addIfAbsent) {
-                                putIfAbsent(camelKey, v1);
-                            } else {
-                                put(camelKey, v1);
-                            }
+                        if (toSystem && key.indexOf('-') < 0) {
+                            // 带 - 的不同步到 System
+                            System.getProperties().put(k1, v1);
                         }
                     }
                 }

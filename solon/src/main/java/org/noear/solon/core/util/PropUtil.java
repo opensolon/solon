@@ -15,6 +15,8 @@
  */
 package org.noear.solon.core.util;
 
+import org.noear.solon.core.Props;
+
 import java.util.Properties;
 
 /**
@@ -24,6 +26,38 @@ import java.util.Properties;
  * @since 2.5
  */
 public class PropUtil {
+    /**
+     * 从 Properties 宽松读取（kebab-case / camelCase）。
+     * <p>
+     * {@link Props} 自身的 {@code getProperty} 已支持宽松匹配；裸 {@link Properties}
+     *（如加载期源文件）在此补一层候选解析。
+     * <p>
+     * 注意：仅本方法及 Props#getProperty 系宽松；裸 {@link Properties#get} 仍为物理键。
+     */
+    public static String getPropertyRelaxed(Properties props, String name) {
+        if (props == null || name == null) {
+            return null;
+        }
+
+        // Props 已 override getProperty，直接走宽松路径
+        if (props instanceof Props) {
+            return props.getProperty(name);
+        }
+
+        String val = props.getProperty(name);
+        if (val != null) {
+            return val;
+        }
+
+        // alternate 内含 mayHaveAlternate 早退
+        String alt = PropNameMapper.alternate(name);
+        if (alt != null) {
+            return props.getProperty(alt);
+        }
+
+        return null;
+    }
+
     /**
      * 表达式拆分（拆成 name, def）
      *
@@ -85,14 +119,14 @@ public class PropUtil {
         String val = null;
 
         if (target != null) {
-            //从"目标属性"获取
-            val = target.getProperty(name);
+            //从"目标属性"获取（支持 kebab/camel 宽松匹配）
+            val = getPropertyRelaxed(target, name);
         }
 
         if (val == null) {
-            //从"主属性"获取
+            //从"主属性"获取（支持 kebab/camel 宽松匹配）
             if (main != null) {
-                val = main.getProperty(name);
+                val = getPropertyRelaxed(main, name);
             }
 
             if (val == null) {
