@@ -256,10 +256,14 @@ public class LazyConnectionProxy implements Connection {
 
     @Override
     public boolean isClosed() throws SQLException {
+        // 优先信任代理自身的 closed 标记，避免 target.close() 异常后状态不一致
+        if (closed) {
+            return true;
+        }
         if (hasTarget()) {
             return target.isClosed();
         }
-        return closed;
+        return false;
     }
 
     @Override
@@ -452,10 +456,13 @@ public class LazyConnectionProxy implements Connection {
 
     @Override
     public void abort(Executor executor) throws SQLException {
-        if (hasTarget()) {
-            target.abort(executor);
+        try {
+            if (hasTarget()) {
+                target.abort(executor);
+            }
+        } finally {
+            closed = true;
         }
-        closed = true;
     }
 
     @Override
