@@ -27,6 +27,7 @@
 
 * 添加 solon Context.realHost()（支持反向代理场景下获取真实 Host）
 * 添加 solon RunHolder 线程池配置支持（solon.task.execution.pool.size / solon.task.scheduling.pool.size）
+* 添加 solon-data LazyConnectionDataSourceProxy 类（可选使用）
 * 优化 solon Props 属性键处理：取消 `xxx-yyy` 物理双写，改为读时 kebab/camel 宽松映射
 * 优化 solon-data 数据库事务连接配置，仅在值变化时设置自动提交和只读模式
 * 优化 nami-channel-http HttpChannel 响应关闭处理

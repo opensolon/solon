@@ -21,12 +21,12 @@ import org.noear.solon.lang.Internal;
 import java.net.URI;
 
 /**
- * IP 工具
+ * Host 工具（含真实 IP / 真实 Host 解析，支持反向代理）
  *
  * @author noear
  * @since 1.3
  * @since 4.0
- * */
+ */
 @Internal
 public class HostUtil {
     //
@@ -69,31 +69,45 @@ public class HostUtil {
     }
 
     /**
-     * 获取真实 Host（支持反向代理）
+     * 获取原始请求 Host（支持反向代理）
+     * <p>
+     * 解析顺序：{@code X-Forwarded-Host} → {@code Host} → {@code uri().getHost()}。
+     * 多级代理时取第一个值；可能包含端口（如 {@code www.example.com:443}）。
+     * 仅应在受信任的反向代理之后使用。
      *
      * @since 4.0.4
      */
     public String getRealHost(Context ctx) {
-        //代理转发的原始主机
-        String host = ctx.header("X-Forwarded-Host");
-
+        // 1. 代理转发的原始主机
+        String host = firstCsvHeader(ctx, "X-Forwarded-Host");
+        
+        // 2. 请求 Host
         if (Assert.isEmpty(host) || "unknown".equalsIgnoreCase(host)) {
-            //请求主机
-            host = ctx.headerOrDefault("Host", "");
+            host = firstCsvHeader(ctx, "Host");
         }
-
-        if (Assert.isNotEmpty(host) && host.contains(",")) {
-            //多级代理时，取第一个
-            host = host.split(",")[0].trim();
-        } else if (Assert.isNotEmpty(host)) {
-            host = host.trim();
-        }
-
+        
+        // 3. 回落到 URI host（不含端口）
         if (Assert.isEmpty(host) || "unknown".equalsIgnoreCase(host)) {
             URI uri = ctx.uri();
             host = (uri == null ? null : uri.getHost());
         }
-
+            
         return host;
+    }
+        
+    /**
+     * 读取请求头，多值时取第一个并 trim
+     */
+    private String firstCsvHeader(Context ctx, String name) {
+        String value = ctx.header(name);
+        if (Assert.isEmpty(value)) {
+            return value;
+        }
+
+        if (value.indexOf(',') > -1) {
+            value = value.split(",")[0];
+        }
+
+        return value.trim();
     }
 }
