@@ -42,6 +42,13 @@ public interface RxContext {
     String realIp();
 
     /**
+     * 客户端真实 Host（支持反向代理）
+     *
+     * @since 4.0
+     */
+    String realHost();
+
+    /**
      * 是否安全
      */
     boolean isSecure();

@@ -16,13 +16,19 @@
 package org.noear.solon.core.util;
 
 import org.noear.solon.core.handle.Context;
+import org.noear.solon.lang.Internal;
+
+import java.net.URI;
 
 /**
  * IP 工具
  *
  * @author noear
  * @since 1.3
+ * @deprecated 4.0.4 {@link HostUtil}
  * */
+@Deprecated
+@Internal
 public class IpUtil {
     //
     // 可以进行替换扩展
@@ -44,21 +50,6 @@ public class IpUtil {
      * 获取 Ip
      * */
     public String getRealIp(Context ctx) {
-        //客户端ip
-        String ip = ctx.header("X-Real-IP");
-
-        if (Assert.isEmpty(ip) || "unknown".equalsIgnoreCase(ip)) {
-            //包含了客户端和各级代理ip的完整ip链路
-            ip = ctx.headerOrDefault("X-Forwarded-For", "");
-            if (ip.contains(",")) {
-                ip = ip.split(",")[0];
-            }
-        }
-
-        if (Assert.isEmpty(ip) || "unknown".equalsIgnoreCase(ip)) {
-            ip = ctx.remoteIp();
-        }
-
-        return ip;
+       return HostUtil.global().getRealIp(ctx);
     }
 }

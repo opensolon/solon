@@ -213,14 +213,29 @@ public abstract class Context {
     private String realIp;
 
     /**
-     * 获取客户端真实IP
+     * 获取客户端真实IP（支持反向代理）
      */
     public String realIp() {
         if (realIp == null) {
-            realIp = IpUtil.global().getRealIp(this);
+            realIp = HostUtil.global().getRealIp(this);
         }
 
         return realIp;
+    }
+
+    private String realHost;
+
+    /**
+     * 获取客户端真实 Host（支持反向代理）
+     *
+     * @since 4.0.4
+     */
+    public String realHost() {
+        if (realHost == null) {
+            realHost = HostUtil.global().getRealHost(this);
+        }
+
+        return realHost;
     }
 
     /**

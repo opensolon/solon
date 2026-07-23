@@ -54,6 +54,11 @@ public class RxContextDefault implements RxContext {
     }
 
     @Override
+    public String realHost() {
+        return real.realHost();
+    }
+
+    @Override
     public boolean isSecure() {
         return real.isSecure();
     }

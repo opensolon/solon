@@ -27,6 +27,7 @@ public class HeaderNames {
     public static final String HEADER_CONTENT_TYPE = "Content-Type";
 
     public static final String HEADER_X_FORWARDED_FOR = "X-Forwarded-For";
+    public static final String HEADER_X_FORWARDED_HOST = "X-Forwarded-Host";
 
     public static final String HEADER_HOST = "Host";
     public static final String HEADER_COOKIE = "Cookie";
