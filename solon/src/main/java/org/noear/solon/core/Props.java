@@ -24,6 +24,7 @@ import org.noear.solon.core.util.*;
 
 import java.net.URL;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -336,7 +337,9 @@ public class Props extends Properties {
         Set<String> groups = new HashSet<>();
         for (Object key : rootProps.keySet()) {
             if (key instanceof String) {
-                groups.add(((String) key).split("\\.")[0]);
+                String s = (String) key;
+                int dot = s.indexOf('.');
+                groups.add(dot < 0 ? s : s.substring(0, dot));
             }
         }
 
@@ -361,7 +364,9 @@ public class Props extends Properties {
         Set<String> groups = new TreeSet<>();
         for (Object key : rootProps.keySet()) {
             if (key instanceof String) {
-                groups.add(((String) key).split("\\.")[0]);
+                String s = (String) key;
+                int dot = s.indexOf('.');
+                groups.add(dot < 0 ? s : s.substring(0, dot));
             }
         }
 
@@ -500,7 +505,7 @@ public class Props extends Properties {
 
     ////
 
-    private Set<BiConsumer<String, String>> _changeEvent = new HashSet<>();
+    private final Set<BiConsumer<String, String>> _changeEvent = ConcurrentHashMap.newKeySet();
 
     /**
      * 添加变更事件
@@ -545,7 +550,7 @@ public class Props extends Properties {
 
             Object obj = super.put(key, value);
 
-            if (key instanceof String && value instanceof String) {
+            if (key instanceof String && value instanceof String && !_changeEvent.isEmpty()) {
                 _changeEvent.forEach(event -> {
                     event.accept((String) key, (String) value);
                 });
