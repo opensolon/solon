@@ -429,6 +429,191 @@ public class PropsRelaxedBindingTest {
         assertEquals("camel-v", props2.getProp("db1").get("jdbcUrl"));
     }
 
+    // ------------------------------------------------------------------
+    // doFind 宽松前缀：camel/kebab 前缀双向匹配
+    // ------------------------------------------------------------------
+
+    @Test
+    public void getProp_camelPrefix_matchesKebabPhysical() {
+        // 模拟 mybatis-flex 场景：YAML 展平后物理键为 kebab 前缀
+        // @Inject("${mybatisFlex}") → getProp("mybatisFlex") → doFind("mybatisFlex")
+        // 修复前：startsWith("mybatisFlex") 匹配不到 "mybatis-flex.*"，返回空 Props
+        Props props = new Props();
+        props.put("mybatis-flex.defaultDatasourceKey", "db1");
+        props.put("mybatis-flex.configuration.cacheEnabled", "false");
+        props.put("mybatis-flex.globalConfig.printBanner", "false");
+        props.put("mybatis-flex.typeAliasesPackage[0]", "demo4035.model");
+
+        Props sub = props.getProp("mybatisFlex");
+        assertTrue(sub.size() > 0);
+        assertEquals("db1", sub.get("defaultDatasourceKey"));
+        assertEquals("false", sub.get("configuration.cacheEnabled"));
+        assertEquals("false", sub.get("globalConfig.printBanner"));
+        assertEquals("demo4035.model", sub.get("typeAliasesPackage[0]"));
+    }
+
+    @Test
+    public void getProp_kebabPrefix_matchesCamelPhysical() {
+        // 反向：物理键为 camel 前缀，用 kebab 前缀查询
+        Props props = new Props();
+        props.put("mybatisFlex.defaultDatasourceKey", "db1");
+        props.put("mybatisFlex.configuration.cacheEnabled", "false");
+
+        Props sub = props.getProp("mybatis-flex");
+        assertTrue(sub.size() > 0);
+        assertEquals("db1", sub.get("defaultDatasourceKey"));
+        assertEquals("false", sub.get("configuration.cacheEnabled"));
+    }
+
+    @Test
+    public void getProp_camelPrefix_noAliasStillWorks() {
+        // 无别名的简单前缀不受影响
+        Props props = new Props();
+        props.put("server.port", "8080");
+        props.put("server.host", "localhost");
+
+        Props sub = props.getProp("server");
+        assertEquals(2, sub.size());
+        assertEquals("8080", sub.get("port"));
+        assertEquals("localhost", sub.get("host"));
+    }
+
+    @Test
+    public void getProp_camelPrefix_dedupBothForms() {
+        // 同时存在 kebab 和 camel 前缀的物理键：去重，camel 优先
+        Props props = new Props();
+        props.put("mybatis-flex.config.cacheEnabled", "from-kebab");
+        props.put("mybatisFlex.config.cacheEnabled", "from-camel");
+
+        Props sub = props.getProp("mybatisFlex");
+        assertEquals(1, sub.size());
+        // camel 物理键优先
+        assertEquals("from-camel", sub.get("config.cacheEnabled"));
+    }
+
+    @Test
+    public void getProp_multiSegment_camelPrefix_matchesKebabPhysical() {
+        // 多段前缀：mybatisFlex.configuration → 匹配 mybatis-flex.configuration.*
+        Props props = new Props();
+        props.put("mybatis-flex.configuration.cacheEnabled", "false");
+        props.put("mybatis-flex.configuration.mapUnderscoreToCamelCase", "true");
+
+        Props sub = props.getProp("mybatisFlex.configuration");
+        assertTrue(sub.size() > 0);
+        assertEquals("false", sub.get("cacheEnabled"));
+        assertEquals("true", sub.get("mapUnderscoreToCamelCase"));
+    }
+
+    @Test
+    public void getMap_camelPrefix_matchesKebabPhysical() {
+        // getMap 同样走 doFind，应受益于宽松前缀
+        Props props = new Props();
+        props.put("mybatis-flex.config.key1", "v1");
+        props.put("mybatis-flex.config.key2", "v2");
+
+        Map<String, String> map = props.getMap("mybatisFlex");
+        assertTrue(map.size() > 0);
+        // getProp 会去掉前导点；getMap 也去掉
+        assertTrue(map.containsKey("config.key1") || map.values().contains("v1"));
+    }
+
+    @Test
+    public void find_camelPrefix_matchesKebabPhysical() {
+        // find 同样走 doFind
+        Props props = new Props();
+        props.put("mybatis-flex.config.value", "x");
+
+        Map<String, String> found = new LinkedHashMap<>();
+        props.find("mybatisFlex", found::put);
+        assertFalse(found.isEmpty());
+    }
+
+    @Test
+    public void toBean_camelPrefix_fromKebabPhysical() {
+        // 模拟 @Inject("${mybatisFlex}") 的 Bean 绑定（扁平字段）
+        Props props = new Props();
+        props.put("mybatis-flex.jdbcUrl", "jdbc:x");
+        props.put("mybatis-flex.userName", "root");
+
+        DemoCfg cfg = props.toBean("mybatisFlex", DemoCfg.class);
+        assertNotNull(cfg);
+        assertEquals("jdbc:x", cfg.getJdbcUrl());
+        assertEquals("root", cfg.getUserName());
+    }
+
+    @Test
+    public void getProp_camelPrefix_emptyResultWhenNoMatch() {
+        // 前缀不匹配时仍返回空 Props（不误匹配）
+        Props props = new Props();
+        props.put("other.key", "v");
+        props.put("mybatis-flex.key", "v2");
+
+        Props sub1 = props.getProp("nonExistent");
+        assertEquals(0, sub1.size());
+
+        Props sub2 = props.getProp("other");
+        assertEquals(1, sub2.size());
+    }
+
+    // ------------------------------------------------------------------
+    // mybatis-flex 完整场景模拟
+    // ------------------------------------------------------------------
+
+    @Test
+    public void mybatisFlex_scenario_fullConfigLoad() {
+        // 模拟 YAML 展平后的完整配置
+        Props props = new Props();
+        Properties src = new Properties();
+        src.setProperty("mybatis-flex.defaultDatasourceKey", "db1");
+        src.setProperty("mybatis-flex.typeAliasesPackage[0]", "demo4035.model");
+        src.setProperty("mybatis-flex.mapperLocations[0]", "demo4035.dso.mapper");
+        src.setProperty("mybatis-flex.configuration.cacheEnabled", "false");
+        src.setProperty("mybatis-flex.configuration.mapUnderscoreToCamelCase", "true");
+        src.setProperty("mybatis-flex.globalConfig.printBanner", "false");
+        // datasource 子配置
+        src.setProperty("mybatis-flex.datasource.db1.type", "com.zaxxer.hikari.HikariDataSource");
+        src.setProperty("mybatis-flex.datasource.db1.jdbcUrl", "jdbc:h2:mem:test");
+        src.setProperty("mybatis-flex.datasource.db1.driverClassName", "org.h2.Driver");
+        props.loadAdd(src);
+
+        // 模拟 @Inject("${mybatisFlex}")
+        Props flexProps = props.getProp("mybatisFlex");
+        assertTrue(flexProps.size() >= 9);
+
+        // 基本属性
+        assertEquals("db1", flexProps.get("defaultDatasourceKey"));
+        assertEquals("false", flexProps.get("configuration.cacheEnabled"));
+        assertEquals("true", flexProps.get("configuration.mapUnderscoreToCamelCase"));
+        assertEquals("false", flexProps.get("globalConfig.printBanner"));
+
+        // 列表
+        List<String> typeAliases = flexProps.getList("typeAliasesPackage");
+        assertEquals(1, typeAliases.size());
+        assertEquals("demo4035.model", typeAliases.get(0));
+
+        // 嵌套 getProp
+        Props dsProps = flexProps.getProp("datasource");
+        assertTrue(dsProps.size() >= 3);
+
+        // 分组
+        Map<String, Props> grouped = flexProps.getGroupedProp("datasource");
+        assertEquals(1, grouped.size());
+        assertEquals("com.zaxxer.hikari.HikariDataSource",
+                grouped.get("db1").get("type"));
+        assertEquals("jdbc:h2:mem:test",
+                grouped.get("db1").get("jdbcUrl"));
+
+        // 验证子视图的 get
+        assertEquals("db1", flexProps.get("defaultDatasourceKey"));
+        assertEquals("false", flexProps.get("configuration.cacheEnabled"));
+        assertEquals("false", flexProps.get("globalConfig.printBanner"));
+    }
+
+    // ------------------------------------------------------------------
+
+    // MybatisFlexCfg 及嵌套类已移除（toBean 不支持嵌套对象绑定，用 getProp+get 验证即可）
+
+
     @Test
     public void getProp_emptyPrefixReturnsSelf() {
         Props props = new Props();

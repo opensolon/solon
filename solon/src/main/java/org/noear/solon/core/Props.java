@@ -435,6 +435,9 @@ public class Props extends Properties {
     protected void doFind(String keyStarts, BiConsumer<String, String> consumer) {
         String key2 = keyStarts;
         int idx2 = key2.length();
+        // 宽松前缀：若 keyStarts 有驼峰/kebab 别名，同时匹配两种形式
+        String key2alt = PropNameMapper.alternate(keyStarts);
+        int idx2alt = (key2alt != null) ? key2alt.length() : -1;
         // 用 size()（含 defaults 可见项）估容，减少 defaults 较多时的扩容
         int cap = Math.max(16, size() / 2 + 1);
         // logical -> value；同逻辑键时 camel 物理键优先
@@ -445,21 +448,27 @@ public class Props extends Properties {
             if (k instanceof String && v instanceof String) {
                 String keyStr = (String) k;
 
+                String key;
                 if (keyStr.startsWith(key2)) {
-                    String key = keyStr.substring(idx2);
-                    String logical = PropNameMapper.logicalKey(key);
-                    boolean isPreferred = key.equals(logical);
+                    key = keyStr.substring(idx2);
+                } else if (idx2alt > 0 && keyStr.startsWith(key2alt)) {
+                    key = keyStr.substring(idx2alt);
+                } else {
+                    return;
+                }
 
-                    if (!values.containsKey(logical)) {
-                        values.put(logical, (String) v);
-                        if (isPreferred) {
-                            preferred.add(logical);
-                        }
-                    } else if (isPreferred && !preferred.contains(logical)) {
-                        // 先到的是 kebab，后到 camel：改为 camel 值
-                        values.put(logical, (String) v);
+                String logical = PropNameMapper.logicalKey(key);
+                boolean isPreferred = key.equals(logical);
+
+                if (!values.containsKey(logical)) {
+                    values.put(logical, (String) v);
+                    if (isPreferred) {
                         preferred.add(logical);
                     }
+                } else if (isPreferred && !preferred.contains(logical)) {
+                    // 先到的是 kebab，后到 camel：改为 camel 值
+                    values.put(logical, (String) v);
+                    preferred.add(logical);
                 }
             }
         });
