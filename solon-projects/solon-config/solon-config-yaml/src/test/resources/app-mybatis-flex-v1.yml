@@ -1,0 +1,11 @@
+mybatis-flex:
+  defaultDatasourceKey: db1
+  typeAliasesPackage:
+    - "demo4035.model"
+  mapperLocations:
+    - "demo4035.dso.mapper"
+  configuration:
+    cacheEnabled: false
+    mapUnderscoreToCamelCase: true
+  globalConfig:
+    printBanner: false
