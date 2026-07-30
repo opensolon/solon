@@ -31,7 +31,7 @@
 * 优化 solon Props 属性键处理：取消 `xxx-yyy` 物理双写，改为读时 kebab/camel 宽松映射
 * 优化 solon-data 数据库事务连接配置，仅在值变化时设置自动提交和只读模式
 * 优化 nami-channel-http HttpChannel 响应关闭处理
-* 优化 solon-net-httputils 适配
+* 优化 solon-net-httputils 适配，增加更多全局配置
 * snack4 升为 4.0.56
 
 ### v4.0.3
