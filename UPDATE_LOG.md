@@ -23,6 +23,10 @@
 * 添加 Plugin postStart 事件???
 * 调整 Plugin 统一交给 AppContext 管理（之前由 SolonApp 或 PluginPackage 管理）？？
 
+### v4.1.0
+
+* 优化 solon MultiMap.from 方法，兼容 picocli 的解析策略
+
 ### v4.0.4
 
 * 添加 solon Context:realHost()（支持反向代理场景下获取真实 Host）

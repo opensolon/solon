@@ -254,26 +254,115 @@ public class MultiMap<T> implements Iterable<KeyValues<T>>, Serializable {
     /// ////////
 
     public static MultiMap<String> from(String[] args) {
-        MultiMap<String> d = new MultiMap<>();
+        return from(args, null);
+    }
 
-        if (args != null) {
-            for (String arg : args) {
-                int index = arg.indexOf('=');
-                if (index > 0) {
-                    //key/val
-                    String name = arg.substring(0, index).replaceAll("^-*", "");
-                    String value = arg.substring(index + 1);
-                    d.add(name, value);
-                } else {
-                    //flag
-                    String flag = arg.replaceAll("^-*", "");
-                    d.add(flag, ""); //保持向下兼容，且方便名字检索
-                    d.flags().add(flag);
+    /**
+     * allowKeys 为null 时：贪婪模式（from(args) 路径），对所有选项做lookahead
+     * allowKeys 非null 时：精确模式，仅对声明了需要值的 key 做 lookahead
+     *
+     * @since 4.1
+     * */
+    public static MultiMap<String> from(String[] args, Set<String> allowKeys) {
+        // 与 IgnoreCaseMap 行为一致，allowKeys 使用大小写不敏感的 Set
+        if (Assert.isNotEmpty(allowKeys)) {
+            Set<String> normalized = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+            normalized.addAll(allowKeys);
+            allowKeys = normalized;
+        }
+
+        MultiMap<String> d = new MultiMap<>();
+        List<String> tmp = new ArrayList<>();
+
+        // 第一轮：处理 = 格式
+        parseEqualsFormat(args, d, tmp);
+
+        // 第二轮：处理剩余参数
+        boolean endOfOptions = false;
+        for (int i = 0, len = tmp.size(); i < len; i++) {
+            String arg = tmp.get(i);
+
+            if (endOfOptions) {
+                d.flags().add(arg);
+                continue;
+            }
+
+            if ("--".equals(arg)) {
+                endOfOptions = true;
+                continue;
+            }
+
+            if ("-".equals(arg)) {
+                d.flags().add(arg);
+                continue;
+            }
+
+            if (arg.startsWith("-") == false) {
+                // positional：只进入 flags，不入 map
+                d.flags().add(arg);
+                continue;
+            }
+
+            // 选项（以 - 或 -- 开头）
+            String name;
+            if (arg.startsWith("--")) {
+                name = arg.substring(2);
+            } else {
+                name = arg.substring(1);
+            }
+
+            // allowKeys 为null 时：贪婪模式（from(args) 路径），对所有选项做lookahead
+            // allowKeys 非null 时：精确模式，仅对声明了需要值的 key 做 lookahead
+            if (allowKeys == null || allowKeys.contains(name)) {
+                if (i < len - 1) {
+                    String arg2 = tmp.get(i + 1);
+                    if (arg2.startsWith("-") == false) {
+                        d.add(name, arg2);
+                        i += 1;
+                        continue;
+                    }
                 }
             }
+
+            // 无值，作为布尔 flag
+            d.putIfAbsent(name, "");
+            d.flags().add(name);
         }
 
         return d;
+    }
+
+    /**
+     * 第一轮：处理 key=value 格式，剩余参数进入 tmp
+     */
+    private static void parseEqualsFormat(String[] args, MultiMap<String> d, List<String> tmp) {
+        if (args == null) {
+            return;
+        }
+        for (String arg : args) {
+            int index = arg.indexOf('=');
+            if (index > 0) {
+                String rawName = arg.substring(0, index);
+                String name;
+                if (rawName.startsWith("--")) {
+                    name = rawName.substring(2);
+                } else if (rawName.startsWith("-") && rawName.length() > 1) {
+                    name = rawName.substring(1);
+                } else {
+                    // 无前缀或 - 单独，按普通参数处理
+                    tmp.add(arg);
+                    continue;
+                }
+                // 防止 --=value 产生空键（如 rawName="--"，substring(2)=""）
+                if (name.isEmpty()) {
+                    tmp.add(arg);
+                    continue;
+                }
+                d.add(name, arg.substring(index + 1));
+            } else {
+                tmp.add(arg);
+            }
+        }
     }
 
     /**
