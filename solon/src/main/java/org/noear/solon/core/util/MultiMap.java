@@ -283,7 +283,7 @@ public class MultiMap<T> implements Iterable<KeyValues<T>>, Serializable {
             String arg = tmp.get(i);
 
             if (endOfOptions) {
-                d.flags().add(arg);
+                addFlag(arg, d);
                 continue;
             }
 
@@ -293,13 +293,13 @@ public class MultiMap<T> implements Iterable<KeyValues<T>>, Serializable {
             }
 
             if ("-".equals(arg)) {
-                d.flags().add(arg);
+                addFlag(arg, d);
                 continue;
             }
 
             if (arg.startsWith("-") == false) {
                 // positional：只进入 flags，不入 map
-                d.flags().add(arg);
+                addFlag(arg, d);
                 continue;
             }
 
@@ -325,11 +325,17 @@ public class MultiMap<T> implements Iterable<KeyValues<T>>, Serializable {
             }
 
             // 无值，作为布尔 flag
-            d.putIfAbsent(name, "");
-            d.flags().add(name);
+            addFlag(name, d);
         }
 
         return d;
+    }
+
+    private static void addFlag(String flag, MultiMap<String> d){
+        //兼容旧版
+        d.putIfAbsent(flag, null);
+
+        d.flags().add(flag);
     }
 
     /**
@@ -343,22 +349,12 @@ public class MultiMap<T> implements Iterable<KeyValues<T>>, Serializable {
             int index = arg.indexOf('=');
             if (index > 0) {
                 String rawName = arg.substring(0, index);
-                String name;
-                if (rawName.startsWith("--")) {
-                    name = rawName.substring(2);
-                } else if (rawName.startsWith("-") && rawName.length() > 1) {
-                    name = rawName.substring(1);
-                } else {
-                    // 无前缀或 - 单独，按普通参数处理
-                    tmp.add(arg);
-                    continue;
+                String value = arg.substring(index + 1);
+                String name = rawName.replaceAll("^-*", "");
+
+                if (Assert.isNotEmpty(name)) {
+                    d.add(name, value);
                 }
-                // 防止 --=value 产生空键（如 rawName="--"，substring(2)=""）
-                if (name.isEmpty()) {
-                    tmp.add(arg);
-                    continue;
-                }
-                d.add(name, arg.substring(index + 1));
             } else {
                 tmp.add(arg);
             }

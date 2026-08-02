@@ -73,7 +73,8 @@ public class MultiMapFromTest {
     @Test
     void from_flag_stored_in_innermap_and_flags() {
         MultiMap<String> m = MultiMap.from(new String[]{"--verbose"});
-        assertEquals("", m.get("verbose"));
+        assertNull(m.get("verbose"));
+        assertTrue(m.containsKey("verbose"));
         assertTrue(m.flags().contains("verbose"));
     }
 
@@ -82,6 +83,7 @@ public class MultiMapFromTest {
     void from_positional_arg_treated_as_flag() {
         MultiMap<String> m = MultiMap.from(new String[]{"run"});
         assertNull(m.get("run"));
+        assertTrue(m.containsKey("run"));
         assertTrue(m.flags().contains("run"));
     }
 
@@ -135,7 +137,8 @@ public class MultiMapFromTest {
         Set<String> vk = Collections.singleton("model");
         MultiMap<String> m = MultiMap.from(
                 new String[]{"--model", "--verbose"}, vk);
-        assertEquals("", m.get("model"));
+        assertNull(m.get("model"));
+        assertTrue(m.containsKey("model"));
         assertTrue(m.flags().contains("model"));
         // --verbose 也被正常解析为 flag
         assertTrue(m.flags().contains("verbose"));
@@ -147,7 +150,8 @@ public class MultiMapFromTest {
         MultiMap<String> m = MultiMap.from(
                 new String[]{"--model"},
                 Collections.singleton("model"));
-        assertEquals("", m.get("model"));
+        assertNull(m.get("model"));
+        assertTrue(m.containsKey("model"));
         assertTrue(m.flags().contains("model"));
     }
 
@@ -157,7 +161,8 @@ public class MultiMapFromTest {
         MultiMap<String> m = MultiMap.from(
                 new String[]{"--verbose"},
                 Collections.singleton("model"));
-        assertEquals("", m.get("verbose"));
+        assertNull(m.get("verbose"));
+        assertTrue(m.containsKey("verbose"));
         assertTrue(m.flags().contains("verbose"));
     }
 
@@ -166,7 +171,8 @@ public class MultiMapFromTest {
     void fromVK_null_valueKeys_all_options_become_flags() {
         MultiMap<String> m = MultiMap.from(
                 new String[]{"--model", "sonnet"}, Collections.EMPTY_SET);
-        assertEquals("", m.get("model"));
+        assertNull(m.get("model"));
+        assertTrue(m.containsKey("model"));
         assertTrue(m.flags().contains("model"));
         // "sonnet" 无 - 前缀 → positional
         assertEquals("model", m.flagAt(0));
@@ -194,7 +200,7 @@ public class MultiMapFromTest {
                 vk);
         assertEquals("sonnet", m.get("model"));
         assertEquals("10",     m.get("max-turns"));
-        assertEquals("",       m.get("verbose"));
+        assertNull(m.get("verbose"));
         assertTrue(m.flags().contains("verbose"));
         assertFalse(m.flags().contains("model"));
         assertEquals("run",   m.flagAt(0));
