@@ -26,6 +26,8 @@
 ### v4.1.0
 
 * 优化 solon MultiMap.from 方法，兼容 picocli 的解析策略
+* fastjson 升为 1.2.84
+* fastjson2 升为 2.0.64
 
 ### v4.0.4
 
