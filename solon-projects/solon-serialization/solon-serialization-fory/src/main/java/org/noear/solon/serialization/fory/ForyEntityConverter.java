@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.serialization.fury;
+package org.noear.solon.serialization.fory;
 
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.util.LazyReference;
@@ -25,15 +25,13 @@ import org.noear.solon.serialization.SerializerNames;
 import java.util.Map;
 
 /**
- * Fury 实体转换器
+ * Fory 实体转换器
  *
  * @author noear
  * @since 3.6
- * @deprecated 4.0.5
  */
-@Deprecated
-public class FuryEntityConverter extends AbstractBytesEntityConverter<FuryBytesSerializer> {
-    public FuryEntityConverter(FuryBytesSerializer serializer) {
+public class ForyEntityConverter extends AbstractBytesEntityConverter<ForyBytesSerializer> {
+    public ForyEntityConverter(ForyBytesSerializer serializer) {
         super(serializer);
     }
 

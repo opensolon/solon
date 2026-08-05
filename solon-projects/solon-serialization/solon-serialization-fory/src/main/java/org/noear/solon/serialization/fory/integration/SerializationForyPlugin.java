@@ -13,32 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.serialization.fury.integration;
+package org.noear.solon.serialization.fory.integration;
 
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.serialization.EntityBytesSerializer;
 import org.noear.solon.serialization.SerializerNames;
-import org.noear.solon.serialization.fury.FuryBytesSerializer;
-import org.noear.solon.serialization.fury.FuryEntityConverter;
+import org.noear.solon.serialization.fory.ForyBytesSerializer;
+import org.noear.solon.serialization.fory.ForyEntityConverter;
 
-/**
- * @deprecated 4.0.5
- * */
-@Deprecated
-public class SerializationFuryPlugin implements Plugin {
+public class SerializationForyPlugin implements Plugin {
 
     @Override
     public void start(AppContext context) {
         //::serializer
-        FuryBytesSerializer serializer = FuryBytesSerializer.getDefault();
-        context.wrapAndPut(FuryBytesSerializer.class, serializer); //用于扩展
+        ForyBytesSerializer serializer = ForyBytesSerializer.getDefault();
+        context.wrapAndPut(ForyBytesSerializer.class, serializer); //用于扩展
         context.wrapAndPut(EntityBytesSerializer.class, serializer);
         context.app().serializers().register(SerializerNames.AT_FURY, serializer);
 
         //::entityConverter
-        FuryEntityConverter entityConverter = new FuryEntityConverter(serializer);
-        context.wrapAndPut(FuryEntityConverter.class, entityConverter); //用于扩展
+        ForyEntityConverter entityConverter = new ForyEntityConverter(serializer);
+        context.wrapAndPut(ForyEntityConverter.class, entityConverter); //用于扩展
 
         //会自动转为 executor, renderer
         context.app().chains().addEntityConverter(entityConverter);

@@ -13,65 +13,62 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.serialization.fury;
+package org.noear.solon.serialization.fory;
 
-import org.apache.fury.Fury;
-import org.apache.fury.ThreadLocalFury;
-import org.apache.fury.ThreadSafeFury;
-import org.apache.fury.config.Language;
-import org.apache.fury.resolver.AllowListChecker;
+import org.apache.fory.Fory;
+import org.apache.fory.ThreadLocalFory;
+import org.apache.fory.ThreadSafeFory;
+import org.apache.fory.config.Language;
+import org.apache.fory.resolver.AllowListChecker;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.lang.Nullable;
 import org.noear.solon.serialization.EntityBytesSerializer;
-import org.noear.solon.serialization.EntitySerializer;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.Collection;
 
 /**
- * Fury 字节序列化
+ * Fory 字节序列化
  *
  * @author noear
  * @since 2.8
- * @deprecated 4.0.5
  */
-@Deprecated
-public class FuryBytesSerializer implements EntityBytesSerializer {
-    private static final String label = "application/fury";
-    private static final FuryBytesSerializer _default = new FuryBytesSerializer();
+public class ForyBytesSerializer implements EntityBytesSerializer {
+    private static final String label = "application/fory";
+    private static final ForyBytesSerializer _default = new ForyBytesSerializer();
 
     /**
      * 默认实例
      */
-    public static FuryBytesSerializer getDefault() {
+    public static ForyBytesSerializer getDefault() {
         return _default;
     }
 
 
     private final Collection<String> blackList;
     private final AllowListChecker blackListChecker;
-    private final ThreadSafeFury fury;
+    private final ThreadSafeFory fory;
 
-    public FuryBytesSerializer() {
+    public ForyBytesSerializer() {
         blackList = BlackListUtil.getBlackList();
         blackListChecker = new AllowListChecker(AllowListChecker.CheckLevel.WARN);
 
-        fury = new ThreadLocalFury(classLoader -> {
-            Fury tmp = Fury.builder()
+        fory = new ThreadLocalFory(classLoader -> {
+            Fory tmp = Fory.builder()
                     .withAsyncCompilation(true)
                     .withLanguage(Language.JAVA)
                     .withRefTracking(true)
                     .requireClassRegistration(false)
                     .build();
 
-            tmp.getClassResolver().setClassChecker(blackListChecker);
-            blackListChecker.addListener(tmp.getClassResolver());
             for (String key : blackList) {
                 blackListChecker.disallowClass(key + "*");
             }
+            tmp.getTypeResolver().setTypeChecker(blackListChecker);
+
             return tmp;
         });
     }
@@ -119,7 +116,7 @@ public class FuryBytesSerializer implements EntityBytesSerializer {
      */
     @Override
     public String name() {
-        return "fury-bytes";
+        return "fory-bytes";
     }
 
     /**
@@ -129,7 +126,7 @@ public class FuryBytesSerializer implements EntityBytesSerializer {
      */
     @Override
     public byte[] serialize(Object obj) throws IOException {
-        return fury.serialize(obj);
+        return fory.serialize(obj);
     }
 
     /**
@@ -141,7 +138,7 @@ public class FuryBytesSerializer implements EntityBytesSerializer {
     @Override
     public Object deserialize(byte[] data, Type toType) throws IOException {
         if (toType == null) {
-            return fury.deserialize(data);
+            return fory.deserialize(data);
         } else {
             if (toType instanceof Class) {
                 //处理匿名名类
@@ -152,7 +149,7 @@ public class FuryBytesSerializer implements EntityBytesSerializer {
             }
 
             Class<?> clz = ClassUtil.getTypeClass(toType);
-            return fury.deserializeJavaObject(data, clz);
+            return fory.deserialize(data, clz);
         }
     }
 
@@ -183,6 +180,6 @@ public class FuryBytesSerializer implements EntityBytesSerializer {
      */
     @Override
     public Object deserializeFromBody(Context ctx, @Nullable Type bodyType) throws IOException {
-        return fury.deserialize(ctx.bodyAsBytes());
+        return fory.deserialize(ctx.bodyAsBytes());
     }
 }

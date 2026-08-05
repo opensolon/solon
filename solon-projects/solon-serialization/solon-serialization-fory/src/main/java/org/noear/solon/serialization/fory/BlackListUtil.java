@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.serialization.fury;
+package org.noear.solon.serialization.fory;
 
 import org.noear.solon.core.util.ResourceUtil;
 
@@ -30,9 +30,7 @@ import java.util.stream.Collectors;
  *
  * @author noear
  * @since 2.8
- * @deprecated 4.0.5
  */
-@Deprecated
 public class BlackListUtil {
     private static final String BLACKLIST_TXT_PATH = "META-INF/solon/furyBlackList.txt";
     private static Collection<String> blackList;

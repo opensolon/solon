@@ -25,6 +25,7 @@
 
 ### v4.1.0
 
+* 新增 solon-serialization-fory 插件（原 solon-serialization-fury 标为弃用）
 * 优化 solon MultiMap.from 方法，兼容 picocli 的解析策略
 * snack4 升为 4.0.58
 * fastjson 升为 1.2.84

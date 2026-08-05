@@ -26,6 +26,7 @@
         <module>../../solon-projects/solon-serialization/solon-serialization-jackson-xml</module>
         <module>../../solon-projects/solon-serialization/solon-serialization-gson</module>
         <module>../../solon-projects/solon-serialization/solon-serialization-fury</module>
+        <module>../../solon-projects/solon-serialization/solon-serialization-fory</module>
         <module>../../solon-projects/solon-serialization/solon-serialization-hessian</module>
         <module>../../solon-projects/solon-serialization/solon-serialization-javabin</module>
         <module>../../solon-projects/solon-serialization/solon-serialization-protostuff</module>
