@@ -95,6 +95,11 @@ public class ParamController {
         return aaa;
     }
 
+    @Mapping("array_int3")
+    public Object test_array_int3(Context ctx, int... aaa) throws Exception{
+        return aaa;
+    }
+
     //支持上传文件参数
     @Mapping("file")
     public String test_g(Context ctx, String title, UploadedFile file, String label) throws Exception{

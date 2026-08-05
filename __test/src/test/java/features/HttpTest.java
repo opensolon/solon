@@ -341,6 +341,18 @@ public class HttpTest extends HttpTester {
     public void test2i() throws IOException {
         assert path("/demo2/param/array_int?aaa=1&aaa=2&ccc=3")
                 .get().equals("[1,2]");
+
+        assert path("/demo2/param/array_int?aaa=1")
+                .get().equals("[1]");
+    }
+
+    @Test
+    public void test2i2() throws IOException {
+        assert path("/demo2/param/array_int3?aaa=1&aaa=2")
+                .get().equals("[1,2]");
+
+        assert path("/demo2/param/array_int3?aaa=1")
+                .get().equals("[1]");
     }
 
     @Test
