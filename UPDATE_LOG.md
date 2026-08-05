@@ -28,7 +28,7 @@
 * 新增 solon-serialization-fory 插件（原 solon-serialization-fury 标为弃用）
 * 优化 solon MultiMap.from 方法，兼容 picocli 的解析策略
 * eggg 升为 1.1.4
-* snack4 升为 4.0.58
+* snack4 升为 4.0.59
 * fastjson 升为 1.2.84
 * fastjson2 升为 2.0.64
 
