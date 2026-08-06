@@ -91,6 +91,22 @@ public class WebSocketImpl extends WebSocketBase {
     }
 
     @Override
+    public Future<Void> sendPing() {
+        CallbackFuture future = new CallbackFuture();
+        WebSockets.sendPing(ByteBuffer.allocate(0), real, future);
+
+        return future;
+    }
+
+    @Override
+    public Future<Void> sendPong() {
+        CallbackFuture future = new CallbackFuture();
+        WebSockets.sendPong(ByteBuffer.allocate(0), real, future);
+
+        return future;
+    }
+
+    @Override
     public void close() {
         super.close();
 

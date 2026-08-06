@@ -25,10 +25,10 @@ import javax.servlet.ServletContext;
 import javax.websocket.*;
 import javax.websocket.server.ServerContainer;
 import javax.websocket.server.ServerEndpointConfig;
-import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.util.Collection;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 
 /**
@@ -166,6 +166,30 @@ public class SolonWebSocketEndpoint extends Endpoint {
         @Override
         public Future<Void> send(ByteBuffer binary) {
             return real.getAsyncRemote().sendBinary(binary);
+        }
+
+        @Override
+        public Future<Void> sendPing() {
+            CompletableFuture<Void> future = new CompletableFuture<>();
+            try {
+                real.getAsyncRemote().sendPing(ByteBuffer.allocate(0));
+                future.complete(null);
+            } catch (Throwable ex) {
+                future.completeExceptionally(ex);
+            }
+            return future;
+        }
+
+        @Override
+        public Future<Void> sendPong() {
+            CompletableFuture<Void> future = new CompletableFuture<>();
+            try {
+                real.getAsyncRemote().sendPong(ByteBuffer.allocate(0));
+                future.complete(null);
+            } catch (Throwable ex) {
+                future.completeExceptionally(ex);
+            }
+            return future;
         }
 
         @Override

@@ -169,6 +169,16 @@ public interface WebSocket {
     Future<Void> send(ByteBuffer binary);
 
     /**
+     * 发送 ping
+     */
+    Future<Void> sendPing();
+
+    /**
+     * 发送 pong
+     */
+    Future<Void> sendPong();
+
+    /**
      * 关闭
      */
     void close();

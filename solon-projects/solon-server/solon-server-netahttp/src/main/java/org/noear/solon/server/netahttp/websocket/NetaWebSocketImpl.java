@@ -113,6 +113,32 @@ public class NetaWebSocketImpl extends WebSocketTimeoutBase {
     }
 
     @Override
+    public Future<Void> sendPing() {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+        try {
+            protoContext.sendData(new PingWebSocketEvent());
+            onSend();
+            future.complete(null);
+        } catch (Throwable ex) {
+            future.completeExceptionally(ex);
+        }
+        return future;
+    }
+
+    @Override
+    public Future<Void> sendPong() {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+        try {
+            protoContext.sendData(new PongWebSocketEvent());
+            onSend();
+            future.complete(null);
+        } catch (Throwable ex) {
+            future.completeExceptionally(ex);
+        }
+        return future;
+    }
+
+    @Override
     public void close() {
         super.close();
         try {

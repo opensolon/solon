@@ -111,6 +111,24 @@ public class VxWebSocketImpl extends WebSocketTimeoutBase {
     }
 
     @Override
+    public Future<Void> sendPing() {
+        CallbackFuture future = new CallbackFuture();
+        real.writePing(Buffer.buffer(), future);
+        onSend();
+
+        return future;
+    }
+
+    @Override
+    public Future<Void> sendPong() {
+        CallbackFuture future = new CallbackFuture();
+        real.writePong(Buffer.buffer(), future);
+        onSend();
+
+        return future;
+    }
+
+    @Override
     public void close() {
         super.close();
 

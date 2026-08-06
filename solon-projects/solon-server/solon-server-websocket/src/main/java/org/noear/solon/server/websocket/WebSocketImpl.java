@@ -15,6 +15,7 @@
  */
 package org.noear.solon.server.websocket;
 
+import org.java_websocket.framing.PongFrame;
 import org.noear.solon.server.util.DecodeUtils;
 import org.noear.solon.net.websocket.WebSocketTimeoutBase;
 import org.slf4j.Logger;
@@ -84,6 +85,38 @@ public class WebSocketImpl extends WebSocketTimeoutBase {
 
         try {
             real.send(binary);
+
+            onSend();
+            future.complete(null);
+        } catch (Throwable ex) {
+            future.completeExceptionally(ex);
+        }
+
+        return future;
+    }
+
+    @Override
+    public Future<Void> sendPing() {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+
+        try {
+            real.sendPing();
+
+            onSend();
+            future.complete(null);
+        } catch (Throwable ex) {
+            future.completeExceptionally(ex);
+        }
+
+        return future;
+    }
+
+    @Override
+    public Future<Void> sendPong() {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+
+        try {
+            real.sendFrame(new PongFrame());
 
             onSend();
             future.complete(null);

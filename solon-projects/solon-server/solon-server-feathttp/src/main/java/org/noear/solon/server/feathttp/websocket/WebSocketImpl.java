@@ -100,6 +100,40 @@ public class WebSocketImpl extends WebSocketTimeoutBase {
     }
 
     @Override
+    public Future<Void> sendPing() {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+
+        try {
+            real.ping();
+            real.flush();
+
+            onSend();
+            future.complete(null);
+        } catch (Throwable ex) {
+            future.completeExceptionally(ex);
+        }
+
+        return future;
+    }
+
+    @Override
+    public Future<Void> sendPong() {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+
+        try {
+            real.pong();
+            real.flush();
+
+            onSend();
+            future.complete(null);
+        } catch (Throwable ex) {
+            future.completeExceptionally(ex);
+        }
+
+        return future;
+    }
+
+    @Override
     public void close() {
         super.close();
 

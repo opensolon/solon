@@ -18,9 +18,7 @@ package org.noear.solon.server.websocket.netty;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
-import io.netty.handler.codec.http.websocketx.CloseWebSocketFrame;
-import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
+import io.netty.handler.codec.http.websocketx.*;
 import org.noear.solon.server.util.DecodeUtils;
 import org.noear.solon.net.websocket.WebSocketTimeoutBase;
 import org.slf4j.Logger;
@@ -80,6 +78,24 @@ public class WebSocketImpl extends WebSocketTimeoutBase {
     public Future<Void> send(ByteBuffer binary) {
         try {
             return real.writeAndFlush(new BinaryWebSocketFrame(Unpooled.wrappedBuffer(binary)));
+        } finally {
+            onSend();
+        }
+    }
+
+    @Override
+    public Future<Void> sendPing() {
+        try {
+            return real.writeAndFlush(new PingWebSocketFrame());
+        } finally {
+            onSend();
+        }
+    }
+
+    @Override
+    public Future<Void> sendPong() {
+        try {
+            return real.writeAndFlush(new PongWebSocketFrame());
         } finally {
             onSend();
         }

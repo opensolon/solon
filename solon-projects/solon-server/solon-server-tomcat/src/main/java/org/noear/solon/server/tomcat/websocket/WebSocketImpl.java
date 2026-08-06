@@ -18,6 +18,7 @@ package org.noear.solon.server.tomcat.websocket;
 import java.net.InetSocketAddress;
 import java.net.URI;
 import java.nio.ByteBuffer;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 
 import javax.websocket.CloseReason;
@@ -93,6 +94,30 @@ public class WebSocketImpl extends WebSocketBase {
     @Override
     public Future<Void> send(ByteBuffer binary) {
         return real.getAsyncRemote().sendBinary(binary);
+    }
+
+    @Override
+    public Future<Void> sendPing() {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+        try {
+            real.getAsyncRemote().sendPing(ByteBuffer.allocate(0));
+            future.complete(null);
+        } catch (Throwable ex) {
+            future.completeExceptionally(ex);
+        }
+        return future;
+    }
+
+    @Override
+    public Future<Void> sendPong() {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+        try {
+            real.getAsyncRemote().sendPong(ByteBuffer.allocate(0));
+            future.complete(null);
+        } catch (Throwable ex) {
+            future.completeExceptionally(ex);
+        }
+        return future;
     }
 
     @Override

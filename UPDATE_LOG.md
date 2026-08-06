@@ -23,8 +23,9 @@
 * 添加 Plugin postStart 事件???
 * 调整 Plugin 统一交给 AppContext 管理（之前由 SolonApp 或 PluginPackage 管理）？？
 
-### v4.1.0
+### v4.0.5
 
+* 添加 solon-net WebSocket:sendPing, sendPong 方法（及配套适配）
 * 新增 solon-serialization-fory 插件（原 solon-serialization-fury 标为弃用）
 * 优化 solon MultiMap.from 方法，兼容 picocli 的解析策略
 * eggg 升为 1.1.4

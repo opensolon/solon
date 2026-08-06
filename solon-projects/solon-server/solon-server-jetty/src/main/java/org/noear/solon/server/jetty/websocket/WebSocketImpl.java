@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import java.net.InetSocketAddress;
 import java.net.URI;
 import java.nio.ByteBuffer;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 
 /**
@@ -79,6 +80,30 @@ public class WebSocketImpl extends WebSocketBase {
     @Override
     public Future<Void> send(ByteBuffer binary) {
         return real.getRemote().sendBytesByFuture(binary);
+    }
+
+    @Override
+    public Future<Void> sendPing() {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+        try {
+            real.getRemote().sendPing(ByteBuffer.allocate(0));
+            future.complete(null);
+        } catch (Throwable ex) {
+            future.completeExceptionally(ex);
+        }
+        return future;
+    }
+
+    @Override
+    public Future<Void> sendPong() {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+        try {
+            real.getRemote().sendPong(ByteBuffer.allocate(0));
+            future.complete(null);
+        } catch (Throwable ex) {
+            future.completeExceptionally(ex);
+        }
+        return future;
     }
 
     @Override
