@@ -134,6 +134,8 @@ public abstract class AbstractEntityReader {
                 tv = changeValue(ctx, pWrap, pIndex, pt, bodyRef);
             } catch (ConstructionException e) {
                 throw e;
+            } catch (StatusException e) {
+                throw e;
             } catch (Exception e) {
                 String methodFullName = mWrap.getDeclaringClz().getName() + "::" + mWrap.getName() + "@" + pWrap.spec().getName();
                 throw new StatusException("Parameter change failed: " + methodFullName, e, 400);
