@@ -26,6 +26,7 @@
 ### v4.0.5
 
 * 添加 solon-net WebSocket:sendPing, sendPong 方法（及配套适配）
+* 添加 solon-net-httputils 默认 User-Agent（solon-http/<version>），支持 HttpConfiguration.setUserAgent() 全局配置或置 null 禁用
 * 新增 solon-serialization-fory 插件（原 solon-serialization-fury 标为弃用）
 * 优化 solon MultiMap.from 方法，兼容 picocli 的解析策略
 * eggg 升为 1.1.4

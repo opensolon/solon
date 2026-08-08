@@ -135,6 +135,8 @@ public interface HttpUtils {
 
     /**
      * 用户代理配置
+     * <p>不设置时使用默认值：{@code solon-http/<version>}，
+     * 可通过 {@code HttpConfiguration.setUserAgent()} 全局修改或置 null 禁用</p>
      */
     HttpUtils userAgent(String ua);
 

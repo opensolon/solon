@@ -15,6 +15,7 @@
  */
 package org.noear.solon.net.http;
 
+import org.noear.solon.Solon;
 import org.noear.solon.net.http.impl.HttpUtilsFactoryDefault;
 
 import java.util.*;
@@ -62,6 +63,11 @@ public class HttpConfiguration {
      * 最大重定向次数（默认 20）
      */
     private static volatile int maxRedirects = 20;
+    /**
+     * 默认 User-Agent（默认 "solon-httputils/" + Solon.version()）
+     * <p>置 null 表示不发送默认 UA（由底层实现自行补充，如 Java/x、okhttp/x）</p>
+     */
+    private static volatile String userAgent = "solon-http/" + Solon.version();
 
     /**
      * 添加扩展
@@ -169,5 +175,17 @@ public class HttpConfiguration {
      */
     public static void setMaxRedirects(int maxRedirects) {
         HttpConfiguration.maxRedirects = maxRedirects;
+    }
+
+    public static String getUserAgent() {
+        return userAgent;
+    }
+
+    /**
+     * 设置默认 User-Agent
+     * <p>置 null 可禁用默认 UA，回退到底层实现行为（JDK 发送 Java/x，OkHttp 发送 okhttp/x）</p>
+     */
+    public static void setUserAgent(String userAgent) {
+        HttpConfiguration.userAgent = userAgent;
     }
 }

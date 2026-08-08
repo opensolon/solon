@@ -59,6 +59,7 @@ public class LocalHttpServer implements AutoCloseable {
 
         this.server.createContext("/ok", this::handleOk);
         this.server.createContext("/echo", this::handleEcho);
+        this.server.createContext("/echo-header", this::handleEchoHeader);
         this.server.createContext("/slow", this::handleSlow);
         this.server.createContext("/post", this::handlePost);
         this.server.createContext("/redirect", this::handleRedirect);
@@ -120,6 +121,20 @@ public class LocalHttpServer implements AutoCloseable {
             String query = exchange.getRequestURI().getRawQuery();
             String body = query == null ? "echo" : query;
             writeText(exchange, 200, body);
+        } finally {
+            onExit();
+        }
+    }
+
+    private void handleEchoHeader(HttpExchange exchange) throws IOException {
+        onEnter(exchange);
+        try {
+            maybeDelay();
+            // query 为请求头名（如 /echo-header?User-Agent），回显该请求头的值
+            String query = exchange.getRequestURI().getRawQuery();
+            String name = query == null ? "" : query;
+            String value = exchange.getRequestHeaders().getFirst(name);
+            writeText(exchange, 200, value == null ? "" : value);
         } finally {
             onExit();
         }

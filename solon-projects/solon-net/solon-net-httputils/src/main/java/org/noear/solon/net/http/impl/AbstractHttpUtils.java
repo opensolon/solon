@@ -153,6 +153,9 @@ public abstract class AbstractHttpUtils implements HttpUtils {
         return this;
     }
 
+    /**
+     * 用户代理配置（不设置时使用默认 UA：solon-http/<version>）
+     */
     @Override
     public HttpUtils userAgent(String ua) {
         header("User-Agent", ua);
@@ -497,6 +500,7 @@ public abstract class AbstractHttpUtils implements HttpUtils {
     @Override
     public HttpResponse exec(String method) throws HttpException {
         try {
+            tryInitHeaders();
             return execDo(method, null);
         } catch (Exception e) {
             throw new HttpException(method + " " + _url + ", request failed", e);
@@ -508,6 +512,7 @@ public abstract class AbstractHttpUtils implements HttpUtils {
         CompletableFuture<HttpResponse> future = new CompletableFuture<>();
 
         try {
+            tryInitHeaders();
             execDo(method, future);
         } catch (Exception e) {
             future.completeExceptionally(new HttpException(method + " " + _url + ", request failed", e));
@@ -564,6 +569,13 @@ public abstract class AbstractHttpUtils implements HttpUtils {
         if (_headers == null) {
             _headers = new MultiMap<>();
         }
+
+        //懒补默认 User-Agent（用户显式设置后不覆盖）
+        String userAgent = HttpConfiguration.getUserAgent();
+        if (userAgent != null && _headers.containsKey("User-Agent") == false) {
+            _headers.put("User-Agent", userAgent);
+        }
+
         return _headers;
     }
 
