@@ -39,11 +39,12 @@ public class JwtSessionStateFactory implements SessionStateFactory {
         String signKey0 = JwtSessionProps.getInstance().secret;
         if (Utils.isNotEmpty(signKey0)) {
             signKey = signKey0;
+        } else {
+            signKey = JwtSecretStore.loadOrCreate();
         }
     }
 
-
-    private String signKey = "DHPjbM5QczZ2cysd4gpDbG/4SnuwzWX3sA1i6AXiAbo=";
+    private String signKey;
 
     /**
      * 获取签名Key

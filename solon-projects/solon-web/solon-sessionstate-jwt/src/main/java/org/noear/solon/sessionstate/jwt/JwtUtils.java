@@ -135,7 +135,8 @@ public class JwtUtils {
         } catch (ExpiredJwtException ex) {
 
         } catch (Throwable e) {
-            log.warn(e.getMessage(), e);
+            // Do not write attacker-controlled JWT contents to the application log.
+            log.debug("JWT validation failed: " + e.getClass().getSimpleName());
         }
 
         return null;
