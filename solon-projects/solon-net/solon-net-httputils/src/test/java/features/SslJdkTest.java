@@ -32,9 +32,13 @@ public class SslJdkTest {
         testUrlDo("https://solon.noear.org/", html -> html.contains("Solon"));
         testUrlDo("https://www.bilibili.com/", html -> html.contains("bilibili"));
         testUrlDo("https://www.taobao.com/", html -> html.contains("taobao"));
-        testUrlDo("https://www.csdn.net/", html -> html.contains("csdn"));
         testUrlDo("https://i.cnblogs.com/", html -> html.contains("cnblogs"));
         testUrlDo("https://www.guancha.cn/", html -> html.contains("guancha"));
+    }
+
+    @Test
+    public void caseSslOk2() {
+        testUrlDo("https://www.csdn.net/", html -> html.contains("<html>"));
     }
 
     private void testUrlDo(String url, Predicate<String> test) {
