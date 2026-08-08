@@ -9,7 +9,7 @@ import org.noear.solon.test.SolonTest;
  * @author noear 2024/11/29 created
  */
 
-@SolonTest(App.class)
+@SolonTest(value = App.class, properties = {"user.home=target/test-home"})
 public class StateTest extends HttpTester {
     @Test
     public void test() throws Exception {
