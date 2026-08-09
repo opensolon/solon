@@ -96,10 +96,14 @@ public class FeatHttpServer implements ServerLifecycle {
 
   @Override
   public void start(String host, int port) throws Throwable {
-    ServerOptions options = new ServerOptions();
-    if (Utils.isNotEmpty(host)) {
-      options.host(host);
+    // host 为空时绑定所有网卡（0.0.0.0）。feat 底层 AioQuickServer 收到空串会执行
+    // new InetSocketAddress("", port)，解析为回环地址 127.0.0.1，导致部署后外部无法访问。
+    if (Utils.isEmpty(host)) {
+      host = "0.0.0.0";
     }
+
+    ServerOptions options = new ServerOptions();
+    options.host(host);
 
     if (sslConfig.isSslEnable()) {
       SSLContext sslContext = sslConfig.getSslContext();
