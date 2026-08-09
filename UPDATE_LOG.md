@@ -36,6 +36,7 @@
 * fastjson 升为 1.2.84
 * fastjson2 升为 2.0.64
 * smartsocket 升为 2.1.3
+* smarthttp 升为 2.5.20
 
 ### v4.0.4
 
