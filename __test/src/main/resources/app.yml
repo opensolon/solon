@@ -48,9 +48,9 @@ server.port: 8081
 server.contextPath: "/test/"
 
 server.http.gzip:
-    enable: true
-    minSize: 4096
-    mimeTypes: 'text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json,application/xml'
+  enable: true
+  minSize: 4096
+  mimeTypes: 'text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json,application/xml'
 
 solon.env: test
 
@@ -95,6 +95,7 @@ solon.logging.appender:
   console:
     enable: true
     pattern: "%d{yyyy-MM-dd HH:mm:ss} %-5level %magenta(${PID:-}) %white(---) %-20(%yellow([%20.20thread])) %-55(%cyan(%.32logger{30}:%L)) %msg%n"
+    level: ERROR
   file:
     enable: false
 #  test:
@@ -173,7 +174,7 @@ custom:
 app.dict:
   name: 张三
   age: 8
-  codes: {dev: "develop", test: "test"}
+  codes: { dev: "develop", test: "test" }
   likes:
     - 素描
     - 摄影
