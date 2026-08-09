@@ -29,11 +29,13 @@
 * 添加 solon-net-httputils 默认 User-Agent（solon-http/<version>），支持 HttpConfiguration.setUserAgent() 全局配置或置 null 禁用
 * 新增 solon-serialization-fory 插件（原 solon-serialization-fury 标为弃用）
 * 优化 solon MultiMap.from 方法，兼容 picocli 的解析策略
+* 调整 solon-server-feathttp 改为源码导入（发布包更小）
 * 修复 solon-handle AbstractEntityReader:doReadArgument StatusException 传递问题
 * eggg 升为 1.1.4
 * snack4 升为 4.0.59
 * fastjson 升为 1.2.84
 * fastjson2 升为 2.0.64
+* smartsocket 升为 2.1.3
 
 ### v4.0.4
 
