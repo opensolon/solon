@@ -26,11 +26,10 @@
             <artifactId>solon-net</artifactId>
         </dependency>
 
-
         <dependency>
-            <groupId>tech.smartboot.feat</groupId>
-            <artifactId>feat-core</artifactId>
-            <version>${feat-core.version}</version>
+            <groupId>io.github.smartboot.socket</groupId>
+            <artifactId>aio-pro</artifactId>
+            <version>${smartsocket.version}</version>
         </dependency>
 
         <dependency>
