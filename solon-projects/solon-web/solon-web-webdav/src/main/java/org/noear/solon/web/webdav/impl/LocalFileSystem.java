@@ -24,6 +24,7 @@ import org.noear.solon.web.webdav.FileInfo;
 import org.noear.solon.web.webdav.FileSystem;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,7 +49,17 @@ public class LocalFileSystem implements FileSystem {
         if (StrUtil.isBlank(path)) {
             return rootPath;
         }
-        return rootPath + "/" + path;
+        try {
+            File rootDir = new File(rootPath).getCanonicalFile();
+            File resolved = new File(rootDir, path).getCanonicalFile();
+            if (!resolved.getCanonicalPath().startsWith(rootDir.getCanonicalPath() + File.separator)
+                && !resolved.getCanonicalPath().equals(rootDir.getCanonicalPath())) {
+                throw new SecurityException("Path traversal detected: " + path);
+            }
+            return resolved.getPath();
+        } catch (IOException e) {
+            throw new SecurityException("Invalid path: " + path, e);
+        }
     }
 
     private FileInfo file2Info(File file) {
