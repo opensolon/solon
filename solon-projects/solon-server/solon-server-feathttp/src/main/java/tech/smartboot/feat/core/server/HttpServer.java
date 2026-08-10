@@ -104,13 +104,13 @@ public class HttpServer {
 
             if (bannerEnabled) {
                 bannerEnabled = false;
-                System.out.println(FeatUtils.getResourceAsString("feat-banner.txt") + "\r\n :: Feat :: (" + Feat.VERSION + ")");
-                System.out.println(FeatUtils.getResourceAsString("feat-support.txt"));
-                System.out.println("\u001B[32m\uD83C\uDF89Congratulations, the feat startup is successful" + ". cost: " + (System.currentTimeMillis() - options.getStartTime()) + "ms\u001B[0m");
+                //System.out.println(FeatUtils.getResourceAsString("feat-banner.txt") + "\r\n :: Feat :: (" + Feat.VERSION + ")");
+                //System.out.println(FeatUtils.getResourceAsString("feat-support.txt"));
+                //System.out.println("\u001B[32m\uD83C\uDF89Congratulations, the feat startup is successful" + ". cost: " + (System.currentTimeMillis() - options.getStartTime()) + "ms\u001B[0m");
             }
-            System.out.println((options.isSecure() ? "https://" : "http://") + (FeatUtils.isBlank(host) ? "0.0.0.0" : host) + ":" + port + "/");
+            //System.out.println((options.isSecure() ? "https://" : "http://") + (FeatUtils.isBlank(host) ? "0.0.0.0" : host) + ":" + port + "/");
         } catch (Throwable e) {
-            System.out.println("\u001B[31m❗feat has failed to start for some reason.\u001B[0m");
+            //System.out.println("\u001B[31m❗feat has failed to start for some reason.\u001B[0m");
             throw new RuntimeException("server start error.", e);
         }
     }

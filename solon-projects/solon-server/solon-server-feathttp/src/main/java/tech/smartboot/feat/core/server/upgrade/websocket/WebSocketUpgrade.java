@@ -228,7 +228,7 @@ public class WebSocketUpgrade extends Upgrade {
      * @param message
      */
     public void handleTextMessage(WebSocketRequest request, WebSocketResponse response, String message) {
-        System.out.println(message);
+        //System.out.println(message);
     }
 
     /**
@@ -239,7 +239,7 @@ public class WebSocketUpgrade extends Upgrade {
      * @param data
      */
     public void handleBinaryMessage(WebSocketRequest request, WebSocketResponse response, byte[] data) {
-        System.out.println(data);
+        //System.out.println(data);
     }
 
     public void handleContinueMessage(WebSocketRequest request, WebSocketResponse response, byte[] data) {

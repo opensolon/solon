@@ -102,7 +102,7 @@ public class PushPromiseFrame extends Http2Frame {
         // Write frame header
         writeBuffer.writeInt(payloadLength << 8 | FRAME_TYPE_PUSH_PROMISE);
         writeBuffer.writeByte(flags);
-        System.out.println("write push promise header ,streamId:" + streamId);
+        //System.out.println("write push promise header ,streamId:" + streamId);
         writeBuffer.writeInt(streamId);
 
         // Write pad length if padded

@@ -92,7 +92,7 @@ public class SettingsFrame extends Http2Frame {
 
     @Override
     public void writeTo(WriteBuffer writeBuffer) throws IOException {
-        System.out.println("write setting,streamId+" + streamId);
+        //System.out.println("write setting,streamId+" + streamId);
         if (getFlag(ACK)) {
             writeBuffer.writeInt(TYPE);
             writeBuffer.writeByte((byte) ACK);

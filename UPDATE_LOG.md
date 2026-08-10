@@ -31,7 +31,7 @@
 * 优化 solon MultiMap.from 方法，兼容 picocli 的解析策略
 * 调整 solon-server-feathttp 改为源码导入（发布包更小）
 * 修复 solon-handle AbstractEntityReader:doReadArgument StatusException 传递问题
-* feat 升为 2.3.1，取消 server header 默认输出，日志改为 slf4j
+* feat 升为 2.3.1，取消 server header 默认输出，日志改为 slf4j，移除 System.out 日志
 * eggg 升为 1.1.4
 * snack4 升为 4.0.59
 * fastjson 升为 1.2.84

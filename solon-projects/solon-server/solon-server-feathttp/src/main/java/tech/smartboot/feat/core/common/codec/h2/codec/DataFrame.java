@@ -85,7 +85,7 @@ public class DataFrame extends Http2Frame {
     }
 
     public void writeTo(WriteBuffer writeBuffer, byte[] data, int offset, int length) throws IOException {
-        System.err.println("write data frame");
+        //System.err.println("write data frame");
         int payloadLength = length;
         byte flags = (byte) this.flags;
 

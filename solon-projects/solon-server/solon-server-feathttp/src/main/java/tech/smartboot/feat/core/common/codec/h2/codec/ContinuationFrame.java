@@ -42,7 +42,7 @@ public class ContinuationFrame extends Http2Frame {
         // Write frame header
         writeBuffer.writeInt(payloadLength << 8 | FRAME_TYPE_CONTINUATION);
         writeBuffer.writeByte(flags);
-        System.out.println("write continuation ,streamId:" + streamId);
+        //System.out.println("write continuation ,streamId:" + streamId);
         writeBuffer.writeInt(streamId);
 
         // Write fragment

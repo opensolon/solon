@@ -110,7 +110,7 @@ public class HeadersFrame extends Http2Frame {
         // Write frame header
         writeBuffer.writeInt(payloadLength << 8 | FRAME_TYPE_HEADERS);
         writeBuffer.writeByte(flags);
-        System.out.println("write header ,streamId:" + streamId);
+        //System.out.println("write header ,streamId:" + streamId);
         writeBuffer.writeInt(streamId);
 
         // Write pad length if padded

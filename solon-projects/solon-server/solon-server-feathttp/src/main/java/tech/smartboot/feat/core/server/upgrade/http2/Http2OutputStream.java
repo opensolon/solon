@@ -73,7 +73,7 @@ public final class Http2OutputStream extends FeatOutputStream {
             continuationFrame.writeTo(writeBuffer);
         }
 //        writeBuffer.flush();
-        System.err.println("StreamID: " + streamId + " Header已发送...");
+        //System.err.println("StreamID: " + streamId + " Header已发送...");
         committed = true;
     }
 

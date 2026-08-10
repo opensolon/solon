@@ -33,7 +33,7 @@ class Util {
             }
             HeaderValue headerValue = entry.getValue();
             while (headerValue != null) {
-                //todo: System.out.println("encode: " + entry.getKey() + ":" + entry.getValue().getValue());
+                //System.out.println("encode: " + entry.getKey() + ":" + entry.getValue().getValue());
                 encoder.header(entry.getKey().toLowerCase(), headerValue.getValue());
                 while (!encoder.encode(buffer)) {
                     buffer.flip();
@@ -51,7 +51,7 @@ class Util {
 
             HeaderValue headerValue = entry.getValue();
             while (headerValue != null) {
-                System.out.println("encode: " + entry.getKey() + ":" + headerValue.getValue());
+                //System.out.println("encode: " + entry.getKey() + ":" + headerValue.getValue());
                 encoder.header(entry.getKey().toLowerCase(), headerValue.getValue());
                 while (!encoder.encode(buffer)) {
                     buffer.flip();

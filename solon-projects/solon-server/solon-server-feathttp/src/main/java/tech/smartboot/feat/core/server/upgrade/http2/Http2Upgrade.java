@@ -141,19 +141,19 @@ public class Http2Upgrade extends Upgrade {
                     SettingsFrame settingAckFrame = new SettingsFrame(settingsFrame.streamId(), SettingsFrame.ACK, 0);
                     settingAckFrame.writeTo(req.getAioSession().writeBuffer());
                     req.getAioSession().writeBuffer().flush();
-                    System.err.println("Setting ACK报文已发送");
+                    //System.err.println("Setting ACK报文已发送");
                 } else {
-                    System.out.println("settingsFrame:" + settingsFrame);
+                    //System.out.println("settingsFrame:" + settingsFrame);
                     session.updateSettings(settingsFrame);
                     settingsFrame.writeTo(req.getAioSession().writeBuffer());
                     req.getAioSession().writeBuffer().flush();
-                    System.err.println("Setting报文已发送");
+                    //System.err.println("Setting报文已发送");
                 }
             }
             break;
             case Http2Frame.FRAME_TYPE_WINDOW_UPDATE: {
                 WindowUpdateFrame windowUpdateFrame = (WindowUpdateFrame) frame;
-                System.out.println(windowUpdateFrame.getUpdate());
+                //System.out.println(windowUpdateFrame.getUpdate());
                 SettingsFrame ackFrame = new SettingsFrame(windowUpdateFrame.streamId(), SettingsFrame.ACK, 0);
                 ackFrame.writeTo(req.getAioSession().writeBuffer());
             }
@@ -161,14 +161,14 @@ public class Http2Upgrade extends Upgrade {
             case Http2Frame.FRAME_TYPE_HEADERS: {
                 session.settingDisable();
                 HeadersFrame headersFrame = (HeadersFrame) frame;
-                System.out.println("headerFrame Stream:" + headersFrame.streamId());
+                //System.out.println("headerFrame Stream:" + headersFrame.streamId());
                 Http2Endpoint request = session.getStream(headersFrame.streamId());
                 request.checkState(Http2Endpoint.STATE_HEADER_FRAME);
                 Map<String, HeaderValue> headers = request.getHeaders();
                 session.getHpackDecoder().decode(headersFrame.getFragment(), headersFrame.getFlag(Http2Frame.FLAG_END_HEADERS), new DecodingCallback() {
                     @Override
                     public void onDecoded(CharSequence n, CharSequence v) {
-                        System.out.println("name:" + n + " value:" + v);
+                        //System.out.println("name:" + n + " value:" + v);
                         String name = n.toString();
                         String value = v.toString();
                         if (name.charAt(0) == ':') {
@@ -189,7 +189,7 @@ public class Http2Upgrade extends Upgrade {
                     }
                 });
                 if (headersFrame.getFragment().hasRemaining()) {
-                    System.out.println("hasRemaining");
+                    //System.out.println("hasRemaining");
                 }
                 if (headersFrame.getFlag(Http2Frame.FLAG_END_HEADERS)) {
                     request.setState(Http2Endpoint.STATE_DATA_FRAME);
@@ -217,12 +217,12 @@ public class Http2Upgrade extends Upgrade {
             }
             break;
             case Http2Frame.FRAME_TYPE_GOAWAY: {
-                System.out.println("GoAwayFrame:" + ((GoAwayFrame) frame).getLastStream());
+                //System.out.println("GoAwayFrame:" + ((GoAwayFrame) frame).getLastStream());
                 break;
             }
             case Http2Frame.FRAME_TYPE_RST_STREAM: {
                 ResetStreamFrame resetStreamFrame = (ResetStreamFrame) frame;
-                System.out.println("RST_Stream, errorCode: " + resetStreamFrame.getErrorCode());
+                //System.out.println("RST_Stream, errorCode: " + resetStreamFrame.getErrorCode());
                 break;
             }
             default:
