@@ -18,7 +18,11 @@ package webapp.demoh_socketd;
 import org.noear.nami.channel.socketd.SocketdProxy;
 import org.noear.socketd.transport.core.impl.ConfigDefault;
 import org.noear.solon.net.annotation.ServerEndpoint;
+import org.noear.solon.net.websocket.WebSocket;
 import org.noear.solon.net.websocket.socketd.ToSocketdWebSocketListener;
+
+import java.io.IOException;
+import java.nio.ByteBuffer;
 
 /**
  * @author noear 2024/5/26 created
@@ -27,5 +31,17 @@ import org.noear.solon.net.websocket.socketd.ToSocketdWebSocketListener;
 public class WebSocketAsMvc extends ToSocketdWebSocketListener {
     public WebSocketAsMvc() {
         super(new ConfigDefault(false), SocketdProxy.socketdToHandler);
+    }
+
+    @Override
+    public void onOpen(WebSocket socket) {
+        System.out.println("[PROBE] WebSocketAsMvc.onOpen path=" + socket.path());
+        super.onOpen(socket);
+    }
+
+    @Override
+    public void onMessage(WebSocket socket, ByteBuffer binary) throws IOException {
+        System.out.println("[PROBE] WebSocketAsMvc.onMessage bytes=" + binary.remaining());
+        super.onMessage(socket, binary);
     }
 }

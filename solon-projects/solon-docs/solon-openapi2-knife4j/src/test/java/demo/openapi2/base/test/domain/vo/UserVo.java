@@ -20,6 +20,7 @@ import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 用户信息表
@@ -116,4 +117,8 @@ public class UserVo implements Serializable {
      */
     private String remark;
 
+    /**
+     * 标签
+     */
+    private List<String> tags;
 }
