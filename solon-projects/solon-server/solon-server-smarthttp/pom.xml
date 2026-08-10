@@ -15,6 +15,10 @@
     <name>${project.artifactId}</name>
     <packaging>jar</packaging>
 
+    <properties>
+        <smarthttp.version>2.5.19</smarthttp.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
@@ -30,22 +34,6 @@
             <groupId>org.noear</groupId>
             <artifactId>smart-http-server</artifactId>
             <version>${smarthttp.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.smartboot.socket</groupId>
-                    <artifactId>aio-pro</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-api</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <dependency>
-            <groupId>io.github.smartboot.socket</groupId>
-            <artifactId>aio-pro</artifactId>
-            <version>${smartsocket.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>

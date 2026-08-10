@@ -11,7 +11,6 @@
 package tech.smartboot.feat.core.server.impl;
 
 import io.github.smartboot.socket.timer.HashedWheelTimer;
-import tech.smartboot.feat.Feat;
 import tech.smartboot.feat.core.common.*;
 import tech.smartboot.feat.core.common.io.FeatOutputStream;
 
@@ -24,15 +23,13 @@ import java.util.concurrent.TimeUnit;
  * @version v1.0.0
  */
 final class HttpOutputStream extends FeatOutputStream {
-    private static final String TEXT_PLAIN_FAST_WRITE = HttpProtocol.HTTP_11.getProtocol() + " 200 OK\r\n" + HeaderName.SERVER.getName() + ":feat/" + Feat.VERSION + "\r\nDate:" + FeatUtils.formatRFC1123(FeatUtils.currentTime()) + "\r\nContent-Type:" + HeaderValue.ContentType.TEXT_PLAIN_UTF8 + "\r\nContent-Length:";
-    private static final int SERVER_INDEX = TEXT_PLAIN_FAST_WRITE.indexOf(HeaderName.SERVER.getName());
+    private static final String TEXT_PLAIN_FAST_WRITE = HttpProtocol.HTTP_11.getProtocol() + " 200 OK\r\nDate:" + FeatUtils.formatRFC1123(FeatUtils.currentTime()) + "\r\nContent-Type:" + HeaderValue.ContentType.TEXT_PLAIN_UTF8 + "\r\nContent-Length:";
     private static final int DATE_INDEX = TEXT_PLAIN_FAST_WRITE.indexOf("Date:");
-    private static final int SERVER_INDEX_LENGTH = TEXT_PLAIN_FAST_WRITE.indexOf(HeaderName.DATE.getName()) - SERVER_INDEX;
     private static final int PLAIN_CONTENT_TYPE_INDEX = TEXT_PLAIN_FAST_WRITE.indexOf(HeaderName.CONTENT_TYPE.getName()) - 2;
     private static final int PLAIN_CONTENT_LENGTH_INDEX = TEXT_PLAIN_FAST_WRITE.indexOf(HeaderName.CONTENT_LENGTH.getName()) - 2;
     private static final byte[] TEXT_PLAIN_FAST_WRITE_BYTES = TEXT_PLAIN_FAST_WRITE.getBytes();
 
-    private static final String APPLICATION_JSON = HttpProtocol.HTTP_11.getProtocol() + " 200 OK\r\n" + HeaderName.SERVER.getName() + ":feat/" + Feat.VERSION + "\r\nDate:" + FeatUtils.formatRFC1123(FeatUtils.currentTime()) + "\r\nContent-Type:" + HeaderValue.ContentType.APPLICATION_JSON + "\r\nContent-Length:";
+    private static final String APPLICATION_JSON = HttpProtocol.HTTP_11.getProtocol() + " 200 OK\r\nDate:" + FeatUtils.formatRFC1123(FeatUtils.currentTime()) + "\r\nContent-Type:" + HeaderValue.ContentType.APPLICATION_JSON + "\r\nContent-Length:";
     private static final int JSON_CONTENT_LENGTH_INDEX = APPLICATION_JSON.indexOf(HeaderName.CONTENT_LENGTH.getName()) - 2;
     private static final byte[] APPLICATION_JSON_FAST_WRITE_BYTES = APPLICATION_JSON.getBytes();
     private static final byte[] CHUNKED = "\r\nTransfer-Encoding: chunked\r\n\r\n".getBytes();
@@ -75,7 +72,7 @@ final class HttpOutputStream extends FeatOutputStream {
 //        }
 
         boolean hasHeader = response.getHeaders().size() > 0;
-        //输出http状态行、contentType,contentLength、Transfer-Encoding、server等信息
+        //输出http状态行、contentType,contentLength、Transfer-Encoding等信息
         writeHeadPart(hasHeader);
         if (hasHeader) {
             //输出Header部分
@@ -119,10 +116,6 @@ final class HttpOutputStream extends FeatOutputStream {
     private void writeCommonHeadPart(boolean hasHeader, String contentType, long contentLength) throws IOException {
         request.getProtocol().write(writeBuffer);
         response.getHttpStatus().write(writeBuffer);
-        // Server
-        if (response.getHeader(HeaderName.SERVER) == null) {
-            writeBuffer.write(TEXT_PLAIN_FAST_WRITE_BYTES, SERVER_INDEX, SERVER_INDEX_LENGTH);
-        }
         // Date
         writeBuffer.write(TEXT_PLAIN_FAST_WRITE_BYTES, DATE_INDEX, 34);
 

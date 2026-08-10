@@ -137,9 +137,11 @@ public class HeaderTest extends HttpTester {
     @Test
     public void testServer_get() throws Exception {
         String rst = path("/demo2/header/server").exec("GET").header("Server");
+        System.out.println(rst);
         Assertions.assertNull(rst);
 
         rst = path("/demo2/header/server?out=1").exec("GET").header("Server");
+        System.out.println(rst);
         Assertions.assertEquals("solon", rst);
     }
 
