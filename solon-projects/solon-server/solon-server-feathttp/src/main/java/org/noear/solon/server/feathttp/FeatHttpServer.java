@@ -41,17 +41,6 @@ import tech.smartboot.feat.core.server.impl.HttpEndpoint;
  * @since 2.2
  */
 public class FeatHttpServer implements ServerLifecycle {
-  static {
-    // 关闭 feat-core 自带的 banner
-    try {
-      Field field = HttpServer.class.getDeclaredField("bannerEnabled");
-      field.setAccessible(true);
-      field.set(null, false);
-    } catch (Exception ignored) {
-      // feat-core 版本变更导致字段不存在时忽略
-    }
-  }
-
   protected final HttpServerProps props;
   protected HttpServer server = null;
   protected Handler handler;

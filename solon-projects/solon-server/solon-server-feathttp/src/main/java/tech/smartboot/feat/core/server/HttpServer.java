@@ -13,7 +13,6 @@ package tech.smartboot.feat.core.server;
 import io.github.smartboot.socket.Plugin;
 import io.github.smartboot.socket.buffer.BufferPagePool;
 import io.github.smartboot.socket.transport.AioQuickServer;
-import tech.smartboot.feat.Feat;
 import tech.smartboot.feat.core.common.*;
 import tech.smartboot.feat.core.server.impl.HttpEndpoint;
 import tech.smartboot.feat.core.server.impl.HttpMessageProcessor;
@@ -25,7 +24,7 @@ import tech.smartboot.feat.core.server.impl.HttpRequestProtocol;
  */
 public class HttpServer {
 
-    private static boolean bannerEnabled = true;
+    private static boolean bannerEnabled = false;
     /**
      * http消息解码器
      */
