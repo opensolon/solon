@@ -37,6 +37,8 @@ public class RoutingTableDefault<T> implements RoutingTable<T> {
     private final LinkedList<RankEntity<Routing<T>>> table = new LinkedList<>();
     private final Map<String, RoutingDefault<T>> routingCache = new ConcurrentHashMap<>();
     private final Map<String, Version> versionCache = new ConcurrentHashMap<>();
+    // 修复：版本缓存容量上限，防止攻击者伪造海量版本串导致缓存无限增长而 OOM
+    private static final int VERSION_CACHE_LIMIT = 128;
 
 
     /**
@@ -47,7 +49,18 @@ public class RoutingTableDefault<T> implements RoutingTable<T> {
             return null;
         }
 
-        return versionCache.computeIfAbsent(versionStr, Version::new);
+        // 修复：缓存超限时直接新建不缓存
+        Version cached = versionCache.get(versionStr);
+        if (cached != null) {
+            return cached;
+        }
+
+        Version version = new Version(versionStr);
+        if (versionCache.size() < VERSION_CACHE_LIMIT) {
+            versionCache.putIfAbsent(versionStr, version);
+        }
+
+        return version;
     }
 
     /**
