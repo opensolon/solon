@@ -203,7 +203,8 @@ public class ChainManager {
         SYNC_LOCK.lock();
 
         try {
-            typeSet.add(clz);
+            // 修复：移除拦截器时应从 typeSet 中移除类型，而非添加
+            typeSet.remove(clz);
 
             routerInterceptorNodes.removeIf(i -> {
                 if (i.target instanceof RouterInterceptorLimiter) {
