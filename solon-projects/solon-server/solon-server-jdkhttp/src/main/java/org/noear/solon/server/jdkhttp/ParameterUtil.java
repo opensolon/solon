@@ -16,12 +16,11 @@
 package org.noear.solon.server.jdkhttp;
 
 import com.sun.net.httpserver.HttpExchange;
+import org.noear.solon.core.util.IoUtil;
 import org.noear.solon.server.ServerProps;
 import org.noear.solon.server.io.LimitedInputStream;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLDecoder;
@@ -67,10 +66,11 @@ public class ParameterUtil {
                 return;
             }
 
-            InputStreamReader isr = new InputStreamReader(new LimitedInputStream(exchange.getRequestBody(), ServerProps.request_maxBodySize), ServerProps.request_encoding);
-            BufferedReader br = new BufferedReader(isr);
-            String query = br.readLine();
-            parseQuery(query, parameters);
+            // 修复：一次性读尽表单体再按 & 解析（readLine 只读首行会丢参数），并用 try-with-resources 关闭流
+            try (LimitedInputStream body = new LimitedInputStream(exchange.getRequestBody(), ServerProps.request_maxBodySize)) {
+                String query = IoUtil.transferToString(body, ServerProps.request_encoding);
+                parseQuery(query, parameters);
+            }
         }
     }
 
