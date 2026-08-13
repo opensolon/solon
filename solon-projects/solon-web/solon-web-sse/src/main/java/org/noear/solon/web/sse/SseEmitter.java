@@ -20,9 +20,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -36,7 +37,9 @@ public class SseEmitter {
     static final Logger log = LoggerFactory.getLogger(SseEmitter.class);
 
     private SseEmitterHandler eventHandler;
-    private List<SseEvent> eventCached = new ArrayList<>();
+    // 修复：事件缓存改为并发安全集合，并用可重入锁统一保护 send/initialize 的“判空-缓存/切换”组合操作
+    private List<SseEvent> eventCached = new CopyOnWriteArrayList<>();
+    private final ReentrantLock sendLock = new ReentrantLock();
 
     protected Runnable onCompletion;
     protected Runnable onTimeout;
@@ -125,16 +128,28 @@ public class SseEmitter {
      * @param event 事件数据
      */
     public void send(SseEvent event) throws IOException {
+        // 修复：complete() 后再 send 会进入缓存分支只增不发导致无界累积，改为直接抛异常
+        if (completed.get()) {
+            throw new IllegalStateException("SseEmitter is completed");
+        }
+
         if (onSendPost != null) {
             event = onSendPost.apply(event);
         }
 
         if (event != null) {
-            if (eventHandler == null) {
-                //如果未初始化事件处理，先缓存事件
-                eventCached.add(event);
-            } else {
-                eventHandler.send(event);
+            // 修复：判空与缓存/发送置于同一把锁内，避免与 initialize 交错时丢事件或状态不一致
+            sendLock.lock();
+
+            try {
+                if (eventHandler == null) {
+                    //如果未初始化事件处理，先缓存事件
+                    eventCached.add(event);
+                } else {
+                    eventHandler.send(event);
+                }
+            } finally {
+                sendLock.unlock();
             }
         }
     }
@@ -169,11 +184,20 @@ public class SseEmitter {
      * 初始化
      */
     protected void initialize(SseEmitterHandler handler) throws Throwable {
-        this.eventHandler = handler;
+        // 修复：处理器赋值与缓存回放置于同一把锁内，回放后清空缓存，避免与并发 send 交错导致事件丢失或重复
+        sendLock.lock();
 
-        //1.发送初始化之前的事件
-        for (SseEvent event : eventCached) {
-            eventHandler.send(event);
+        try {
+            this.eventHandler = handler;
+
+            //1.发送初始化之前的事件
+            for (SseEvent event : eventCached) {
+                eventHandler.send(event);
+            }
+
+            eventCached.clear();
+        } finally {
+            sendLock.unlock();
         }
 
         //2.开始初始化（一般也是发消息）
