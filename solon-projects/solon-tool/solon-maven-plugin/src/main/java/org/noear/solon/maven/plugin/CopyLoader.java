@@ -53,42 +53,42 @@ public class CopyLoader {
     }
 
     private static boolean setLoader() throws IOException {
+        // 修复：流改用 try-with-resources，异常向上传播，避免静默产出缺失引导类的损坏 jar
         try {
             //获取 JarLauncher 类所在路径
             ProtectionDomain protectionDomain = JarLauncher.class.getProtectionDomain();
             CodeSource codeSource = protectionDomain.getCodeSource();
             URI location = (codeSource == null ? null : codeSource.getLocation().toURI());
             String mavenPluginJarPath = (location == null ? null : location.getSchemeSpecificPart());
-            JarFile jarfile = new JarFile(mavenPluginJarPath);
-            JarFile targetJarfile = new JarFile(path + name);
-            JarOutputStream jarOutputStream = new JarOutputStream(new FileOutputStream(path + tempName));
-            //写loader 文件
-            Enumeration<JarEntry> entries = jarfile.entries();
-            while (entries.hasMoreElements()) {
-                JarEntry jarEntry = entries.nextElement();
-                if (!jarEntry.isDirectory() && jarEntry.getName().contains(Constant.HEAD_PACKAGE_PATH) && jarEntry.getName().endsWith(".class")) {
-                    jarOutputStream.putNextEntry(jarEntry);
-                    byte[] bytes = IOUtils.toByteArray(jarfile.getInputStream(jarEntry));
-                    jarOutputStream.write(bytes);
+            try (JarFile jarfile = new JarFile(mavenPluginJarPath);
+                 JarFile targetJarfile = new JarFile(path + name);
+                 JarOutputStream jarOutputStream = new JarOutputStream(new FileOutputStream(path + tempName))) {
+                //写loader 文件
+                Enumeration<JarEntry> entries = jarfile.entries();
+                while (entries.hasMoreElements()) {
+                    JarEntry jarEntry = entries.nextElement();
+                    if (!jarEntry.isDirectory() && jarEntry.getName().contains(Constant.HEAD_PACKAGE_PATH) && jarEntry.getName().endsWith(".class")) {
+                        jarOutputStream.putNextEntry(jarEntry);
+                        byte[] bytes = IOUtils.toByteArray(jarfile.getInputStream(jarEntry));
+                        jarOutputStream.write(bytes);
+                    }
                 }
+                //写原文件
+                Enumeration<JarEntry> targetEntries = targetJarfile.entries();
+                while (targetEntries.hasMoreElements()) {
+                    JarEntry entry = targetEntries.nextElement();
+                    InputStream entryInputStream = targetJarfile
+                            .getInputStream(entry);
+                    jarOutputStream.putNextEntry(entry);
+                    jarOutputStream.write(IOUtils.toByteArray(entryInputStream));
+                }
+                jarOutputStream.flush();
             }
-            //写原文件
-            Enumeration<JarEntry> targetEntries = targetJarfile.entries();
-            while (targetEntries.hasMoreElements()) {
-                JarEntry entry = targetEntries.nextElement();
-                InputStream entryInputStream = targetJarfile
-                        .getInputStream(entry);
-                jarOutputStream.putNextEntry(entry);
-                jarOutputStream.write(IOUtils.toByteArray(entryInputStream));
-            }
-            jarOutputStream.flush();
-            jarOutputStream.close();
-            targetJarfile.close();
-            jarfile.close();
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            // 修复：失败时删除残留临时文件，并将异常向上传播而非吞掉
+            FileUtils.deleteQuietly(new File(path + tempName));
+            throw new IOException(e);
         }
-        return false;
     }
 }
