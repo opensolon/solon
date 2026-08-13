@@ -20,6 +20,7 @@ import org.noear.solon.core.aspect.Invocation;
 import org.noear.solon.core.util.SnelUtil;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
 
 /**
  * 拦截动作模板处理
@@ -42,8 +43,12 @@ public class InvKeys {
         keyB.append(method.getDeclaringClass().getName()).append(":");
         keyB.append(method.getName()).append(":");
 
+        // 修复：追加参数类型签名，避免同名重载方法共享缓存键
+        keyB.append(Arrays.toString(method.getParameterTypes())).append(":");
+
         inv.argsAsMap().forEach((k, v) -> {
-            keyB.append(k).append("_").append(v);
+            // 修复：参数对之间用固定分隔符，避免参数值内容伪造键边界
+            keyB.append(k).append("_").append(v).append("|");
         });
 
         //必须md5，不然会出现特殊符号
