@@ -572,7 +572,13 @@ public abstract class Context {
      * 获取参数并转为int
      */
     public int paramAsInt(String name, int def) {
-        return Integer.parseInt(paramOrDefault(name, String.valueOf(def)));
+        // 修复：参数存在但值为空时返回默认值，避免 parseInt("") 抛 NumberFormatException
+        String tmp = param(name);
+        if (Utils.isEmpty(tmp)) {
+            return def;
+        } else {
+            return Integer.parseInt(tmp);
+        }
     }
 
     /**
@@ -586,7 +592,13 @@ public abstract class Context {
      * 获取参数并转为long
      */
     public long paramAsLong(String name, long def) {
-        return Long.parseLong(paramOrDefault(name, String.valueOf(def)));
+        // 修复：参数存在但值为空时返回默认值，避免 parseLong("") 抛 NumberFormatException
+        String tmp = param(name);
+        if (Utils.isEmpty(tmp)) {
+            return def;
+        } else {
+            return Long.parseLong(tmp);
+        }
     }
 
     /**
@@ -600,7 +612,13 @@ public abstract class Context {
      * 获取参数并转为double
      */
     public double paramAsDouble(String name, double def) {
-        return Double.parseDouble(paramOrDefault(name, String.valueOf(def)));
+        // 修复：参数存在但值为空时返回默认值，避免 parseDouble("") 抛 NumberFormatException
+        String tmp = param(name);
+        if (Utils.isEmpty(tmp)) {
+            return def;
+        } else {
+            return Double.parseDouble(tmp);
+        }
     }
 
     /**
