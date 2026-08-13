@@ -74,6 +74,7 @@ public class HstsHeaderHandler implements Handler {
 
     @Override
     public void handle(Context ctx) throws Throwable {
-        ctx.headerSet("Strict-Transport-Security=", headerValue);
+        // 修复：头名称尾部多了一个等号，导致 HSTS 头无效
+        ctx.headerSet("Strict-Transport-Security", headerValue);
     }
 }

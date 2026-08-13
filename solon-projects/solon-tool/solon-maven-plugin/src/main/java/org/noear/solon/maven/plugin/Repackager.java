@@ -187,16 +187,12 @@ public class Repackager {
         }
     }
 
-    private boolean isZip(File file) {
-        try {
-            FileInputStream fileInputStream = new FileInputStream(file);
-            try {
-                return isZip(fileInputStream);
-            } finally {
-                fileInputStream.close();
-            }
+    private boolean isZip(File file) throws IOException {
+        try (FileInputStream fileInputStream = new FileInputStream(file)) {
+            return isZip(fileInputStream);
         } catch (IOException ex) {
-            return false;
+            // 修复：区分“非 zip”与“读取失败”，读取失败时抛异常，避免依赖被静默排除出 fat jar
+            throw new IOException("Failed to read library file: " + file.getAbsolutePath(), ex);
         }
     }
 

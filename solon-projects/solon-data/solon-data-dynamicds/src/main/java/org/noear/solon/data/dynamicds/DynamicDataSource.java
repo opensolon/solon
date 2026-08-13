@@ -90,7 +90,12 @@ public class DynamicDataSource extends AbstractRoutingDataSource implements Data
             throw new IllegalArgumentException("Property 'targetDataSources' is required");
         }
 
-        targetDataSources.putAll(targetDataSources);
+        // 修复：参数遮蔽了父类同名字段导致自身 putAll 空操作，改用 this.字段 并对 null 先初始化
+        if (this.targetDataSources == null) {
+            this.targetDataSources = new LinkedHashMap<>();
+        }
+
+        this.targetDataSources.putAll(targetDataSources);
     }
 
     /**

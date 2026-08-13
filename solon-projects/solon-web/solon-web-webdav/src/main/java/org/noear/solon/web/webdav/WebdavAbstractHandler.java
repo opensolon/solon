@@ -386,8 +386,9 @@ public abstract class WebdavAbstractHandler implements Handler {
         } else {
             resIn = this.fileSystem().fileInputStream(reqPath, 0, 0);
         }
-        try {
-            ctx.output(resIn);
+        // 修复：输出完成后关闭文件流（try-with-resources），避免每次下载泄漏一个文件句柄
+        try (InputStream in = resIn) {
+            ctx.output(in);
         } catch (Exception e) {
 
         }

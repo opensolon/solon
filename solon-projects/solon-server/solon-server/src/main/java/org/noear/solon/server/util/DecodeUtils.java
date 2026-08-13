@@ -59,6 +59,18 @@ public class DecodeUtils {
                 }
             }
         } catch (Exception e) {
+            // 修复：multipart 解析异常时清理已构建的上传临时文件，避免畸形请求持续遗留 solon.*.tmp 耗尽磁盘
+            for (KeyValues<UploadedFile> kv : filesMap) {
+                if (kv.getValues() != null) {
+                    for (UploadedFile f1 : kv.getValues()) {
+                        try {
+                            f1.delete();
+                        } catch (Exception ignored) {
+                        }
+                    }
+                }
+            }
+
             throw status4xx(ctx, e);
         }
     }

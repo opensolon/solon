@@ -86,11 +86,12 @@ public class RangeValidator implements Validator<Range> {
             return true;
         }
 
-        if (anno.min() > 0 && val.longValue() < anno.min()) {
+        // 修复：去掉 > 0 开关条件，直接比较边界，使负数或 0 边界生效（注解默认值 min=0、max=Long.MAX_VALUE 本身即无约束）
+        if (val.longValue() < anno.min()) {
             return false;
         }
 
-        if (anno.max() > 0 && val.longValue() > anno.max()) {
+        if (val.longValue() > anno.max()) {
             return false;
         }
 

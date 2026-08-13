@@ -117,7 +117,12 @@ public class RepackageMojo extends AbstractMojo {
                     return;
                 }
                 //移动数据
-                ClassesMove.change(project.getArtifact().getFile());
+                // 修复：change 失败时异常向上传播，构建不再带着残缺产物继续
+                try {
+                    ClassesMove.change(project.getArtifact().getFile());
+                } catch (Exception e) {
+                    throw new MojoExecutionException("change jar exception", e);
+                }
                 //处理依赖
                 repackage();
                 //处理loader

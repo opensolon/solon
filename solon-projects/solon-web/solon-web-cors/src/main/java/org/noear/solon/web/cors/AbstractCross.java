@@ -122,8 +122,21 @@ public abstract class AbstractCross<T extends AbstractCross> {
 
         //设定 allow origin
         if (Utils.isNotEmpty(allowedOrigins)) {
-            if ("*".equals(allowedOrigins) || allowedOrigins.contains(origin)) {
-                ctx.headerSet("Access-Control-Allow-Origin", origin);
+            if ("*".equals(allowedOrigins)) {
+                if (allowCredentials) {
+                    // 修复：* 与 credentials=true 不得同时反射 Origin，改为输出 * 避免全域开放带凭证跨域
+                    ctx.headerSet("Access-Control-Allow-Origin", "*");
+                } else {
+                    ctx.headerSet("Access-Control-Allow-Origin", origin);
+                }
+            } else {
+                // 修复：白名单由 contains 子串匹配改为按分隔符拆分后逐项精确匹配
+                for (String item : allowedOrigins.split(",")) {
+                    if (item.trim().equals(origin)) {
+                        ctx.headerSet("Access-Control-Allow-Origin", origin);
+                        break;
+                    }
+                }
             }
         }
 

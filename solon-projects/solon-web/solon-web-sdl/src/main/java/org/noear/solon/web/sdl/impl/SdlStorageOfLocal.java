@@ -19,8 +19,8 @@ import org.noear.solon.Utils;
 import org.noear.solon.web.sdl.SdlStorage;
 
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 单设备登录数据服务 Local 实现
@@ -29,7 +29,8 @@ import java.util.Map;
  * @since 2.2
  */
 public class SdlStorageOfLocal implements SdlStorage {
-    private Map<String, String> storage = new HashMap<>();
+    // 修复：SDL 存取发生在多线程请求环境，普通 HashMap 并发读写会丢更新/读到中间态，改用 ConcurrentHashMap
+    private Map<String, String> storage = new ConcurrentHashMap<>();
 
     /**
      * 更新单点登录标识

@@ -23,9 +23,8 @@ import org.noear.socketd.SocketD;
 import org.noear.socketd.transport.core.Session;
 
 import java.net.URI;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Socketd 客户端通道
@@ -37,36 +36,23 @@ import java.util.concurrent.locks.ReentrantLock;
 public class SocketdClientChannel extends ChannelBase implements Channel {
     public static final SocketdClientChannel instance = new SocketdClientChannel();
 
-    private final Map<String, SocketdChannel> channelMap = new HashMap<>();
-    private final ReentrantLock SYNC_LOCK = new ReentrantLock();
+    // 修复：改用并发容器，避免无锁读与并发写的数据竞争
+    private final Map<String, SocketdChannel> channelMap = new ConcurrentHashMap<>();
 
     private SocketdChannel get(String hostname, String url) {
-        SocketdChannel channel = channelMap.get(hostname);
-
-        if (channel == null) {
-            SYNC_LOCK.lock();
+        // 修复：用 computeIfAbsent 原子地获取或建立通道，失败时不缓存，下次可重试
+        return channelMap.computeIfAbsent(hostname, k -> {
             try {
-                channel = channelMap.get(hostname);
-
-                if (channel == null) {
-                    try {
-                        Session session = (Session) SocketD.createClient(url)
-                                .listen(SocketdProxy.socketdToHandler)
-                                .openOrThow();
-                        channel = new SocketdChannel(() -> session);
-                        channelMap.put(hostname, channel);
-                    } catch (RuntimeException e) {
-                        throw e;
-                    } catch (Exception e) {
-                        throw new IllegalStateException(e);
-                    }
-                }
-            } finally {
-                SYNC_LOCK.unlock();
+                Session session = (Session) SocketD.createClient(url)
+                        .listen(SocketdProxy.socketdToHandler)
+                        .openOrThow();
+                return new SocketdChannel(() -> session);
+            } catch (RuntimeException e) {
+                throw e;
+            } catch (Exception e) {
+                throw new IllegalStateException(e);
             }
-        }
-
-        return channel;
+        });
     }
 
     @Override
@@ -77,6 +63,12 @@ public class SocketdClientChannel extends ChannelBase implements Channel {
         String hostname = uri.getAuthority();
         SocketdChannel channel = get(hostname, ctx.url);
 
-        return channel.call(ctx);
+        try {
+            return channel.call(ctx);
+        } catch (Throwable ex) {
+            // 修复：调用失败（如会话已断开）时移除缓存条目，下次调用触发重建，避免永久不可用
+            channelMap.remove(hostname, channel);
+            throw ex;
+        }
     }
 }

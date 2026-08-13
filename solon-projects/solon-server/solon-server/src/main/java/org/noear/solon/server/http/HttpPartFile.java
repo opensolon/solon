@@ -53,11 +53,15 @@ public class HttpPartFile {
             Path tempdir = ServerProps.request_tempDir.toPath();
 
             tempfile = Files.createTempFile(tempdir, "solon.", ".tmp").toFile();
+            // 修复：写入失败（如超出大小限制）时删除已落盘的临时文件，避免残留
             try (OutputStream outs = new BufferedOutputStream(new FileOutputStream(tempfile))) {
                 //转入缓冲
                 outs.write(thresholdBuffer.toByteArray());
                 //转入剩余部分
                 IoUtil.transferTo(ins, outs);
+            } catch (IOException e) {
+                tempfile.delete();
+                throw e;
             }
 
             size = tempfile.length();
