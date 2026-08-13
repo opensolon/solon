@@ -27,6 +27,7 @@
 ### 4.0.6
 
 * feat 调整 HttpServer 默认关闭 bannerEnabled
+* redisx 升为 1.8.6
 
 ### v4.0.5
 
