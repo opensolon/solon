@@ -549,12 +549,23 @@ public abstract class BeanContainer {
      * @param nameOrType bean name or type
      */
     public void getWrapAsync(Object nameOrType, Consumer<BeanWrap> callback) {
-        BeanWrap bw = getWrap(nameOrType);
+        // 修复：“查-订阅”置于同一 SYNC_LOCK 内，避免订阅前恰有 putWrap 完成发布导致回调永久丢失
+        boolean subscribed = false;
 
-        if (bw == null || bw.raw() == null) {
-            beanHashSubscribe(nameOrType, callback);
-        } else {
-            callback.accept(bw);
+        SYNC_LOCK.lock();
+        try {
+            BeanWrap bw = getWrap(nameOrType);
+
+            if (bw == null || bw.raw() == null) {
+                beanHashSubscribe(nameOrType, callback);
+                subscribed = true;
+            }
+        } finally {
+            SYNC_LOCK.unlock();
+        }
+
+        if (subscribed == false) {
+            callback.accept(getWrap(nameOrType));
         }
     }
 
@@ -902,13 +913,20 @@ public abstract class BeanContainer {
      * 包装并推入
      */
     public BeanWrap wrapAndPut(Class<?> type, Object bean, boolean typed) {
-        BeanWrap wrap = getWrap(type);
-        if (wrap == null) {
-            wrap = wrapCreate(type, bean, null, typed);
-            putWrap(type, wrap);
-        }
+        // 修复：“查-创建-入库”置于 SYNC_LOCK 内，避免并发时创建多个实例而其中一个永不入库
+        SYNC_LOCK.lock();
 
-        return wrap;
+        try {
+            BeanWrap wrap = getWrap(type);
+            if (wrap == null) {
+                wrap = wrapCreate(type, bean, null, typed);
+                putWrap(type, wrap);
+            }
+
+            return wrap;
+        } finally {
+            SYNC_LOCK.unlock();
+        }
     }
 
     /**
