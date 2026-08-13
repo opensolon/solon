@@ -84,6 +84,7 @@ public abstract class DbTran extends DbTranNode implements TranNode {
                         con.setAutoCommit(false);
                     }
 
+                    //只有成功才加入
                     conMap.putIfAbsent(ds, con);
 
                     try {
