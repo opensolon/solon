@@ -24,7 +24,7 @@
 * 调整 Plugin 统一交给 AppContext 管理（之前由 SolonApp 或 PluginPackage 管理）？？
 
 
-### 4.1.0
+### 4.0.6
 
 * feat 调整 HttpServer 默认关闭 bannerEnabled
 
