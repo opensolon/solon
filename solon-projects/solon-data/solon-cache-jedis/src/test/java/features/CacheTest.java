@@ -41,6 +41,7 @@ public class CacheTest {
         userM.name = "test";
 
         cacheService.store("test", userM, 1);
+        Thread.sleep(200);
         assert userM.id == cacheService.get("test", UserM.class).id;
         Thread.sleep(2000);
         assert cacheService.get("test", UserM.class) == null;
@@ -59,6 +60,7 @@ public class CacheTest {
         userM.name = "test";
 
         cacheService.store("test", userM, 0);
+        Thread.sleep(200);
         assert userM.id == cacheService.get("test", UserM.class).id;
         cacheService.remove("test");
         assert cacheService.get("test", UserM.class) == null;

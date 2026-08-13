@@ -38,7 +38,7 @@ public class SslOkTest {
 
     @Test
     public void caseSslOk2() {
-        testUrlDo("https://www.csdn.net/", html -> html.contains("<html>"));
+        testUrlDo("https://www.csdn.net/", html -> html.contains("</html>"));
     }
 
     private void testUrlDo(String url, Predicate<String> test) {
