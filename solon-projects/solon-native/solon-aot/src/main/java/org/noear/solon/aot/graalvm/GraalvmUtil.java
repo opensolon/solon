@@ -128,7 +128,9 @@ public class GraalvmUtil {
                             try {
                                 return TypeUtil.forName(type, AppClassLoader.global());
                             } catch (Exception ex) {
-                                return new RuntimeException(ex);
+                                // 修复：参数类型加载失败时抛出带上下文的异常，不再返回异常对象充当 Class
+                                throw new IllegalStateException("Failed to load parameter type: " + type
+                                        + ", for method: " + clz.getName() + "." + e.getName(), ex);
                             }
                         }).toArray(Class[]::new);
                         return clz.getDeclaredMethod(e.getName(), classes);
@@ -168,7 +170,9 @@ public class GraalvmUtil {
                             try {
                                 return TypeUtil.forName(type, AppClassLoader.global());
                             } catch (Exception ex) {
-                                return new RuntimeException(ex);
+                                // 修复：参数类型加载失败时抛出带上下文的异常，不再返回异常对象充当 Class
+                                throw new IllegalStateException("Failed to load parameter type: " + type
+                                        + ", for method: " + clz.getName() + "." + e.getName(), ex);
                             }
                         }).toArray(Class[]::new);
                         return clz.getMethod(e.getName(), classes);
