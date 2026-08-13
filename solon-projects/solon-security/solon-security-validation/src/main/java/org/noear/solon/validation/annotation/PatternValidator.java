@@ -87,6 +87,7 @@ public class PatternValidator implements Validator<Pattern> {
             cached.putIfAbsent(anno.value(), pt);
         }
 
-        return pt.matcher(val).find();
+        // 修复：改用全匹配，避免无锚点的自定义正则被“包含即通过”绕过
+        return pt.matcher(val).matches();
     }
 }
