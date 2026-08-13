@@ -48,7 +48,7 @@ public class ClassesMove {
     }
 
 
-    public static void change(File file) {
+    public static void change(File file) throws Exception {
         String target = file.getParent() + File.separator;
         String name = file.getName();
         String desc = name.substring(0, name.lastIndexOf("."));
@@ -57,17 +57,32 @@ public class ClassesMove {
             deleteDirectory(file1.getAbsolutePath());
         }
         file1.mkdirs();
+        // 修复：先在临时文件完成重打包并校验，成功后再删除原 jar 并替换，避免原构件被删后打包失败导致产物永久丢失
+        File tempJar = new File(target + desc + ".tmp.jar");
         try {
             //解压
             unzipJar(file1.getPath(), file.getAbsolutePath());
+            //打包到临时文件
+            jar(tempJar.getAbsolutePath(), file1);
+
+            //校验临时产物有效
+            if (!tempJar.isFile() || tempJar.length() == 0) {
+                throw new IOException("Repackaged jar is invalid: " + tempJar.getAbsolutePath());
+            }
+
             //删除原来的jar
             deleteFile(file.getAbsolutePath());
-            jar(file.getAbsolutePath(), file1);
+            //临时文件替换为正式产物
+            if (!tempJar.renameTo(file)) {
+                throw new IOException("Rename temp jar failed: " + tempJar.getAbsolutePath());
+            }
             //删除历史
             deleteDirectory(file1.getAbsolutePath());
             //打包新的文件
         } catch (Exception e) {
-            e.printStackTrace();
+            // 修复：失败时清理残留临时文件，解压目录保留便于恢复，并将异常向上传播而非吞掉
+            deleteFile(tempJar.getAbsolutePath());
+            throw e;
         }
     }
 
