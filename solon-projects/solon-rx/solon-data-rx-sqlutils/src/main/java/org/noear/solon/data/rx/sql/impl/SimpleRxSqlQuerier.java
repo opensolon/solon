@@ -96,11 +96,11 @@ public class SimpleRxSqlQuerier implements RxSqlQuerier {
     }
 
     protected <T> Mono<T> queryRowDo(RxRowConverter<T> converter) {
-        return Mono.from(getConnection())
-                .flatMapMany(conn -> buildStatement(conn, command, false))
-                .flatMap(result -> result.map(converter::convert))
-                .take(1)
-                .singleOrEmpty();
+        // 修复：改用 usingWhen，结束时自动 close 连接归还连接池
+        return Mono.usingWhen(getConnection(),
+                conn -> Mono.from(buildStatement(conn, command, false))
+                        .flatMap(result -> Mono.from(result.map(converter::convert))),
+                Connection::close);
     }
 
     @Override
@@ -117,9 +117,11 @@ public class SimpleRxSqlQuerier implements RxSqlQuerier {
     }
 
     protected <T> Flux<T> queryRowListDo(RxRowConverter<T> converter) {
-        return Mono.from(getConnection())
-                .flatMapMany(conn -> buildStatement(conn, command, false))
-                .flatMap(result -> result.map(converter::convert));
+        // 修复：改用 usingWhen，结束时自动 close 连接归还连接池
+        return Flux.usingWhen(getConnection(),
+                conn -> Flux.from(buildStatement(conn, command, false))
+                        .flatMap(result -> result.map(converter::convert)),
+                Connection::close);
     }
 
     @Override
@@ -129,11 +131,11 @@ public class SimpleRxSqlQuerier implements RxSqlQuerier {
     }
 
     protected Mono<Long> updateDo() {
-        return Mono.from(getConnection())
-                .flatMapMany(conn -> buildStatement(conn, command, false))
-                .flatMap(result -> result.getRowsUpdated())
-                .take(1)
-                .singleOrEmpty();
+        // 修复：改用 usingWhen，结束时自动 close 连接归还连接池
+        return Mono.usingWhen(getConnection(),
+                conn -> Mono.from(buildStatement(conn, command, false))
+                        .flatMap(result -> Mono.from(result.getRowsUpdated())),
+                Connection::close);
     }
 
     @Override
@@ -143,11 +145,11 @@ public class SimpleRxSqlQuerier implements RxSqlQuerier {
     }
 
     protected Mono updateReturnKeyDo() {
-        return Mono.from(getConnection())
-                .flatMapMany(conn -> buildStatement(conn, command, true))
-                .flatMap(result -> result.map(r -> r.get(0)))
-                .take(1)
-                .singleOrEmpty();
+        // 修复：改用 usingWhen，结束时自动 close 连接归还连接池
+        return Mono.usingWhen(getConnection(),
+                conn -> Mono.from(buildStatement(conn, command, true))
+                        .flatMap(result -> Mono.from(result.map(r -> r.get(0)))),
+                Connection::close);
     }
 
     @Override
@@ -157,9 +159,11 @@ public class SimpleRxSqlQuerier implements RxSqlQuerier {
     }
 
     protected Flux<Long> updateBatchDo() {
-        return Mono.from(getConnection())
-                .flatMapMany(conn -> buildStatement(conn, command, false))
-                .flatMap(result -> result.getRowsUpdated());
+        // 修复：改用 usingWhen，结束时自动 close 连接归还连接池
+        return Flux.usingWhen(getConnection(),
+                conn -> Flux.from(buildStatement(conn, command, false))
+                        .flatMap(result -> result.getRowsUpdated()),
+                Connection::close);
     }
 
 
