@@ -113,14 +113,22 @@ public interface HttpUtils {
      * 超时配置
      */
     default HttpUtils timeout(int timeoutSeconds) {
-        return timeout(HttpTimeout.of(timeoutSeconds));
+        // 修复：超时 <=0 时不覆盖默认超时，避免被解释为无限超时导致调用永久挂起
+        if (timeoutSeconds > 0) {
+            return timeout(HttpTimeout.of(timeoutSeconds));
+        }
+        return this;
     }
 
     /**
      * 超时配置
      */
     default HttpUtils timeout(int connectTimeoutSeconds, int writeTimeoutSeconds, int readTimeoutSeconds) {
-        return timeout(HttpTimeout.of(connectTimeoutSeconds, writeTimeoutSeconds, readTimeoutSeconds));
+        // 修复：超时均 <=0 时不覆盖默认超时，避免被解释为无限超时导致调用永久挂起
+        if (connectTimeoutSeconds > 0 || writeTimeoutSeconds > 0 || readTimeoutSeconds > 0) {
+            return timeout(HttpTimeout.of(connectTimeoutSeconds, writeTimeoutSeconds, readTimeoutSeconds));
+        }
+        return this;
     }
 
     /**
