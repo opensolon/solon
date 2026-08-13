@@ -123,7 +123,8 @@ public class JsonPropsUtil2 {
             serializer.addEncoder(OffsetDateTime.class, e -> {
                 DateTimeFormatter df = DateTimeFormatter.ofPattern(jsonProps.dateAsFormat);
                 if (Utils.isNotEmpty(jsonProps.dateAsTimeZone)) {
-                    df.withZone(ZoneId.of(jsonProps.dateAsTimeZone));
+                    // 修复：withZone 返回新实例，需接收返回值，否则时区设置被丢弃
+                    df = df.withZone(ZoneId.of(jsonProps.dateAsTimeZone));
                 }
 
                 return e.format(df);
@@ -132,7 +133,8 @@ public class JsonPropsUtil2 {
             serializer.addEncoder(ZonedDateTime.class, e -> {
                 DateTimeFormatter df = DateTimeFormatter.ofPattern(jsonProps.dateAsFormat);
                 if (Utils.isNotEmpty(jsonProps.dateAsTimeZone)) {
-                    df.withZone(ZoneId.of(jsonProps.dateAsTimeZone));
+                    // 修复：withZone 返回新实例，需接收返回值，否则时区设置被丢弃
+                    df = df.withZone(ZoneId.of(jsonProps.dateAsTimeZone));
                 }
 
                 return e.format(df);
@@ -153,7 +155,8 @@ public class JsonPropsUtil2 {
         DateTimeFormatter df = DateTimeFormatter.ofPattern(jsonProps.dateAsFormat);
 
         if (Utils.isNotEmpty(jsonProps.dateAsTimeZone)) {
-            df.withZone(ZoneId.of(jsonProps.dateAsTimeZone));
+            // 修复：withZone 返回新实例，需接收返回值，否则时区设置被丢弃
+            df = df.withZone(ZoneId.of(jsonProps.dateAsTimeZone));
         }
 
         return e.format(df);
