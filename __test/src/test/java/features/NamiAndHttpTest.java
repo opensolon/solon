@@ -64,4 +64,14 @@ public class NamiAndHttpTest {
     public void test06() throws IOException {
         assert helloService.test06("a").equals("test06:a:application/x-www-form-urlencoded");
     }
+
+    @Test
+    public void test06() throws IOException {
+        Namiform namiform = new Namiform();
+        namiform.setName("noear");
+        namiform.setAge(18);
+        namiform.setSex("male");
+        String s = helloService.test06(namiform);
+        System.out.println(s);
+    }
 }

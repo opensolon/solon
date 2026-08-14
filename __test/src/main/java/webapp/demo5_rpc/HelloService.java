@@ -35,4 +35,8 @@ public interface HelloService {
     @Mapping("/test06")
     @Post
     public String test06(String name);
+
+    @Mapping("/test06")
+    @Post
+    String test06(Namiform namiform);
 }
