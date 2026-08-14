@@ -1,7 +1,7 @@
 package webapp.demo5_rpc;
 
+import org.noear.nami.common.ContentTypes;
 import org.noear.solon.annotation.*;
-import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.UploadedFile;
 
 import java.util.List;
@@ -36,7 +36,8 @@ public interface HelloService {
     @Post
     public String test06(String name);
 
+    @Consumes(ContentTypes.FORM_URLENCODED_VALUE)
     @Mapping("/test07")
     @Post
-    String test07(Namiform namiform);
+    String test07(@Body Namiform namiform);
 }

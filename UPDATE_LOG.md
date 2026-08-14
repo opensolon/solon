@@ -27,6 +27,7 @@
 ### 4.0.6
 
 * 优化 solon-web-sse SseEmitter 多处细节
+* 修复 nami-channel-http form 提交不支持实体的问题
 * feat 调整 HttpServer 默认关闭 bannerEnabled
 * redisx 升为 1.8.6
 * smarthttp 升为 2.5.21

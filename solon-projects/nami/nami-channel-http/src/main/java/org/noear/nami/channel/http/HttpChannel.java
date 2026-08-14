@@ -17,6 +17,7 @@ package org.noear.nami.channel.http;
 
 import org.noear.nami.*;
 import org.noear.nami.common.ContentTypes;
+import org.noear.snack4.ONode;
 import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.net.http.HttpResponse;
 import org.noear.solon.net.http.HttpUtils;
@@ -156,19 +157,32 @@ public class HttpChannel extends ChannelBase implements Channel {
     }
 
     protected HttpResponse formRequest(Context ctx, HttpUtils http) throws Throwable {
-        for (Map.Entry<String, Object> kv : ctx.args.entrySet()) {
-            if (kv.getValue() instanceof File) {
-                http.data(kv.getKey(), (File) kv.getValue());
-            } else if (kv.getValue() instanceof UploadedFile) {
-                UploadedFile uploadedFile = (UploadedFile) kv.getValue();
-                http.data(kv.getKey(), uploadedFile.getName(), uploadedFile.getContent(), uploadedFile.getContentType());
-            } else if (kv.getValue() instanceof Collection) {
-                Collection col = (Collection) kv.getValue();
-                for (Object val : col) {
-                    http.data(kv.getKey(), String.valueOf(val));
+        if (ctx.body != null) {
+            //转换实体
+            ONode oNode = ONode.ofBean(ctx.body);
+
+            if (oNode.isObject()) {
+                for (Map.Entry<String, ONode> kv : oNode.getObjectUnsafe().entrySet()) {
+                    if (kv.getValue().isNull() == false) {
+                        http.data(kv.getKey(), kv.getValue().getString());
+                    }
                 }
-            } else {
-                http.data(kv.getKey(), String.valueOf(kv.getValue()));
+            }
+        } else {
+            for (Map.Entry<String, Object> kv : ctx.args.entrySet()) {
+                if (kv.getValue() instanceof File) {
+                    http.data(kv.getKey(), (File) kv.getValue());
+                } else if (kv.getValue() instanceof UploadedFile) {
+                    UploadedFile uploadedFile = (UploadedFile) kv.getValue();
+                    http.data(kv.getKey(), uploadedFile.getName(), uploadedFile.getContent(), uploadedFile.getContentType());
+                } else if (kv.getValue() instanceof Collection) {
+                    Collection col = (Collection) kv.getValue();
+                    for (Object val : col) {
+                        http.data(kv.getKey(), String.valueOf(val));
+                    }
+                } else {
+                    http.data(kv.getKey(), String.valueOf(kv.getValue()));
+                }
             }
         }
 
