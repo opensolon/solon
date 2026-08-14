@@ -59,4 +59,9 @@ public class NamiAndHttpTest {
     public void test05() throws IOException {
         assert helloService.test05(1, "test05").equals("1:\"test05\"");
     }
+
+    @Test
+    public void test06() throws IOException {
+        assert helloService.test06("a").equals("test06:a:application/x-www-form-urlencoded");
+    }
 }

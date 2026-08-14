@@ -1,6 +1,7 @@
 package webapp.demo5_rpc;
 
 import org.noear.solon.annotation.*;
+import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.UploadedFile;
 
 import java.util.List;
@@ -30,4 +31,8 @@ public interface HelloService {
     @Mapping("/test05?type={type}")
     @Post
     String test05(int type, @Body String body);
+
+    @Mapping("/test06")
+    @Post
+    public String test06(String name);
 }

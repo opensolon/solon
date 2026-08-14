@@ -1,6 +1,7 @@
 package webapp.demo5_rpc;
 
 import org.noear.solon.annotation.*;
+import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.UploadedFile;
 
 import java.util.List;
@@ -51,5 +52,11 @@ public class HelloServiceImpl implements HelloService {
     @Override
     public String test05(int type, @Body String body) {
         return type + ":" + body;
+    }
+
+    @Mapping("/test06")
+    @Post
+    public String test06(String name) {
+        return "test06:" + name + ":" + Context.current().contentType();
     }
 }
