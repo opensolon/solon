@@ -26,6 +26,7 @@ import java.io.File;
 import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * Http 通道
@@ -162,10 +163,11 @@ public class HttpChannel extends ChannelBase implements Channel {
             ONode oNode = ONode.ofBean(ctx.body);
 
             if (oNode.isObject()) {
-                for (Map.Entry<String, ONode> kv : oNode.getObjectUnsafe().entrySet()) {
-                    if (kv.getValue().isNull() == false) {
-                        http.data(kv.getKey(), kv.getValue().getString());
-                    }
+                Properties tmp =  oNode.toBean(Properties.class);
+
+                //支持
+                for (Map.Entry<Object, Object> kv : tmp.entrySet()) {
+                    http.data(kv.getKey().toString(), kv.getValue().toString());
                 }
             }
         } else {
