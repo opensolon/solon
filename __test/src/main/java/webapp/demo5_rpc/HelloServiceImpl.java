@@ -61,9 +61,9 @@ public class HelloServiceImpl implements HelloService {
     }
 
     @Override
-    @Mapping("/test06")
+    @Mapping("/test07")
     @Post
-    public String test06(Namiform namiform) {
+    public String test07(Namiform namiform) {
         System.out.println("调用的结果是：" + namiform.getName() + "," + namiform.getAge() + "," + namiform.getSex());
         return namiform.getName() + "," + namiform.getAge() + "," + namiform.getSex();
     }
