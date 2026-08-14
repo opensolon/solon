@@ -37,7 +37,7 @@ class WebSocketResponseImpl implements WebSocketResponse {
 
     @Override
     public void sendTextMessage(String text) {
-        if (LOGGER.isInfoEnabled()) LOGGER.info("发送字符串消息: " + text);
+        if (LOGGER.isDebugEnabled()) LOGGER.debug("发送字符串消息: " + text);
         byte[] bytes = text.getBytes(StandardCharsets.UTF_8);
         try {
             WebSocket.send(httpResponse.getOutputStream(), WebSocket.OPCODE_TEXT, bytes, 0, bytes.length);
@@ -48,7 +48,7 @@ class WebSocketResponseImpl implements WebSocketResponse {
 
     @Override
     public void sendBinaryMessage(byte[] bytes) {
-        if (LOGGER.isInfoEnabled()) LOGGER.info("发送二进制消息: " + Arrays.toString(bytes));
+        if (LOGGER.isDebugEnabled()) LOGGER.debug("发送二进制消息: " + Arrays.toString(bytes));
         try {
             WebSocket.send(httpResponse.getOutputStream(), WebSocket.OPCODE_BINARY, bytes, 0, bytes.length);
         } catch (IOException e) {
