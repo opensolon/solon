@@ -7,6 +7,7 @@ import org.noear.solon.core.util.MimeType;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
 import webapp.demo5_rpc.HelloService;
+import webapp.demo5_rpc.Namiform;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -58,5 +59,15 @@ public class NamiAndHttpTest {
     @Test
     public void test05() throws IOException {
         assert helloService.test05(1, "test05").equals("1:\"test05\"");
+    }
+
+    @Test
+    public void test06() throws IOException {
+        Namiform namiform = new Namiform();
+        namiform.setName("noear");
+        namiform.setAge(18);
+        namiform.setSex("male");
+        String s = helloService.test06(namiform);
+        System.out.println(s);
     }
 }

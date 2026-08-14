@@ -52,4 +52,12 @@ public class HelloServiceImpl implements HelloService {
     public String test05(int type, @Body String body) {
         return type + ":" + body;
     }
+
+    @Override
+    @Mapping("/test06")
+    @Post
+    public String test06(Namiform namiform) {
+        System.out.println("调用的结果是：" + namiform.getName() + "," + namiform.getAge() + "," + namiform.getSex());
+        return namiform.getName() + "," + namiform.getAge() + "," + namiform.getSex();
+    }
 }
