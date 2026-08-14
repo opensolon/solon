@@ -26,6 +26,7 @@
 
 ### 4.0.6
 
+* 优化 solon-web-sse SseEmitter 多处细节
 * feat 调整 HttpServer 默认关闭 bannerEnabled
 * redisx 升为 1.8.6
 

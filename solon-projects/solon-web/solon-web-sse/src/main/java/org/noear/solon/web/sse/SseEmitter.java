@@ -20,8 +20,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Consumer;
@@ -37,8 +37,7 @@ public class SseEmitter {
     static final Logger log = LoggerFactory.getLogger(SseEmitter.class);
 
     private SseEmitterHandler eventHandler;
-    // 修复：事件缓存改为并发安全集合，并用可重入锁统一保护 send/initialize 的“判空-缓存/切换”组合操作
-    private List<SseEvent> eventCached = new CopyOnWriteArrayList<>();
+    private List<SseEvent> eventCached = new ArrayList<>();
     private final ReentrantLock sendLock = new ReentrantLock();
 
     protected Runnable onCompletion;
@@ -48,7 +47,6 @@ public class SseEmitter {
     protected ConsumerEx<SseEmitter> onInited;
 
     protected long timeout;
-
 
     /**
      * 完成回调方法
@@ -90,7 +88,6 @@ public class SseEmitter {
         return this;
     }
 
-
     /**
      * 超时（用于异步超时）
      */
@@ -128,7 +125,6 @@ public class SseEmitter {
      * @param event 事件数据
      */
     public void send(SseEvent event) throws IOException {
-        // 修复：complete() 后再 send 会进入缓存分支只增不发导致无界累积，改为直接抛异常
         if (completed.get()) {
             throw new IllegalStateException("SseEmitter is completed");
         }
@@ -138,12 +134,10 @@ public class SseEmitter {
         }
 
         if (event != null) {
-            // 修复：判空与缓存/发送置于同一把锁内，避免与 initialize 交错时丢事件或状态不一致
             sendLock.lock();
-
             try {
                 if (eventHandler == null) {
-                    //如果未初始化事件处理，先缓存事件
+                    // 如果未初始化事件处理，先缓存事件
                     eventCached.add(event);
                 } else {
                     eventHandler.send(event);
@@ -168,45 +162,44 @@ public class SseEmitter {
      */
     public void complete() {
         try {
-            completed.set(true);
-
-            if (eventHandler != null) {
-                eventHandler.complete();
-                eventHandler = null; //避免再次调用
+            if (completed.compareAndSet(false, true)) {
+                if (eventHandler != null) {
+                    eventHandler.complete();
+                    eventHandler = null; // 避免再次调用
+                }
             }
         } catch (IOException e) {
             log.warn(e.getMessage(), e);
         }
     }
 
-
     /**
      * 初始化
      */
     protected void initialize(SseEmitterHandler handler) throws Throwable {
-        // 修复：处理器赋值与缓存回放置于同一把锁内，回放后清空缓存，避免与并发 send 交错导致事件丢失或重复
         sendLock.lock();
-
         try {
             this.eventHandler = handler;
 
-            //1.发送初始化之前的事件
-            for (SseEvent event : eventCached) {
-                eventHandler.send(event);
+            // 1. 发送初始化之前的事件
+            if (eventCached != null) {
+                for (SseEvent event : eventCached) {
+                    eventHandler.send(event);
+                }
+                eventCached.clear();
+                eventCached = null; // 彻底释放，利于 GC
             }
-
-            eventCached.clear();
         } finally {
             sendLock.unlock();
         }
 
-        //2.开始初始化（一般也是发消息）
+        // 2. 开始初始化（一般也是发消息）
         if (onInited != null) {
             onInited.accept(this);
         }
 
         if (completed.get()) {
-            //如果已完成（初始化之前就意外完成了）
+            // 如果已完成（初始化之前就意外完成了）
             complete();
         }
     }
