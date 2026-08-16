@@ -208,7 +208,7 @@ public class OkHttpUtils extends AbstractHttpUtils implements HttpUtils {
 
         if (future == null) {
             Call call = _client.newCall(_builder.build());
-            return getResponse(call.execute(), method);
+            return getResponse(call.execute(), method, null);
         } else {
             _client.newCall(_builder.build()).enqueue(new Callback() {
                 @Override
@@ -219,7 +219,14 @@ public class OkHttpUtils extends AbstractHttpUtils implements HttpUtils {
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
-                    future.complete(getResponse(response, method));
+                    try {
+                        HttpResponse resp = getResponse(response, method, future);
+                        if (resp != null) {
+                            future.complete(resp);
+                        }
+                    } catch (Exception e) {
+                        future.completeExceptionally(e);
+                    }
                     //call.cancel();
                 }
             });
@@ -292,7 +299,7 @@ public class OkHttpUtils extends AbstractHttpUtils implements HttpUtils {
         return Arrays.asList(ConnectionSpec.COMPATIBLE_TLS, ConnectionSpec.CLEARTEXT);
     }
 
-    protected HttpResponse getResponse(Response response, String method) throws IOException {
+    protected HttpResponse getResponse(Response response, String method, CompletableFuture<HttpResponse> future) throws IOException {
         int statusCode = response.code();
 
         if (isRedirected(statusCode)) {
@@ -312,7 +319,16 @@ public class OkHttpUtils extends AbstractHttpUtils implements HttpUtils {
 
             _url = getLocationUrl(_url, location);
 
-            return execDo(method, null);
+            String newMethod = method;
+            if (statusCode == 303 || ((statusCode == 301 || statusCode == 302) && "POST".equals(method))) {
+                newMethod = "GET";
+                _bodyRaw = null;
+                _multipart = false;
+                _params = null;
+                _files = null;
+            }
+
+            return execDo(newMethod, future);
         } else {
             return new OkHttpResponse(this, statusCode, response);
         }

@@ -27,6 +27,7 @@
 ### 4.0.6
 
 * 优化 solon-web-sse SseEmitter 多处细节
+* 优化 solon-net-httputils 30x 跳转处理
 * 修复 nami-channel-http form 提交不支持实体的问题
 * feat 调整 HttpServer 默认关闭 bannerEnabled
 * eggg 升为 1.1.5

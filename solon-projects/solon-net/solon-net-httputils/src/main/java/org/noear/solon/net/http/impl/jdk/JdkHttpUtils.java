@@ -141,12 +141,14 @@ public class JdkHttpUtils extends AbstractHttpUtils implements HttpUtils {
         _client.setDoInput(true);
 
         if (future == null) {
-            return request(_client, method);
+            return request(_client, method, null);
         } else {
             dispatcherLoader.getDispatcher().submit(() -> {
                 try {
-                    HttpResponse resp = request(_client, method);
-                    future.complete(resp);
+                    HttpResponse resp = request(_client, method, future);
+                    if (resp != null) {
+                        future.complete(resp);
+                    }
                 } catch (IOException | RuntimeException e) {
                     future.completeExceptionally(e);
                 }
@@ -194,7 +196,7 @@ public class JdkHttpUtils extends AbstractHttpUtils implements HttpUtils {
         }
     }
 
-    protected HttpResponse request(HttpURLConnection _builder, String method) throws IOException {
+    protected HttpResponse request(HttpURLConnection _builder, String method, CompletableFuture<HttpResponse> future) throws IOException {
         try {
             if (METHODS_NOBODY.contains(method) == false) {
                 if (_bodyRaw != null) {
@@ -223,14 +225,14 @@ public class JdkHttpUtils extends AbstractHttpUtils implements HttpUtils {
                 }
             }
 
-            return getResponse(_builder, method);
+            return getResponse(_builder, method, future);
         } catch (IOException | RuntimeException e) {
             _builder.disconnect();
             throw e;
         }
     }
 
-    protected HttpResponse getResponse(HttpURLConnection _builder, String method) throws IOException {
+    protected HttpResponse getResponse(HttpURLConnection _builder, String method, CompletableFuture<HttpResponse> future) throws IOException {
         int statusCode = _builder.getResponseCode();
 
         if (isRedirected(statusCode)) {
@@ -250,7 +252,16 @@ public class JdkHttpUtils extends AbstractHttpUtils implements HttpUtils {
 
             _url = getLocationUrl(_url, location);
 
-            return execDo(method, null);
+            String newMethod = method;
+            if (statusCode == 303 || ((statusCode == 301 || statusCode == 302) && "POST".equals(method))) {
+                newMethod = "GET";
+                _bodyRaw = null;
+                _multipart = false;
+                _params = null;
+                _files = null;
+            }
+
+            return execDo(newMethod, future);
         } else {
 
             return new JdkHttpResponse(this, statusCode, _builder);

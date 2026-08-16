@@ -44,8 +44,18 @@ public class HttpStream {
     }
 
     public InputStream getContent() throws IOException {
-        if (content == null) {
-            content = new FileInputStream(file);
+        if (file != null) {
+            return new FileInputStream(file);
+        }
+
+        if (content instanceof ByteArrayInputStream) {
+            content.reset();
+            return content;
+        }
+
+        if (content != null && content.markSupported()) {
+            content.reset();
+            return content;
         }
 
         return content;
