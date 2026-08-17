@@ -81,11 +81,18 @@ public class ClassPathStaticRepository implements StaticRepository {
      */
     @Override
     public URL find(String relativePath) throws Exception {
-        if (locationDebug != null) {
-            File file = new File(locationDebug, relativePath);
+        if (location == null || relativePath == null) {
+            return null;
+        }
 
-            if (file.exists()) {
-                return file.toURL();
+        if (locationDebug != null) {
+            File baseFile = locationDebug.getCanonicalFile();
+            File file = new File(baseFile, relativePath).getCanonicalFile();
+
+            if (file.getPath().startsWith(baseFile.getPath() + File.separator) || file.equals(baseFile)) {
+                if (file.exists() && file.isFile()) {
+                    return file.toURL();
+                }
             }
         }
 

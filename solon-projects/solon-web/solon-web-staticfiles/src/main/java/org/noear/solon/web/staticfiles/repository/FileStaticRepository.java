@@ -56,12 +56,20 @@ public class FileStaticRepository implements StaticRepository {
      * */
     @Override
     public URL find(String relativePath) throws Exception {
-        File file = new File(location, relativePath);
-
-        if (file.exists()) {
-            return file.toURI().toURL();
-        } else {
+        if (location == null || relativePath == null) {
             return null;
         }
+
+        File baseFile = new File(location).getCanonicalFile();
+        File file = new File(baseFile, relativePath).getCanonicalFile();
+
+        // 边界防御：目标规范路径必须在基础目录之内且为常规文件
+        if (file.getPath().startsWith(baseFile.getPath() + File.separator) || file.equals(baseFile)) {
+            if (file.exists() && file.isFile()) {
+                return file.toURI().toURL();
+            }
+        }
+
+        return null;
     }
 }

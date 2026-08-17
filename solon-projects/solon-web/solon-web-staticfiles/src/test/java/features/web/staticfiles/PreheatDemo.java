@@ -13,20 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package features;
+package features.web.staticfiles;
 
-import org.junit.jupiter.api.Test;
-
-import java.io.File;
+import org.noear.solon.web.staticfiles.StaticRepository;
 
 /**
- * @author noear 2022/7/11 created
+ * @author noear 2022/12/7 created
  */
-public class PathTest {
-    @Test
-    public void test(){
-        File file =  new File("upload","xxx.jpg");
+public class PreheatDemo {
+    StaticRepository staticRepository = null;
 
-        System.out.println(file.toURI());
+    public void demo() throws Exception {
+        staticRepository.preheat("demo/file.htm", false);
+        staticRepository.preheat("demo/file.js", false);
+        staticRepository.preheat("demo/file.pin", false);
+
     }
 }
