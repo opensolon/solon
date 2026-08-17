@@ -31,7 +31,7 @@
 * 修复 nami-channel-http form 提交不支持实体的问题
 * 修复 solon-web-staticfiles 路径安全问题(GHSA-mmhm-jhrm-7xp9)
 * 修复 solon-serialization-kryo 类安全问题(GHSA-vf5p-h287-77qx)
-* feat 调整 HttpServer 默认关闭 bannerEnabled
+* feat 调整 HttpServer 默认关闭 bannerEnabled；调整 websocket 日志级别
 * eggg 升为 1.1.5
 * redisx 升为 1.8.6
 * smarthttp 升为 2.5.21
