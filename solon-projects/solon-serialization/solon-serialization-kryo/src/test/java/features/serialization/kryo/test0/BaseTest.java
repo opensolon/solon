@@ -71,7 +71,8 @@ public class BaseTest {
         KryoEntityConverter entityConverter = new KryoEntityConverter(new KryoBytesSerializer());
         entityConverter.write(userDo, ctx);
 
-        KryoBytesSerializer serializer = new KryoBytesSerializer();
+        KryoBytesSerializer serializer = KryoBytesSerializer.getDefault();
+        serializer.classFilter().allow("features.serialization.kryo.");
         UserDo userDo2 = (UserDo)serializer.deserializeFromBody(ctx, UserDo.class);
 
         System.out.println(userDo2);

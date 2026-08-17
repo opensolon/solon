@@ -15,10 +15,13 @@
  */
 package org.noear.solon.serialization.kryo.integration;
 
+import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.serialization.EntityBytesSerializer;
 import org.noear.solon.serialization.SerializerNames;
+import org.noear.solon.serialization.kryo.KryoClassFilter;
 import org.noear.solon.serialization.kryo.KryoBytesSerializer;
 import org.noear.solon.serialization.kryo.KryoEntityConverter;
 
@@ -27,8 +30,14 @@ import org.noear.solon.serialization.kryo.KryoEntityConverter;
  * @since 3.0
  */
 public class SerializationKryoPlugin implements Plugin {
+
+    static final String CFG_ALLOW = "solon.serialization.kryo.allow";
+    static final String CFG_DENY = "solon.serialization.kryo.deny";
+    static final String CFG_UNRESTRICTED = "solon.serialization.kryo.unrestricted";
+
     @Override
     public void start(AppContext context) throws Throwable {
+        applyConfig(KryoBytesSerializer.getDefault().classFilter());
 
         //::serializer
         KryoBytesSerializer serializer = KryoBytesSerializer.getDefault();
@@ -42,5 +51,23 @@ public class SerializationKryoPlugin implements Plugin {
 
         //会自动转为 executor, renderer
         context.app().chains().addEntityConverter(entityConverter);
+    }
+
+    static void applyConfig(KryoClassFilter filter) {
+        String allow = Solon.cfg().get(CFG_ALLOW);
+        if (Utils.isNotEmpty(allow)) {
+            for (String s : allow.split(",")) {
+                filter.allow(s.trim());
+            }
+        }
+        String deny = Solon.cfg().get(CFG_DENY);
+        if (Utils.isNotEmpty(deny)) {
+            for (String s : deny.split(",")) {
+                filter.deny(s.trim());
+            }
+        }
+        if ("true".equalsIgnoreCase(Solon.cfg().get(CFG_UNRESTRICTED))) {
+            filter.allowAll(true);
+        }
     }
 }

@@ -47,12 +47,26 @@ public class KryoBytesSerializer implements EntityBytesSerializer {
     }
 
 
+    private final KryoClassFilter classFilter;
+
+    public KryoBytesSerializer() {
+        this(KryoClassFilter.defaults());
+    }
+
+    public KryoBytesSerializer(KryoClassFilter classFilter) {
+        this.classFilter = (classFilter != null ? classFilter : KryoClassFilter.defaults());
+    }
+
+    public KryoClassFilter classFilter() {
+        return classFilter;
+    }
+
     private final Queue<Kryo> objects = new ConcurrentLinkedQueue<>();
 
     protected Kryo obtain() {
         Kryo tmp = objects.poll();
         if (tmp == null) {
-            tmp = new Kryo();
+            tmp = new Kryo(new SafeDefaultClassResolver(classFilter), null);
             tmp.setRegistrationRequired(false);
         }
         return tmp;

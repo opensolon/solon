@@ -20,6 +20,7 @@ public class GeneticTest {
         ///////////////////////
 
         KryoBytesSerializer serializer = new KryoBytesSerializer();
+        serializer.classFilter().allow("features.serialization.kryo.");
         byte[] data = serializer.serialize(dataRaw);
         System.out.println(data);
 
