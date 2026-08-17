@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package features.web.staticfiles;
+package demo.web.staticfiles;
 
 import org.noear.solon.web.staticfiles.StaticRepository;
 
