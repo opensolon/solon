@@ -374,7 +374,7 @@ public abstract class WebdavAbstractHandler implements Handler {
             start = 0;
             end = fi.size() - 1;
         }
-        ctx.headerSet("Content-Length", Convert.toStr(end - start + 1));
+        ctx.contentLength(end - start + 1);
         if (type == 1) {
             return 200;
         }
