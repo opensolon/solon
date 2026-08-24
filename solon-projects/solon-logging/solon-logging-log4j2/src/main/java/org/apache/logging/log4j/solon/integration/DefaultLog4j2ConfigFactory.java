@@ -84,47 +84,11 @@ public class DefaultLog4j2ConfigFactory {
 
             if (parseSizeBytes(totalSizeCap) > 0) {
                 // 模拟 logback 的 totalSizeCap：超过总大小时，滚动并删除最旧的文件
-                String fileName = fileLogName.replaceAll("^.*[\\/]", "");
-                // 清理范围依据 filePattern 自动推导：basePath 取目录链最顶层，maxDepth 取目录层级数
-                String dirPart = filePattern.replaceAll("[\\/][^\\/]*$", "");
-                String basePath;
-                int maxDepth;
-                
-                if (dirPart.equals(filePattern)) {
-                    // filePattern 无目录部分，清理当前目录
-                    basePath = ".";
-                    maxDepth = 1;
-                } else {
-                    String[] dirSegments = dirPart.split("[\\/]+");
+                String fileName = fileLogName.replaceAll("^.*[\\\\/]", "");
+                String[] scope = resolveDeleteScope(filePattern);
+                String basePath = scope[0];
+                int maxDepth = Integer.parseInt(scope[1]);
 
-                    // 过滤空段（绝对路径打头产生的空段、连续分隔符等）
-                    java.util.List<String> segments = new java.util.ArrayList<>();
-                    for (String seg : dirSegments) {
-                        if (seg.isEmpty() == false) {
-                            segments.add(seg);
-                        }
-                    }
-
-                    if (segments.isEmpty()) {
-                        // filePattern 直接位于根目录（如 "/app_%d.log"）
-                        basePath = "/";
-                        maxDepth = 1;
-                    } else {
-                        maxDepth = segments.size();
-
-                        String first = segments.get(0);
-                        if (dirPart.startsWith("/")) {
-                            // Unix 绝对路径，basePath 补根（如 "/var/log" -> "/var"）
-                            basePath = "/" + first;
-                        } else if (first.length() == 2 && first.charAt(1) == ':') {
-                            // Windows 盘符段，补斜杠避免被视为盘符相对路径（如 "C:" -> "C:/"）
-                            basePath = first + "/";
-                        } else {
-                            basePath = first;
-                        }
-                    }
-                }
-            
                 rolloverStrategy.addComponent(builder.newComponent("Delete")
                         .addAttribute("basePath", basePath)
                         .addAttribute("maxDepth", String.valueOf(maxDepth))
@@ -160,6 +124,48 @@ public class DefaultLog4j2ConfigFactory {
         builder.add(rootLogger);
 
         return builder.build();
+    }
+
+    /**
+     * 根据 filePattern 推导 Delete 清理范围：basePath 取目录链最顶层，maxDepth 取目录层级数
+     *
+     * @return [0]=basePath, [1]=maxDepth
+     */
+    static String[] resolveDeleteScope(String filePattern) {
+        String dirPart = filePattern.replaceAll("[\\\\/][^\\\\/]*$", "");
+
+        if (dirPart.equals(filePattern)) {
+            // filePattern 无目录部分，清理当前目录
+            return new String[]{".", "1"};
+        }
+
+        String[] dirSegments = dirPart.split("[\\\\/]+");
+
+        // 过滤空段（绝对路径打头产生的空段、连续分隔符等）
+        java.util.List<String> segments = new java.util.ArrayList<>();
+        for (String seg : dirSegments) {
+            if (seg.isEmpty() == false) {
+                segments.add(seg);
+            }
+        }
+
+        if (segments.isEmpty()) {
+            // filePattern 直接位于根目录（如 "/app_%d.log"）
+            return new String[]{"/", "1"};
+        }
+
+        String first = segments.get(0);
+        if (dirPart.startsWith("/")) {
+            // Unix 绝对路径，basePath 补根（如 "/var/log" -> "/var"）
+            return new String[]{"/" + first, String.valueOf(segments.size())};
+        }
+
+        if (first.length() == 2 && first.charAt(1) == ':') {
+            // Windows 盘符段，补斜杠避免被视为盘符相对路径（如 "C:" -> "C:/"）
+            return new String[]{first + "/", String.valueOf(segments.size())};
+        }
+
+        return new String[]{first, String.valueOf(segments.size())};
     }
 
     /**
