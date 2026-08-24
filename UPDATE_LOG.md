@@ -23,6 +23,9 @@
 * 添加 Plugin postStart 事件???
 * 调整 Plugin 统一交给 AppContext 管理（之前由 SolonApp 或 PluginPackage 管理）？？
 
+### 4.1.0
+
+* 添加 solon-logging-log4j2 `solon.logging.appender.file.totalSizeCap` 配置支持
 
 ### 4.0.6
 
