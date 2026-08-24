@@ -94,7 +94,9 @@ public class DefaultLog4j2ConfigFactory {
                         .addAttribute("maxDepth", String.valueOf(maxDepth))
                         .addComponent(builder.newComponent("IfFileName")
                         // glob 只匹配归档文件（name_日期_序号.log），排除活动文件 name.log
-                        .addAttribute("glob", fileName + "_*.log"))
+                        // glob 匹配的是相对 basePath 的完整路径，加 "**/" 前缀以覆盖子目录场景（**/ 可匹配零层，单目录同样兼容）
+                        // glob 匹配的是相对 basePath 的完整路径；用分组同时覆盖单目录（app_*.log）与子目录（**/app_*.log）两种深度
+                        .addAttribute("glob", "{" + fileName + "_*.log,**/" + fileName + "_*.log}"))
                         .addComponent(builder.newComponent("IfAccumulatedFileSize")
                                 .addAttribute("exceeds", totalSizeCap)));
             }
@@ -127,7 +129,9 @@ public class DefaultLog4j2ConfigFactory {
     }
 
     /**
-     * 根据 filePattern 推导 Delete 清理范围：basePath 取目录链最顶层，maxDepth 取目录层级数
+     * 根据 filePattern 推导 Delete 清理范围：
+     * basePath 取目录链中最深的静态目录（截到首个含 % 的动态段之前），避免向上扫描无关/无权/符号链接目录；
+     * maxDepth = 1 + 动态段数（动态目录段如 %d{yyyy/MM} 会展开为多级子目录）
      *
      * @return [0]=basePath, [1]=maxDepth
      */
@@ -154,18 +158,39 @@ public class DefaultLog4j2ConfigFactory {
             return new String[]{"/", "1"};
         }
 
-        String first = segments.get(0);
+        // 统计静态目录段：首个含 % 的段及其后均为动态段
+        int staticCount = 0;
+        for (String seg : segments) {
+            if (seg.indexOf('%') >= 0) {
+                break;
+            }
+            staticCount++;
+        }
+
+        // 拼接静态目录链
+        StringBuilder buf = new StringBuilder();
+        for (int i = 0; i < staticCount; i++) {
+            if (buf.length() > 0) {
+                buf.append('/');
+            }
+            buf.append(segments.get(i));
+        }
+        String basePath = buf.length() == 0 ? "." : buf.toString();
+
+        // 绝对路径补根（如 "/var/log" 补为 "/var/log"；仅根时为 "/"）
         if (dirPart.startsWith("/")) {
-            // Unix 绝对路径，basePath 补根（如 "/var/log" -> "/var"）
-            return new String[]{"/" + first, String.valueOf(segments.size())};
+            basePath = basePath.equals(".") ? "/" : "/" + basePath;
         }
 
-        if (first.length() == 2 && first.charAt(1) == ':') {
-            // Windows 盘符段，补斜杠避免被视为盘符相对路径（如 "C:" -> "C:/"）
-            return new String[]{first + "/", String.valueOf(segments.size())};
+        // Windows 盘符段，补斜杠避免被视为盘符相对路径（如 "C:" -> "C:/"）
+        if (basePath.length() == 2 && basePath.charAt(1) == ':') {
+            basePath = basePath + "/";
         }
 
-        return new String[]{first, String.valueOf(segments.size())};
+        // 静态目录下文件深度为 1，每个动态目录段额外展开一级（含 %d{yyyy/MM} 内部分隔符已计入段数）
+        int maxDepth = 1 + (segments.size() - staticCount);
+
+        return new String[]{basePath, String.valueOf(maxDepth)};
     }
 
     /**
