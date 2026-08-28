@@ -25,6 +25,7 @@
 
 ### 4.1.0
 
+* 新增 solon-ai-router 插件
 * 添加 solon-logging-log4j2 `solon.logging.appender.file.totalSizeCap` 配置支持
 
 ### 4.0.6
