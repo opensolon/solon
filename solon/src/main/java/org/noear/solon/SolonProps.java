@@ -250,7 +250,11 @@ public final class SolonProps extends Props {
         //1.同步所有属性
         for(KeyValues<String> kv: this.argx) {
             if (kv.getKey().contains(".")) {
-                System.setProperty(kv.getKey(), kv.getFirstValue());
+                //位置参数（如 CLI 提示词）没有值，getFirstValue() 为 null，setProperty 会抛 NPE
+                String val = kv.getFirstValue();
+                if (val != null) {
+                    System.setProperty(kv.getKey(), val);
+                }
             }
         }
 
