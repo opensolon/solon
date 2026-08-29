@@ -44,6 +44,7 @@ public interface ServerConstants {
     String SERVER_REQUEST_MAXBODYSIZE = "server.request.maxBodySize"; //新
     String SERVER_REQUEST_MAXREQUESTSIZE = "server.request.maxRequestSize"; //旧
     String SERVER_REQUEST_MAXFILESIZE = "server.request.maxFileSize";
+    String SERVER_REQUEST_MAXPARTCOUNT = "server.request.maxPartCount";
     String SERVER_REQUEST_FILESIZETHRESHOLD = "server.request.fileSizeThreshold";
 
     String SERVER_REQUEST_USETEMPFILE = "server.request.useTempfile";

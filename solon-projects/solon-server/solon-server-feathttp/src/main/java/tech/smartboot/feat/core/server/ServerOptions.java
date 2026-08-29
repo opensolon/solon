@@ -47,6 +47,16 @@ import java.util.List;
  * @version v1.0.0
  */
 public class ServerOptions {
+    /**
+     * Jetty's default maximum form content size.
+     */
+    public static final int DEFAULT_MAX_FORM_CONTENT_SIZE = 200000;
+
+    /**
+     * Tomcat's default maximum multipart part count.
+     */
+    public static final int DEFAULT_MAX_PART_COUNT = 50;
+
     private long startTime = System.currentTimeMillis();
     private int port = 8080;
 
@@ -147,6 +157,16 @@ public class ServerOptions {
      * 对于文件上传场景，需要适当调大此值。
      */
     private long maxRequestSize = Integer.MAX_VALUE;
+
+    /**
+     * 表单字段累计大小上限（字节）
+     */
+    private long maxFormContentSize = DEFAULT_MAX_FORM_CONTENT_SIZE;
+
+    /**
+     * multipart 请求的 part 数量上限
+     */
+    private int maxPartCount = DEFAULT_MAX_PART_COUNT;
 
     /**
      * 是否启用低内存模式
@@ -381,6 +401,46 @@ public class ServerOptions {
      */
     public ServerOptions setMaxRequestSize(long maxRequestSize) {
         this.maxRequestSize = maxRequestSize;
+        return this;
+    }
+
+    /**
+     * 获取表单字段累计大小上限
+     *
+     * @return 表单字段累计大小上限（字节）
+     */
+    public long getMaxFormContentSize() {
+        return maxFormContentSize;
+    }
+
+    /**
+     * 设置表单字段累计大小上限
+     *
+     * @param maxFormContentSize 表单字段累计大小上限（字节）
+     * @return 当前 ServerOptions 实例，支持链式调用
+     */
+    public ServerOptions setMaxFormContentSize(long maxFormContentSize) {
+        this.maxFormContentSize = maxFormContentSize;
+        return this;
+    }
+
+    /**
+     * 获取 multipart 请求的 part 数量上限
+     *
+     * @return part 数量上限
+     */
+    public int getMaxPartCount() {
+        return maxPartCount;
+    }
+
+    /**
+     * 设置 multipart 请求的 part 数量上限
+     *
+     * @param maxPartCount part 数量上限
+     * @return 当前 ServerOptions 实例，支持链式调用
+     */
+    public ServerOptions setMaxPartCount(int maxPartCount) {
+        this.maxPartCount = maxPartCount;
         return this;
     }
 

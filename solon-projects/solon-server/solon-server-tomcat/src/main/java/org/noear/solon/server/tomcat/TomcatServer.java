@@ -115,6 +115,7 @@ public class TomcatServer extends TomcatServerBase {
         }
 
         connector.setMaxPostSize(ServerProps.request_maxBodySizeAsInt());
+        connector.setMaxPartCount(ServerProps.request_maxPartCount);
         connector.setMaxPartHeaderSize(ServerProps.request_maxHeaderSize);
         connector.setURIEncoding(ServerProps.request_encoding);
         connector.setUseBodyEncodingForURI(true);

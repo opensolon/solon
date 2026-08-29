@@ -16,8 +16,6 @@
 package org.noear.solon.server.jetty.integration;
 
 import org.eclipse.jetty.jsp.JettyJspServlet; //仅用于检测
-
-import org.eclipse.jetty.server.handler.ContextHandler;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.server.ServerConstants;
@@ -83,11 +81,6 @@ public final class JettyPlugin implements Plugin {
     private void start0(AppContext context) throws Throwable {
         //初始化属性
         ServerProps.init();
-
-        if (ServerProps.request_maxBodySize > 0) {
-            System.setProperty(ContextHandler.MAX_FORM_CONTENT_SIZE_KEY,
-                    String.valueOf(ServerProps.request_maxBodySize));
-        }
 
         HttpServerProps props = new HttpServerProps();
         final String _host = props.getHost();

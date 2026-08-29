@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collection;
 
 /**
  * @author noear
@@ -36,22 +37,52 @@ import java.io.InputStream;
  * */
 class MultipartUtil {
     public static void buildParamsAndFiles(SolonServletContext ctx, MultiMap<UploadedFile> filesMap) {
+        Collection<Part> parts = null;
+
         try {
             HttpServletRequest request = (HttpServletRequest) ctx.request();
+            parts = request.getParts();
 
-            for (Part part : request.getParts()) {
+            int partCount = 0;
+            long formContentSize = 0L;
+
+            for (Part part : parts) {
+                long partSize = Math.max(part.getSize(), 0L);
+
+                if (ServerProps.request_maxPartCount > 0 && ++partCount > ServerProps.request_maxPartCount) {
+                    throw payloadTooLarge(ctx, "multipart part count exceeds the configured limit");
+                }
+
                 String name = ServerProps.urlDecode(part.getName());
 
                 if (isFile(part)) {
                     doBuildFiles(name, filesMap, part);
                 } else {
+                    if (ServerProps.request_maxBodySize > 0) {
+                        if (partSize > ServerProps.request_maxBodySize - formContentSize) {
+                            throw payloadTooLarge(ctx, "multipart form content size exceeds the configured limit");
+                        }
+
+                        formContentSize += partSize;
+                    }
+
                     ctx.paramMap().add(name, IoUtil.transferToString(part.getInputStream(), ServerProps.request_encoding));
                     RunUtil.runAndTry(part::delete);
                 }
             }
         } catch (Exception e) {
+            if (parts != null) {
+                for (Part part : parts) {
+                    RunUtil.runAndTry(part::delete);
+                }
+            }
+
             throw status4xx(ctx, e);
         }
+    }
+
+    private static StatusException payloadTooLarge(Context ctx, String description) {
+        return new StatusException("Request Entity Too Large (" + description + "): " + ctx.method() + " " + ctx.pathNew(), 413);
     }
 
     public static StatusException status4xx(Context ctx, Exception e) {

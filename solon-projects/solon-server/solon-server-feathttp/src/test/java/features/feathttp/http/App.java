@@ -33,4 +33,14 @@ public class App {
     public void async_timeout(Context ctx) {
         ctx.asyncStart(100L, null);
     }
+
+    @Mapping("multipart/text")
+    public String multipartText(Context ctx) {
+        return ctx.param("text");
+    }
+
+    @Mapping("multipart/count")
+    public int multipartCount(Context ctx) {
+        return ctx.paramMap().size();
+    }
 }

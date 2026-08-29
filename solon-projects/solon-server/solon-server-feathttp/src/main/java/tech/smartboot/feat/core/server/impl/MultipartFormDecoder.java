@@ -19,6 +19,7 @@ import tech.smartboot.feat.core.common.multipart.MultipartConfig;
 import tech.smartboot.feat.core.common.multipart.PartImpl;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.ByteBuffer;
@@ -44,12 +45,19 @@ class MultipartFormDecoder {
 
     private PartImpl currentPart;
     private final MultipartConfig multipartConfig;
-    private long writeFileSize;
+    private final long maxFormContentSize;
+    private final int maxPartCount;
+    private long currentPartSize;
+    private long formContentSize;
+    private int partCount;
+    private ByteArrayOutputStream formValueOutputStream;
 
     public MultipartFormDecoder(HttpEndpoint request, MultipartConfig configElement) {
         String contentType = request.getHeader(HeaderName.CONTENT_TYPE.getName());
         this.boundary = ("--" + contentType.substring(contentType.indexOf("boundary=") + 9)).getBytes();
         this.multipartConfig = configElement;
+        this.maxFormContentSize = request.getOptions().getMaxFormContentSize();
+        this.maxPartCount = request.getOptions().getMaxPartCount();
     }
 
     public boolean decode(ByteBuffer byteBuffer, HttpEndpoint request) {
@@ -71,7 +79,11 @@ class MultipartFormDecoder {
                     state = STATE_END;
                     return decode(byteBuffer, request);
                 } else if (byteBuffer.get() == FeatUtils.LF) {
+                    if (maxPartCount > 0 && ++partCount > maxPartCount) {
+                        throw new HttpException(HttpStatus.PAYLOAD_TOO_LARGE);
+                    }
                     state = STATE_PART_HEADER_NAME;
+                    currentPartSize = 0;
                     currentPart = new PartImpl(multipartConfig);
                     request.setPart(currentPart);
                     return decode(byteBuffer, request);
@@ -177,21 +189,26 @@ class MultipartFormDecoder {
                 return decode(byteBuffer, request);
             }
             case STATE_PART_VALUE_DECODE: {
+                if (byteBuffer.remaining() < boundary.length + 2) {
+                    return false;
+                }
+
                 // 判断是否是结束标记
                 byteBuffer.mark();
                 int boundaryLimit = findBoundary(byteBuffer);
                 byteBuffer.reset();
 
                 if (boundaryLimit < 0) {
-                    if (byteBuffer.remaining() == byteBuffer.capacity()) {
-                        throw new HttpException(HttpStatus.REQUEST_HEADER_FIELDS_TOO_LARGE);
-                    }
+                    // 保留可能被拆分到下一次读取的 boundary，其余字段内容先累积起来
+                    writeFormValue(byteBuffer, byteBuffer.remaining() - boundary.length - 2);
                     return false;
                 }
-                byte[] bytes = new byte[boundaryLimit];
-                byteBuffer.get(bytes);
+
+                writeFormValue(byteBuffer, boundaryLimit);
+                byte[] bytes = formValueOutputStream == null ? new byte[0] : formValueOutputStream.toByteArray();
                 currentPart.setInputStream(new ByteArrayInputStream(bytes));
                 currentPart.setFormSize(bytes.length);
+                formValueOutputStream = null;
                 currentPart = null;
                 if (byteBuffer.get() != FeatUtils.CR || byteBuffer.get() != FeatUtils.LF) {
                     throw new HttpException(HttpStatus.BAD_REQUEST);
@@ -211,11 +228,9 @@ class MultipartFormDecoder {
 
                 byte[] bytes = boundaryLimit >= 0 ? new byte[boundaryLimit] : new byte[byteBuffer.remaining() - boundary.length - 2];
                 byteBuffer.get(bytes);
-                if (multipartConfig.getMaxFileSize() > 0) {
-                    writeFileSize += bytes.length;
-                    if (writeFileSize > multipartConfig.getMaxFileSize()) {
-                        throw new HttpException(HttpStatus.PAYLOAD_TOO_LARGE);
-                    }
+                currentPartSize += bytes.length;
+                if (multipartConfig.getMaxFileSize() > 0 && currentPartSize > multipartConfig.getMaxFileSize()) {
+                    throw new HttpException(HttpStatus.PAYLOAD_TOO_LARGE);
                 }
                 try {
                     currentPart.getDiskOutputStream().write(bytes);
@@ -239,6 +254,25 @@ class MultipartFormDecoder {
             default:
                 throw new HttpException(HttpStatus.BAD_REQUEST);
         }
+    }
+
+    private void writeFormValue(ByteBuffer byteBuffer, int length) {
+        if (maxFormContentSize > 0 && length > maxFormContentSize - formContentSize) {
+            throw new HttpException(HttpStatus.PAYLOAD_TOO_LARGE);
+        }
+        formContentSize += length;
+
+        if (length == 0) {
+            return;
+        }
+
+        if (formValueOutputStream == null) {
+            formValueOutputStream = new ByteArrayOutputStream(Math.max(length, 32));
+        }
+
+        byte[] bytes = new byte[length];
+        byteBuffer.get(bytes);
+        formValueOutputStream.write(bytes, 0, bytes.length);
     }
 
     private int findBoundary(ByteBuffer byteBuffer) {

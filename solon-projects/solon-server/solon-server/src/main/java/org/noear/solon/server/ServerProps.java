@@ -52,6 +52,10 @@ public class ServerProps {
      * 上传最大文件大小
      */
     public static final long request_maxFileSize;
+    /**
+     * multipart 最大 part 数量
+     */
+    public static final int request_maxPartCount;
 
     /**
      * 文件落盘的阈值
@@ -126,6 +130,8 @@ public class ServerProps {
         } else {
             request_maxFileSize = getSize(tmp, 2L * 1024L * 1024L);//2m
         }
+
+        request_maxPartCount = Solon.cfg().getInt(ServerConstants.SERVER_REQUEST_MAXPARTCOUNT, 1000);
 
         tmp = Solon.cfg().get(ServerConstants.SERVER_REQUEST_ENCODING, "").trim();
 

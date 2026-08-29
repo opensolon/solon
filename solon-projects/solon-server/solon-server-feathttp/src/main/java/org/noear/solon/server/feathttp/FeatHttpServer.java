@@ -41,114 +41,114 @@ import tech.smartboot.feat.core.server.impl.HttpEndpoint;
  * @since 2.2
  */
 public class FeatHttpServer implements ServerLifecycle {
-  protected final HttpServerProps props;
-  protected HttpServer server = null;
-  protected Handler handler;
-  protected int coreThreads;
-  protected Executor workExecutor;
-  protected boolean enableWebSocket;
-  protected SslConfig sslConfig = new SslConfig(ServerConstants.SIGNAL_HTTP);
-  protected boolean enableDebug = false;
-  protected boolean isSecure;
+    protected final HttpServerProps props;
+    protected HttpServer server = null;
+    protected Handler handler;
+    protected int coreThreads;
+    protected Executor workExecutor;
+    protected boolean enableWebSocket;
+    protected SslConfig sslConfig = new SslConfig(ServerConstants.SIGNAL_HTTP);
+    protected boolean enableDebug = false;
+    protected boolean isSecure;
 
-  public FeatHttpServer(HttpServerProps props) {
-    this.props = props;
-  }
-
-  public boolean isSecure() {
-    return isSecure;
-  }
-
-  public void enableSsl(boolean enable, @Nullable SSLContext sslContext) {
-    sslConfig.set(enable, sslContext);
-  }
-
-  public void enableDebug(boolean enable) {
-    enableDebug = enable;
-  }
-
-  public void enableWebSocket(boolean enableWebSocket) {
-    this.enableWebSocket = enableWebSocket;
-  }
-
-  public void setHandler(Handler handler) {
-    this.handler = handler;
-  }
-
-  public void setWorkExecutor(Executor executor) {
-    this.workExecutor = executor;
-  }
-
-  public void setCoreThreads(int coreThreads) {
-    this.coreThreads = coreThreads;
-  }
-
-  @Override
-  public void start(String host, int port) throws Throwable {
-    // host 为空时绑定所有网卡（0.0.0.0）。feat 底层 AioQuickServer 收到空串会执行
-    // new InetSocketAddress("", port)，解析为回环地址 127.0.0.1，导致部署后外部无法访问。
-    if (Utils.isEmpty(host)) {
-      host = "0.0.0.0";
+    public FeatHttpServer(HttpServerProps props) {
+        this.props = props;
     }
 
-    ServerOptions options = new ServerOptions();
-    options.host(host);
-
-    if (sslConfig.isSslEnable()) {
-      SSLContext sslContext = sslConfig.getSslContext();
-
-      SslPlugin<HttpEndpoint> sslPlugin =
-          new SslPlugin<>(
-              new SSLContextFactory() {
-                @Override
-                public SSLContext create() throws Exception {
-                  return sslContext;
-                }
-
-                @Override
-                public void initSSLEngine(AsynchronousSocketChannel channel, SSLEngine sslEngine) {
-                  sslEngine.setUseClientMode(false);
-                }
-              });
-      options.addPlugin(sslPlugin);
-      isSecure = true;
+    public boolean isSecure() {
+        return isSecure;
     }
 
-    options.debug(enableDebug);
-
-    // 默认: 8k
-    options.readBufferSize(1024 * 8);
-    options.threadNum(coreThreads);
-
-    options.setIdleTimeout(props.getIdleTimeoutOrDefault());
-
-    if (ServerProps.request_maxHeaderSize > 0) {
-      options.readBufferSize(ServerProps.request_maxHeaderSize);
+    public void enableSsl(boolean enable, @Nullable SSLContext sslContext) {
+        sslConfig.set(enable, sslContext);
     }
 
-    if (ServerProps.request_maxBodySize > 0) {
-      options.setMaxRequestSize(ServerProps.request_maxBodySize);
+    public void enableDebug(boolean enable) {
+        enableDebug = enable;
     }
 
-    FeatHttpContextHandler handlerTmp = new FeatHttpContextHandler(handler);
-    handlerTmp.setEnableWebSocket(enableWebSocket);
-
-    // 非虚拟时，添加二级线程池（不能在 core 里添加虚拟线程）
-    handlerTmp.setExecutor(workExecutor);
-
-    // ServerOptions
-    EventBus.publish(options);
-
-    server = new HttpServer(options);
-    server.httpHandler(handlerTmp);
-    server.listen(host, port);
-  }
-
-  @Override
-  public void stop() throws Throwable {
-    if (server != null) {
-      server.shutdown();
-      server = null;
+    public void enableWebSocket(boolean enableWebSocket) {
+        this.enableWebSocket = enableWebSocket;
     }
-  }
+
+    public void setHandler(Handler handler) {
+        this.handler = handler;
+    }
+
+    public void setWorkExecutor(Executor executor) {
+        this.workExecutor = executor;
+    }
+
+    public void setCoreThreads(int coreThreads) {
+        this.coreThreads = coreThreads;
+    }
+
+    @Override
+    public void start(String host, int port) throws Throwable {
+        // host 为空时绑定所有网卡（0.0.0.0）。feat 底层 AioQuickServer 收到空串会执行
+        // new InetSocketAddress("", port)，解析为回环地址 127.0.0.1，导致部署后外部无法访问。
+        if (Utils.isEmpty(host)) {
+            host = "0.0.0.0";
+        }
+
+        ServerOptions options = new ServerOptions();
+        options.host(host);
+
+        if (sslConfig.isSslEnable()) {
+            SSLContext sslContext = sslConfig.getSslContext();
+
+            SslPlugin<HttpEndpoint> sslPlugin =
+                    new SslPlugin<>(
+                            new SSLContextFactory() {
+                                @Override
+                                public SSLContext create() throws Exception {
+                                    return sslContext;
+                                }
+
+                                @Override
+                                public void initSSLEngine(AsynchronousSocketChannel channel, SSLEngine sslEngine) {
+                                    sslEngine.setUseClientMode(false);
+                                }
+                            });
+            options.addPlugin(sslPlugin);
+            isSecure = true;
+        }
+
+        options.debug(enableDebug);
+
+        // 默认: 8k
+        options.readBufferSize(1024 * 8);
+        options.threadNum(coreThreads);
+
+        options.setIdleTimeout(props.getIdleTimeoutOrDefault());
+
+        if (ServerProps.request_maxHeaderSize > 0) {
+            options.readBufferSize(ServerProps.request_maxHeaderSize);
+        }
+
+        options.setMaxRequestSize(ServerProps.request_maxFileRequestSize());
+        options.setMaxFormContentSize(ServerProps.request_maxBodySize);
+        options.setMaxPartCount(ServerProps.request_maxPartCount);
+
+        FeatHttpContextHandler handlerTmp = new FeatHttpContextHandler(handler);
+        handlerTmp.setEnableWebSocket(enableWebSocket);
+
+        // 非虚拟时，添加二级线程池（不能在 core 里添加虚拟线程）
+        handlerTmp.setExecutor(workExecutor);
+
+        // ServerOptions
+        EventBus.publish(options);
+
+        server = new HttpServer(options);
+        server.httpHandler(handlerTmp);
+        server.listen(host, port);
+    }
+
+    @Override
+    public void stop() throws Throwable {
+        if (server != null) {
+            server.shutdown();
+            server = null;
+        }
+    }
 }
