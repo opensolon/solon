@@ -324,15 +324,15 @@
 <!--                    <artifactId>solon-server-netahttp</artifactId>-->
 <!--                </dependency>-->
 
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-server-smarthttp</artifactId>
-        </dependency>
-
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon-server-feathttp</artifactId>-->
+<!--            <artifactId>solon-server-smarthttp</artifactId>-->
 <!--        </dependency>-->
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-server-feathttp</artifactId>
+        </dependency>
 
 <!--                <dependency>-->
 <!--                    <groupId>org.noear</groupId>-->

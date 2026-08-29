@@ -323,6 +323,11 @@ public abstract class Endpoint implements Reset {
         //application/x-www-form-urlencoded;charset=utf-8
         String contentTypeTmp = getContentType();
         if (contentTypeTmp != null && contentTypeTmp.startsWith(HeaderValue.ContentType.X_WWW_FORM_URLENCODED)) {
+            long maxFormContentSize = options.getMaxFormContentSize();
+            if (maxFormContentSize > 0 && getContentLength() > maxFormContentSize) {
+                throw new HttpException(HttpStatus.PAYLOAD_TOO_LARGE);
+            }
+
             try {
                 InputStream inputStream = getInputStream();
                 if (inputStream != BodyInputStream.EMPTY_INPUT_STREAM) {
@@ -330,6 +335,9 @@ public abstract class Endpoint implements Reset {
                     byte[] bytes = new byte[1024];
                     int len;
                     while ((len = inputStream.read(bytes)) != -1) {
+                        if (maxFormContentSize > 0 && len > maxFormContentSize - outputStream.size()) {
+                            throw new HttpException(HttpStatus.PAYLOAD_TOO_LARGE);
+                        }
                         outputStream.write(bytes, 0, len);
                     }
                     FeatUtils.decodeParamString(outputStream.toString(getCharacterEncoding()), parameters);

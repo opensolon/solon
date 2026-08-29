@@ -28,6 +28,7 @@ import org.noear.solon.core.util.IoUtil;
 import org.noear.solon.core.util.MultiMap;
 import org.noear.solon.server.ServerProps;
 import org.noear.solon.server.handle.AsyncContextState;
+import org.noear.solon.server.io.LimitedInputStream;
 import org.noear.solon.server.handle.ContextBase;
 import org.noear.solon.server.handle.HeaderNames;
 import org.noear.solon.server.util.DecodeUtils;
@@ -149,18 +150,24 @@ public class FeatHttpContext extends ContextBase {
     }
   }
 
+  private InputStream _bodyAsStream;
+
   @Override
   public String body(String charset) throws IOException {
     try {
       return super.body(charset);
     } catch (Exception e) {
-      throw MultipartUtil.status4xx(this, e);
+      throw DecodeUtils.status4xx(this, e);
     }
   }
 
   @Override
   public InputStream bodyAsStream() throws IOException {
-    return _request.getInputStream();
+    if (_bodyAsStream == null) {
+      _bodyAsStream = new LimitedInputStream(_request.getInputStream(), ServerProps.request_maxBodySize);
+    }
+
+    return _bodyAsStream;
   }
 
   @Override
