@@ -177,7 +177,15 @@ public class OutputUtils {
     public void outputStreamAsGzip(Context ctx, InputStream stream) throws IOException {
         //支持 gzip
         GZIPOutputStream gzipOut = ctx.outputStreamAsGzip();
-        IoUtil.transferTo(stream, gzipOut);
+
+        try {
+            IoUtil.transferTo(stream, gzipOut);
+        } finally {
+            //收尾：写出结束块 + CRC32/ISIZE。缺了它 gzip 流不完整，客户端会报解压失败
+            //（只 finish 不 close，避免连带关掉底层的响应流）
+            gzipOut.finish();
+            gzipOut.flush();
+        }
     }
 
     /**
