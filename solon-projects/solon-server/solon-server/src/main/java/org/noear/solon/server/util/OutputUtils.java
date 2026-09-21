@@ -178,6 +178,12 @@ public class OutputUtils {
         //支持 gzip
         GZIPOutputStream gzipOut = ctx.outputStreamAsGzip();
         IoUtil.transferTo(stream, gzipOut);
+
+        //收尾：写出结束块 + CRC32/ISIZE。缺了它 gzip 流不完整，客户端会报解压失败
+        //（只 finish 不 close，避免连带关掉底层的响应流）
+        //失败时不收尾：让客户端看到明确的解压失败，好过静默收到被截断的内容
+        gzipOut.finish();
+        gzipOut.flush();
     }
 
     /**
