@@ -26,6 +26,7 @@
 ### 4.1.1
 
 * 优化 solon 路由表排序策略：同层级路由按路径段从左到右的精确度排序
+* 优化 solon-server-feathttp 响应头冒号后补空格，符合 RFC 9110 field-name ":" OWS field-value 惯例
 * 调整 solon 移除 RoutingTable.matchMore 方法(没用到了)
 * smarthttp 升为 2.5.22
 

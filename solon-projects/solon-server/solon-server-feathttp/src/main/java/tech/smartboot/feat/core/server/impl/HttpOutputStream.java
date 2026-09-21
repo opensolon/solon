@@ -23,13 +23,13 @@ import java.util.concurrent.TimeUnit;
  * @version v1.0.0
  */
 final class HttpOutputStream extends FeatOutputStream {
-    private static final String TEXT_PLAIN_FAST_WRITE = HttpProtocol.HTTP_11.getProtocol() + " 200 OK\r\nDate:" + FeatUtils.formatRFC1123(FeatUtils.currentTime()) + "\r\nContent-Type:" + HeaderValue.ContentType.TEXT_PLAIN_UTF8 + "\r\nContent-Length:";
+    private static final String TEXT_PLAIN_FAST_WRITE = HttpProtocol.HTTP_11.getProtocol() + " 200 OK\r\nDate: " + FeatUtils.formatRFC1123(FeatUtils.currentTime()) + "\r\nContent-Type: " + HeaderValue.ContentType.TEXT_PLAIN_UTF8 + "\r\nContent-Length: ";
     private static final int DATE_INDEX = TEXT_PLAIN_FAST_WRITE.indexOf("Date:");
     private static final int PLAIN_CONTENT_TYPE_INDEX = TEXT_PLAIN_FAST_WRITE.indexOf(HeaderName.CONTENT_TYPE.getName()) - 2;
     private static final int PLAIN_CONTENT_LENGTH_INDEX = TEXT_PLAIN_FAST_WRITE.indexOf(HeaderName.CONTENT_LENGTH.getName()) - 2;
     private static final byte[] TEXT_PLAIN_FAST_WRITE_BYTES = TEXT_PLAIN_FAST_WRITE.getBytes();
 
-    private static final String APPLICATION_JSON = HttpProtocol.HTTP_11.getProtocol() + " 200 OK\r\nDate:" + FeatUtils.formatRFC1123(FeatUtils.currentTime()) + "\r\nContent-Type:" + HeaderValue.ContentType.APPLICATION_JSON + "\r\nContent-Length:";
+    private static final String APPLICATION_JSON = HttpProtocol.HTTP_11.getProtocol() + " 200 OK\r\nDate: " + FeatUtils.formatRFC1123(FeatUtils.currentTime()) + "\r\nContent-Type: " + HeaderValue.ContentType.APPLICATION_JSON + "\r\nContent-Length: ";
     private static final int JSON_CONTENT_LENGTH_INDEX = APPLICATION_JSON.indexOf(HeaderName.CONTENT_LENGTH.getName()) - 2;
     private static final byte[] APPLICATION_JSON_FAST_WRITE_BYTES = APPLICATION_JSON.getBytes();
     private static final byte[] CHUNKED = "\r\nTransfer-Encoding: chunked\r\n\r\n".getBytes();
@@ -40,8 +40,8 @@ final class HttpOutputStream extends FeatOutputStream {
 
         HashedWheelTimer.DEFAULT_TIMER.scheduleWithFixedDelay(() -> {
             byte[] bytes = FeatUtils.formatRFC1123(FeatUtils.currentTime()).getBytes();
-            System.arraycopy(bytes, 0, TEXT_PLAIN_FAST_WRITE_BYTES, DATE_INDEX + 5, bytes.length);
-            System.arraycopy(bytes, 0, APPLICATION_JSON_FAST_WRITE_BYTES, DATE_INDEX + 5, bytes.length);
+            System.arraycopy(bytes, 0, TEXT_PLAIN_FAST_WRITE_BYTES, DATE_INDEX + 6, bytes.length);
+            System.arraycopy(bytes, 0, APPLICATION_JSON_FAST_WRITE_BYTES, DATE_INDEX + 6, bytes.length);
         }, 800, TimeUnit.MILLISECONDS);
     }
 
@@ -88,6 +88,7 @@ final class HttpOutputStream extends FeatOutputStream {
             while (headerValue != null) {
                 writeString(entry.getKey());
                 writeBuffer.writeByte((byte) ':');
+                writeBuffer.writeByte((byte) ' ');
                 writeString(headerValue.getValue());
                 writeBuffer.write(FeatUtils.CRLF_BYTES);
                 headerValue = headerValue.getNextValue();
@@ -117,15 +118,15 @@ final class HttpOutputStream extends FeatOutputStream {
         request.getProtocol().write(writeBuffer);
         response.getHttpStatus().write(writeBuffer);
         // Date
-        writeBuffer.write(TEXT_PLAIN_FAST_WRITE_BYTES, DATE_INDEX, 34);
+        writeBuffer.write(TEXT_PLAIN_FAST_WRITE_BYTES, DATE_INDEX, 35);
 
         if (contentType != null) {
-            writeBuffer.write(TEXT_PLAIN_FAST_WRITE_BYTES, PLAIN_CONTENT_TYPE_INDEX, 15);
+            writeBuffer.write(TEXT_PLAIN_FAST_WRITE_BYTES, PLAIN_CONTENT_TYPE_INDEX, 16);
             writeString(contentType);
         }
 
         if (contentLength >= 0) {
-            writeBuffer.write(TEXT_PLAIN_FAST_WRITE_BYTES, PLAIN_CONTENT_LENGTH_INDEX, 17);
+            writeBuffer.write(TEXT_PLAIN_FAST_WRITE_BYTES, PLAIN_CONTENT_LENGTH_INDEX, 18);
             writeLongString(contentLength);
             if (hasHeader) {
                 writeBuffer.write(FeatUtils.CRLF_BYTES);

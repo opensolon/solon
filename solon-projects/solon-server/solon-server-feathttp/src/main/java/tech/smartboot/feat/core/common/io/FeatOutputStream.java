@@ -149,7 +149,7 @@ public abstract class FeatOutputStream extends OutputStream implements Reset {
                 writeBuffer.write("0\r\n".getBytes());
                 Map<String, String> map = trailerSupplier.get();
                 for (String key : map.keySet()) {
-                    writeBuffer.write((key + ":" + map.get(key) + "\r\n").getBytes());
+                    writeBuffer.write((key + ": " + map.get(key) + "\r\n").getBytes());
                 }
                 writeBuffer.write(FeatUtils.CRLF_BYTES);
             } else {
