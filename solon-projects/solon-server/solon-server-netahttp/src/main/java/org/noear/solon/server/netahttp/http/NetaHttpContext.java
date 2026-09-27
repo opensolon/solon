@@ -451,6 +451,7 @@ public class NetaHttpContext extends ContextBase {
         ByteBuf contentBuf = ByteBufAllocator.DEFAULT.heapBuffer(bodyBytes.length);
         if (bodyBytes.length > 0) {
             contentBuf.writeBytes(bodyBytes);
+            contentBuf.markWriter(); // writeBytes 只推进 writerIndex；readableBytes() 依赖 markedWriterIndex，必须 markWriter() 才计入可读区
         }
 
         // 重新构造 response，确保 content 正确绑定
