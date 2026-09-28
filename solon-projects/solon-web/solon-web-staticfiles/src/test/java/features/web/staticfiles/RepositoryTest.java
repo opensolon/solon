@@ -133,5 +133,17 @@ public class RepositoryTest {
         assertTrue(loc2.pathPrefixAsFile);
         assertSame(dummy, loc2.repository);
         assertTrue(loc2.repositoryIncPrefix);
+
+        StaticLocation loc3 = new StaticLocation("/doc.html.gz", dummy, true);
+        assertEquals("/doc.html.gz", loc3.pathPrefix);
+        assertTrue(loc3.pathPrefixAsFile);
+        assertSame(dummy, loc3.repository);
+        assertTrue(loc3.repositoryIncPrefix);
+
+        StaticLocation loc4 = new StaticLocation("/doc.html.br", dummy, true);
+        assertEquals("/doc.html.br", loc4.pathPrefix);
+        assertTrue(loc4.pathPrefixAsFile);
+        assertSame(dummy, loc4.repository);
+        assertTrue(loc4.repositoryIncPrefix);
     }
 }
