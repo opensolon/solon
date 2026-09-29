@@ -74,6 +74,10 @@ public class StaticMappings {
         URL rst = null;
         for (StaticLocation m : locationMap.values()) {
             if (path.startsWith(m.pathPrefix)) {
+                //单文件 mapping 必须是精确匹配 —— 否则会被 .gz/.br 后缀误命中（IJNNFJ）
+                if (m.pathPrefixAsFile && !path.equals(m.pathPrefix)) {
+                    continue;
+                }
                 if (m.repositoryIncPrefix) {
                     //path = /demo/file.htm
                     //relativePath = demo/file.htm （没有'/'开头）
