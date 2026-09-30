@@ -28,6 +28,9 @@
 * 优化 solon 路由表排序策略：同层级路由按路径段从左到右的精确度排序
 * 优化 solon-server-feathttp 响应头冒号后补空格，符合 RFC 9110 field-name ":" OWS field-value 惯例
 * 调整 solon 移除 RoutingTable.matchMore 方法(没用到了)
+* 修复 solon-server gzip 输出流未收尾，导致客户端解压失败的问题
+* 修复 solon-server-netahttp 响应 body 不发送导致客户端挂死的 bug
+* 修复 solon-web-staticfiles pathPrefixAsFile=true 单文件映射的路径匹配错误（IJNNFJ）
 * smarthttp 升为 2.5.22
 
 ### 4.1.0
