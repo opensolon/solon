@@ -12,7 +12,7 @@
     </parent>
 
     <groupId>org.noear.bundle</groupId>
-    <artifactId>solon-base-bundle5</artifactId>
+    <artifactId>solon-serialization-bundle</artifactId>
     <name>${project.artifactId}</name>
     <packaging>pom</packaging>
 
@@ -34,9 +34,5 @@
         <module>../../solon-projects/solon-serialization/solon-serialization-kryo</module>
         <module>../../solon-projects/solon-serialization/solon-serialization-abc</module>
 
-
-        <module>../../solon-projects/solon-testing/solon-test</module>
-        <module>../../solon-projects/solon-testing/solon-test-junit4</module>
-        <module>../../solon-projects/solon-testing/solon-test-junit5</module>
     </modules>
 </project>

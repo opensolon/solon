@@ -17,25 +17,25 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>../../solon-projects/nami/nami</module>
+        <module>../../nami-projects/nami</module>
 
-        <module>../../solon-projects/nami/nami-channel-http-okhttp</module>
-        <module>../../solon-projects/nami/nami-channel-http-hutool</module>
+        <module>../../nami-projects/nami-channel-http-okhttp</module>
+        <module>../../nami-projects/nami-channel-http-hutool</module>
 
 
-        <module>../../solon-projects/nami/nami-channel-http</module>
-        <module>../../solon-projects/nami/nami-channel-socketd</module>
+        <module>../../nami-projects/nami-channel-http</module>
+        <module>../../nami-projects/nami-channel-socketd</module>
 
-        <module>../../solon-projects/nami/nami-coder-snack3</module>
-        <module>../../solon-projects/nami/nami-coder-snack4</module>
-        <module>../../solon-projects/nami/nami-coder-fastjson</module>
-        <module>../../solon-projects/nami/nami-coder-fastjson2</module>
-        <module>../../solon-projects/nami/nami-coder-jackson</module>
-        <module>../../solon-projects/nami/nami-coder-gson</module>
-        <module>../../solon-projects/nami/nami-coder-fury</module>
-        <module>../../solon-projects/nami/nami-coder-hessian</module>
-        <module>../../solon-projects/nami/nami-coder-protostuff</module>
-        <module>../../solon-projects/nami/nami-coder-kryo</module>
-        <module>../../solon-projects/nami/nami-coder-abc</module>
+        <module>../../nami-projects/nami-coder-snack3</module>
+        <module>../../nami-projects/nami-coder-snack4</module>
+        <module>../../nami-projects/nami-coder-fastjson</module>
+        <module>../../nami-projects/nami-coder-fastjson2</module>
+        <module>../../nami-projects/nami-coder-jackson</module>
+        <module>../../nami-projects/nami-coder-gson</module>
+        <module>../../nami-projects/nami-coder-fury</module>
+        <module>../../nami-projects/nami-coder-hessian</module>
+        <module>../../nami-projects/nami-coder-protostuff</module>
+        <module>../../nami-projects/nami-coder-kryo</module>
+        <module>../../nami-projects/nami-coder-abc</module>
     </modules>
 </project>
