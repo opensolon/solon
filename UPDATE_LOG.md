@@ -28,6 +28,7 @@
 
 * reactor-core 升为 3.8.7
 * jackson 升为 2.21.7
+* fory 升为 1.7.7
 
 ### 4.1.1
 
