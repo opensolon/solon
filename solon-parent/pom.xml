@@ -38,7 +38,7 @@
         <solon-cloud.version>4.1.1</solon-cloud.version>
         <solon-admin.version>4.1.1</solon-admin.version>
         <solon-integration.version>4.1.1</solon-integration.version>
-        <solon-java17.version>4.1.1</solon-java17.version>
+        <solon-java17.version>4.2.0-SNAPSHOT</solon-java17.version>
         <solon-java25.version>4.1.1</solon-java25.version>
 
         <nami.version>4.1.1</nami.version>
