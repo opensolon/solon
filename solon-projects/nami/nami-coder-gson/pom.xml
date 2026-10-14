@@ -25,17 +25,20 @@
             <groupId>org.noear</groupId>
             <artifactId>nami</artifactId>
         </dependency>
+
 		<dependency>
 		    <groupId>com.google.code.gson</groupId>
 		    <artifactId>gson</artifactId>
 		    <version>${gson.version}</version>
 		</dependency>
+
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon-test</artifactId>
             <scope>test</scope>
             <optional>true</optional>
-        </dependency>	
+        </dependency>
+
         <dependency>
 		    <groupId>org.projectlombok</groupId>
 		    <artifactId>lombok</artifactId>
