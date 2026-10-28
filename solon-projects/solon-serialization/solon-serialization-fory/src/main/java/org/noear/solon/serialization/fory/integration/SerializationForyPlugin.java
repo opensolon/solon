@@ -30,7 +30,7 @@ public class SerializationForyPlugin implements Plugin {
         ForyBytesSerializer serializer = ForyBytesSerializer.getDefault();
         context.wrapAndPut(ForyBytesSerializer.class, serializer); //用于扩展
         context.wrapAndPut(EntityBytesSerializer.class, serializer);
-        context.app().serializers().register(SerializerNames.AT_FURY, serializer);
+        context.app().serializers().register(SerializerNames.AT_FORY, serializer);
 
         //::entityConverter
         ForyEntityConverter entityConverter = new ForyEntityConverter(serializer);

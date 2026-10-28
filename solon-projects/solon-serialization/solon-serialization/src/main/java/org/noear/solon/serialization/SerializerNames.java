@@ -28,6 +28,7 @@ public interface SerializerNames {
     String AT_XML_TYPED = "@type_xml";
     String AT_PROPERTIES = "@properties";
     String AT_FURY = "@fury";
+    String AT_FORY = "@fory";
     String AT_KRYO = "@kryo";
     String AT_ABC = "@abc";
     String AT_HESSIAN = "@hessian";
