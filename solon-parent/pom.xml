@@ -71,7 +71,7 @@
         <okhttp.version>4.12.0</okhttp.version>
         <hutool.version>5.8.44</hutool.version>
 
-        <asm.version>9.10</asm.version>
+        <asm.version>9.11.1</asm.version>
         <jspecify.version>1.0.0</jspecify.version>
         <jline.version>3.30.9</jline.version>
 
