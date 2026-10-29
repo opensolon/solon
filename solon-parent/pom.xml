@@ -2053,6 +2053,12 @@
             </dependency>
 
             <dependency>
+                <groupId>io.projectreactor</groupId>
+                <artifactId>reactor-core</artifactId>
+                <version>${reactor-core.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.fusesource.jansi</groupId>
                 <artifactId>jansi</artifactId>
                 <version>${jansi.version}</version>
