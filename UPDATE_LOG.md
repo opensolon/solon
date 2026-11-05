@@ -26,6 +26,10 @@
 
 ### 4.2.0
 
+* 添加 solon-ai-harness-goal 插件
+* 添加 solon-ai-harness-loop 插件
+* 添加 solon-ai-harness-steer 插件
+* 添加 solon-ai-harness-queue 插件
 * asm 升为 9.11.1 
 * reactor-core 升为 3.8.7
 * jackson 升为 2.21.7
