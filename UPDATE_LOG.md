@@ -30,6 +30,7 @@
 * 添加 solon-ai-harness-loop 插件
 * 添加 solon-ai-harness-steer 插件
 * 添加 solon-ai-harness-queue 插件
+* 添加 solon-ai-harness-host 插件
 * 添加 solon-ai-talent-todo 插件
 * 调整 solon-ai-talent-mount 更名为 solon-ai-mount （为存算分离提供支持）
 * asm 升为 9.11.1 
